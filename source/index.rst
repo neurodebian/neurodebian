@@ -12,8 +12,14 @@ This service is provided "as is". There is no guarantee that a package
 works as expected, so use them at your own risk. They might kill your
 system (although that is rather unlikely). You've been warned!
 
-An exhaustive list of available packages is provided by the Package
-:ref:`genindex`.
+The repository contains both neuroscience-related packages as well as
+general purpose software which is necessary to resolved dependencies, or
+is simply useful in the neuroscience context. The featured neuroscience
+software can be browsed via the repository :ref:`genindex` or through the
+:ref:`maintainer view <bymaintainer>`.
+
+All other packages are available through the search engine or from the
+:ref:`full package list <full_pkg_list>`.
 
 
 How to use this repository

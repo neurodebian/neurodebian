@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+
+
 import urllib
 import apt
 from debian_bundle import deb822
@@ -7,8 +10,6 @@ import subprocess
 import os
 import shutil
 import pysvn
-
-target_dir = 'build/source'
 
 codename2descr = {
     'apsy_etch': 'Debian GNU/Linux 4.0 (etch)',
@@ -35,6 +36,18 @@ def transCodename(codename):
         return codename
 
 
+def createDir(path):
+    if os.path.exists(path):
+        return
+
+    ps = path.split(os.path.sep)
+
+    for i in range(1,len(ps) + 1):
+        p = os.path.sep.join(ps[:i])
+
+        if not os.path.exists(p):
+            os.mkdir(p)
+
 
 class AptListsCache(object):
     def __init__(self, cachedir='cache', ro_cachedirs=None):
@@ -47,6 +60,9 @@ class AptListsCache(object):
 
         # always use system cache
         self.ro_cachedirs.append('/var/lib/apt/lists/')
+
+        # create cachedir
+        createDir(self.cachedir)
 
 
     def get(self, url, update=False):
@@ -266,12 +282,14 @@ class DebianPkgArchive(SafeConfigParser):
         """
         pkg = st['Package']
 
-        # do nothing if package is not in filter if there is any
-        if not self.pkgfilter is None and not pkg in self.pkgfilter:
-            return
-
         if not self.has_section(pkg):
             self.add_section(pkg)
+
+        # do nothing if package is not in filter if there is any
+        if not self.pkgfilter is None and not pkg in self.pkgfilter:
+            self.ensureUnique(pkg, 'visibility', 'shadowed')
+        else:
+            self.ensureUnique(pkg, 'visibility', 'featured')
 
         # which releases
         self.appendUniqueCSV(pkg, "releases", codename)
@@ -326,12 +344,15 @@ class DebianPkgArchive(SafeConfigParser):
             self.set(pkg, 'debtags', ', '.join(debtags))
 
 
-    def writeSourcesLists(self):
-        fl = open(os.path.join(target_dir, 'sources_lists'), 'w')
+    def writeSourcesLists(self, outdir):
+        createDir(outdir)
+        createDir(os.path.join(outdir, 'static'))
+
+        fl = open(os.path.join(outdir, 'sources_lists'), 'w')
         for trans, r in sorted([(transCodename(k), k) 
                 for k in self.releases.keys()]):
-            f = open(os.path.join(target_dir,
-                                  "static/debneuro.%s.sources.list" % r),
+            f = open(os.path.join(outdir, 'static',
+                                  'debneuro.%s.sources.list' % r),
                      'w')
             f.write("deb http://apsy.gse.uni-magdeburg.de/debian %s %s\n" \
                     % (r, ' '.join(self.releases[r])))
@@ -345,7 +366,7 @@ class DebianPkgArchive(SafeConfigParser):
 
 
     def importProspectivePkgsFromTaskFile(self, url):
-        fh = dpa.cache.get(url)
+        fh = self.cache.get(url)
 
         for st in deb822.Packages.iter_paragraphs(fh):
             # do not stop unless we have a description
@@ -364,6 +385,9 @@ class DebianPkgArchive(SafeConfigParser):
             # store pkg info
             if not self.has_section(pkg):
                 self.add_section(pkg)
+
+            # prospective ones are always featured
+            self.ensureUnique(pkg, 'visibility', 'featured')
 
             # pkg description
             self.set(pkg, "description",
@@ -388,10 +412,11 @@ class DebianPkgArchive(SafeConfigParser):
 
 
     def setPkgFilterFromTaskFile(self, urls):
-        for task in taskfiles:
-            fh = dpa.cache.get(task)
+        pkgs = []
 
-            pkgs = []
+        for task in urls:
+            fh = self.cache.get(task)
+
 
             # loop over all stanzas
             for stanza in deb822.Packages.iter_paragraphs(fh):
@@ -421,17 +446,19 @@ def genPkgPage(db, pkg):
     """
     descr = db.get(pkg, 'description').split('\n')
 
-    s = '.. index:: %s, ' % pkg
-#    s += db.get(pkg, 'maintainer').split('<')[0]
+    s = ''
 
-    s += '\n'
+    # only put index markup for featured packages
+    if db.get(pkg, 'visibility') == 'featured':
+        s = '.. index:: %s, ' % pkg
+        s += '\n'
 
-    if db.has_option(pkg, 'debtags'):
-        # filter tags
-        tags = [t for t in db.get(pkg, 'debtags').split(', ')
-                    if t.split('::')[0] in ['field', 'works-with']]
-        if len(tags):
-            s += '.. index:: %s\n\n' % ', '.join(tags)
+        if db.has_option(pkg, 'debtags'):
+            # filter tags
+            tags = [t for t in db.get(pkg, 'debtags').split(', ')
+                        if t.split('::')[0] in ['field', 'works-with']]
+            if len(tags):
+                s += '.. index:: %s\n\n' % ', '.join(tags)
 
     # main ref target for this package
     s += '.. _deb_' + pkg + ':\n'
@@ -556,11 +583,19 @@ def maintainer2email(maint):
     return maint.split('<')[1].rstrip('>')
 
 
-def writePkgsBy(db, key, value2id):
+def writePkgsBy(db, key, value2id, outdir, heading):
+    createDir(outdir)
+    nwkey = key.replace(' ', '')
+    createDir(os.path.join(outdir, 'by%s' % nwkey))
+
     collector = {}
 
     # get packages by maintainer
     for p in db.sections():
+        # only featured packages
+        if db.get(p, 'visibility') == 'shadowed':
+            continue
+
         if db.has_option(p, key):
             by = db.get(p, key)
 
@@ -569,34 +604,54 @@ def writePkgsBy(db, key, value2id):
             else:
                 collector[by][1].append(p)
 
-    toc = open(os.path.join(target_dir, 'by%s.rst' % key), 'w')
-    toc.write('.. index:: Packages by %s\n.. _by%s:\n' % (key, key))
+    toc = open(os.path.join(outdir, 'by%s.rst' % nwkey), 'w')
+    toc.write('.. index:: Packages by %s\n.. _by%s:\n\n' % (key, key))
 
-    heading = 'Packages by %s' % key
-    toc.write('%s\n%s\n\n' % (heading, '=' * len(heading)))
+    toc_heading = 'Packages by %s' % key
+    toc.write('%s\n%s\n\n' % (toc_heading, '=' * len(toc_heading)))
     toc.write('.. toctree::\n  :maxdepth: 1\n\n')
 
     # summary page per maintainer
     for by in sorted(collector.keys()):
-        toc.write('  by%s/%s\n' % (key, collector[by][0]))
+        toc.write('  by%s/%s\n' % (nwkey, collector[by][0]))
+
+        fh = open(os.path.join(outdir,
+                               'by%s' % nwkey,
+                               collector[by][0] + '.rst'), 'w')
+
+        fh.write('.. index:: %s\n.. _%s:\n\n' % (by, by))
+
+        hdr = heading.replace('<ITEM>', by)
+        fh.write(hdr + '\n')
+        fh.write('=' * len(hdr) + '\n\n')
+
+        # write sorted list of packages
+        for p in sorted(collector[by][1]):
+            fh.write('* :ref:`deb_%s`\n' % p)
+
+        fh.close()
 
     toc.close()
 
 
-def writeRst(db):
+def writeRst(db, outdir):
+    createDir(outdir)
+    createDir(os.path.join(outdir, 'pkgs'))
+
     # open pkgs toctree
-    toc = open(os.path.join(target_dir, 'pkgs.rst'), 'w')
+    toc = open(os.path.join(outdir, 'pkgs.rst'), 'w')
     # write header
+    toc.write('.. _full_pkg_list:\n\n')
     toc.write('Archive content\n===============\n\n'
               '.. toctree::\n  :maxdepth: 1\n\n')
 
     for p in sorted(db.sections()):
         print "Generating page for '%s'" % p
-        pf = open(os.path.join(target_dir, 'pkgs/%s.rst' % p), 'w')
+        pf = open(os.path.join(outdir, 'pkgs', '%s.rst' % p), 'w')
         pf.write(genPkgPage(db, p))
 
         # check for doc addons
-        if os.path.exists(os.path.join(target_dir, 'pkgs_addenum/%s.rst' % p)):
+        if os.path.exists(os.path.join(outdir, 'pkgs_addenum/%s.rst' % p)):
             pf.write('\n\n.. include:: ../pkgs_addenum/%s.rst\n' %p)
         pf.close()
         toc.write('  pkgs/%s\n' % p)
@@ -606,10 +661,13 @@ def writeRst(db):
 
 
 
-dpa = DebianPkgArchive()
+def main():
+    dpa = DebianPkgArchive()
+
+    target_dir = 'build/source'
 
 
-release_urls=[
+    release_urls=[
             'http://apsy.gse.uni-magdeburg.de/debian/dists/dapper/Release',
             'http://apsy.gse.uni-magdeburg.de/debian/dists/gutsy/Release',
             'http://apsy.gse.uni-magdeburg.de/debian/dists/hardy/Release',
@@ -620,26 +678,30 @@ release_urls=[
             'http://apsy.gse.uni-magdeburg.de/debian/dists/sid/Release',
             ]
 
-taskfiles = [
-  'svn://svn.debian.org/blends/projects/med/trunk/debian-med/tasks/imaging',
-  'svn://svn.debian.org/blends/projects/med/trunk/debian-med/tasks/imaging-dev',
-  'svn://svn.debian.org/blends/projects/science/trunk/debian-science/tasks/neuroscience-cognitive',
+    taskfiles = [
+    'svn://svn.debian.org/blends/projects/med/trunk/debian-med/tasks/imaging',
+    'svn://svn.debian.org/blends/projects/med/trunk/debian-med/tasks/imaging-dev',
+    'svn://svn.debian.org/blends/projects/science/trunk/debian-science/tasks/neuroscience-cognitive',
             ]
 
-dpa.setPkgFilterFromTaskFile(taskfiles)
-dpa.pkgfilter += ['fsl-doc', 'fslview-doc', 'fsl-atlases', 'fsl-possum-data',
+    dpa.setPkgFilterFromTaskFile(taskfiles)
+    dpa.pkgfilter += ['fsl-doc', 'fslview-doc', 'fsl-atlases', 'fsl-possum-data',
                   'fsl-first-data', 'fsl-feeds']
 
-dpa.importProspectivePkgsFromTaskFile(taskfiles[0])
+    dpa.importProspectivePkgsFromTaskFile(taskfiles[0])
 
-for rurl in release_urls:
-    dpa.importRelease(rurl, force_update=False)
+    for rurl in release_urls:
+        dpa.importRelease(rurl, force_update=False)
 
-dpa.save('db.db')
+    dpa.writeSourcesLists(target_dir)
 
-dpa.writeSourcesLists()
+    writeRst(dpa, target_dir)
+    writePkgsBy(dpa, 'maintainer', maintainer2email, target_dir,
+                'Packages maintained by <ITEM>')
 
-writeRst(dpa)
-writePkgsBy(dpa, 'maintainer', maintainer2email)
+    dpa.save('build/db.db')
 
+
+if __name__ == "__main__":
+    main()
 

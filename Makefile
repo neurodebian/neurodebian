@@ -78,7 +78,7 @@ linkcheck: prep
 
 
 update-db:
-	python deb2rst/archive.py
+	./reblender
 
 
 upload-website: html
