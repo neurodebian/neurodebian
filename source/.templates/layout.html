@@ -1,0 +1,19 @@
+{% extends "!layout.html" %}
+
+{% block extrahead %}
+  <meta name="keywords" content="debian, neuroscience">
+{% endblock %}
+
+{% block rootrellink %}
+  <li><a href="http://www.debian.org" target="_blank">Debian</a> |&nbsp;</li>
+  <li><a href="{{ pathto('index') }}">Neuroscience Repository</a> &raquo;</li>
+  <li><a href="{{ pathto('genindex') }}">Package list</a></li>
+{% endblock %}
+
+{% block sidebar1 %}
+{{ sidebar() }}
+{% endblock %}
+
+{% block sidebar2 %}
+{{ sidebar() }}
+{% endblock %}
