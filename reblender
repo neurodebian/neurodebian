@@ -1,5 +1,6 @@
 #!/usr/bin/env python
-
+"""Tell me who you are!
+"""
 
 import urllib
 import apt
@@ -8,8 +9,10 @@ from debian_bundle import debtags
 from ConfigParser import SafeConfigParser
 import subprocess
 import os
+import sys
 import shutil
 import pysvn
+from optparse import OptionParser, Option, OptionGroup, OptionConflictError
 
 codename2descr = {
     'apsy_etch': 'Debian GNU/Linux 4.0 (etch)',
@@ -50,7 +53,7 @@ def createDir(path):
 
 
 class AptListsCache(object):
-    def __init__(self, cachedir='cache', ro_cachedirs=None):
+    def __init__(self, cachedir='cache', ro_cachedirs=None, init_db=None):
         self.cachedir = cachedir
 
         if not ro_cachedirs is None:
@@ -151,14 +154,15 @@ class AptListsCache(object):
 class DebianPkgArchive(SafeConfigParser):
     """
     """
-    def __init__(self, cache=None):
+    def __init__(self, cache=None, init_db=None):
         """
         :Parameter:
         """
         SafeConfigParser.__init__(self)
 
-        # release codnames found in the repos
-        self.releases = {}
+        # read an existing database if provided
+        if not init_db is None:
+            self.read(init_db)
 
         # use provided file cache or use fresh one
         if not cache is None:
@@ -172,6 +176,29 @@ class DebianPkgArchive(SafeConfigParser):
 
         # init package filter
         self.pkgfilter = None
+
+        self._updateReleases()
+
+
+    def _updateReleases(self):
+        self.releases = {}
+
+        for p in self.sections():
+            if not self.has_option(p, 'releases'):
+                continue
+
+            # for all releases of this package
+            for r in \
+              [rel.strip() for rel in self.get(p, 'releases').split(',')]:
+                  # push release code
+                  if not self.releases.has_key(r):
+                      self.releases[r] = []
+
+                  # store component
+                  component = self.get(p, 'component %s' % r)
+
+                  if not component in self.releases[r]:
+                      self.releases[r].append(component)
 
 
     def __repr__(self):
@@ -237,10 +264,6 @@ class DebianPkgArchive(SafeConfigParser):
         # to distinguish between official and unofficial repos.
         codename = '_'.join([rp['Label'], rp['Codename']])
 
-        # store the release itself
-        if not codename in self.releases.keys():
-            self.releases[codename] = components
-
         # compile the list of Packages files to parse and parse them
         for c in components:
             for a in archs:
@@ -259,6 +282,8 @@ class DebianPkgArchive(SafeConfigParser):
 
         # cleanup
         release_file.close()
+
+        self._updateReleases()
 
 
     def _parsePkgsFile(self, fh, codename, component, baseurl):
@@ -660,46 +685,65 @@ def writeRst(db, outdir):
     toc.close()
 
 
+def prepOptParser(op):
+    # use module docstring for help output
+    op.usage = "%s [OPTIONS]\n\n" % sys.argv[0] + __doc__
+
+    op.add_option("--db",
+                  action="store", type="string", dest="db",
+                  default=None,
+                  help="Database file to read. Default: None")
+
+    op.add_option("--release-url",
+                  action="append", dest="release_urls",
+                  help="None")
+
 
 def main():
-    dpa = DebianPkgArchive()
+    op = OptionParser(version="%prog 0.0.1")
+    prepOptParser(op)
+
+    (opts, args) = op.parse_args()
+
+    print opts.rurls
+    dpa = DebianPkgArchive(init_db=opts.db)
 
     target_dir = 'build/source'
 
 
-    release_urls=[
-            'http://apsy.gse.uni-magdeburg.de/debian/dists/dapper/Release',
-            'http://apsy.gse.uni-magdeburg.de/debian/dists/gutsy/Release',
-            'http://apsy.gse.uni-magdeburg.de/debian/dists/hardy/Release',
-            'http://apsy.gse.uni-magdeburg.de/debian/dists/intrepid/Release',
-            'http://apsy.gse.uni-magdeburg.de/debian/dists/etch/Release',
-            'http://apsy.gse.uni-magdeburg.de/debian/dists/lenny/Release',
-            'http://apsy.gse.uni-magdeburg.de/debian/dists/squeeze/Release',
-            'http://apsy.gse.uni-magdeburg.de/debian/dists/sid/Release',
-            ]
+#    release_urls=[
+#            'http://apsy.gse.uni-magdeburg.de/debian/dists/dapper/Release',
+#            'http://apsy.gse.uni-magdeburg.de/debian/dists/gutsy/Release',
+#            'http://apsy.gse.uni-magdeburg.de/debian/dists/hardy/Release',
+#            'http://apsy.gse.uni-magdeburg.de/debian/dists/intrepid/Release',
+#            'http://apsy.gse.uni-magdeburg.de/debian/dists/etch/Release',
+#            'http://apsy.gse.uni-magdeburg.de/debian/dists/lenny/Release',
+#            'http://apsy.gse.uni-magdeburg.de/debian/dists/squeeze/Release',
+#            'http://apsy.gse.uni-magdeburg.de/debian/dists/sid/Release',
+#            ]
 
-    taskfiles = [
-    'svn://svn.debian.org/blends/projects/med/trunk/debian-med/tasks/imaging',
-    'svn://svn.debian.org/blends/projects/med/trunk/debian-med/tasks/imaging-dev',
-    'svn://svn.debian.org/blends/projects/science/trunk/debian-science/tasks/neuroscience-cognitive',
-            ]
+#    taskfiles = [
+#    'svn://svn.debian.org/blends/projects/med/trunk/debian-med/tasks/imaging',
+#    'svn://svn.debian.org/blends/projects/med/trunk/debian-med/tasks/imaging-dev',
+#    'svn://svn.debian.org/blends/projects/science/trunk/debian-science/tasks/neuroscience-cognitive',
+#            ]
 
-    dpa.setPkgFilterFromTaskFile(taskfiles)
-    dpa.pkgfilter += ['fsl-doc', 'fslview-doc', 'fsl-atlases', 'fsl-possum-data',
-                  'fsl-first-data', 'fsl-feeds']
+#    dpa.setPkgFilterFromTaskFile(taskfiles)
+#    dpa.pkgfilter += ['fsl-doc', 'fslview-doc', 'fsl-atlases', 'fsl-possum-data',
+#                  'fsl-first-data', 'fsl-feeds']
 
-    dpa.importProspectivePkgsFromTaskFile(taskfiles[0])
+#    dpa.importProspectivePkgsFromTaskFile(taskfiles[0])
 
-    for rurl in release_urls:
-        dpa.importRelease(rurl, force_update=False)
+#    for rurl in opts.release_urls:
+#        dpa.importRelease(rurl, force_update=False)
 
-    dpa.writeSourcesLists(target_dir)
+#    dpa.writeSourcesLists(target_dir)
 
-    writeRst(dpa, target_dir)
-    writePkgsBy(dpa, 'maintainer', maintainer2email, target_dir,
-                'Packages maintained by <ITEM>')
+#    writeRst(dpa, target_dir)
+#    writePkgsBy(dpa, 'maintainer', maintainer2email, target_dir,
+#                'Packages maintained by <ITEM>')
 
-    dpa.save('build/db.db')
+#    dpa.save('build/db.db')
 
 
 if __name__ == "__main__":
