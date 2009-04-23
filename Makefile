@@ -7,7 +7,7 @@ SPHINXBUILD   = sphinx-build
 PAPER         =
 
 # Internal variables.
-SRCDIR = build/source
+SRCDIR = build/src
 PAPEROPT_a4     = -D latex_paper_size=a4
 PAPEROPT_letter = -D latex_paper_size=letter
 ALLSPHINXOPTS   = -d build/doctrees $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) $(SRCDIR)
@@ -22,7 +22,7 @@ WWW_DIR = build/html
 
 prep:
 	mkdir -p build
-	cp -r source build/
+	cp -r source/* build/src
 
 
 clean:
@@ -78,7 +78,24 @@ linkcheck: prep
 
 
 update-db:
-	./reblender
+	rm -f build/db.db
+	./reblender \
+		--db build/db.db \
+		--outdir build/src \
+		-r http://apsy.gse.uni-magdeburg.de/debian/dists/dapper/Release \
+		-r http://apsy.gse.uni-magdeburg.de/debian/dists/gutsy/Release \
+		-r http://apsy.gse.uni-magdeburg.de/debian/dists/hardy/Release \
+		-r http://apsy.gse.uni-magdeburg.de/debian/dists/intrepid/Release \
+		-r http://apsy.gse.uni-magdeburg.de/debian/dists/etch/Release \
+		-r http://apsy.gse.uni-magdeburg.de/debian/dists/lenny/Release \
+		-r http://apsy.gse.uni-magdeburg.de/debian/dists/squeeze/Release \
+		-r http://apsy.gse.uni-magdeburg.de/debian/dists/sid/Release \
+		-t svn://svn.debian.org/blends/projects/med/trunk/debian-med/tasks/imaging \
+		-t svn://svn.debian.org/blends/projects/med/trunk/debian-med/tasks/imaging-dev \
+		-t svn://svn.debian.org/blends/projects/science/trunk/debian-science/tasks/neuroscience-cognitive \
+		-f fsl-doc -f fslview-doc -f fsl-atlases -f fsl-possum-data \
+		-f fsl-first-data -f fsl-feeds \
+		-p svn://svn.debian.org/blends/projects/science/trunk/debian-science/tasks/neuroscience-cognitive
 
 
 upload-website: html

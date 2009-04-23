@@ -376,16 +376,20 @@ class DebianPkgArchive(SafeConfigParser):
         fl = open(os.path.join(outdir, 'sources_lists'), 'w')
         for trans, r in sorted([(transCodename(k), k) 
                 for k in self.releases.keys()]):
+            # need to turn 'apsy_lenny' back into 'lenny'
+            debneuro_r = r.split('_')[1]
+
             f = open(os.path.join(outdir, 'static',
-                                  'debneuro.%s.sources.list' % r),
+                                  'debneuro.%s.sources.list' % debneuro_r),
                      'w')
             f.write("deb http://apsy.gse.uni-magdeburg.de/debian %s %s\n" \
-                    % (r, ' '.join(self.releases[r])))
+                    % (debneuro_r, ' '.join(self.releases[r])))
             f.write("deb-src http://apsy.gse.uni-magdeburg.de/debian %s %s\n" \
-                    % (r, ' '.join(self.releases[r])))
+                    % (debneuro_r, ' '.join(self.releases[r])))
             # XXX use :download: role from sphinx 0.6 on
-            fl.write('* `%s <http://apsy.gse.uni-magdeburg.de/debian/html/_static/debneuro.%s.sources.list>`_\n' \
-                     % (trans, r))
+            #fl.write('* `%s <http://apsy.gse.uni-magdeburg.de/debian/html/_static/debneuro.%s.sources.list>`_\n' \
+            fl.write('* `%s <_static/debneuro.%s.sources.list>`_\n' \
+                     % (trans, debneuro_r))
             f.close()
         fl.close()
 
@@ -694,8 +698,25 @@ def prepOptParser(op):
                   default=None,
                   help="Database file to read. Default: None")
 
-    op.add_option("--release-url",
+    op.add_option("-o", "--outdir",
+                  action="store", type="string", dest="outdir",
+                  default=None,
+                  help="Target directory for ReST output. Default: None")
+
+    op.add_option("-r", "--release-url",
                   action="append", dest="release_urls",
+                  help="None")
+
+    op.add_option("-t", "--taskfile-url",
+                  action="append", dest="taskfile_urls",
+                  help="None")
+
+    op.add_option("-f", "--featured",
+                  action="append", dest="featured_pkgs",
+                  help="None")
+
+    op.add_option("-p", "--prospective",
+                  action="append", dest="prospective_pkgs",
                   help="None")
 
 
@@ -705,45 +726,30 @@ def main():
 
     (opts, args) = op.parse_args()
 
-    print opts.rurls
     dpa = DebianPkgArchive(init_db=opts.db)
 
-    target_dir = 'build/source'
+    if not opts.taskfile_urls is None:
+        dpa.setPkgFilterFromTaskFile(opts.taskfile_urls)
 
+    if not opts.featured_pkgs is None:
+        dpa.pkgfilter += opts.featured_pkgs
 
-#    release_urls=[
-#            'http://apsy.gse.uni-magdeburg.de/debian/dists/dapper/Release',
-#            'http://apsy.gse.uni-magdeburg.de/debian/dists/gutsy/Release',
-#            'http://apsy.gse.uni-magdeburg.de/debian/dists/hardy/Release',
-#            'http://apsy.gse.uni-magdeburg.de/debian/dists/intrepid/Release',
-#            'http://apsy.gse.uni-magdeburg.de/debian/dists/etch/Release',
-#            'http://apsy.gse.uni-magdeburg.de/debian/dists/lenny/Release',
-#            'http://apsy.gse.uni-magdeburg.de/debian/dists/squeeze/Release',
-#            'http://apsy.gse.uni-magdeburg.de/debian/dists/sid/Release',
-#            ]
+    if not opts.prospective_pkgs is None:
+        for p in opts.prospective_pkgs:
+            dpa.importProspectivePkgsFromTaskFile(p)
 
-#    taskfiles = [
-#    'svn://svn.debian.org/blends/projects/med/trunk/debian-med/tasks/imaging',
-#    'svn://svn.debian.org/blends/projects/med/trunk/debian-med/tasks/imaging-dev',
-#    'svn://svn.debian.org/blends/projects/science/trunk/debian-science/tasks/neuroscience-cognitive',
-#            ]
+    if not opts.release_urls is None:
+        for rurl in opts.release_urls:
+            dpa.importRelease(rurl, force_update=False)
 
-#    dpa.setPkgFilterFromTaskFile(taskfiles)
-#    dpa.pkgfilter += ['fsl-doc', 'fslview-doc', 'fsl-atlases', 'fsl-possum-data',
-#                  'fsl-first-data', 'fsl-feeds']
+    if not opts.outdir is None:
+        dpa.writeSourcesLists(opts.outdir)
+        writeRst(dpa, opts.outdir)
+        writePkgsBy(dpa, 'maintainer', maintainer2email, opts.outdir,
+                    'Packages maintained by <ITEM>')
 
-#    dpa.importProspectivePkgsFromTaskFile(taskfiles[0])
-
-#    for rurl in opts.release_urls:
-#        dpa.importRelease(rurl, force_update=False)
-
-#    dpa.writeSourcesLists(target_dir)
-
-#    writeRst(dpa, target_dir)
-#    writePkgsBy(dpa, 'maintainer', maintainer2email, target_dir,
-#                'Packages maintained by <ITEM>')
-
-#    dpa.save('build/db.db')
+    if not opts.db is None:
+        dpa.save(opts.db)
 
 
 if __name__ == "__main__":
