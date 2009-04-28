@@ -663,7 +663,7 @@ def writePkgsBy(db, key, value2id, outdir, heading):
     toc.close()
 
 
-def writeRst(db, outdir):
+def writeRst(db, outdir, addenum_dir=None):
     createDir(outdir)
     createDir(os.path.join(outdir, 'pkgs'))
 
@@ -680,8 +680,10 @@ def writeRst(db, outdir):
         pf.write(genPkgPage(db, p))
 
         # check for doc addons
-        if os.path.exists(os.path.join(outdir, 'pkgs_addenum/%s.rst' % p)):
-            pf.write('\n\n.. include:: ../pkgs_addenum/%s.rst\n' %p)
+        if addenum_dir is not None:
+            addenum = os.path.join(os.path.abspath(addenum_dir), '%s.rst' % p)
+            if os.path.exists(addenum):
+                pf.write('\n\n.. include:: %s\n' % addenum)
         pf.close()
         toc.write('  pkgs/%s\n' % p)
 
@@ -719,6 +721,9 @@ def prepOptParser(op):
                   action="append", dest="prospective_pkgs",
                   help="None")
 
+    op.add_option("--pkgaddenum", action="store", dest="addenum_dir",
+                  type="string", default=None, help="None")
+
 
 def main():
     op = OptionParser(version="%prog 0.0.1")
@@ -744,7 +749,7 @@ def main():
 
     if not opts.outdir is None:
         dpa.writeSourcesLists(opts.outdir)
-        writeRst(dpa, opts.outdir)
+        writeRst(dpa, opts.outdir, opts.addenum_dir)
         writePkgsBy(dpa, 'maintainer', maintainer2email, opts.outdir,
                     'Packages maintained by <ITEM>')
 
