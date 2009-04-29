@@ -22,6 +22,8 @@ All other packages are available through the search engine or from the
 :ref:`full package list <full_pkg_list>`.
 
 
+.. _repository_howto:
+
 How to use this repository
 ==========================
 

@@ -14,27 +14,18 @@ import shutil
 import pysvn
 from optparse import OptionParser, Option, OptionGroup, OptionConflictError
 
-codename2descr = {
-    'apsy_etch': 'Debian GNU/Linux 4.0 (etch)',
-    'apsy_lenny': 'Debian GNU/Linux 5.0 (lenny)',
-    'apsy_squeeze': 'Debian testing (squeeze)',
-    'apsy_sid': 'Debian unstable (sid)',
-    'apsy_dapper': 'Ubuntu 6.06 LTS "Dapper Drake" (dapper)',
-    'apsy_edgy': 'Ubuntu 6.10 "Edgy Eft" (edgy)',
-    'apsy_feisty': 'Ubuntu 7.04 "Feisty Fawn" (feisty)',
-    'apsy_gutsy': 'Ubuntu 7.10 "Gutsy Gibbon" (gutsy)',
-    'apsy_hardy': 'Ubuntu 8.04 LTS "Hardy Heron" (hardy)',
-    'apsy_intrepid': 'Ubuntu 8.10 "Intrepid Ibex" (intrepid)',
-    'apsy_jaunty': 'Ubuntu 9.04 "Jaunty Jackalope" (jaunty)',
-    }
 
-def transCodename(codename):
+def transCodename(codename, cfg):
     """Translate a known codename into a release description.
 
     Unknown codenames will simply be returned as is.
     """
-    if codename in codename2descr.keys():
-        return codename2descr[codename]
+    # strip repository codename
+    codename = codename[codename.find('_') + 1:]
+
+    # if we know something, tell
+    if codename in cfg.options('release codenames'):
+        return cfg.get('release codenames', codename)
     else:
         return codename
 
@@ -62,7 +53,7 @@ class AptListsCache(object):
             self.ro_cachedirs = []
 
         # always use system cache
-        self.ro_cachedirs.append('/var/lib/apt/lists/')
+        #self.ro_cachedirs.append('/var/lib/apt/lists/')
 
         # create cachedir
         createDir(self.cachedir)
@@ -369,12 +360,12 @@ class DebianPkgArchive(SafeConfigParser):
             self.set(pkg, 'debtags', ', '.join(debtags))
 
 
-    def writeSourcesLists(self, outdir):
+    def writeSourcesLists(self, outdir, cfg):
         createDir(outdir)
         createDir(os.path.join(outdir, 'static'))
 
         fl = open(os.path.join(outdir, 'sources_lists'), 'w')
-        for trans, r in sorted([(transCodename(k), k) 
+        for trans, r in sorted([(transCodename(k, cfg), k) 
                 for k in self.releases.keys()]):
             # need to turn 'apsy_lenny' back into 'lenny'
             debneuro_r = r.split('_')[1]
@@ -466,7 +457,7 @@ class DebianPkgArchive(SafeConfigParser):
         self.pkgfilter = pkgs
 
 
-def genPkgPage(db, pkg):
+def genPkgPage(db, pkg, cfg):
     """
     :Parameters:
       db: database
@@ -508,18 +499,21 @@ def genPkgPage(db, pkg):
         s += '\n**Homepage**: %s\n' % db.get(pkg, 'homepage')
 
     s += '\nBinary packages'\
-        '\n===============\n'
+         '\n===============\n'
 
     s += genMaintainerSection(db, pkg)
 
     if db.has_option(pkg, 'wnpp debian'):
-        s += 'A Debian packaging effort has been officially announced. ' \
-             'Please see the corresponding `intent-to-package bug report`_ ' \
-             'for more information about its current status.\n\n' \
-             '.. _intent-to-package bug report: http://bugs.debian.org/%s\n\n' \
-             % db.get(pkg, 'wnpp debian')
+        s += """\
+A Debian packaging effort has been officially announced. Please see the
+corresponding `intent-to-package bug report`_ for more information about
+its current status.
 
-    s += genBinaryPackageSummary(db, pkg, 'DebNeuro repository')
+.. _intent-to-package bug report: http://bugs.debian.org/%s
+
+""" % db.get(pkg, 'wnpp debian')
+
+    s += genBinaryPackageSummary(db, pkg, 'DebNeuro repository', cfg)
 
 #    if db.has_option(pkg, 'external pkg url'):
 #        s += 'Other unofficial ressources\n' \
@@ -533,8 +527,12 @@ def genMaintainerSection(db, pkg):
     s = ''
 
     if not db.has_option(pkg, 'maintainer'):
-        s += '\nCurrently, nobody seems to be responsible for creating or ' \
-             'maintaining Debian packages of this software.\n\n'
+        s += """\
+
+Currently, nobody seems to be responsible for creating or maintaining
+Debian packages of this software.
+
+"""
         return s
 
     # there is someone responsible
@@ -542,40 +540,55 @@ def genMaintainerSection(db, pkg):
 
     # do we have actual packages, or is it just a note
     if not db.has_option(pkg, 'releases'):
-        s += '\nThere are currently no binary packages available. However, ' \
-             'the last known packaging effort was started by %s which ' \
-             'meanwhile might have led to an initial unofficial Debian ' \
-             'packaging.\n\n' % maintainer
+        s += """\
+
+There are currently no binary packages available. However, the last known
+packaging effort was started by %s which meanwhile might have led to an
+initial unofficial Debian packaging.
+
+""" % maintainer
         return s
 
     s += '\n**Maintainer**: %s\n\n' % maintainer
 
     if not maintainer.startswith('Michael Hanke'):
-        s += '\n.. note::\n'
-        s += '  Do not contact the original package maintainer regarding ' \
-             '  bugs in this unofficial binary package. Instead, contact ' \
-             '  the repository maintainer at michael.hanke@gmail.com\ .'
+        s += """\
+
+.. note::
+  Do not contact the original package maintainer regarding
+  bugs in this unofficial binary package. Instead, contact
+  the repository maintainer at michael.hanke@gmail.com\ .
+
+"""
 
     return s
 
 
-def genBinaryPackageSummary(db, pkg, reposname):
+def genBinaryPackageSummary(db, pkg, reposname, cfg):
     # do nothing if the are no packages
     if not db.has_option(pkg, 'releases'):
         return ''
 
     s = '\n%s\n%s\n' % (reposname, '-' * len(reposname))
 
-    s += 'The repository contains binary packages for the following ' \
-         'distribution releases and system architectures. Note, that the ' \
-         'corresponding source packages are of course available too. Please ' \
-         'click on the release name to access them.\n\n'
+    s += """\
+The repository contains binary packages for the following distribution
+releases and system architectures. The corresponding source packages
+are available too. Please click on the release name to access them.
+
+.. note::
+  Do not download this package manually if you plan to use it
+  regularly. Instead configure your package manager to use this
+  repository by following the instructions on the
+  :ref:`front page <repository_howto>`.
+
+"""
 
     # for all releases this package is part of
     for rel in db.get(pkg, 'releases').split(', '):
         # write release description and component
         s += '\n`%s <%s>`_:\n  ' \
-                % (transCodename(rel),
+                % (transCodename(rel, cfg),
                    db.get(pkg, 'poolurl %s' % rel))
 
         s += '[%s] ' % db.get(pkg, 'component ' + rel)
@@ -663,7 +676,7 @@ def writePkgsBy(db, key, value2id, outdir, heading):
     toc.close()
 
 
-def writeRst(db, outdir, addenum_dir=None):
+def writeRst(db, outdir, cfg, addenum_dir=None):
     createDir(outdir)
     createDir(os.path.join(outdir, 'pkgs'))
 
@@ -677,7 +690,7 @@ def writeRst(db, outdir, addenum_dir=None):
     for p in sorted(db.sections()):
         print "Generating page for '%s'" % p
         pf = open(os.path.join(outdir, 'pkgs', '%s.rst' % p), 'w')
-        pf.write(genPkgPage(db, p))
+        pf.write(genPkgPage(db, p, cfg))
 
         # check for doc addons
         if addenum_dir is not None:
@@ -700,6 +713,11 @@ def prepOptParser(op):
                   default=None,
                   help="Database file to read. Default: None")
 
+    op.add_option("--cfg",
+                  action="store", type="string", dest="cfg",
+                  default=None,
+                  help="Repository config file.")
+
     op.add_option("-o", "--outdir",
                   action="store", type="string", dest="outdir",
                   default=None,
@@ -709,20 +727,9 @@ def prepOptParser(op):
                   action="append", dest="release_urls",
                   help="None")
 
-    op.add_option("-t", "--taskfile-url",
-                  action="append", dest="taskfile_urls",
-                  help="None")
-
-    op.add_option("-f", "--featured",
-                  action="append", dest="featured_pkgs",
-                  help="None")
-
-    op.add_option("-p", "--prospective",
-                  action="append", dest="prospective_pkgs",
-                  help="None")
-
     op.add_option("--pkgaddenum", action="store", dest="addenum_dir",
                   type="string", default=None, help="None")
+
 
 
 def main():
@@ -731,27 +738,54 @@ def main():
 
     (opts, args) = op.parse_args()
 
-    dpa = DebianPkgArchive(init_db=opts.db)
+    if len(args) != 1:
+        print('There needs to be exactly one command')
+        sys.exit(1)
 
-    if not opts.taskfile_urls is None:
-        dpa.setPkgFilterFromTaskFile(opts.taskfile_urls)
+    cmd = args[0]
 
-    if not opts.featured_pkgs is None:
-        dpa.pkgfilter += opts.featured_pkgs
+    if opts.cfg is None:
+        print("'--cfg' option is mandatory.")
+        sys.exit(1)
 
-    if not opts.prospective_pkgs is None:
-        for p in opts.prospective_pkgs:
-            dpa.importProspectivePkgsFromTaskFile(p)
 
-    if not opts.release_urls is None:
-        for rurl in opts.release_urls:
-            dpa.importRelease(rurl, force_update=False)
+    cfg = SafeConfigParser()
+    cfg.read(opts.cfg)
 
-    if not opts.outdir is None:
-        dpa.writeSourcesLists(opts.outdir)
-        writeRst(dpa, opts.outdir, opts.addenum_dir)
+    # load existing db, unless renew is requested
+    if cmd == 'refreshdb':
+        dpa = DebianPkgArchive()
+    else:
+        dpa = DebianPkgArchive(init_db=opts.db)
+
+
+    if cmd == 'generate':
+        if opts.outdir is None:
+            print('Not output directory specified!')
+            sys.exit(1)
+
+        dpa.writeSourcesLists(opts.outdir, cfg)
+        writeRst(dpa, opts.outdir, cfg, opts.addenum_dir)
         writePkgsBy(dpa, 'maintainer', maintainer2email, opts.outdir,
                     'Packages maintained by <ITEM>')
+        # stop here
+        sys.exit(0)
+
+
+    if cfg.has_option('packages', 'select taskfiles'):
+        dpa.setPkgFilterFromTaskFile(cfg.get('packages',
+                                             'select taskfiles').split())
+
+    if cfg.has_option('packages', 'select names'):
+        dpa.pkgfilter += cfg.get('packages', 'select names').split()
+
+    if cfg.has_option('packages', 'prospective'):
+        for p in cfg.get('packages', 'prospective').split():
+            dpa.importProspectivePkgsFromTaskFile(p)
+
+    if cfg.has_option('repositories', 'releases'):
+        for rurl in cfg.get('repositories', 'releases').split():
+            dpa.importRelease(rurl, force_update=False)
 
     if not opts.db is None:
         dpa.save(opts.db)
