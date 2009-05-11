@@ -21,6 +21,21 @@ import sys, os
 # absolute, like shown here.
 #sys.path.append(os.path.abspath('.'))
 
+def artworkdir():
+    """Look into every parent dir for 'artwork' and return its relative path."""
+    level = 0
+    while True:
+        target = os.path.join(*([os.path.pardir] * level + ['artwork']))
+        if os.path.isdir(target):
+            return target
+        else:
+            level += 1
+        # if there is no way up
+        if os.path.abspath(os.path.join(*([os.path.pardir] * level))) == \
+           os.path.abspath(os.path.join(*([os.path.pardir] * (level + 1)))):
+            raise(ValueError, "Cannot find 'artwork'.")
+
+
 # General configuration
 # ---------------------
 
@@ -105,7 +120,7 @@ html_title = project
 
 # The name of an image file (relative to this directory) to place at the top
 # of the sidebar.
-html_logo = 'pics/neurodebian.png'
+html_logo = os.path.join(artworkdir(), 'logo_tuned/fmri_w200.png')
 
 # The name of an image file (within the static path) to use as favicon of the
 # docs.  This file should be a Windows icon file (.ico) being 16x16 or 32x32

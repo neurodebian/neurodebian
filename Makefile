@@ -4,16 +4,22 @@ WWW_DIR = build/html
 
 
 prep:
-	mkdir -p build/src
-	cp -r sphinx/* build/src
+	if [ ! -d build ]; then mkdir build; fi
+	rsync -rvlhp sphinx/ build/src
 
 
-html: prep source
+pics:
+	$(MAKE) -C artwork
+
+
+html: pics prep source
 	cd build/src && $(MAKE) html BUILDDIR=$(CURDIR)/build
 
 
 clean:
 	-rm -rf build
+	$(MAKE) -C artwork clean
+
 
 
 distclean: clean

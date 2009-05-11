@@ -1,0 +1,16 @@
+%file logo.svg
+
+# Disable ALL layers
+layers style=display:none
+
+layer label=Brain style=display:inline
+%save plain
+
+layer label=Debian style=display:inline
+%save label
+
+layer label=fMRI style=display:inline
+%save fmri
+
+layer label=EEG style=display:inline
+%save full
