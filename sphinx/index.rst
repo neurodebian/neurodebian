@@ -22,6 +22,14 @@ All other packages are available through the search engine or from the
 :ref:`full package list <full_pkg_list>`.
 
 
+News
+====
+
+Due to scheduled maintenance work on the electrical grid the repository hosted
+at `apsy.gse.uni.magdeburg.de/debian` will be down on May 16 (and possibly
+May 17).
+
+
 .. _repository_howto:
 
 How to use this repository
