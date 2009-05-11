@@ -18,8 +18,8 @@ is simply useful in the neuroscience context. The featured neuroscience
 software can be browsed via the repository :ref:`genindex` or through the
 :ref:`maintainer view <bymaintainer>`.
 
-All other packages are available through the search engine or from the
-:ref:`full package list <full_pkg_list>`.
+All other packages are available from the :ref:`full package list
+<full_pkg_list>`.
 
 
 News
