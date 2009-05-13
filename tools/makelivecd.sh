@@ -1,11 +1,21 @@
+# for a fresh build one might want to run:
+# sudo rm -rf cache/stages_bootstrap chroot/ config/ scripts/ binary* .stage
+
 # the Debian release to use as a basis for the live-cd
 nd_basedist="lenny"
 # the NeuroDebian archive key
 nd_key="A5D32F012649A5A9"
 # packages to be installed
-nd_packages="dicomnifti lipsia fsl fslview nifti-bin caret odin"
+nd_packages="\
+amide caret dicomnifti \
+fsl fsl-doc fslview fslview-doc \
+iceweasel \
+lipsia lipsia-doc via-bin \
+minc-tools nifti-bin odin praat \
+python-mvpa python-nifti python-pyepl \
+xmedcon"
 
-# perform basic setup for the live-cd
+
 lh_config \
   --apt apt \
   --apt-recommends disabled \
@@ -22,7 +32,7 @@ lh_config \
   --packages-lists lxde \
   --categories "main contrib non-free" \
   --username neuro \
-  --packages ${nd_packages}
+  --packages "${nd_packages}"
 
 # add the NeuroDebian repository to the APT setup
 echo "deb http://apsy.gse.uni-magdeburg.de/debian ${nd_basedist} main contrib non-free" \
@@ -31,7 +41,3 @@ cp config/chroot_sources/neurodebian.chroot config/chroot_sources/neurodebian.bi
 # and the key
 gpg --export -a ${nd_key} > config/chroot_sources/neurodebian.chroot.gpg
 cp config/chroot_sources/neurodebian.chroot.gpg config/chroot_sources/neurodebian.binary.gpg
-
-
-# build the live-cd with some noise
-lh_build --verbose
