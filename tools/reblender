@@ -396,7 +396,7 @@ class DebianPkgArchive(SafeConfigParser):
 
         fl = open(os.path.join(outdir, 'sources_lists'), 'w')
         for trans, r in sorted([(transCodename(k, cfg), k) 
-                for k in self.releases.keys()]):
+                for k in self.releases.keys() if k.startswith('apsy')]):
             # need to turn 'apsy_lenny' back into 'lenny'
             debneuro_r = r.split('_')[1]
 
