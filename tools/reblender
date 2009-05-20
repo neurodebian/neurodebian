@@ -174,7 +174,9 @@ class DebianPkgArchive(SafeConfigParser):
     def _updateReleases(self):
         self.releases = {}
 
+        # for all packages
         for p in self.sections():
+            # no releases, nothing to do
             if not self.has_option(p, 'releases'):
                 continue
 
@@ -186,7 +188,7 @@ class DebianPkgArchive(SafeConfigParser):
                       self.releases[r] = []
 
                   # store component
-                  component = self.get(p, 'component %s' % r)
+                  component = self.get(p, '%s component' % r)
 
                   if not component in self.releases[r]:
                       self.releases[r].append(component)
@@ -239,7 +241,7 @@ class DebianPkgArchive(SafeConfigParser):
                 self.set(section, option, ', '.join(l + [value]))
 
 
-    def importRelease(self, rurl, force_update=False):
+    def getReleaseInfo(self, rurl, force_update=False):
         # root URL of the repository
         baseurl = '/'.join(rurl.split('/')[:-1])
         # get the release file from the cache
@@ -253,42 +255,70 @@ class DebianPkgArchive(SafeConfigParser):
         components = rp['Components'].split()
         # compile a new codename that also considers the repository label
         # to distinguish between official and unofficial repos.
-        codename = '_'.join([rp['Label'], rp['Codename']])
+        label = rp['Label']
+        codename = rp['Codename']
+        labelcode = '_'.join([rp['Label'], rp['Codename']])
+
+        # cleanup
+        release_file.close()
+
+        return {'baseurl': baseurl, 'archs': archs, 'components': components,
+                'codename': codename, 'label': label, 'labelcode': labelcode}
+
+
+    def checkOfficialRelease(self, rurl, force_update=False):
+        ri = self.getReleaseInfo(rurl, force_update=force_update)
+
+        # try with a i386 packages file, since that should be the most common
+        # one
+        # loop over all components
+        for c in ri['components']:
+            pkgsurl = self.buildPkgsURL(ri['baseurl'], c, 'i386')
+            packages_file = self.cache.get(pkgsurl,
+                                           update=force_update)
+
+            # now check every package, whether we also have it in the DB already
+            for st in deb822.Packages.iter_paragraphs(packages_file):
+                pkg = st['Package']
+                if self.has_section(pkg):
+                    # store the label code
+                    self.appendUniqueCSV(pkg, "releases", ri['labelcode'])
+                    # and the associated component
+                    self.ensureUnique(pkg, "%s component" % ri['labelcode'], c)
+                    # and version
+                    self.set(pkg, "%s version" % ri['labelcode'], st['Version'])
+
+            # cleanup
+            packages_file.close()
+
+
+    def buildPkgsURL(self, baseurl, component, arch):
+        return '/'.join([baseurl, component, 'binary-' + arch, 'Packages.bz2'])
+
+
+    def importRelease(self, rurl, force_update=False):
+
+        ri = self.getReleaseInfo(rurl, force_update=force_update)
 
         # compile the list of Packages files to parse and parse them
-        for c in components:
-            for a in archs:
+        for c in ri['components']:
+            for a in ri['archs']:
                 # compile packages URL
-                pkgsurl = '/'.join([baseurl, c, 'binary-' + a, 'Packages.bz2'])
+                pkgsurl = self.buildPkgsURL(ri['baseurl'], c, a)
 
                 # retrieve from cache
                 packages_file = self.cache.get(pkgsurl,
                                                update=force_update)
 
                 # parse
-                self._parsePkgsFile(packages_file, codename, c, baseurl)
+                for stanza in deb822.Packages.iter_paragraphs(packages_file):
+                    self._storePkg(stanza, ri['labelcode'], c, ri['baseurl'])
+
 
                 # cleanup
                 packages_file.close()
 
-        # cleanup
-        release_file.close()
-
         self._updateReleases()
-
-
-    def _parsePkgsFile(self, fh, codename, component, baseurl):
-        """
-        :Parameters:
-          fh: file handler
-            Packages list file
-          codename: str
-            Codename of the release
-          component: str
-            The archive component this packages file corresponds to.
-        """
-        for stanza in deb822.Packages.iter_paragraphs(fh):
-            self._storePkg(stanza, codename, component, baseurl)
 
 
     def _storePkg(self, st, codename, component, baseurl):
@@ -311,23 +341,23 @@ class DebianPkgArchive(SafeConfigParser):
         self.appendUniqueCSV(pkg, "releases", codename)
 
         # arch listing
-        self.appendUniqueCSV(pkg, "archs %s" % codename, st['Architecture'])
+        self.appendUniqueCSV(pkg, "%s archs" % codename, st['Architecture'])
 
         # versions
         self.ensureUnique(pkg,
-                          "version %s %s" % (codename, st['Architecture']),
+                          "%s version %s" % (codename, st['Architecture']),
                           st['Version'])
 
         # link to .deb
         self.ensureUnique(pkg,
-                          "file %s %s" % (codename, st['Architecture']),
+                          "%s file %s" % (codename, st['Architecture']),
                           '/'.join(baseurl.split('/')[:-2] + [st['Filename']]))
 
         # component
-        self.ensureUnique(pkg, 'component ' + codename, component)
+        self.ensureUnique(pkg, '%s component' % codename, component)
 
         # store the pool url
-        self.ensureUnique(pkg, "poolurl %s" % codename,
+        self.ensureUnique(pkg, "%s poolurl" % codename,
                  '/'.join(baseurl.split('/')[:-2] \
                          + [os.path.dirname(st['Filename'])]))
 
@@ -473,6 +503,7 @@ def genPkgPage(db, pkg, cfg):
         s = '.. index:: %s, ' % pkg
         s += '\n'
 
+        # add a subset of available debtags (if present)
         if db.has_option(pkg, 'debtags'):
             # filter tags
             tags = [t for t in db.get(pkg, 'debtags').split(', ')
@@ -492,6 +523,7 @@ def genPkgPage(db, pkg, cfg):
     s += '*' * (len(header) + 2) + '\n\n'
 
     # put description
+    # XXX honour formating syntax
     s += '\n'.join([l.lstrip(' .') for l in descr[1:]])
     s += '\n'
 
@@ -513,13 +545,11 @@ its current status.
 
 """ % db.get(pkg, 'wnpp debian')
 
-    s += genBinaryPackageSummary(db, pkg, 'DebNeuro repository', cfg)
+    # write repository content summary for NeuroDebian
+    s += getReposContentSummary(db, cfg, 'apsy', pkg)
+    # see if there is something about a package in Debian proper
+    s += getDebianRefs(db, cfg, pkg)
 
-#    if db.has_option(pkg, 'external pkg url'):
-#        s += 'Other unofficial ressources\n' \
-#             '---------------------------\n\n'
-#        s += 'An unofficial package is available from %s\ .\n\n' \
-#                % db.get(pkg, 'external pkg url')
     return s
 
 
@@ -564,17 +594,58 @@ initial unofficial Debian packaging.
     return s
 
 
-def genBinaryPackageSummary(db, pkg, reposname, cfg):
+def getDebianRefs(db, cfg, pkg):
+    # no release, nothing to do
+    if not db.has_option(pkg, 'releases'):
+        return ''
+    # which Debian release is this package part of?
+    debrels = [r.split('_')[1] for r in db.get(pkg, 'releases').split(', ')
+                    if r.startswith('Debian')]
+    # do nothing if there is no package in Debian proper
+    if not len(debrels):
+        return ''
+
+    s = """\
+Official Debian archive
+-----------------------
+
+This package is available from the offical Debian archive for:
+
+* %s
+
+Please see the following ressources for more information:
+
+* `Debian package summary page`_
+* `Bugreports in the Debian bug tracking system`_
+* `Debian package popularity statistics`_
+
+.. _Debian package summary page: http://packages.debian.org/%s
+.. _Bugreports in the Debian bug tracking system: http://bugs.debian.org/%s
+.. _Debian package popularity statistics: http://qa.debian.org/popcon.php?package=%s
+
+""" % ('\n* '.join(['`%s <http://www.debian.org/releases/%s>`_ *[%s]*: %s' \
+                    % (transCodename(rel, cfg),
+                       rel,
+                       db.get(pkg, 'debian_%s component' % rel),
+                       db.get(pkg, 'debian_%s version' % rel))
+                            for rel in debrels]),
+       pkg, pkg, pkg)
+
+    return s
+
+
+def getReposContentSummary(db, cfg, reposlabel, pkg):
     # do nothing if the are no packages
     if not db.has_option(pkg, 'releases'):
         return ''
 
+    reposname = cfg.get('repository labels', reposlabel)
     s = '\n%s\n%s\n' % (reposname, '-' * len(reposname))
 
     s += """\
 The repository contains binary packages for the following distribution
 releases and system architectures. The corresponding source packages
-are available too. Please click on the release name to access them.
+are available too.
 
 .. note::
   Do not download this package manually if you plan to use it
@@ -586,35 +657,40 @@ are available too. Please click on the release name to access them.
 
     # for all releases this package is part of
     for rel in db.get(pkg, 'releases').split(', '):
+        # ignore items associated with other repositories
+        if not rel.split('_')[0] == reposlabel:
+            continue
         # write release description and component
-        s += '\n`%s <%s>`_:\n  ' \
+        s += '\n%s *[%s]*:\n  ' \
                 % (transCodename(rel, cfg),
-                   db.get(pkg, 'poolurl %s' % rel))
+                   db.get(pkg, '%s component' % rel))
 
-        s += '[%s] ' % db.get(pkg, 'component ' + rel)
+        s += '`source <%s>`_' % db.get(pkg, '%s poolurl' % rel)
 
         # archs this package is available for
-        archs = db.get(pkg, 'archs ' + rel).split(', ')
+        archs = db.get(pkg, '%s archs' % rel).split(', ')
 
         # extract all present versions for any arch
-        versions =  [db.get(pkg, 'version %s %s' % (rel, arch))
+        versions =  [db.get(pkg, '%s version %s' % (rel, arch))
                         for arch in archs]
 
         # if there is only a single version for all of them, simplify the list
         single_ver = versions.count(versions[0]) == len(versions)
 
         if single_ver:
+            s += ', '
             # only one version string for all
             s += ', '.join(['`%s <%s>`_' \
-                    % (arch, db.get(pkg, 'file %s %s' % (rel, arch)))
+                    % (arch, db.get(pkg, '%s file %s' % (rel, arch)))
                         for arch in archs])
             s += ' (%s)' % versions[0]
         else:
+            s += ', '
             # a separate version string for each arch
             s += ', '.join(['`%s <%s>`_ (%s)' \
                     % (arch,
-                       db.get(pkg, 'file %s %s' % (rel, arch)),
-                       db.get(pkg, 'version %s %s' % (rel, arch)))
+                       db.get(pkg, '%s file %s' % (rel, arch)),
+                       db.get(pkg, '%s version %s' % (rel, arch)))
                         for arch in archs])
 
         s += '\n'
@@ -786,6 +862,14 @@ def main():
     if cfg.has_option('repositories', 'releases'):
         for rurl in cfg.get('repositories', 'releases').split():
             dpa.importRelease(rurl, force_update=False)
+
+    if cfg.has_option('repositories', 'releases'):
+        for rurl in cfg.get('repositories', 'releases').split():
+            dpa.importRelease(rurl, force_update=False)
+
+    if cfg.has_option('officials', 'releases'):
+        for rurl in cfg.get('officials', 'releases').split():
+            dpa.checkOfficialRelease(rurl, force_update=False)
 
     if not opts.db is None:
         dpa.save(opts.db)
