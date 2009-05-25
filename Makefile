@@ -1,5 +1,7 @@
-
-WWW_UPLOAD_URI = elrond:/home/hanke/public_html/archive
+# old location
+#WWW_UPLOAD_URI = elrond:/home/hanke/public_html/archive
+# brand new fancy one
+WWW_UPLOAD_URI = neuro.debian.net:/home/www/neuro.debian.net/www
 WWW_DIR = build/html
 
 all: html
@@ -48,6 +50,6 @@ build/db.db:
 
 
 upload-website: html
-	rsync -rvzlhp --delete --chmod=Dg+s,g+rw $(WWW_DIR) $(WWW_UPLOAD_URI)
+	rsync -rvzlhp --delete --chmod=Dg+s,g+rw $(WWW_DIR)/* $(WWW_UPLOAD_URI)
 
 .PHONY: prep
