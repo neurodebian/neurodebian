@@ -13,7 +13,7 @@ works as expected, so use them at your own risk. They might kill your
 system (although that is rather unlikely). You've been warned!
 
 The repository contains both neuroscience-related packages as well as
-general purpose software which is necessary to resolved dependencies, or
+general purpose software which is necessary to resolve dependencies, or
 is simply useful in the neuroscience context. The featured neuroscience
 software can be browsed via the repository :ref:`genindex` or through the
 :ref:`maintainer view <bymaintainer>`.
@@ -82,8 +82,8 @@ key that is used to sign the release files of this repository. Making
 APT happy again is easy:
 
 1. Get the key. Either download the `repository key from here
-   <http://apsy.gse.uni-magdeburg.de/debian/apsy.gse.uni-magdeburg.de.asc>`_
-   or fetch it from *subkeys.pgp.net*.
+   <_static/apsy.gse.uni-magdeburg.de.asc>`_
+   or fetch it from *subkeys.pgp.net* (2649A5A9).
 
 2. Now feed the key into APT by invoking::
 
