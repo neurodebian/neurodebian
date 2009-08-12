@@ -3,7 +3,7 @@
 ***********************************************
 
 This repository provides mostly neuroscience-related packages to be
-used on Debian systems (or a Debian-derivates like Ubuntu). It
+used on Debian systems (or Debian-derivatives like Ubuntu). It
 contains both unofficial or prospective packages which are not
 available from the main Debian archive, as well backported or simply
 rebuilt packages also available elsewhere.
@@ -12,10 +12,10 @@ This service is provided "as is". There is no guarantee that a package
 works as expected, so use them at your own risk. They might kill your
 system (although that is rather unlikely). You've been warned!
 
-The repository contains both neuroscience-related packages as well as
-general purpose software which is necessary to resolve dependencies, or
-is simply useful in the neuroscience context. The featured neuroscience
-software can be browsed via the repository :ref:`genindex` or through the
+The repository contains both neuroscience-related packages, as well as general
+purpose software which is necessary to resolve dependencies, or such that is
+simply useful in the neuroscience context. The featured neuroscience software
+can be browsed via the repository :ref:`genindex` or through the
 :ref:`maintainer view <bymaintainer>`.
 
 All other packages are available from the :ref:`full package list
@@ -35,14 +35,14 @@ May 17).
 How to use this repository
 ==========================
 
-The easiest way to use this repository is to download an APT-configuration
-file. Simply click on the name of your target distribution/release and save the
-downloaded file in the `/etc/apt/sources.list.d/` directory on your system
-(depending on the browser, you might have to right-click and choose 'save as').
-Saving files in this directory will require superuser privileges, therefore you
-should probably download the file into a temporary directory and subsequently
-move it into `/etc/apt/sources.list.d/`. APT-configurations are available for
-the following releases:
+The easiest way to use this repository is to download an APT-configuration file
+(`sources.list`). Simply click on the name of your target distribution/release
+and save the downloaded file in the `/etc/apt/sources.list.d/` directory on
+your system (depending on the browser, you might have to right-click and choose
+'save as').  Saving files in this directory will require superuser privileges,
+therefore you should probably download the file into a temporary directory and
+subsequently move it into `/etc/apt/sources.list.d/`. APT-configurations are
+available for the following releases:
 
 .. include:: sources_lists
 
@@ -65,7 +65,7 @@ Now, you can proceed to install packages, e.g.::
 Package authentication
 ----------------------
 
-When you start using this repository, you might get warning messages
+When you start using this repository, you probably get warning messages
 like this::
 
   The following signatures couldn't be verified because 
