@@ -23,6 +23,16 @@ Binary packages
 NeuroDebian
 -----------
 
+The repository contains binary packages for the following distribution
+releases and system architectures. The corresponding source packages
+are available too.
+
+.. note::
+  Do not download this package manually if you plan to use it
+  regularly. Instead configure your package manager to use this
+  repository by following the instructions on the
+  :ref:`front page <repository_howto>`.
+
 {% endif %}
 {{ dist[0] }} [{{ distpkg.drc.split()[2]}}]:
   `{{distpkg.version}} <../../debian/{{ distpkg.poolurl }}>`_ [{{ ', '.join(distpkg.architecture) }}]
@@ -52,7 +62,7 @@ Debian
   - Maintainer: {{ distpkg.maintainer }}
   - Bug reports: `Debian bugtracking system <http://bugs.debian.org/src:{{ distpkg.sv.split()[0] }}>`_
 {% if distpkg.popcon %}
-  - Reported installations: {{ distpkg.popcon.insts }}
+  - Reported installations: {{ distpkg.popcon.insts }} (`more info <http://qa.debian.org/popcon.php?package={{ pkg }}>`_)
 {% endif %}
 {% endif %}
 {% else %}

@@ -447,6 +447,8 @@ div.warning {
 div.note {
     background-color: #eee;
     border: 1px solid #ccc;
+    border-left: none;
+    border-right: none;
 }
 
 p.admonition-title {
