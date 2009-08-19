@@ -71,8 +71,8 @@ key that is used to sign the release files of this repository. Making
 APT happy again is easy:
 
 1. Get the key. Either download the `repository key from here
-   <_static/apsy.gse.uni-magdeburg.de.asc>`_
-   or fetch it from *subkeys.pgp.net* (2649A5A9).
+   <_static/neuro.debian.net.asc>`_
+   or fetch it from http://wwwkeys.pgp.net (2649A5A9).
 
 2. Now feed the key into APT by invoking::
 

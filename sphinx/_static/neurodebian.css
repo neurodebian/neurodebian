@@ -168,6 +168,10 @@ div.modulecloud a {
 }
 
 /* :::: SEARCH :::: */
+.searchtip {
+    display: none;
+}
+
 ul.search {
     margin: 10px 0 0 20px;
     padding: 0;
@@ -429,8 +433,10 @@ div.admonition p.admonition-title + p {
 }
 
 div.seealso {
-    background-color: #ffc;
-    border: 1px solid #ff6;
+    background-color: #F3ECEF;
+    border: 1px solid #D8769A;
+    border-left: none;
+    border-right: none;
 }
 
 div.warning {
