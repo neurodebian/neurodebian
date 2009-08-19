@@ -36,8 +36,7 @@ releases and repository mirrors:
 .. include:: sources_lists
 
 .. note::
-  If you are interested in sponsoring storage space and bandwidth for another
-  mirror, please contact michael.hanke@gmail.com.
+  If your are interested in mirroring the repository, please see the :ref:`faq`.
 
 Once this is done, you have to update the package index. Use your favorite
 package manager, e.g. synaptic, adept, or whatever you like. In the terminal
