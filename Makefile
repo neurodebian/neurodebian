@@ -1,22 +1,17 @@
-WWW_UPLOAD_URI = neuro.debian.net:/home/www/neuro.debian.net/www
-WWW_DIR = build/html
+#WWW_UPLOAD_URI = neuro.debian.net:/home/www/neuro.debian.net/www
+WWW_UPLOAD_URI = ../www
+WWW_DIR = build/html/
 
-all: html
-
-
-prep:
-	if [ ! -d build ]; then mkdir build; fi
-	rsync -rvlhp sphinx/ build/src
+all: updatedb upload-website
 
 
 pics:
 	$(MAKE) -C artwork
 
 
-html: html-stamp
-html-stamp: pics prep source
-	cd build/src && $(MAKE) html BUILDDIR=$(CURDIR)/build
-	touch $@
+html: pics source
+	rsync -rvlhp sphinx/ build/src
+	cd build/src && $(MAKE) html BUILDDIR=$(CURDIR)/build 2>&1
 
 
 clean:
@@ -26,7 +21,6 @@ clean:
 
 distclean: clean
 	-rm -rf build
-	-rm -rf cache
 
 
 source: source-stamp
@@ -41,11 +35,14 @@ source-stamp: build/db.db
 	touch $@
 
 
+removecache:
+	-rm -rf build/cache
+
 removedb:
 	-rm build/db.db
 
 
-updatedb: distclean build/db.db
+updatedb: removedb removecache build/db.db
 
 
 build/db.db:
@@ -54,9 +51,11 @@ build/db.db:
 		--cfg neurodebian.cfg \
 		--db build/db.db \
 		updatedb
+	-rm source-stamp
 
 
 upload-website: html
-	rsync -rvzlhp --delete --chmod=Dg+s,g+rw $(WWW_DIR) $(WWW_UPLOAD_URI)
+	rsync -rvzlhp --delete --exclude=debian --chmod=Dg+s,g+rw $(WWW_DIR) $(WWW_UPLOAD_URI)
 
-.PHONY: prep
+.PHONY: removedb removecache updatedb upload-website clean distclean pics html
+
