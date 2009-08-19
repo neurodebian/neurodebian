@@ -5,37 +5,37 @@ Since FSL covers a very broad range of analysis techniques the suite is split
 into a number of separate packages to allow a more fine-grained selection of
 the functionality provided by FSL. The following related packages are available:
 
-:ref:`deb_fsl`
+:ref:`pkg_fsl`
   This packages provides the FSL binaries. This includes everything one needs
   to run a basic fMRI analysis. However, it is recommend to also at least
-  install the :ref:`fsl-atlases <deb_fsl-atlases>` package.
+  install the :ref:`fsl-atlases <pkg_fsl-atlases>` package.
 
-:ref:`deb_fslview`
+:ref:`pkg_fslview`
   Almost everybody should install this package.
 
-:ref:`deb_fsl-doc`
+:ref:`pkg_fsl-doc`
   Contains the FSL documentation in HTML format as included in the official FSL
   sources. This package should be installed to use the online help capabilities
   of FSL.
 
-:ref:`deb_fslview-doc`
+:ref:`pkg_fslview-doc`
   The FSLView documentation in HTML format. This package is necessary for the
   online help system of FSLView.
 
-:ref:`deb_fsl-atlases`
+:ref:`pkg_fsl-atlases`
   Contains the standard space brain templates and brain atlases. Almost
   everybody should install this package.
 
-:ref:`deb_fsl-possum-data`
+:ref:`pkg_fsl-possum-data`
   This package provides the templates for the MR sequence simulator POSSUM.
   If one does not use POSSUM this package is not necessary.
 
-:ref:`deb_fsl-first-data`
+:ref:`pkg_fsl-first-data`
   This package provides model data for FIRST subcortical brain segmentation.
   This package is almost 1GB! It is only required if one wants to use FIRST
   or run the FSL FEEDS suite.
 
-:ref:`deb_fsl-feeds`
+:ref:`pkg_fsl-feeds`
   This package provides the `FSL Evaluation and Example Data Suite`_. This
   package performs two functions -- it tests whether the FSL tools are working
   properly and it provides example data to try running FSL on. Additionally the

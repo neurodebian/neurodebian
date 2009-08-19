@@ -1,10 +1,8 @@
-# old location
-WWW_UPLOAD_URI = elrond:/home/hanke/public_html/archive
-# brand new fancy one
-#WWW_UPLOAD_URI = neuro.debian.net:/home/www/neuro.debian.net/www
+WWW_UPLOAD_URI = neuro.debian.net:/home/www/neuro.debian.net/www
 WWW_DIR = build/html
 
 all: html
+
 
 prep:
 	if [ ! -d build ]; then mkdir build; fi
@@ -22,32 +20,40 @@ html-stamp: pics prep source
 
 
 clean:
-	-rm -rf build
 	-rm html-stamp source-stamp
 	$(MAKE) -C artwork clean
 
 
-
 distclean: clean
+	-rm -rf build
 	-rm -rf cache
 
 
 source: source-stamp
 source-stamp: build/db.db
-	tools/reblender generate \
-		--cfg debneuro.cfg \
+	PYTHONPATH=. python neurodebian/dde.py \
+		--cfg neurodebian.cfg \
 		--db build/db.db \
 		--outdir build/src \
-		--pkgaddenum pkgs
+		--pkgaddenum pkgs \
+		commandisirrelevant
 	rm -f html-stamp
 	touch $@
 
 
+removedb:
+	-rm build/db.db
+
+
+updatedb: distclean build/db.db
+
+
 build/db.db:
 	mkdir -p build
-	tools/reblender refreshdb \
-		--cfg debneuro.cfg \
-		--db build/db.db
+	PYTHONPATH=. python neurodebian/dde.py \
+		--cfg neurodebian.cfg \
+		--db build/db.db \
+		updatedb
 
 
 upload-website: html

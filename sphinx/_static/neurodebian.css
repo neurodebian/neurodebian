@@ -489,7 +489,7 @@ table.footnote td, table.footnote th {
 
 dl {
     margin-bottom: 15px;
-    clear: both;
+/*     clear: both; */
 }
 
 dd p {

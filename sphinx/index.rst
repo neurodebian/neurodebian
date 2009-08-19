@@ -14,20 +14,8 @@ system (although that is rather unlikely). You've been warned!
 
 The repository contains both neuroscience-related packages, as well as general
 purpose software which is necessary to resolve dependencies, or such that is
-simply useful in the neuroscience context. The featured neuroscience software
-can be browsed via the repository :ref:`genindex` or through the
-:ref:`maintainer view <bymaintainer>`.
-
-All other packages are available from the :ref:`full package list
-<full_pkg_list>`.
-
-
-News
-====
-
-Due to scheduled maintenance work on the electrical grid the repository hosted
-at `apsy.gse.uni.magdeburg.de/debian` will be down on May 16 (and possibly
-May 17).
+simply useful in the neuroscience context. All featured neuroscience software
+packages are available from the :ref:`full package list <full_pkg_list>`.
 
 
 .. _repository_howto:
@@ -36,13 +24,14 @@ How to use this repository
 ==========================
 
 The easiest way to use this repository is to download an APT-configuration file
-(`sources.list`). Simply click on the name of your target distribution/release
-and save the downloaded file in the `/etc/apt/sources.list.d/` directory on
-your system (depending on the browser, you might have to right-click and choose
-'save as').  Saving files in this directory will require superuser privileges,
-therefore you should probably download the file into a temporary directory and
-subsequently move it into `/etc/apt/sources.list.d/`. APT-configurations are
-available for the following releases:
+(`sources.list`). Simply choose your target distribution/release and download
+the configuration for a mirror close to you (depending on your browser, you
+might have to right-click and choose 'save as'). Once downloaded, put the file
+in the `/etc/apt/sources.list.d/` directory on your system. Moving files in
+this directory will require superuser privileges, therefore you should probably
+download the file into a temporary directory and subsequently move it into
+`/etc/apt/sources.list.d/`. APT-configurations are available for the following
+releases and repository mirrors:
 
 .. include:: sources_lists
 
