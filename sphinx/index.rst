@@ -2,11 +2,12 @@
  Welcome to the Debian Neuroscience Repository
 ***********************************************
 
-This repository provides mostly neuroscience-related packages to be
-used on Debian systems (or Debian-derivatives like Ubuntu). It
-contains both unofficial or prospective packages which are not
-available from the main Debian archive, as well backported or simply
-rebuilt packages also available elsewhere.
+This repository provides mostly neuroscience-related packages to be used on
+Debian systems (or Debian-derivatives like Ubuntu). It contains both unofficial
+or prospective packages which are not (yet) available from the main Debian
+archive, as well backported or simply rebuilt packages also available
+elsewhere. Please see the :ref:`faq` for more information about the goals of
+this project.
 
 This service is provided "as is". There is no guarantee that a package
 works as expected, so use them at your own risk. They might kill your
