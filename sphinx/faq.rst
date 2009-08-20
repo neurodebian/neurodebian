@@ -65,7 +65,7 @@ When does a package migrate from NeuroDebian into Debian proper?
 
 
 How to create a mirror of the repository?
-------------------------------------
+-----------------------------------------
 
   If you are interested in sponsoring storage space and bandwidth for another
   mirror, please contact michael.hanke@gmail.com.
