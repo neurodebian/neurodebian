@@ -44,6 +44,26 @@ Why is NeuroDebian not a Pure Blend?
 .. _Debian-Med Imaging: http://debian-med.alioth.debian.org/tasks/imaging
 
 
+When does a package migrate from NeuroDebian into Debian proper?
+----------------------------------------------------------------
+
+  In short: When it is ready. The longer answer is that there is nothing
+  special to packages in NeuroDebian in comparison to packages conducted
+  elsewhere.  Packaging efforts are announced to Debian via ITPs_ and the
+  packaging itself is available in some version control system -- typically in
+  the Git repositories of the `pkg-exppsy group on Debian's Alioth server`_, or
+  another VCS, or on http://mentors.debian.net.
+
+  The only difference is that a particular package becomes available through the
+  NeuroDebian repository before it has passed all checks for compliance with
+  Debian's standards. But even after a package becomes part of Debian the
+  NeuroDebian repository continues to provide binary packages of new versions
+  for a certain set of Debian and Ubuntu releases (aka backports).
+
+.. _ITPs: http://www.debian.org/devel/wnpp
+.. _pkg-exppsy group on Debian's Alioth server: http://alioth.debian.org/projects/pkg-exppsy/
+
+
 How to create a mirror of the repository?
 ------------------------------------
 
