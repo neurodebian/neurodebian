@@ -5,6 +5,7 @@
 import pysvn
 import json
 from debian_bundle import deb822
+import apt
 from ConfigParser import SafeConfigParser
 from optparse import OptionParser, Option, OptionGroup, OptionConflictError
 import sys
@@ -300,7 +301,9 @@ def _store_pkg(cfg, db, st, origin, codename, component, baseurl):
     info['version'] = st['Version']
 
     # origin
-    info['drc'] = '%s %s %s' % (origin, codename, component)
+    info['distribution'] = origin
+    info['release'] = codename
+    info['component'] = component
 
     # pool url
     info['poolurl'] = '/'.join([os.path.dirname(st['Filename'])])
@@ -358,13 +361,37 @@ def import_dde(cfg, db):
     query_url = cfg.get('dde', 'pkgquery_url')
     for p in db.keys():
         # get freshest
-        q = dde_get(query_url + "/all/%s" % p)
+        q = dde_get(query_url + "/packages/all/%s" % p)
         if q:
             db[p]['main'] = q
         for d in dists:
-            q = dde_get(query_url + "/prio-%s/%s" % (d, p))
-            if q:
-                db[p][(trans_codename(d.split('-')[1], cfg),d)] = q
+            dist, release = d.split('-')
+            q = dde_get(query_url + "/dist/d:%s/r:%s/p:%s" % (dist, release, p))
+            if not q:
+                continue
+            # accumulate data for multiple over archs
+            item = None
+            for i in q:
+                if item is None:
+                    item = i
+                    # turn into a list to append others later
+                    item['architecture'] = [item['architecture']]
+                else:
+                    comp = apt.VersionCompare(i['version'], item['version'])
+                    # found another arch for the same version
+                    if comp == 0:
+                        item['architecture'].append(i['architecture'])
+                    # found newer version, dump the old ones
+                    elif comp > 0:
+                        item = i
+                        # turn into a list to append others later
+                        item['architecture'] = [item['architecture']]
+                    # simply ignore older versions
+                    else:
+                        pass
+
+            # finally assign the new package data
+            db[p][(trans_codename(d.split('-')[1], cfg),d)] = item
 
     return db
 

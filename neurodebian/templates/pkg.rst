@@ -18,11 +18,11 @@ Associated `Debian Pure Blends <http://wiki.debian.org/DebianPureBlends>`_:
 Binary packages
 ===============
 
-{% for dist, distpkg in db|dictsort if dist[1].startswith('neurodebian') %}
-{% if loop.first %}
 NeuroDebian
 -----------
 
+{% for dist, distpkg in db|dictsort if dist[1].startswith('neurodebian') %}
+{% if loop.first %}
 The repository contains binary packages for the following distribution
 releases and system architectures. The corresponding source packages
 are available too.
@@ -34,7 +34,7 @@ are available too.
   :ref:`front page <repository_howto>`.
 
 {% endif %}
-{{ dist[0] }} [{{ distpkg.drc.split()[2]}}]:
+{{ dist[0] }} [{{ distpkg.component}}]:
   `{{distpkg.version}} <../../debian/{{ distpkg.poolurl }}>`_ [{{ ', '.join(distpkg.architecture) }}]
 
 {% if loop.last %}
@@ -47,20 +47,20 @@ are available too.
 {% endfor %}
 
 
-{% for dist, distpkg in db|dictsort if dist[1].startswith('debian') %}
-{% if loop.first %}
 Debian
 ------
 
+{% for dist, distpkg in db|dictsort if dist[1].startswith('debian') %}
+{% if loop.first %}
 {% endif %}
-{{ dist[0] }} [{{ distpkg.drc.split()[2]}}]:
-  `{{distpkg.version}} <http://packages.debian.org/search?suite={{ distpkg.drc.split()[1]}}&keywords={{ pkg }}>`_ [{{ ', '.join(distpkg.architecture) }}]
+{{ dist[0] }} [{{ distpkg.component}}]:
+  `{{distpkg.version}} <http://packages.debian.org/search?suite={{ distpkg.release}}&keywords={{ pkg }}>`_ [{{ ', '.join(distpkg.architecture) }}]
 
 {% if loop.last %}
 .. seealso::
 
   - Maintainer: {{ distpkg.maintainer }}
-  - Bug reports: `Debian bugtracking system <http://bugs.debian.org/src:{{ distpkg.sv.split()[0] }}>`_
+  - Bug reports: `Debian bugtracking system <http://bugs.debian.org/src:{{ distpkg.source }}>`_
 {% if distpkg.popcon %}
   - Reported installations: {{ distpkg.popcon.insts }} (`more info <http://qa.debian.org/popcon.php?package={{ pkg }}>`_)
 {% endif %}
@@ -77,20 +77,20 @@ for more information about its current status.
 {% endfor %}
 
 
-{% for dist, distpkg in db.iteritems() if dist[1].startswith('ubuntu') %}
-{% if loop.first %}
 Ubuntu
 ------
 
+{% for dist, distpkg in db.iteritems() if dist[1].startswith('ubuntu') %}
+{% if loop.first %}
 {% endif %}
-{{ dist[0] }} [{{ distpkg.drc.split()[2]}}]:
-  `{{distpkg.version}} <http://packages.ubuntu.com/search?suite={{ distpkg.drc.split()[1]}}&keywords={{ pkg }}>`_ [{{ ', '.join(distpkg.architecture) }}]
+{{ dist[0] }} [{{ distpkg.component }}]:
+  `{{distpkg.version}} <http://packages.ubuntu.com/search?suite={{ distpkg.release }}&keywords={{ pkg }}>`_ [{{ ', '.join(distpkg.architecture) }}]
 
 {% if loop.last %}
 .. seealso::
 
   - Maintainer: {{ distpkg.maintainer }}
-  - Bug reports: `Ubuntu Launchpad <https://bugs.launchpad.net/ubuntu/+source/{{ distpkg.sv.split()[0] }}>`_
+  - Bug reports: `Ubuntu Launchpad <https://bugs.launchpad.net/ubuntu/+source/{{ distpkg.source }}>`_
 {% if distpkg.popcon %}
   - Reported installations: {{ distpkg.popcon.insts }}
 {% endif %}
