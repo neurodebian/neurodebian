@@ -364,34 +364,67 @@ def import_dde(cfg, db):
         q = dde_get(query_url + "/packages/all/%s" % p)
         if q:
             db[p]['main'] = q
-        for d in dists:
-            dist, release = d.split('-')
-            q = dde_get(query_url + "/dist/d:%s/r:%s/p:%s" % (dist, release, p))
-            if not q:
-                continue
-            # accumulate data for multiple over archs
-            item = None
-            for i in q:
-                if item is None:
-                    item = i
-                    # turn into a list to append others later
-                    item['architecture'] = [item['architecture']]
-                else:
-                    comp = apt.VersionCompare(i['version'], item['version'])
-                    # found another arch for the same version
-                    if comp == 0:
-                        item['architecture'].append(i['architecture'])
-                    # found newer version, dump the old ones
-                    elif comp > 0:
-                        item = i
-                        # turn into a list to append others later
-                        item['architecture'] = [item['architecture']]
-                    # simply ignore older versions
-                    else:
-                        pass
+            # get latest popcon info for debian and ubuntu
+            # cannot use origin field itself, since it is none for few packages
+            # i.e. python-nifti
+            origin = q['drc'].split()[0]
+            print 'popcon query for', p
+            if origin == 'ubuntu':
+                print 'have ubuntu first'
+                if q.has_key('popcon'):
+                    print 'ubuntu has popcon'
+                    db[p]['main']['ubuntu_popcon'] = q['popcon']
+                # if we have ubuntu, need to get debian
+                q = dde_get(query_url + "/packages/prio-debian-sid/%s" % p)
+                if q and q.has_key('popcon'):
+                    print 'debian has popcon'
+                    db[p]['main']['debian_popcon'] = q['popcon']
+            elif origin == 'debian':
+                print 'have debian first'
+                if q.has_key('popcon'):
+                    print 'debian has popcon'
+                    db[p]['main']['debian_popcon'] = q['popcon']
+                # if we have debian, need to get ubuntu
+                q = dde_get(query_url + "/packages/prio-ubuntu-karmic/%s" % p)
+                if q and q.has_key('popcon'):
+                    print 'ubuntu has popcon'
+                    db[p]['main']['ubuntu_popcon'] = q['popcon']
+            else:
+                print("Ignoring unkown origin '%s' for package '%s'." \
+                        % (origin, p))
 
-            # finally assign the new package data
-            db[p][(trans_codename(d.split('-')[1], cfg),d)] = item
+        # now get info for package from all releases in UDD
+        q = dde_get(query_url + "/dist/p:%s" % p)
+        if not q:
+            continue
+        # hold all info about this package per distribution release
+        info = {}
+        for cp in q:
+            distkey = (trans_codename(cp['release'], cfg),
+                       "%s-%s" % (cp['distribution'], cp['release']))
+            if not info.has_key(distkey):
+                info[distkey] = cp
+                # turn into a list to append others later
+                info[distkey]['architecture'] = [info[distkey]['architecture']]
+            # accumulate data for multiple over archs
+            else:
+                comp = apt.VersionCompare(cp['version'],
+                                          info[distkey]['version'])
+                # found another arch for the same version
+                if comp == 0:
+                    info[distkey]['architecture'].append(cp['architecture'])
+                # found newer version, dump the old ones
+                elif comp > 0:
+                    info[distkey] = cp
+                    # turn into a list to append others later
+                    info[distkey]['architecture'] = [info[distkey]['architecture']]
+                # simply ignore older versions
+                else:
+                    pass
+
+        # finally assign the new package data
+        for k, v in info.iteritems():
+            db[p][k] = v
 
     return db
 

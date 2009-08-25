@@ -37,6 +37,10 @@ releases and repository mirrors:
 .. include:: sources_lists
 
 .. note::
+  Thanks to the Department of Experimental Psychology at the University of
+  Mageburg, and the Department of Psychological and Brain Sciences at Dartmouth
+  College for hosting a mirror.
+
   If your are interested in mirroring the repository, please see the :ref:`faq`.
 
 Once this is done, you have to update the package index. Use your favorite

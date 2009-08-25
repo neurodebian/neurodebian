@@ -15,6 +15,23 @@ Associated `Debian Pure Blends <http://wiki.debian.org/DebianPureBlends>`_:
 {% endfor %}
 {% endif %}
 
+{% if db.main.debian_popcon or db.main.ubuntu_popcon %}
+Number of reported installations [#]_:
+{% if db.main.debian_popcon %}
+- Debian: {{ db.main.debian_popcon.insts }} (`more info <http://qa.debian.org/popcon.php?package={{ pkg }}>`_)
+{% endif %}
+{% if db.main.ubuntu_popcon %}
+- Ubuntu: {{ db.main.ubuntu_popcon.insts }}
+{% endif %}
+
+.. [#] Due to the nature of this data, the reported number can only be
+       considered a conservative estimate of the lower bound of the true
+       number of installations.
+
+{% endif %}
+
+
+
 Binary packages
 ===============
 
@@ -61,9 +78,6 @@ Debian
 
   - Maintainer: {{ distpkg.maintainer }}
   - Bug reports: `Debian bugtracking system <http://bugs.debian.org/src:{{ distpkg.source }}>`_
-{% if distpkg.popcon %}
-  - Reported installations: {{ distpkg.popcon.insts }} (`more info <http://qa.debian.org/popcon.php?package={{ pkg }}>`_)
-{% endif %}
 {% endif %}
 {% else %}
 *There are no official Debian packages available.*
@@ -91,9 +105,6 @@ Ubuntu
 
   - Maintainer: {{ distpkg.maintainer }}
   - Bug reports: `Ubuntu Launchpad <https://bugs.launchpad.net/ubuntu/+source/{{ distpkg.source }}>`_
-{% if distpkg.popcon %}
-  - Reported installations: {{ distpkg.popcon.insts }}
-{% endif %}
 {% endif %}
 {% else %}
 *There are no official Ubuntu packages available.*

@@ -445,8 +445,8 @@ div.warning {
 }
 
 div.note {
-    background-color: #eee;
-    border: 1px solid #ccc;
+    background-color: #eaf2f9;
+    border: 1px solid #3d7aa5;
     border-left: none;
     border-right: none;
 }
@@ -484,6 +484,7 @@ table.field-list td, table.field-list th {
 
 table.footnote td, table.footnote th {
     border: 0 !important;
+    font-size: 0.7em;
 }
 
 .field-list ul {
@@ -579,7 +580,12 @@ tt.xref, a tt {
     font-weight: bold;
 }
 
-.footnote:target  { background-color: #ffa }
+.footnote:target { background-color: #ffa }
+
+.footnote-reference {
+    font-size: 0.7em;
+    vertical-align: top;
+}
 
 h1 tt, h2 tt, h3 tt, h4 tt, h5 tt, h6 tt {
     background-color: transparent;
