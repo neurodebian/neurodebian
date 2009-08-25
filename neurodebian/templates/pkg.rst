@@ -94,7 +94,7 @@ for more information about its current status.
 Ubuntu
 ------
 
-{% for dist, distpkg in db.iteritems() if dist[1].startswith('ubuntu') %}
+{% for dist, distpkg in db|dictsort if dist[1].startswith('ubuntu') %}
 {% if loop.first %}
 {% endif %}
 {{ dist[0] }} [{{ distpkg.component }}]:

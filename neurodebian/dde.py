@@ -13,6 +13,7 @@ import os
 import shutil
 import urllib2
 import urllib
+import codecs
 import subprocess
 # templating
 from jinja2 import Environment, PackageLoader
@@ -110,7 +111,7 @@ class AptListsCache(object):
                 urllib.urlcleanup()
 
         # open cached file
-        fh = open(cfilename, 'r')
+        fh = codecs.open(cfilename, 'r', 'utf-8')
 
         return fh
 
@@ -167,53 +168,53 @@ def import_blendstask(db, url):
             task_name = st['Task']
             task = (blendname, task_name, taskpage_url)
 
-        # do not stop unless we have a description
-        if not st.has_key('Pkg-Description'):
-            continue
-
         if st.has_key('Depends'):
             pkg = st['Depends']
         elif st.has_key('Suggests'):
             pkg = st['Suggests']
         else:
-            print 'Warning: Cannot determine name of prospective package ' \
-                    '... ignoring.'
+#            print 'Warning: Cannot determine name of prospective package ' \
+#                    '... ignoring. Dump follows:'
+#            print st
             continue
 
-        if not db.has_key(pkg):
-            print 'Ignoring blend package "%s"' % pkg
-            continue
+        # take care of pkg lists
+        for p in pkg.split(', '):
+            if not db.has_key(p):
+                print 'Ignoring blend package "%s"' % p
+                continue
 
-        info = {}
+            info = {}
 
-        # blends info
-        info['tasks'] = [task]
-        if st.has_key('License'):
-            info['license'] = st['License']
-        if st.has_key('Responsible'):
-            info['responsible'] = st['Responsible']
+            # blends info
+            info['tasks'] = [task]
+            if st.has_key('License'):
+                info['license'] = st['License']
+            if st.has_key('Responsible'):
+                info['responsible'] = st['Responsible']
 
-        # pkg description
-        descr = st['Pkg-Description'].replace('%', '%%').split('\n')
-        info['description'] = descr[0].strip()
-        info['long_description'] = ' '.join([l.strip() for l in descr[1:]])
+            # pkg description
+            if st.has_key('Pkg-Description'):
+                descr = st['Pkg-Description'].replace('%', '%%').split('\n')
+                info['description'] = descr[0].strip()
+                info['long_description'] = u' '.join([l.strip() for l in descr[1:]])
 
-        # charge the basic property set
-        db[pkg]['main']['description'] = info['description']
-        db[pkg]['main']['long_description'] = info['long_description']
-        if st.has_key('WNPP'):
-            db[pkg]['main']['debian_itp'] = st['WNPP']
-        if st.has_key('Pkg-URL'):
-            db[pkg]['main']['other_pkg'] = st['Pkg-URL']
-        if st.has_key('Homepage'):
-            db[pkg]['main']['homepage'] = st['Homepage']
+                # charge the basic property set
+                db[p]['main']['description'] = info['description']
+                db[p]['main']['long_description'] = info['long_description']
+            if st.has_key('WNPP'):
+                db[p]['main']['debian_itp'] = st['WNPP']
+            if st.has_key('Pkg-URL'):
+                db[p]['main']['other_pkg'] = st['Pkg-URL']
+            if st.has_key('Homepage'):
+                db[p]['main']['homepage'] = st['Homepage']
 
-        # only store if there isn't something already
-        if not db[pkg].has_key('blends'):
-            db[pkg]['blends'] = info
-        else:
-            # just add this tasks name and id
-            db[pkg]['blends']['tasks'].append(task)
+            # only store if there isn't something already
+            if not db[p].has_key('blends'):
+                db[p]['blends'] = info
+            else:
+                # just add this tasks name and id
+                db[p]['blends']['tasks'].append(task)
 
     return db
 
@@ -311,7 +312,7 @@ def _store_pkg(cfg, db, st, origin, codename, component, baseurl):
     # pkg description
     descr = st['Description'].replace('%', '%%').split('\n')
     info['description'] = descr[0].strip()
-    info['long_description'] = ' '.join([l.strip() for l in descr[1:]])
+    info['long_description'] = u' '.join([l.strip() for l in descr[1:]])
 
     db[pkg][distkey] = info
 
@@ -352,12 +353,12 @@ def create_dir(path):
 def dde_get(url):
     try:
         return json.read(urllib2.urlopen(url+"?t=json").read())['r']
-    except urllib2.HTTPError:
+    except (urllib2.HTTPError, StopIteration):
+        print "SCREWED:", url
         return False
 
 
 def import_dde(cfg, db):
-    dists = cfg.get('dde', 'dists').split()
     query_url = cfg.get('dde', 'pkgquery_url')
     for p in db.keys():
         # get freshest
@@ -440,8 +441,10 @@ def generate_pkgpage(pkg, cfg, db, template, addenum_dir):
     title = '%s\n %s\n%s' % (underline, title, underline)
 
     # preprocess long description
+    print 'rendering', pkg
     ld = db['main']['long_description']
-    ld = ' '.join([l.lstrip(' .') for l in ld.split('\n')])
+    print 'AAAAA', repr(ld), type(ld)
+    ld = u' '.join([l.lstrip(' .') for l in ld.split('\n')])
 
     page = template.render(pkg=pkg,
                            title=title,
@@ -459,13 +462,13 @@ def generate_pkgpage(pkg, cfg, db, template, addenum_dir):
 
 def store_db(db, filename):
     pp = PrettyPrinter(indent=2)
-    f = open(filename, 'w')
+    f = codecs.open(filename, 'w', 'utf-8')
     f.write(pp.pformat(db))
     f.close()
 
 
 def read_db(filename):
-    f = open(filename)
+    f = codecs.open(filename, 'r', 'utf-8')
     db = eval(f.read())
     return db
 
@@ -499,7 +502,7 @@ def write_pkgpages(jinja_env, cfg, db, outdir, addenum_dir):
 
     # generate the TOC with all packages
     toc_template = jinja_env.get_template('pkgs_toc.rst')
-    toc = open(os.path.join(outdir, 'pkgs.rst'), 'w')
+    toc = codecs.open(os.path.join(outdir, 'pkgs.rst'), 'w', 'utf-8')
     toc.write(toc_template.render(pkgs=db.keys()))
     toc.close()
 
@@ -510,7 +513,7 @@ def write_pkgpages(jinja_env, cfg, db, outdir, addenum_dir):
         # when no page is available skip this package
         if page is None:
             continue
-        pf = open(os.path.join(outdir, 'pkgs', p + '.rst'), 'w')
+        pf = codecs.open(os.path.join(outdir, 'pkgs', p + '.rst'), 'w', 'utf-8')
         pf.write(generate_pkgpage(p, cfg, db, pkg_template, addenum_dir))
         pf.close()
 
