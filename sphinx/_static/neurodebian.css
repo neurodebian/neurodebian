@@ -437,6 +437,12 @@ div.seealso {
     border: 1px solid #D8769A;
     border-left: none;
     border-right: none;
+    font-size: .8em;
+}
+
+div.seealso ul {
+    margin-top: 0.2em;
+    margin-bottom: 0.2em;
 }
 
 div.warning {
@@ -449,6 +455,7 @@ div.note {
     border: 1px solid #3d7aa5;
     border-left: none;
     border-right: none;
+    font-size: .8em;
 }
 
 p.admonition-title {

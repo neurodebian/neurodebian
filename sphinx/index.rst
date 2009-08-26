@@ -37,11 +37,14 @@ releases and repository mirrors:
 .. include:: sources_lists
 
 .. note::
-  Thanks to the Department of Experimental Psychology at the University of
-  Mageburg, and the Department of Psychological and Brain Sciences at Dartmouth
-  College for hosting a mirror.
+  Thanks to the `Department of Experimental Psychology at the University of
+  Magdeburg`_, and the `Department of Psychological and Brain Sciences at Dartmouth
+  College`_ for hosting a mirror.
 
   If your are interested in mirroring the repository, please see the :ref:`faq`.
+
+.. _Department of Experimental Psychology at the University of Magdeburg: http://apsy.gse.uni-magdeburg.de
+.. _Department of Psychological and Brain Sciences at Dartmouth College: http://www.dartmouth.edu/~psych
 
 Once this is done, you have to update the package index. Use your favorite
 package manager, e.g. synaptic, adept, or whatever you like. In the terminal
