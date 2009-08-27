@@ -441,10 +441,13 @@ def generate_pkgpage(pkg, cfg, db, template, addenum_dir):
     title = '%s\n %s\n%s' % (underline, title, underline)
 
     # preprocess long description
-    print 'rendering', pkg
     ld = db['main']['long_description']
-    print 'AAAAA', repr(ld), type(ld)
-    ld = u' '.join([l.lstrip(' .') for l in ld.split('\n')])
+    ld = ld.split('\n')
+    for i, l in enumerate(ld):
+        if l == ' .':
+            ld[i] = '#NEWLINEMARKER#'
+    ld = u' '.join([l.lstrip() for l in ld])
+    ld = ld.replace('#NEWLINEMARKER# ', '\n\n')
 
     page = template.render(pkg=pkg,
                            title=title,
