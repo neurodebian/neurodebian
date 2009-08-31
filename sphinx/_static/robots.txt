@@ -1,0 +1,4 @@
+# robots.txt for http://neuro.debian.net
+
+User-agent: *
+Disallow: /debian

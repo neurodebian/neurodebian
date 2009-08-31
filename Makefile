@@ -12,6 +12,7 @@ pics:
 html: pics source
 	rsync -rvlhp sphinx/ build/src
 	cd build/src && $(MAKE) html BUILDDIR=$(CURDIR)/build 2>&1
+	mv $(WWW_DIR)/_static/robots.txt $(WWW_DIR)/
 
 
 clean:
