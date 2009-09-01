@@ -1,0 +1,27 @@
+#!/bin/bash
+
+. /home/cowbuilder/bin/nd_cmdsettings.sh
+
+# common options
+opts="--distribution $dist --aptcache $aptcache --buildplace $buildplace"
+
+if [ -n "$3" ]; then
+  arch=$3
+else
+  if [ "$(grep '^Architecture' debian/control | awk '{ print $2 }')" = "all" ]; then
+    echo "Arch 'all' package detected -- using amd64 system to build it"
+    arch="amd64"
+  else
+    arch="i386 amd64"
+  fi
+fi
+
+
+for a in $arch; do
+  echo "Building for $family $dist $a ..."
+  pdebuild --pbuilder cowbuilder --debbuildopts "-us -uc -i" \
+           --buildresult .. \
+           -- \
+           --basepath ${cowbuilderroot}/cow/${family}-${dist}-${a}.cow \
+           $opts
+done

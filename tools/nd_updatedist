@@ -1,0 +1,17 @@
+#!/bin/bash
+
+. /home/cowbuilder/bin/nd_cmdsettings.sh
+
+# common options
+opts="--distribution $dist --aptcache $aptcache --buildplace $buildplace"
+
+if [ -n "$3" ]; then
+  arch=$3
+else
+  arch="i386 amd64"
+fi
+
+for a in $arch; do
+  echo "Updating arch $a..."
+  cowbuilder --update --basepath /home/cowbuilder/cow/${family}-${dist}-${a}.cow $opts
+done

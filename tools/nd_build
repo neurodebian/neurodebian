@@ -1,0 +1,72 @@
+#!/bin/bash
+
+if [ -z "$1" ]; then
+cat << EOT
+Script to build a source package in one of the available cowbuilders.
+
+Synopsis
+--------
+
+  nd_build <family> <codename> [arch] <dsc file> [cowbuilder options]
+
+
+Examples
+--------
+
+Build for a single specific arch:
+
+  nd_build nd+debian lenny i386 someting.dsc
+
+
+Build for all archs (will just build once for arch 'all'):
+
+  nd_build ubuntu jaunty something.dsc
+
+
+Build the same way but don't put results in current dir:
+
+  nd_build debian sid something.dsc --buildresult to-upload/
+
+EOT
+exit 1
+fi
+
+. /home/cowbuilder/bin/nd_cmdsettings.sh
+
+# common options
+opts="--distribution $dist --aptcache $aptcache --buildplace $buildplace"
+
+if [ -z "$3" ]; then
+  echo "You need to provide a .dsc file"
+  exit 1
+fi
+
+if [ ! "$3" = "${3%*.dsc}" ]; then
+  dscfile=$3
+  # must already be the dsc file, hence no arch info given
+  if [ "$(grep '^Architecture' $dscfile | awk '{ print $2 }')" = "all" ]; then
+    echo "Arch 'all' package detected -- using amd64 system to build it"
+    arch="amd64"
+  else
+    arch="i386 amd64"
+  fi
+  shift; shift; shift
+else
+  # must be arch given and dsc as 4th
+  arch=$3
+  dscfile=$4
+  if [ -z "$dscfile" ]; then
+    echo "You need to provide a .dsc file"
+    exit 1
+  fi
+  shift; shift; shift; shift
+fi
+
+for a in $arch; do
+  echo "Building for $family $dist $a ..."
+  cowbuilder --build $dscfile \
+             --basepath ${cowbuilderroot}/cow/${family}-${dist}-${a}.cow \
+             --buildresult . \
+             $opts \
+             $*
+done

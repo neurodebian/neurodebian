@@ -1,0 +1,21 @@
+#!/bin/bash
+
+if [ -z "$1" ]; then
+cat << EOT
+Script to build a source package for Debian Sid. The cowbuilder will be updated
+before the actual building takes place.
+
+Synopsis
+--------
+
+  nd_build <dsc file> [cowbuilder options]
+EOT
+exit 1
+fi
+
+# common options
+dscfile=$1
+shift;
+
+nd_updatedist debian sid amd64
+nd_build debian sid amd64 $dscfile $*
