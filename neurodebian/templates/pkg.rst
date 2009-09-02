@@ -14,7 +14,7 @@ Citable reference:
   {%- if db.main.publication.url %} `{{ db.main.publication.title }} <{{ db.main.publication.url }}>`_.
   {%- else %} {{ db.main.publication.title }}.
   {%- endif %} {{ db.main.publication.in }}.
-  {%- if db.main.publication.doi %} `(DOI) <{{ db.main.publication.doi }}>`_
+  {%- if db.main.publication.doi %} (`DOI <http://dx.doi.org/{{ db.main.publication.doi }}>`_)
   {%- endif %}
 {% endif %}
 
@@ -92,7 +92,12 @@ are available too.
 {% if loop.last %}
 .. seealso::
 
-  - Maintainer: {{ distpkg.maintainer }}
+  - Original Maintainer: {{ distpkg.maintainer }}
+
+    (if there is any chance that some problem is specific to the package
+    distributed through the NeuroDebian repository, please contact
+    pkg-exppsy-maintainers@lists.alioth.debian.org instead of the original
+    maintainer)
 {% endif %}
 {% else %}
 *There are no packages in the NeuroDebian repository.*
