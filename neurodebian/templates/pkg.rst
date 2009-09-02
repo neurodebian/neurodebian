@@ -4,19 +4,52 @@
 
 {{ title }}
 
-{{ long_description | wordwrap(width=79, break_long_words=False) }}
+{{ long_description }}
 
 Homepage: {{ db.main.homepage }}
 
+{% if db.main.publication %}
+Citable reference:
+  {{ db.main.publication.authors }} ({{ db.main.publication.year }}).
+  {%- if db.main.publication.url %} `{{ db.main.publication.title }} <{{ db.main.publication.url }}>`_.
+  {%- else %} {{ db.main.publication.title }}.
+  {%- endif %} {{ db.main.publication.in }}.
+  {%- if db.main.publication.doi %} `(DOI) <{{ db.main.publication.doi }}>`_
+  {%- endif %}
+{% endif %}
+
+{% if db.main.registration %}
+.. note::
+  The software authors ask users to
+  `register <{{ db.main.registration }}>`_. Available user statistics might be 
+  helpful to acquire funding for this project and therefore foster continued
+  developement in the future.
+{% endif %}
+
+{% if db.blends or db.main.debian_popcon or db.main.ubuntu_popcon %}
+
+Package Details
+===============
+
 {% if db.blends %}
-Associated `Debian Pure Blends <http://wiki.debian.org/DebianPureBlends>`_:
+`Debian Pure Blends <http://wiki.debian.org/DebianPureBlends>`_ Status
+----------------------------------------------------------------------
+
+Associated blends:
+
 {% for blend, name, url in db.blends.tasks %}
 * `{{ name }} ({{ blend }}) <{{ url }}>`_
 {% endfor %}
+{% if db.blends.remark %}
+.. note::
+{{ db.blends.remark | indent(width=2, indentfirst=true) }}
+{% endif %}
 {% endif %}
 
 {% if db.main.debian_popcon or db.main.ubuntu_popcon %}
-Number of reported installations [#]_:
+Reported installations [#]_
+---------------------------
+
 {% if db.main.debian_popcon %}
 - Debian: {{ db.main.debian_popcon.insts }} (`more info <http://qa.debian.org/popcon.php?package={{ pkg }}>`_)
 {% endif %}
@@ -27,6 +60,8 @@ Number of reported installations [#]_:
 .. [#] Due to the nature of this data, the reported number can only be
        considered a conservative estimate of the lower bound of the true
        number of installations.
+
+{% endif %}
 
 {% endif %}
 

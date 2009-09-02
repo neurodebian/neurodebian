@@ -195,9 +195,10 @@ def import_blendstask(db, url):
 
             # pkg description
             if st.has_key('Pkg-Description'):
-                descr = st['Pkg-Description'].replace('%', '%%').split('\n')
+                descr = st['Pkg-Description'].split('\n')
                 info['description'] = descr[0].strip()
-                info['long_description'] = u' '.join([l.strip() for l in descr[1:]])
+                info['long_description'] = \
+                        u'\n'.join(descr[1:])
 
                 # charge the basic property set
                 db[p]['main']['description'] = info['description']
@@ -208,6 +209,35 @@ def import_blendstask(db, url):
                 db[p]['main']['other_pkg'] = st['Pkg-URL']
             if st.has_key('Homepage'):
                 db[p]['main']['homepage'] = st['Homepage']
+
+            # Publications
+            if st.has_key('Published-Title'):
+                pub = {'title': st['Published-Title']}
+                if st.has_key('Published-Authors'):
+                    pub['authors'] = st['Published-Authors']
+                if st.has_key('Published-Year'):
+                    pub['year'] = st['Published-Year']
+                if st.has_key('Published-In'):
+                    pub['in'] = st['Published-In']
+                if st.has_key('Published-URL'):
+                    pub['url'] = st['Published-URL']
+                if st.has_key('Published-DOI'):
+                    pub['doi'] = st['Published-DOI']
+                    # need at least one URL
+                    if not pub.has_key('url'):
+                        pub['url'] = st['Published-DOI']
+
+                db[p]['main']['publication'] = pub
+
+            # Registration
+            if st.has_key('Registration'):
+                print 'HAVE REGISTRATION:', p
+                db[p]['main']['registration'] = st['Registration']
+
+            # Remarks
+            if st.has_key('Remark'):
+                # prepend a single space to make it look like a long description
+                info['remark'] = convert_longdescr(' ' + st['Remark'])
 
             # only store if there isn't something already
             if not db[p].has_key('blends'):
@@ -312,7 +342,7 @@ def _store_pkg(cfg, db, st, origin, codename, component, baseurl):
     # pkg description
     descr = st['Description'].replace('%', '%%').split('\n')
     info['description'] = descr[0].strip()
-    info['long_description'] = u' '.join([l.strip() for l in descr[1:]])
+    info['long_description'] = u'\n'.join(descr[1:])
 
     db[pkg][distkey] = info
 
@@ -364,31 +394,26 @@ def import_dde(cfg, db):
         # get freshest
         q = dde_get(query_url + "/packages/all/%s" % p)
         if q:
-            db[p]['main'] = q
+            # copy all stuff, while preserving non-overlapping information
+            for k, v in q.iteritems():
+                db[p]['main'][k] = v
             # get latest popcon info for debian and ubuntu
             # cannot use origin field itself, since it is none for few packages
             # i.e. python-nifti
             origin = q['drc'].split()[0]
-            print 'popcon query for', p
             if origin == 'ubuntu':
-                print 'have ubuntu first'
                 if q.has_key('popcon'):
-                    print 'ubuntu has popcon'
                     db[p]['main']['ubuntu_popcon'] = q['popcon']
                 # if we have ubuntu, need to get debian
                 q = dde_get(query_url + "/packages/prio-debian-sid/%s" % p)
                 if q and q.has_key('popcon'):
-                    print 'debian has popcon'
                     db[p]['main']['debian_popcon'] = q['popcon']
             elif origin == 'debian':
-                print 'have debian first'
                 if q.has_key('popcon'):
-                    print 'debian has popcon'
                     db[p]['main']['debian_popcon'] = q['popcon']
                 # if we have debian, need to get ubuntu
                 q = dde_get(query_url + "/packages/prio-ubuntu-karmic/%s" % p)
                 if q and q.has_key('popcon'):
-                    print 'ubuntu has popcon'
                     db[p]['main']['ubuntu_popcon'] = q['popcon']
             else:
                 print("Ignoring unkown origin '%s' for package '%s'." \
@@ -430,6 +455,23 @@ def import_dde(cfg, db):
     return db
 
 
+def convert_longdescr(ld):
+    ld = ld.replace('% ', '%% ')
+    ld = ld.split('\n')
+    for i, l in enumerate(ld):
+        if l == ' .':
+            ld[i] = ' #NEWLINEMARKER#'
+        # look for embedded lists
+        elif len(l) >=3 and l[:2] == '  ' and l[2] in '-*':
+            ld[i] = ' #NEWLINEMARKER# ' + l[2:]
+
+    ld = u' '.join([l[1:] for l in ld])
+    ld = ld.replace('#NEWLINEMARKER# ', '\n\n')
+    # cleanup any leftover (e.g. trailing markers)
+    ld = ld.replace('#NEWLINEMARKER#', '')
+    return ld
+
+
 def generate_pkgpage(pkg, cfg, db, template, addenum_dir):
     # local binding for ease of use
     db = db[pkg]
@@ -440,20 +482,12 @@ def generate_pkgpage(pkg, cfg, db, template, addenum_dir):
     underline = '*' * (len(title) + 2)
     title = '%s\n %s\n%s' % (underline, title, underline)
 
-    # preprocess long description
-    ld = db['main']['long_description']
-    ld = ld.split('\n')
-    for i, l in enumerate(ld):
-        if l == ' .':
-            ld[i] = '#NEWLINEMARKER#'
-    ld = u' '.join([l.lstrip() for l in ld])
-    ld = ld.replace('#NEWLINEMARKER# ', '\n\n')
-
-    page = template.render(pkg=pkg,
-                           title=title,
-                           long_description=ld,
-                           cfg=cfg,
-                           db=db)
+    page = template.render(
+            pkg=pkg,
+            title=title,
+            long_description=convert_longdescr(db['main']['long_description']),
+            cfg=cfg,
+            db=db)
     # the following can be replaced by something like
     # {% include "sidebar.html" ignore missing %}
     # in the template whenever jinja 2.2 becomes available
@@ -517,7 +551,7 @@ def write_pkgpages(jinja_env, cfg, db, outdir, addenum_dir):
         if page is None:
             continue
         pf = codecs.open(os.path.join(outdir, 'pkgs', p + '.rst'), 'w', 'utf-8')
-        pf.write(generate_pkgpage(p, cfg, db, pkg_template, addenum_dir))
+        pf.write(page)
         pf.close()
 
 
