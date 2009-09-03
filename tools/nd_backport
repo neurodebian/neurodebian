@@ -1,0 +1,54 @@
+#!/bin/bash
+
+set -e
+set -u
+
+if [ -z "$3" ]; then
+cat << EOT
+Script to backport a source package to some target release.
+
+Synopsis
+--------
+
+  nd_backport <family> <codename> <dsc file>
+
+EOT
+exit 1
+fi
+
+. /home/cowbuilder/neurodebian.git/tools/nd_cmdsettings.sh
+
+DEBEMAIL="pkg-exppsy-maintainers@lists.alioth.debian.org"
+DEBFULLNAME="NeuroDebian Maintainers"
+export DEBEMAIL DEBFULLNAME
+
+dscfile=$3
+srcname=${dscfile%%_*}
+srcversion=${dscfile#*_}
+srcversion=${srcversion%%.dsc}
+wdir=$(mktemp -d -t nd_backport.XXXXXX)
+sdir=$wdir/${srcname}-${srcversion}
+
+echo "Source package name: $srcname"
+echo "Source package version: $srcversion"
+echo "Extracting source package to: $sdir"
+
+dpkg-source -x $dscfile $sdir
+
+echo "Backporting to: $family $dist"
+
+changelog_entry="Backport of Debian package version $srcversion for \
+NeuroDebian. Problems with the backport should be reported to the
+NeuroDebian maintainers and not to the original Debian maintainer."
+
+echo | debchange \
+         --noconf --force-bad-version \
+         -c $sdir/debian/changelog \
+         -D neurodebian \
+         -b -l "~${dist}.nd" \
+         $changelog_entry
+
+dpkg-source -b $sdir
+
+# cleanup
+rm -rf $wdir
