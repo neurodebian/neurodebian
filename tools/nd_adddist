@@ -8,6 +8,10 @@ opts="--distribution $dist --debootstrap debootstrap --aptcache $aptcache"
 
 for a in i386 amd64; do
   echo "Building $a base path..."
+  if [ -d /home/cowbuilder/cow/${family}-${dist}-${a}.cow ]; then
+    echo "/home/cowbuilder/cow/${family}-${dist}-${a}.cow exists. Ignoring arch."
+    continue
+  fi
   if [ "${family:0:3}" = "nd+" ]; then
   echo "Including NeuroDebian repository..."
     cowbuilder --create --basepath /home/cowbuilder/cow/${family}-${dist}-${a}.cow $opts \
