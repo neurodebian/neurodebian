@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. /home/cowbuilder/neurodebian.git/tools/nd_cmdsettings.sh
+. /home/neurodebian/neurodebian.git/tools/nd_cmdsettings.sh
 
 # common options
 opts="--distribution $dist --aptcache $aptcache --buildplace $buildplace"
@@ -13,5 +13,5 @@ fi
 
 for a in $arch; do
   echo "Updating arch $a..."
-  cowbuilder --update --basepath /home/cowbuilder/cow/${family}-${dist}-${a}.cow $opts
+  cowbuilder --update --basepath ${cowbuilderroot}/cow/${family}-${dist}-${a}.cow $opts
 done

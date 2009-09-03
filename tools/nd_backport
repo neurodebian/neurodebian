@@ -16,7 +16,7 @@ EOT
 exit 1
 fi
 
-. /home/cowbuilder/neurodebian.git/tools/nd_cmdsettings.sh
+. /home/neurodebian/neurodebian.git/tools/nd_cmdsettings.sh
 
 DEBEMAIL="pkg-exppsy-maintainers@lists.alioth.debian.org"
 DEBFULLNAME="NeuroDebian Maintainers"

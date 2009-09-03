@@ -14,8 +14,12 @@ if [ -z "$dist" ]; then
 fi
 
 # basic settings
-cowbuilderroot="/home/cowbuilder"
+cowbuilderroot="/home/neurodebian"
 buildplace="${cowbuilderroot}/build"
+
+# all cuurently supported dists
+alldists="nd+debian-sid nd+debian-squeeze nd+debian-lenny \
+          nd+ubuntu-hardy nd+ubuntu-intrepid nd+ubuntu-jaunty"
 
 # default is debian
 aptcache="${cowbuilderroot}/debian_aptcache"

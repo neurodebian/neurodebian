@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. /home/cowbuilder/neurodebian.git/tools/nd_cmdsettings.sh
+. /home/neurodebian/neurodebian.git/tools/nd_cmdsettings.sh
 
 # common options
 opts="--distribution $dist --debootstrap debootstrap --aptcache $aptcache"
@@ -8,19 +8,19 @@ opts="--distribution $dist --debootstrap debootstrap --aptcache $aptcache"
 
 for a in i386 amd64; do
   echo "Building $a base path..."
-  if [ -d /home/cowbuilder/cow/${family}-${dist}-${a}.cow ]; then
-    echo "/home/cowbuilder/cow/${family}-${dist}-${a}.cow exists. Ignoring arch."
+  if [ -d ${cowbuilderroot}/cow/${family}-${dist}-${a}.cow ]; then
+    echo "${cowbuilderroot}/cow/${family}-${dist}-${a}.cow exists. Ignoring arch."
     continue
   fi
   if [ "${family:0:3}" = "nd+" ]; then
   echo "Including NeuroDebian repository..."
-    cowbuilder --create --basepath /home/cowbuilder/cow/${family}-${dist}-${a}.cow $opts \
+    cowbuilder --create --basepath ${cowbuilderroot}/cow/${family}-${dist}-${a}.cow $opts \
                --components "$components" \
                --mirror "$mirror" \
                --debootstrapopts --arch --debootstrapopts $a \
                --othermirror "deb http://neuro.debian.net/debian $dist main contrib non-free"
   else
-    cowbuilder --create --basepath /home/cowbuilder/cow/${family}-${dist}-${a}.cow $opts \
+    cowbuilder --create --basepath ${cowbuilderroot}/cow/${family}-${dist}-${a}.cow $opts \
                --components "$components" \
                --mirror "$mirror" \
                --debootstrapopts --arch --debootstrapopts $a

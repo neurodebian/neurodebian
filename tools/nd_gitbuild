@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. /home/cowbuilder/neurodebian.git/tools/nd_cmdsettings.sh
+. /home/neurodebian/neurodebian.git/tools/nd_cmdsettings.sh
 
 # common options
 opts="--distribution $dist --aptcache $aptcache --buildplace $buildplace"
