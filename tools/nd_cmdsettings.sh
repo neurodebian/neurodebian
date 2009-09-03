@@ -27,7 +27,7 @@ components="main contrib non-free"
 mirror="http://debian.lcs.mit.edu/debian"
 
 # overwrite necessary bits for ubuntu
-if [ "$family" = "ubuntu" ]; then
+if [ "${family#nd+}" = "ubuntu" ]; then
   aptcache="${cowbuilderroot}/ubuntu_aptcache"
   components="main universe"
   mirror="http://ubuntu.media.mit.edu/ubuntu"
