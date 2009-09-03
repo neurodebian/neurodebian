@@ -1,5 +1,20 @@
 #!/bin/bash
 
+family=$1
+dist=$2
+
+set -e
+
+if [ -z "$family" ]; then
+  echo "you need to provide a distribution family ('debian', 'ubuntu'); prefix with 'nd+' to enable the neurodebian repository."
+  exit 1
+fi
+
+if [ -z "$dist" ]; then
+  echo "you need to provide a distribution codename (e.g. 'lenny', 'squeeze')."
+  exit 1
+fi
+
 . /home/neurodebian/neurodebian.git/tools/nd_cmdsettings.sh
 
 # common options
