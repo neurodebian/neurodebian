@@ -31,7 +31,7 @@ EOT
 exit 1
 fi
 
-. /home/cowbuilder/bin/nd_cmdsettings.sh
+. /home/cowbuilder/neurodebian.git/tools/nd_cmdsettings.sh
 
 # common options
 opts="--distribution $dist --aptcache $aptcache --buildplace $buildplace"

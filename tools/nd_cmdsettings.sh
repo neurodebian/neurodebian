@@ -1,6 +1,8 @@
 family=$1
 dist=$2
 
+set -e
+
 if [ -z "$family" ]; then
   echo "You need to provide a distribution family ('debian', 'ubuntu'); prefix with 'nd+' to enable the NeuroDebian repository."
   exit 1
