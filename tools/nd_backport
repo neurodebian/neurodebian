@@ -54,7 +54,7 @@ NeuroDebian maintainers and not to the original Debian maintainer."
 echo | debchange \
          --noconf --force-bad-version \
          -c $sdir/debian/changelog \
-         -D neurodebian \
+         -D ${release} \
          -b -l "~${release}.nd" \
          $changelog_entry
 
