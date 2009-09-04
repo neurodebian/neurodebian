@@ -21,5 +21,6 @@ for d in $alldists; do
   dfamily=${d%%-*}
   drelease=${d##*-}
 
-  nd_build $dfamily $drelease $1
+  bpdsc=$(nd_backport $drelease $1 | tail -n1)
+  nd_build $dfamily $drelease $bpdsc
 done
