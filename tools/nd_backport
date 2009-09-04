@@ -1,14 +1,9 @@
 #!/bin/bash
 
-family=$1
-dist=$2
+dist=$1
+dscfile=$2
 
 set -e
-
-if [ -z "$family" ]; then
-  echo "You need to provide a distribution family ('debian', 'ubuntu'); prefix with 'nd+' to enable the NeuroDebian repository."
-  exit 1
-fi
 
 if [ -z "$dist" ]; then
   echo "You need to provide a distribution codename (e.g. 'lenny', 'squeeze')."
@@ -19,14 +14,14 @@ fi
 set -e
 set -u
 
-if [ -z "$3" ]; then
+if [ -z "$2" ]; then
 cat << EOT
 Script to backport a source package to some target release.
 
 Synopsis
 --------
 
-  nd_backport <family> <codename> <dsc file>
+  nd_backport <codename> <dsc file>
 
 EOT
 exit 1
@@ -38,7 +33,6 @@ DEBEMAIL="pkg-exppsy-maintainers@lists.alioth.debian.org"
 DEBFULLNAME="NeuroDebian Maintainers"
 export DEBEMAIL DEBFULLNAME
 
-dscfile=$3
 srcname=${dscfile%%_*}
 srcversion=${dscfile#*_}
 srcversion=${srcversion%%.dsc}
@@ -51,7 +45,7 @@ echo "Extracting source package to: $sdir"
 
 dpkg-source -x $dscfile $sdir
 
-echo "Backporting to: $family $dist"
+echo "Backporting to: $dist"
 
 changelog_entry="Backport of Debian package version $srcversion for \
 NeuroDebian. Problems with the backport should be reported to the
@@ -64,7 +58,10 @@ echo | debchange \
          -b -l "~${dist}.nd" \
          $changelog_entry
 
+bpversion=$(dpkg-parsechangelog -l$sdir/debian/changelog | egrep '^Version: ' | cut -d ' ' -f 2,2)
 dpkg-source -b $sdir
 
 # cleanup
 rm -rf $wdir
+
+echo $srcname_$bpversion.dsc
