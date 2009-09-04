@@ -1,8 +1,6 @@
 family=$1
 dist=$2
 
-set -e
-
 # basic settings
 cowbuilderroot="/home/neurodebian"
 buildplace="${cowbuilderroot}/build"

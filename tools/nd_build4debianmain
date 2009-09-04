@@ -13,6 +13,8 @@ EOT
 exit 1
 fi
 
+set -e
+
 # common options
 dscfile=$1
 shift;
