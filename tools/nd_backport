@@ -1,11 +1,11 @@
 #!/bin/bash
 
-dist=$1
+release=$1
 dscfile=$2
 
 set -e
 
-if [ -z "$dist" ]; then
+if [ -z "$release" ]; then
   echo "You need to provide a distribution codename (e.g. 'lenny', 'squeeze')."
   exit 1
 fi
@@ -45,7 +45,7 @@ echo "Extracting source package to: $sdir"
 
 dpkg-source -x $dscfile $sdir
 
-echo "Backporting to: $dist"
+echo "Backporting to: $release"
 
 changelog_entry="Backport of Debian package version $srcversion for \
 NeuroDebian. Problems with the backport should be reported to the
@@ -55,7 +55,7 @@ echo | debchange \
          --noconf --force-bad-version \
          -c $sdir/debian/changelog \
          -D neurodebian \
-         -b -l "~${dist}.nd" \
+         -b -l "~${release}.nd" \
          $changelog_entry
 
 bpversion=$(dpkg-parsechangelog -l$sdir/debian/changelog | egrep '^Version: ' | cut -d ' ' -f 2,2)
@@ -64,4 +64,4 @@ dpkg-source -b $sdir
 # cleanup
 rm -rf $wdir
 
-echo $srcname_$bpversion.dsc
+echo ${srcname}_$bpversion.dsc
