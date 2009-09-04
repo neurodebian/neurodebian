@@ -78,6 +78,8 @@ else
 fi
 
 for a in $arch; do
+  # default
+  options="$opts"
   if [ "$a" = "amd64" ]; then
     # only force source into the upload for NeuroDebian
     if [ ! "$family" = "${family#nd+*}" ]; then
