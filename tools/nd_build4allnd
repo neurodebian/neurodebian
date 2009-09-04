@@ -1,0 +1,25 @@
+#!/bin/bash
+
+if [ -z "$1" ]; then
+cat << EOT
+Backports and build a source package for all currently supported NeuroDebian
+releases.
+
+Synopsis
+--------
+
+  nd_build4allnd <dsc file>
+EOT
+exit 1
+fi
+
+
+
+. /home/neurodebian/neurodebian.git/tools/nd_cmdsettings.sh
+
+for d in $alldists; do
+  dfamily=${d%%-*}
+  drelease=${d##*-}
+
+  nd_build $dfamily $drelease $1
+done
