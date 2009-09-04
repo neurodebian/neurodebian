@@ -1,0 +1,10 @@
+#!/bin/bash
+
+. /home/neurodebian/neurodebian.git/tools/nd_cmdsettings.sh
+
+for d in $alldists; do
+  dfamily=${d%%-*}
+  drelease=${d##*-}
+
+  nd_updatedist $dfamily $drelease
+done
