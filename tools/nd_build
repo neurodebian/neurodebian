@@ -78,10 +78,18 @@ else
 fi
 
 for a in $arch; do
+  if [ "$a" = "amd64" ]; then
+    # only force source into the upload for NeuroDebian
+    if [ ! "$family" = "${family#nd+*}" ]; then
+      options="$opts --debbuildopts -sa"
+    fi
+  else
+    options="$opts --debbuildopts -B"
+  fi
   echo "Building for $family $dist $a ..."
   cowbuilder --build $dscfile \
              --basepath ${cowbuilderroot}/cow/${family}-${dist}-${a}.cow \
              --buildresult . \
-             $opts \
+             $options \
              $*
 done
