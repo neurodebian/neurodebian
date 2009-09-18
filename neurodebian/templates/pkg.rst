@@ -10,7 +10,7 @@ Homepage: {{ db.main.homepage }}
 
 {% if db.main.publication %}
 Citable reference:
-  {{ db.main.publication.authors }} ({{ db.main.publication.year }}).
+  *{{ db.main.publication.authors }}* ({{ db.main.publication.year }}).
   {%- if db.main.publication.url %} `{{ db.main.publication.title }} <{{ db.main.publication.url }}>`_.
   {%- else %} {{ db.main.publication.title }}.
   {%- endif %} {{ db.main.publication.in }}.
