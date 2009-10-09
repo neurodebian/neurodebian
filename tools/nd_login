@@ -1,0 +1,53 @@
+#!/bin/bash
+
+if [ -z "$1" ]; then
+cat << EOT
+Script to log into a particular COW and bindmount some directory.
+
+Synopsis
+--------
+
+  nd_build <family> <codename> <arch> [bindmountdir] [cowbuilderopts]
+
+EOT
+exit 1
+fi
+
+family=$1
+dist=$2
+arch=$3
+bmdir=$4
+
+set -e
+
+if [ -z "$family" ]; then
+  echo "You need to provide a distribution family ('debian', 'ubuntu'); prefix with 'nd+' to enable the NeuroDebian repository."
+  exit 1
+fi
+
+if [ -z "$dist" ]; then
+  echo "You need to provide a distribution codename (e.g. 'lenny', 'squeeze')."
+  exit 1
+fi
+
+if [ -z "$arch" ]; then
+  echo "You need to provide an architecture (e.g. 'i386', 'amd64')."
+  exit 1
+fi
+
+. /home/neurodebian/neurodebian.git/tools/nd_cmdsettings.sh
+
+# common options
+opts="--distribution $dist --aptcache $aptcache --buildplace $buildplace"
+
+
+if [ -z "bmdir" ]; then
+  options="$opts --bindmounts $bmdir"
+else
+  options="$opts"
+fi
+
+cowbuilder --login \
+             --basepath ${cowbuilderroot}/cow/${family}-${dist}-${arch}.cow \
+             $options \
+             $*
