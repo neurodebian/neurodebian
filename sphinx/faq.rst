@@ -18,13 +18,15 @@ Frequently Asked Questions
 Why is NeuroDebian not a Pure Blend?
 ------------------------------------
 
-  Because the is not need for it to become one. NeuroDebian's goal is to
-  provide software for neuroscientists using the Debian operating system, and
-  therefore the ultimate goal is to get all relevant software **into Debian**.
+  Because there is not need for it to become one, as the existing Debian Pure
+  Blends already offer the desired functionality *within* Debian. Similar to
+  Pure Blends, NeuroDebian's goal is to provide software for neuroscientists
+  using the Debian operating system, and therefore the ultimate goal is to get
+  all relevant software **into Debian**.
 
   However, various reasons exist that prevent a particular software from
   entering Debian. Some are temporary, i.e. a package is already useable, but
-  some technical bits do not meet Debian's standard yet, or a licensing issue
+  some technical bits do not meet Debian's standard yet or a licensing issue
   needs to be resolved first. For some software the licensing is so restrictive
   that it cannot be distributed by Debian, and hence cannot even go into its
   *non-free* branch. Unfortunately, sometimes these issues cannot be solved to
@@ -64,9 +66,21 @@ When does a package migrate from NeuroDebian into Debian proper?
 .. _pkg-exppsy group on Debian's Alioth server: http://alioth.debian.org/projects/pkg-exppsy/
 
 
+Debian, Debian, Debian -- What about Ubuntu?
+--------------------------------------------
+
+  NeuroDebian offers backported binary package for recent Ubuntu releases
+  whenever possible. However, since Ubuntu is a rather thin shell around Debian
+  it is more efficient to spend time packaging for Debian. After the appearance
+  of new packages in Debian, Ubuntu typically synchronizes them quickly and
+  they become available in the *Ubuntu universe* -- a repository of Debian
+  packages rebuilt for a particular Ubuntu release.
+
+
 How to create a mirror of the repository?
 -----------------------------------------
 
-  If you are interested in sponsoring storage space and bandwidth for another
-  mirror, please contact michael.hanke@gmail.com.
+  The NeuroDebian repository can be mirrored with rsync If you are interested
+  in sponsoring storage space and bandwidth for another mirror, please contact
+  pkg-exppsy-maintainers@lists.alioth.debian.org.
 
