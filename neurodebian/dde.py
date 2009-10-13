@@ -231,7 +231,6 @@ def import_blendstask(db, url):
 
             # Registration
             if st.has_key('Registration'):
-                print 'HAVE REGISTRATION:', p
                 db[p]['main']['registration'] = st['Registration']
 
             # Remarks
@@ -349,8 +348,14 @@ def _store_pkg(cfg, db, st, origin, codename, component, baseurl):
     # charge the basic property set
     db[pkg]['main']['description'] = info['description']
     db[pkg]['main']['long_description'] = info['long_description']
+    if st.has_key('Source'):
+        db[pkg]['main']['sv'] = "%s %s" % (st['Source'], st['Version'])
+    else:
+        db[pkg]['main']['sv'] = "%s %s" % (st['Package'], st['Version'])
     if st.has_key('Homepage'):
         db[pkg]['main']['homepage'] = st['Homepage']
+    if st.has_key('Recommends'):
+        db[pkg]['main']['recommends'] = st['Recommends']
 
     return db
 
@@ -384,7 +389,7 @@ def dde_get(url):
     try:
         return json.read(urllib2.urlopen(url+"?t=json").read())['r']
     except (urllib2.HTTPError, StopIteration):
-        print "SCREWED:", url
+        print "NO PKG INFO AT:", url
         return False
 
 
@@ -474,20 +479,21 @@ def convert_longdescr(ld):
 
 def generate_pkgpage(pkg, cfg, db, template, addenum_dir):
     # local binding for ease of use
-    db = db[pkg]
+    pkgdb = db[pkg]
     # do nothing if there is not at least the very basic stuff
-    if not db['main'].has_key('description'):
+    if not pkgdb['main'].has_key('description'):
         return
-    title = '**%s** -- %s' % (pkg, db['main']['description'])
+    title = '**%s** -- %s' % (pkg, pkgdb['main']['description'])
     underline = '*' * (len(title) + 2)
     title = '%s\n %s\n%s' % (underline, title, underline)
 
     page = template.render(
             pkg=pkg,
             title=title,
-            long_description=convert_longdescr(db['main']['long_description']),
+            long_description=convert_longdescr(pkgdb['main']['long_description']),
             cfg=cfg,
-            db=db)
+            db=pkgdb,
+            fulldb=db)
     # the following can be replaced by something like
     # {% include "sidebar.html" ignore missing %}
     # in the template whenever jinja 2.2 becomes available

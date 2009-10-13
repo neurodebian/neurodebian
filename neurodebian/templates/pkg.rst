@@ -18,23 +18,21 @@ Citable reference:
   {%- endif %}
 {% endif %}
 
-{% if db.main.registration %}
+{% if db.main.registration -%}
 .. note::
   The software authors ask users to
   `register <{{ db.main.registration }}>`_. Available user statistics might be 
   helpful to acquire funding for this project and therefore foster continued
   developement in the future.
-{% endif %}
+{% endif -%}
 
-{% if db.blends or db.main.debian_popcon or db.main.ubuntu_popcon %}
-
+{% if db.blends or db.main.debian_popcon or db.main.ubuntu_popcon or
+      db.main.recommends or db.main.suggests -%}
 Package Details
 ===============
-
 {% if db.blends %}
 `Debian Pure Blends <http://wiki.debian.org/DebianPureBlends>`_ Status
 ----------------------------------------------------------------------
-
 Associated blends:
 
 {% for blend, name, url in db.blends.tasks %}
@@ -43,29 +41,43 @@ Associated blends:
 {% if db.blends.remark %}
 .. note::
 {{ db.blends.remark | indent(width=2, indentfirst=true) }}
-{% endif %}
-{% endif %}
+{% endif -%}
+{% endif -%}
 
 {% if db.main.debian_popcon or db.main.ubuntu_popcon %}
 Reported installations [#]_
 ---------------------------
-
-{% if db.main.debian_popcon %}
+{% if db.main.debian_popcon -%}
 - Debian: {{ db.main.debian_popcon.insts }} (`more info <http://qa.debian.org/popcon.php?package={{ pkg }}>`_)
-{% endif %}
-{% if db.main.ubuntu_popcon %}
+{% endif -%}
+{% if db.main.ubuntu_popcon -%}
 - Ubuntu: {{ db.main.ubuntu_popcon.insts }}
 {% endif %}
 
 .. [#] Due to the nature of this data, the reported number can only be
        considered a conservative estimate of the lower bound of the true
        number of installations.
+{% endif -%}
+{% endif -%}
 
+{% if db.main.recommends or db.main.suggests %}
+Related packages
+----------------
+{% if db.main.recommends %}
+{%- for pkg in db.main.recommends.split(',') %}
+{%- if pkg.split('|')[0].strip() in fulldb %}
+* :ref:`pkg_{{ pkg.strip() }}`
+{%- else %}
+* {{ pkg }}
+{% endif -%}{% endfor %}{% endif %}
+{%- if db.main.suggests %}
+{%- for pkg in db.main.suggests.split(',') %}
+{%- if pkg.split('|')[0].strip() in fulldb %}
+* :ref:`pkg_{{ pkg.strip() }}`
+{%- else %}
+* {{ pkg.strip() }}
+{% endif -%}{% endfor %}{% endif %}
 {% endif %}
-
-{% endif %}
-
-
 
 Binary packages
 ===============
@@ -73,8 +85,8 @@ Binary packages
 NeuroDebian
 -----------
 
-{% for dist, distpkg in db|dictsort if dist[1].startswith('neurodebian') %}
-{% if loop.first %}
+{% for dist, distpkg in db|dictsort if dist[1].startswith('neurodebian') -%}
+{% if loop.first -%}
 The repository contains binary packages for the following distribution
 releases and system architectures. The corresponding source packages
 are available too.
@@ -84,7 +96,6 @@ are available too.
   regularly. Instead configure your package manager to use this
   repository by following the instructions on the
   :ref:`front page <repository_howto>`.
-
 {% endif %}
 {{ dist[0] }} [{{ distpkg.component}}]:
   `{{distpkg.version}} <../../debian/{{ distpkg.poolurl }}>`_ [{{ ', '.join(distpkg.architecture) }}]

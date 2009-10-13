@@ -41,7 +41,7 @@ fi
 opts="--distribution $dist --aptcache $aptcache --buildplace $buildplace"
 
 
-if [ -z "bmdir" ]; then
+if [ -n "bmdir" ]; then
   options="$opts --bindmounts $bmdir"
 else
   options="$opts"

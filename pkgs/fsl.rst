@@ -1,5 +1,5 @@
-Related packages
-================
+Packages for the complete FSL suite
+===================================
 
 Since FSL covers a very broad range of analysis techniques the suite is split
 into a number of separate packages to allow a more fine-grained selection of
