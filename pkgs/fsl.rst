@@ -245,7 +245,7 @@ If you want to have your system included in this list, please send an email
 with the logfile of the benchmark. You can run the benchmark (and create the
 logfile) by running (fsl-feeds-3.2beta-3 or higher is required)::
 
-  (time -p fsl-selftest -c) &gt; benchmark.log 2>&amp;1
+  (time -p fsl-selftest -c) > benchmark.log 2>&1
 
 And include the following information in your message:
 
