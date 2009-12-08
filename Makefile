@@ -56,7 +56,7 @@ build/db.db:
 
 
 upload-website: html
-	rsync -rvzlhp --delete --exclude=debian --chmod=Dg+s,g+rw $(WWW_DIR) $(WWW_UPLOAD_URI)
+	rsync -rvzlhp --delete --exclude=debian --exclude=debian-local --chmod=Dg+s,g+rw $(WWW_DIR) $(WWW_UPLOAD_URI)
 
 .PHONY: removedb removecache updatedb upload-website clean distclean pics html
 
