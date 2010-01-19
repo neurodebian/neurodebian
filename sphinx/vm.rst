@@ -79,3 +79,16 @@ cp /mnt/host/.config/awesome/hotbrain.png .config/backgrounds/
 
 #change menu icon
 sudo cp /mnt/host/hacking/neurodebian/artwork/icon.svg /usr/share/icons/Mist/scalable/places/start-here.svg
+
+
+Deploy
+------
+
+# shrink VDI image by writting to a new (unfragmented) image
+# target VDI needs to have proper partition table and MBR
+# XXX maybe 'dd' could be used on the fuse-mounted VDIs
+sudo ~/vdfuse-v60 -f ~/.VirtualBox/HardDisks/NeuroDebian.vdi mnt/src
+sudo ~/vdfuse-v60 -f ~/.VirtualBox/HardDisks/nd_test.vdi mnt/dest
+sudo mount -o loop mnt/src/Partition1 src
+sudo mount -o loop mnt/dest/Partition1 dest
+rsync -vxaHD --delete --exclude=src/dev --exclude=src/proc --exclude=src/tmp src dest
