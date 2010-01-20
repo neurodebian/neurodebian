@@ -35,6 +35,11 @@ aptitude install \
  alacarte desktop-base evince file-roller gcalctool gdm gksu gnome-core
  gnome-keyring gnome-utils gnome-volume-manager gnome-mount gthumb
  bash-completion less mc gnome-themes etckeeper git-core gitk ntpdate
+ alsa-utils
+
+# install network manager applet
+# but we don't want to have all the openvpn stuff that pull in an armada of
+# things: I did it by hand in aptitude
 
 # cleanup unwanted stuff
 # video drivers (all but vesa)
@@ -48,8 +53,8 @@ etckeeper init
 # prepare for kernel module building (guest additions)
 aptitude install module-assistant
 module-assistant prepare
+# note guest additions for 3.1.2 are broken, use 3.1.0
 bash /media/cdrom/VBoxLinuxAdditions-amd64.run (need 2.6.27+ kernel for direct rendering)
-
 #make sure that xorg.conf has 'vboxvideo' as device driver and also
 echo "vboxvideo" >> /etc/modules
 
@@ -63,15 +68,20 @@ visudo
 mkdir /mnt/host
 mount -t vboxsf host /mnt/host
 # better put the following into the session startup config of the user
-sudo mount -t vboxsf -o defaults,uid=brain,gid=brain host /mnt/host
+# stupid wrapping into bash line to workaround a silly bug in Virtualbox additions
+bash -c "cd /; sudo mount -t vboxsf -o defaults,uid=brain,gid=brain host /mnt/host"
 
 
 # neuro-stuff
 aptitude install afni afni-atlases amide caret dicomnifti fsl fsl-atlases lipsia
- minc-tools odin psychopy python-mvpa python-pyepl
+ minc-tools odin psychopy python-mvpa python-pyepl python-mvpa-doc
 
 # general scientifically useful stuff
-aptitude install ipython python-h5py
+aptitude install ipython python-h5py vim-python
+
+# next step purge network interface config to give the power to network manager
+# important
+adduser brain netdev
 
 
 user config
@@ -91,44 +101,41 @@ Deploy
 
 # shrink VDI image by writting to a new (unfragmented) image
 # target VDI needs to have proper partition table and MBR
+# simplest solution: clonezilla
 
-# clone HDD
-#dd if=dev/hda of=/dev/hdb bs=512 count=1
-# fixing bits extended partition is empty -> create swap partition
-#fdisk /dev/hdb
-#mkswap /dev/hdb5
-#mkfs.ext3 -m 1 /dev/hdb1
-#tune2fs -c 100 /dev/hdb1
-
-
+# clean up the master COPY
+cp ~/vm/nd_master.vdi /tmp/nd_master.vdi
 cd /tmp
-cp /home/neurodebian/vm/nd_plainpartition.vdi nd_hdd.vdi
-mkdir -p vbdev/src vbdev/dest vbmnt/src vbmnt/dest
-
+mkdir -p vbdev vbmnt
 # get access to disks inside the VDIs
-sudo vdfuse -f /home/neurodebian/vm/nd_master.vdi vbdev/src/
-sudo vdfuse -f nd_hdd.vdi vbdev/dest/
+sudo vdfuse -f nd_master.vdi vbdev
+# mount partitition
+sudo mount -o loop vbdev/Partition1 vbmnt
 
+# remove cruft
+# package cache
+sudo find vbmnt/var/cache/apt/archives/ -name '*.deb' -delete
+sudo rm vbmnt/var/cache/apt/*.bin
+# device files -- udev restores them
+sudo rm -rf vbmnt/dev/*
+# tmp
+sudo rm -rf vbmnt/tmp/*
+# log files
+sudo find vbmnt/var/log -type f -delete
+# apt lists
+sudo find vbmnt/var/lib/apt -type f -name '*debian*' -o -type f -name '*list*' -delete
+# history
+sudo rm vbmnt/root/.bash_history
+sudo rm vbmnt/home/brain/.bash_history
 
+# unmount filesystem
+sudo umount vbmnt
+# zero out empty space
+sudo zerofree -v vbdev/Partition1
+# close whole VDI
+sudo umount vbdev
 
-# mount partititions
-sudo mount -o loop vbdev/src/Partition1 vbmnt/src
-sudo mount -o loop vbdev/dest/Partition1 vbmnt/dest
-
-# now extract files from src, filter, and move to dest
-sudo rsync -xaHD --delete \
-  --exclude=dev \
-  --exclude=proc \
-  --exclude=tmp \
-  --exclude=var/cache/apt \
-  --exclude=var/log/* \
-  --exclude=etc/.git \
-  --exclude=home/brain/.git \
-  --exclude=var/lib/apt/lists \
-  vbmnt/src/ vbmnt/dest/
-
-sudo umount vbmnt/dest
-sudo umount vbmnt/src
-sudo umount vbdev/dest
-sudo umount vbdev/src
+# compact VDI
+# THIS NEEDS TO BE DONE ON A VDI THAT IS REGISTERED WITH VIRTUALBOX
+VBoxManage modifyhd nd_master.vdi --compact
 
