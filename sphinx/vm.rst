@@ -117,10 +117,10 @@ Troubleshooting
 There is no network connectivity.
 
   If the virtual machine cannot access the internet, but the host computer can,
-  it might necessary to re-establish the network connection. To do this, please
-  click on the `network manager` icon in the virtual machines system tray (upper
-  right corner of the desktop) and select `Wired Network`. After I few seconds
-  the network should become available.
+  it might be necessary to re-establish the network connection. To do this,
+  please click on the `network manager` icon in the virtual machine's system
+  tray (upper right corner of the desktop) and select `Wired Network`. After a
+  few seconds the network should become available.
 
 
 I cannot hear sounds played in the virtual machine.
