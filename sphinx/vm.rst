@@ -19,13 +19,13 @@ The virtual machine contains an installation of `Debian 5.0 (lenny)`_ with a
 GNOME_ desktop environment. All installed software comes from standard Debian
 packages, or prospective Debian packages from NeuroDebian -- no custom
 installations whatsoever. This means that all contained software is readily
-available for any system running a Debian operating system (or recent Ubuntu
-releases). The virtual machine can be seen as a showcase of what Debian for
+available for any system running a Debian operating system (or a recent Ubuntu
+release). The virtual machine can be seen as a showcase of what Debian for
 neuroscience research feels like. Moreover, once downloaded this virtual
 machine can be kept up to date, just as any other Debian installation. Using
-convenient graphical package management tools users, will benefit from security
-bugfixed for the whole operating system provided by the Debian project, as well
-as software updates for neuroscience-related packages.
+convenient graphical package management tools users will benefit from security
+bugfixes provided by the Debian project for the whole operating system, as well
+as from software updates for neuroscience-related packages.
 
 .. _Debian 5.0 (lenny): http://www.debian.org/releases/stable
 .. _GNOME: http://www.gnome.org/
@@ -57,18 +57,18 @@ and select "Import Appliance" from the file menu.
 
 .. image:: pics/vm_import_app.jpg
 
-The next dialog will ask you to choose a virtual machine. Please navigate to the
+Next dialog will ask you to choose a virtual machine. Please navigate to the
 extracted NeuroDebian download and select the `NeuroDebian.ovf` file.
 
 .. image:: pics/vm_import_wizard.jpg
 
-You can finished the import wizard by click on *next* a couple of times. There
-is no need to change anything, as we will got through the settings in a second.
-Importing the virtual machine will take a short while, as it is distributed in
+You can finish importing of NeuroDebian by clicking on *next* a couple of times. There
+is no need to change anything, as we will get through the settings in a second.
+Importing of the virtual machine will take a short while, as it is distributed in
 a compressed format that now gets extracted (total extracted size about 3.5
 GB).  Once imported, the NeuroDebian virtual machine will appear in the list of
 available machines. Do **not** start it yet, but select NeuroDebian and hit the
-*Settings* button. In the following dialog you'll have the chance to configure
+*Settings* button. In the following dialog you'll have a chance to configure
 the machine. You can assign the amount of RAM that should be made available to
 it (for serious fMRI data processing, please allow at least 2 GB). If you have
 a recent computer with multiple CPU cores, you can also decide how many cores
@@ -79,9 +79,9 @@ increase the display memory to 32 MB in the *Display* settings.
 
 However, most important is the *Shared Folders* setup. Shared folders allow the
 virtual machine to access the local harddrive of the host computer. This is an
-easy way to access data on a computer with the need to duplicate it or use the
-network. The virtual machine is preconfigured to access a shared folder named
-labeled "host". Simple click on the *add* button select a folder that shall be
+easy way to access data on the computer without duplicating it or using the
+network to access it. The virtual machine is preconfigured to access a shared folder named
+labeled "host".  Click on the *add* button to select a folder that shall be
 accessible by the machine (e.g. your home directory) and put "host" as the
 folder name. Note, the folder name is simply a label. Your directory will not
 be renamed.
@@ -90,15 +90,15 @@ be renamed.
 
 Finally, close the settings dialog. You have now completed the setup, and you
 can start the virtual machine by hitting the *Start* button. A new window will
-appear that shows the boot process. After a short while the NeuroDebian desktop
-will appear. You can now explore the system. The virtual machine is connect
-with your host computer, and shares its internet connection. Via this
+appear showing the boot process. After a short while the NeuroDebian desktop
+will appear. You can now explore the system. The virtual machine is connected
+with your host computer, and shares its Internet connection. Via this
 connection you can update the contained software packages at any time.
 
 .. warning::
 
   VirtualBox might offer you to upgrade the "guest additions" to version 3.1.2.
-  Do **not** do this, since this version is broken, and after the upgrade you
+  Do **not** do this, since that version is broken, and after the upgrade you
   will now longer be able to use the mouse inside the virtual machine.
 
 .. image:: pics/vm_settings.jpg
