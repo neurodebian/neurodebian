@@ -388,7 +388,7 @@ def create_dir(path):
 def dde_get(url):
     try:
         return json.read(urllib2.urlopen(url+"?t=json").read())['r']
-    except (urllib2.HTTPError, StopIteration):
+    except (urllib2.HTTPError, StopIteration, urllib2.URLError):
         print "NO PKG INFO AT:", url
         return False
 
