@@ -15,6 +15,7 @@ import urllib2
 import urllib
 import codecs
 import subprocess
+import time
 # templating
 from jinja2 import Environment, PackageLoader
 
@@ -385,11 +386,26 @@ def create_dir(path):
             os.mkdir(p)
 
 
-def dde_get(url):
+def dde_get(url, fail=False):
+    # enforce delay to be friendly to DDE
+    time.sleep(3)
     try:
-        return json.read(urllib2.urlopen(url+"?t=json").read())['r']
-    except (urllib2.HTTPError, StopIteration, urllib2.URLError):
-        print "NO PKG INFO AT:", url
+        data = json.read(urllib2.urlopen(url+"?t=json").read())['r']
+        print "SUCCESS:", url
+        return data
+    except urllib2.HTTPError, e:
+        print "NOINFO:", url, type(e)
+        return False
+    except urllib2.URLError, e:
+        print "URLERROR:", url, type(e)
+        if fail:
+            print "Permanant failure"
+            return False
+        print "Try again after 30 seconds..."
+        time.sleep(30)
+        return dde_get(url, fail=True)
+    except (StopIteration):
+        print "NOINFO:", url
         return False
 
 
