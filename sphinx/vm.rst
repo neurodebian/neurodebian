@@ -1,141 +1,110 @@
-Standard Debian install
+NeuroDebian Virtual Machine
+===========================
 
-hostname: neurodebian
-domain: ''
+Those, who are not yet running a Debian-based operating system, but are already
+tired of fiddling with dozens of neuro-software packages, can get a glimpse of
+neuroscience research in a Debian environment via a `virtual machine`_.
 
-all file in one partition
+.. _virtual machine: http://en.wikipedia.org/wiki/Virtual_machine
 
-root: not there
-user: brain
-pwd: neurodebian
+NeuroDebian offers a virtual machine that comes preinstalled with a number
+of popular neuroscience packages (e.g. AFNI_, Caret_, FSL_, PyMVPA_).
 
+.. _AFNI: http://afni.nimh.nih.gov/afni/
+.. _Caret: http://brainvis.wustl.edu/wiki/index.php/Caret:About
+.. _FSL: http://www.fmrib.ox.ac.uk/fsl/
+.. _PyMVPA: http://www.pymvpa.org
 
-Do a minimal install
---------------------
+The virtual machine contains an installation of `Debian 5.0 (lenny)`_ with a
+GNOME_ desktop environment. All installed software comes from standard Debian
+packages, or prospective Debian packages from NeuroDebian -- no custom
+installations whatsoever. This means that all contained software is readily
+available for any system running a Debian operating system (or recent Ubuntu
+releases). The virtual machine can be seen as a showcase of what Debian for
+neuroscience research feels like. Moreover, once downloaded this virtual
+machine can be kept up to date, just as any other Debian installation. Using
+convenient graphical package management tools users, will benefit from security
+bugfixed for the whole operating system provided by the Debian project, as well
+as software updates for neuroscience-related packages.
 
-All files in one partition/
-just base system, run selection, but no tasks (not even 'Standard system')
-
-
-install new stuff
------------------
-
-Add sources.list for backports and neurodebian
-wget -O /etc/apt/sources.list.d/neuro.debian.net.list http://neuro.debian.net/_static/neurodebian.lenny.us.sources.list
-echo "deb http://www.backports.org/debian lenny-backports main contrib non-free" >> /etc/apt/sources.list.d/backports.org.list
-wget -O - http://backports.org/debian/archive.key | apt-key add -
-wget -O - http://neuro.debian.net/_static/neuro.debian.net.asc | apt-key add -
-
-install kernel 2.6.27 (or later) from backports to have support for OpenGL
-direct rendering in VirtualBox
-(and deinstall the old one, after a successfull reboot)
-
-# a basic desktop
-aptitude install \
- alacarte desktop-base evince file-roller gcalctool gdm gksu gnome-core
- gnome-keyring gnome-utils gnome-volume-manager gnome-mount gthumb
- bash-completion less mc gnome-themes etckeeper git-core gitk ntpdate
- alsa-utils
-
-# install network manager applet
-# but we don't want to have all the openvpn stuff that pull in an armada of
-# things: I did it by hand in aptitude
-
-# cleanup unwanted stuff
-# video drivers (all but vesa)
-aptitude purge $(apt-cache search --names-only --installed xserver-xorg-video | grep xserver-xorg-video | cut -d ' ' -f 1,1) xserver-xorg-video-vesa+
-# random stuff
-aptitude purge radeontool sound-juicer
-
-# setup etckeeper
-etckeeper init
-
-# prepare for kernel module building (guest additions)
-aptitude install module-assistant
-module-assistant prepare
-# note guest additions for 3.1.2 are broken, use 3.1.0
-bash /media/cdrom/VBoxLinuxAdditions-amd64.run (need 2.6.27+ kernel for direct rendering)
-#make sure that xorg.conf has 'vboxvideo' as device driver and also
-echo "vboxvideo" >> /etc/modules
-
-# make user brain allowed to execute sudo without a password
-adduser brain sudo
-visudo
-# and uncomment the respective line at the end of the file
-# (make sure there is nothing below it)
-
-# configure shared folders
-mkdir /mnt/host
-mount -t vboxsf host /mnt/host
-# better put the following into the session startup config of the user
-# stupid wrapping into bash line to workaround a silly bug in Virtualbox additions
-bash -c "cd /; sudo mount -t vboxsf -o defaults,uid=brain,gid=brain host /mnt/host"
+.. _Debian 5.0 (lenny): http://www.debian.org/releases/stable
+.. _GNOME: http://www.gnome.org/
 
 
-# neuro-stuff
-aptitude install afni afni-atlases amide caret dicomnifti fsl fsl-atlases lipsia
- minc-tools odin psychopy python-mvpa python-pyepl python-mvpa-doc
+Installation
+------------
 
-# general scientifically useful stuff
-aptitude install ipython python-h5py vim-python
+First download and install a recent version of VirtualBox_. VirtualBox is a
+virtualization software that is freely available for Windows, MacOS X, Solaris,
+and Linux. VirtualBox comes with a comprehensive manual that should answer
+potential questions regarding installation and maintenance.
 
-# next step purge network interface config to give the power to network manager
-# important
-adduser brain netdev
+.. _VirtualBox: http://www.virtualbox.org
 
+Next, download the most recent version of the NeuroDebian virtual machine from
+the `download page`_ (about 1GB download size). The machine is distributed as a
+`tar` file. Please extract this file, using appropriate software for your
+operating system. Every Linux system comes with the `tar` commandline utility,
+and potentially other graphical archivers that can extract this format. MacOS X
+users can simply double-click such file to extract it. Windows users can extract
+it with, for example, 7zip_.
 
-user config
------------
-# put use home dir in git to be able to track changes
-git init
+Once extracted, you'll find a directory with three files. Now start VirtualBox,
+and select "Import Appliance" from the file menu.
 
-mkdir -p /home/brain/.config/backgrounds
-cp /mnt/host/.config/awesome/hotbrain.png /home/brain/.config/backgrounds/
+.. _download page: http://neuro.debian.net/debian/vm
+.. _7zip: http://www.7-zip.org/
 
-#change menu icon
-sudo cp /mnt/host/hacking/neurodebian/artwork/icon.svg /usr/share/icons/Mist/scalable/places/start-here.svg
+.. image:: pics/vm_import_app.jpg
 
+The next dialog will ask you to choose a virtual machine. Please navigate to the
+extracted NeuroDebian download and select the `NeuroDebian.ovf` file.
 
-Deploy
-------
+.. image:: pics/vm_import_wizard.jpg
 
-# shrink VDI image by writting to a new (unfragmented) image
-# target VDI needs to have proper partition table and MBR
-# simplest solution: clonezilla
+You can finished the import wizard by click on *next* a couple of times. There
+is no need to change anything, as we will got through the settings in a second.
+Importing the virtual machine will take a short while, as it is distributed in
+a compressed format that now gets extracted (total extracted size about 3.5
+GB).  Once imported, the NeuroDebian virtual machine will appear in the list of
+available machines. Do **not** start it yet, but select NeuroDebian and hit the
+*Settings* button. In the following dialog you'll have the chance to configure
+the machine. You can assign the amount of RAM that should be made available to
+it (for serious fMRI data processing, please allow at least 2 GB). If you have
+a recent computer with multiple CPU cores, you can also decide how many cores
+should be used by the virtual machine. If you have a large screen you should
+increase the display memory to 32 MB in the *Display* settings.
 
-# clean up the master COPY
-cp ~/vm/nd_master.vdi /tmp/nd_master.vdi
-cd /tmp
-mkdir -p vbdev vbmnt
-# get access to disks inside the VDIs
-sudo vdfuse -f nd_master.vdi vbdev
-# mount partitition
-sudo mount -o loop vbdev/Partition1 vbmnt
+.. image:: pics/vm_add_host_folder.jpg
 
-# remove cruft
-# package cache
-sudo find vbmnt/var/cache/apt/archives/ -name '*.deb' -delete
-sudo rm vbmnt/var/cache/apt/*.bin
-# device files -- udev restores them
-sudo rm -rf vbmnt/dev/*
-# tmp
-sudo rm -rf vbmnt/tmp/*
-# log files
-sudo find vbmnt/var/log -type f -delete
-# apt lists
-sudo find vbmnt/var/lib/apt -type f -name '*debian*' -o -type f -name '*list*' -delete
-# history
-sudo rm vbmnt/root/.bash_history
-sudo rm vbmnt/home/brain/.bash_history
+However, most important is the *Shared Folders* setup. Shared folders allow the
+virtual machine to access the local harddrive of the host computer. This is an
+easy way to access data on a computer with the need to duplicate it or use the
+network. The virtual machine is preconfigured to access a shared folder named
+labeled "host". Simple click on the *add* button select a folder that shall be
+accessible by the machine (e.g. your home directory) and put "host" as the
+folder name. Note, the folder name is simply a label. Your directory will not
+be renamed.
 
-# unmount filesystem
-sudo umount vbmnt
-# zero out empty space
-sudo zerofree -v vbdev/Partition1
-# close whole VDI
-sudo umount vbdev
+.. image:: pics/vm_host_folder.jpg
 
-# compact VDI
-# THIS NEEDS TO BE DONE ON A VDI THAT IS REGISTERED WITH VIRTUALBOX
-VBoxManage modifyhd nd_master.vdi --compact
+Finally, close the settings dialog. You have now completed the setup, and you
+can start the virtual machine by hitting the *Start* button. A new window will
+appear that shows the boot process. After a short while the NeuroDebian desktop
+will appear. You can now explore the system. The virtual machine is connect
+with your host computer, and shares its internet connection. Via this
+connection you can update the contained software packages at any time.
 
+.. warning::
+
+  VirtualBox might offer you to upgrade the "guest additions" to version 3.1.2.
+  Do **not** do this, since this version is broken, and after the upgrade you
+  will now longer be able to use the mouse inside the virtual machine.
+
+.. image:: pics/vm_settings.jpg
+
+The virtual machine logs yourself in automatically. The name of the virtual
+machine user is `brain` and the password is `neurodebian`. The *root* password
+is also `neurodebian`.
+
+Enjoy!
