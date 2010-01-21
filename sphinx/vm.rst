@@ -105,6 +105,26 @@ connection you can update the contained software packages at any time.
 
 The virtual machine logs yourself in automatically. The name of the virtual
 machine user is `brain` and the password is `neurodebian`. The *root* password
-is also `neurodebian`.
+is also `neurodebian`. In most cases, however, you should not be forced to type
+the password, since `sudo` is configured to work without it.
 
 Enjoy!
+
+
+Troubleshooting
+---------------
+
+There is no network connectivity.
+
+  If the virtual machine cannot access the internet, but the host computer can,
+  it might necessary to re-establish the network connection. To do this, please
+  click on the `network manager` icon in the virtual machines system tray (upper
+  right corner of the desktop) and select `Wired Network`. After I few seconds
+  the network should become available.
+
+
+I cannot hear sounds played in the virtual machine.
+
+  Sorry, but audio is not (yet) preconfigured properly. If you want to have that
+  fixed, please drop us a note.
+
