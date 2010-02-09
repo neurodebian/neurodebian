@@ -5,6 +5,12 @@
 import pysvn
 import json
 from debian_bundle import deb822
+
+# Lets first assure no guarding (but annoying) warnings
+import warnings
+warnings.simplefilter('ignore', FutureWarning)
+warnings.filterwarnings('ignore', 'Module debian_bundle was already imported.*', UserWarning)
+
 import apt
 from ConfigParser import SafeConfigParser
 from optparse import OptionParser, Option, OptionGroup, OptionConflictError
