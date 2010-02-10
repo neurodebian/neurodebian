@@ -40,7 +40,7 @@ removecache:
 	-rm -rf build/cache
 
 removedb:
-	-rm build/db.db
+	-rm -f build/db.db
 
 
 updatedb: removedb removecache build/db.db
@@ -52,7 +52,7 @@ build/db.db:
 		--cfg neurodebian.cfg \
 		--db build/db.db \
 		updatedb
-	-rm source-stamp
+	-rm -f source-stamp
 
 
 upload-website: html
