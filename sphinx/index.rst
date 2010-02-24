@@ -31,10 +31,10 @@ News
    rpp: 4,
    interval: 6000,
    width: 'auto',
-   height: 300,
+   height: 150,
    theme: {
      shell: {
-       background: '#333333',
+       background: '#898989',
        color: '#ffffff'
      },
      tweets: {
