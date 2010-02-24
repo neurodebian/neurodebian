@@ -18,6 +18,42 @@ purpose software which is necessary to resolve dependencies, or such that is
 simply useful in the neuroscience context. All featured neuroscience software
 packages are available from the :ref:`full package list <full_pkg_list>`.
 
+News
+====
+
+.. raw:: html
+
+ <script src="http://widgets.twimg.com/j/2/widget.js"></script>
+ <script>
+ new TWTR.Widget({
+   version: 2,
+   type: 'profile',
+   rpp: 4,
+   interval: 6000,
+   width: 'auto',
+   height: 300,
+   theme: {
+     shell: {
+       background: '#333333',
+       color: '#ffffff'
+     },
+     tweets: {
+       background: '#ffffff',
+       color: '#000000',
+       links: '#82032f'
+     }
+   },
+   features: {
+     scrollbar: true,
+     loop: false,
+     live: false,
+     hashtags: true,
+     timestamp: true,
+     avatars: false,
+     behavior: 'all'
+   }
+ }).render().setUser('NeuroDebian').start();
+ </script>
 
 .. _repository_howto:
 
