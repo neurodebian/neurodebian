@@ -39,7 +39,7 @@ Why is NeuroDebian not a Pure Blend?
   properly registered with the relevant `Debian Pure Blends`_, e.g.
   `Debian-Science Cognitive Neuroscience`_ or `Debian-Med Imaging`_. Inside
   Debian these efforts already provide a suitable framework for this purpose,
-  and hence there is now need to establish yet another one.
+  and hence there is no need to establish yet another one.
 
 .. _Debian Pure Blends: http://wiki.debian.org/DebianPureBlends
 .. _Debian-Science Cognitive Neuroscience: http://blends.alioth.debian.org/science/tasks/neuroscience-cognitive
@@ -69,7 +69,7 @@ When does a package migrate from NeuroDebian into Debian proper?
 Debian, Debian, Debian -- What about Ubuntu?
 --------------------------------------------
 
-  NeuroDebian offers backported binary package for recent Ubuntu releases
+  NeuroDebian offers backported binary packages for recent Ubuntu releases
   whenever possible. However, since Ubuntu is a rather thin shell around Debian
   it is more efficient to spend time packaging for Debian. After the appearance
   of new packages in Debian, Ubuntu typically synchronizes them quickly and
@@ -80,7 +80,7 @@ Debian, Debian, Debian -- What about Ubuntu?
 How to create a mirror of the repository?
 -----------------------------------------
 
-  The NeuroDebian repository can be mirrored with rsync If you are interested
+  The NeuroDebian repository can be mirrored with rsync. If you are interested
   in sponsoring storage space and bandwidth for another mirror, please contact
   pkg-exppsy-maintainers@lists.alioth.debian.org.
 
