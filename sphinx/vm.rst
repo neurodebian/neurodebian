@@ -1,3 +1,5 @@
+.. _chap_vm:
+
 NeuroDebian Virtual Machine
 ===========================
 

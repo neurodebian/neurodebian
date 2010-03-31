@@ -128,3 +128,10 @@ APT happy again is easy:
    Where `#file#` has to be replaced with the location of the key file you just
    downloaded. You need to have superuser-privileges to do this (either do it
    as root or use sudo).
+
+
+Virtual Machine
+===============
+
+If your are not running a Debian on a particular machine a :ref:`chap_vm` is
+provided as a convenient testing and evaluation environment.
