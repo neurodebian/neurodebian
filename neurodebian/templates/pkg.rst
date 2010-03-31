@@ -48,7 +48,7 @@ Associated blends:
 Reported installations [#]_
 ---------------------------
 {% if db.main.debian_popcon -%}
-- Debian: {{ db.main.debian_popcon.insts }} (`more info <http://qa.debian.org/popcon.php?package={{ pkg }}>`_)
+- Debian: {{ db.main.debian_popcon.insts }} (`more info <http://qa.debian.org/popcon.php?package={{ db.main.sv.split()[0] }}>`_)
 {% endif -%}
 {% if db.main.ubuntu_popcon -%}
 - Ubuntu: {{ db.main.ubuntu_popcon.insts }}
