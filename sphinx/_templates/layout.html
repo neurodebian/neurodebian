@@ -16,3 +16,11 @@
 {% block sidebar2 %}
 {{ sidebar() }}
 {% endblock %}
+
+{% block sidebarsearch %}
+{{ super() }}
+<p><a href="http://www.nitrc.org/projects/neurodebian"><img
+src="{{ pathto('_static/nitrc.jpg', 1) }}" alt="NITRC-listed" /></a></p>
+{% endblock %}
+
+
