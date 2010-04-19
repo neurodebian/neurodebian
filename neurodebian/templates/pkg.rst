@@ -6,7 +6,17 @@
 
 {{ long_description }}
 
-Homepage: {{ db.main.homepage }}
+External links:
+
+.. raw:: html
+
+  <p><a href="{{ db.main.homepage }}">
+  <img src="../_static/go-home.png" title="Go to {{ pkg }} homepage" /></a>
+  {%- if cfg.has_option("nitrc ids", pkg) -%}
+  <a href="http://www.nitrc.org/project?group_id={{ cfg.get("nitrc ids", pkg) }}">
+  <img src="../_static/nitrc.jpg" title="See the entry on nitrc.org" /></a>
+  {%- endif -%}
+  </p>
 
 {% if db.main.publication %}
 Citable reference:
@@ -45,8 +55,8 @@ Associated blends:
 {% endif -%}
 
 {% if db.main.debian_popcon or db.main.ubuntu_popcon %}
-Reported installations [#]_
----------------------------
+Popularity statistics [#]_
+--------------------------
 {% if db.main.debian_popcon -%}
 - Debian: {{ db.main.debian_popcon.insts }} (`more info <http://qa.debian.org/popcon.php?package={{ db.main.sv.split()[0] }}>`_)
 {% endif -%}
