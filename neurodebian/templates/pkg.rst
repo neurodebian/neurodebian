@@ -11,10 +11,10 @@ External links:
 .. raw:: html
 
   <p><a href="{{ db.main.homepage }}">
-  <img src="../_static/go-home.png" title="Go to {{ pkg }} homepage" /></a>
+  <img border="0" src="../_static/go-home.png" title="Go to {{ pkg }} homepage" /></a>
   {%- if cfg.has_option("nitrc ids", pkg) -%}
   <a href="http://www.nitrc.org/project?group_id={{ cfg.get("nitrc ids", pkg) }}">
-  <img src="../_static/nitrc.jpg" title="See the entry on nitrc.org" /></a>
+  <img border="0" src="../_static/nitrc.jpg" title="See the entry on nitrc.org" /></a>
   {%- endif -%}
   </p>
 
