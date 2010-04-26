@@ -413,6 +413,9 @@ def dde_get(url, fail=False):
     except (StopIteration):
         print "NOINFO:", url
         return False
+    except json.ReadException, e:
+        print "NOCONTENT:", url, type(e)
+        return False
 
 
 def import_dde(cfg, db):
