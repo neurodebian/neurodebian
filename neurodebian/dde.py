@@ -414,8 +414,8 @@ def dde_get(url, fail=False):
         print "NOINFO:", url
         return False
     except json.ReadException, e:
-        raise RuntimeError(
-                "No content in response -- DDE<->UDD connection probably down")
+        print "UDD-DOWN?:", url, type(e)
+        return False
 
 
 def import_dde(cfg, db):
