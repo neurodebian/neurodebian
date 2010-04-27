@@ -16,6 +16,13 @@ External links:
   <a href="http://www.nitrc.org/project?group_id={{ cfg.get("nitrc ids", pkg) }}">
   <img border="0" src="../_static/nitrc.jpg" title="See the entry on nitrc.org" /></a>
   {%- endif -%}
+  {% if db.blends %}{% for blend, name, url in db.blends.tasks -%}
+  {%- if blend == 'debian-med' -%}
+  <a href="{{ url }}">
+  <img border="0" src="../_static/debianmed.png" title="Part of Debian Med {{ name }} task" /></a>
+  {%- endif -%}
+  {%- endfor -%}
+  {%- endif -%}
   </p>
 
 {% if db.main.publication %}
