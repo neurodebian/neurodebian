@@ -14,6 +14,19 @@
 Frequently Asked Questions
 **************************
 
+Why NeuroDebian?
+----------------
+
+  In the course of our research endeavors |we| have joined the forces to
+  develop a `PyMVPA -- Python framework for multivariate pattern analysis of
+  neural data <http://www.pymvpa.org>`_.  To provide convenient deployment for
+  anyone using Debian-derived distribution this package repository was
+  created.  Besides PyMVPA_ project |we| collaborate with `NiPy team
+  <http://neuroimaging.scipy.org>`_ on various projects, such as NiBabel_ and
+  NiPype_.  Quickly NeuroDebian_ became our ultimate delivery mechanism for
+  all the projects we develop and package, so they are readily available for
+  deployment.
+
 
 Why is NeuroDebian not a Pure Blend?
 ------------------------------------
@@ -32,18 +45,18 @@ Why is NeuroDebian not a Pure Blend?
   *non-free* branch. Unfortunately, sometimes these issues cannot be solved to
   a degree that is acceptable for Debian. For some other packages Debian itself
   is not ready yet, e.g. huge data packages with neuroscience data (:ref:`with
-  sometimes over 1GB <pkg_fsl-first-data>`) 
+  sometimes over 1GB <pkg_fsl-first-data>`).
 
   NeuroDebian aims to be a platform that provides a staging area for
   neuroscience software packages on their way into Debian. All packages are
   properly registered with the relevant `Debian Pure Blends`_, e.g.
-  `Debian-Science Cognitive Neuroscience`_ or `Debian-Med Imaging`_. Inside
+  `Debian Science Cognitive Neuroscience`_ or `Debian Med Imaging`_. Inside
   Debian these efforts already provide a suitable framework for this purpose,
   and hence there is no need to establish yet another one.
 
 .. _Debian Pure Blends: http://wiki.debian.org/DebianPureBlends
-.. _Debian-Science Cognitive Neuroscience: http://blends.alioth.debian.org/science/tasks/neuroscience-cognitive
-.. _Debian-Med Imaging: http://debian-med.alioth.debian.org/tasks/imaging
+.. _Debian Science Cognitive Neuroscience: http://blends.alioth.debian.org/science/tasks/neuroscience-cognitive
+.. _Debian Med Imaging: http://debian-med.alioth.debian.org/tasks/imaging
 
 
 When does a package migrate from NeuroDebian into Debian proper?
@@ -81,6 +94,20 @@ How to create a mirror of the repository?
 -----------------------------------------
 
   The NeuroDebian repository can be mirrored with rsync. If you are interested
-  in sponsoring storage space and bandwidth for another mirror, please contact
-  pkg-exppsy-maintainers@lists.alioth.debian.org.
+  in sponsoring storage space and bandwidth for another mirror, please
+  `contact us <team@neuro.debian.net>`_.
 
+
+How do I get a new neuroscience-related FOSS into (Neuro)Debian?
+----------------------------------------------------------------
+
+  * You can approach packaging it yourself (file an ITP_ (Intent to package)
+    bugreport) and `ask us <team@neuro.debian.net>`_ to mentor your upload to
+    Debian_ if you are not a Debian developer.
+
+  * `Contact us <team@neuro.debian.net>`_, but then it might take longer
+    depending on our workload and interest to the particular software.
+
+
+.. include:: links_names.rst
+.. include:: substitutions.rst

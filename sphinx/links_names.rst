@@ -9,6 +9,7 @@
    nipy, NIPY, Nipy, etc...
 
 .. _nipy: http://neuroimaging.scipy.org
+.. _nipype: http://nipy.sourceforge.net/nipype
 .. _`Brain Imaging Center`: http://bic.berkeley.edu/
 .. _dipy: http://nipy.sourceforge.net/dipy
 .. _`dipy github`: http://github.com/Garyfallidis/dipy
@@ -113,9 +114,11 @@
 .. _VTK: http://www.vtk.org/
 .. _ITK: http://www.itk.org/
 .. _swig: http://www.swig.org
-.. _NeuroDebian: :ref:`welcome`
+.. _NeuroDebian: http://neuro.debian.net
 .. _Debian: http://www.debian.org
 .. _exppsy: http://alioth.debian.org/projects/pkg-exppsy
+.. _`Debian Med`: http://debian-med.alioth.debian.org
+.. _`Debian Science`: http://wiki.debian.org/DebianScience
 
 .. Functional imaging labs
 .. _`functional imaging laboratory`: http://www.fil.ion.ucl.ac.uk
@@ -152,3 +155,7 @@
 .. Homepages
 .. _yoh: http://www.onerussian.com
 .. _mih: http://mih.voxindeserto.de
+
+.. Debian specifics
+.. _ITP: http://www.debian.org/devel/wnpp
+.. _ITPs: http://www.debian.org/devel/wnpp
