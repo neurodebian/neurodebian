@@ -14,12 +14,16 @@ External links:
   <img border="0" src="../_static/go-home.png" title="Go to {{ pkg }} homepage" /></a>
   {%- if cfg.has_option("nitrc ids", pkg) -%}
   <a href="http://www.nitrc.org/project?group_id={{ cfg.get("nitrc ids", pkg) }}">
-  <img border="0" src="../_static/nitrc.jpg" title="See the entry on nitrc.org" /></a>
+  <img border="0" src="../_static/nitrc_listed.png" title="See the entry on nitrc.org" /></a>
   {%- endif -%}
   {% if db.blends %}{% for blend, name, url in db.blends.tasks -%}
   {%- if blend == 'debian-med' -%}
   <a href="{{ url }}">
   <img border="0" src="../_static/debianmed.png" title="Part of Debian Med {{ name }} task" /></a>
+  {%- endif -%}
+  {%- if blend == 'debian-science' -%}
+  <a href="{{ url }}">
+  <img border="0" src="../_static/debianscience.png" title="Part of Debian Science {{ name }} task" /></a>
   {%- endif -%}
   {%- endfor -%}
   {%- endif -%}
