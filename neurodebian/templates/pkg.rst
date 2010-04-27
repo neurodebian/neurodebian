@@ -47,37 +47,31 @@ Citable reference:
   developement in the future.
 {% endif -%}
 
-{% if db.blends or db.main.debian_popcon or db.main.ubuntu_popcon or
+{% if db.nitrc or db.main.debian_popcon or db.main.ubuntu_popcon or
       db.main.recommends or db.main.suggests -%}
 Package Details
 ===============
-{% if db.blends %}
-`Debian Pure Blends <http://wiki.debian.org/DebianPureBlends>`_ Status
-----------------------------------------------------------------------
-Associated blends:
 
-{% for blend, name, url in db.blends.tasks %}
-* `{{ name }} ({{ blend }}) <{{ url }}>`_
-{% endfor %}
-{% if db.blends.remark %}
-.. note::
-{{ db.blends.remark | indent(width=2, indentfirst=true) }}
-{% endif -%}
-{% endif -%}
-
-{% if db.main.debian_popcon or db.main.ubuntu_popcon %}
-Popularity statistics [#]_
---------------------------
+{% if db.nitrc or db.main.debian_popcon or db.main.ubuntu_popcon %}
+Package popularity
+------------------
 {% if db.main.debian_popcon -%}
-- Debian: {{ db.main.debian_popcon.insts }} (`more info <http://qa.debian.org/popcon.php?package={{ db.main.sv.split()[0] }}>`_)
+- Debian [1]_: {{ db.main.debian_popcon.insts }} (`more info <http://qa.debian.org/popcon.php?package={{ db.main.sv.split()[0] }}>`_)
 {% endif -%}
 {% if db.main.ubuntu_popcon -%}
-- Ubuntu: {{ db.main.ubuntu_popcon.insts }}
+- Ubuntu [1]_: {{ db.main.ubuntu_popcon.insts }}
+{% endif %}
+{% if db.nitrc and db.nitrc.downloads -%}
+- NITRC [2]_: {{ db.nitrc.downloads }}
 {% endif %}
 
-.. [#] Due to the nature of this data, the reported number can only be
+.. [1] Due to the nature of this data, the reported number can only be
        considered a conservative estimate of the lower bound of the true
        number of installations.
+
+.. [2] This is the total number of downloads from NITRC for this software,
+       comprising all releases for all platforms -- typically not Debian
+       packages.
 {% endif -%}
 {% endif -%}
 
@@ -160,6 +154,10 @@ Please see the corresponding
 `intent-to-package bug report <http://bugs.debian.org/{{ db.main.debian_itp }}>`_
 for more information about its current status.
 {% endif %}
+{% if db.blends and db.blends.remark %}
+.. note::
+{{ db.blends.remark | indent(width=2, indentfirst=true) }}
+{% endif -%}
 {% endfor %}
 
 
