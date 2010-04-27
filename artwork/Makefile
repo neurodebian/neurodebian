@@ -31,7 +31,7 @@ ignore-%:
 
 # Some enforced conversions to overcome problems with transparency issues
 # in PDFs
-all:: logo_tuned/fmri_w200.png
+all:: logo_tuned/fmri_w200.png button_w200.png
 
 
 .PHONY: all pics
