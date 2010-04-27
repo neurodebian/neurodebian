@@ -418,6 +418,51 @@ def dde_get(url, fail=False):
         return False
 
 
+def nitrc_get(spec, fail=False):
+    nitrc_url = 'http://www.nitrc.org/export/site/projects.json.php'
+    try:
+        data = json.read(urllib2.urlopen(nitrc_url + '?spec=%s' % spec).read())
+        print "NITRC-SUCCESS:", spec
+    except urllib2.HTTPError, e:
+        print "NITRC-NOINFO:", spec, type(e)
+        return False
+    except urllib2.URLError, e:
+        print "NITRC-URLERROR:", spec, type(e)
+        if fail:
+            print "Permanant failure"
+            return False
+        print "Try again after 30 seconds..."
+        time.sleep(30)
+        return nitrc_get(spec, fail=True)
+    return data
+
+
+def parse_nitrc(data):
+    if data is False:
+        return None
+    # simplify -- there is only one project in the data
+    project = data['projects'][0]
+    nitrc_filtered = {'downloads': 0,
+                      'id': project['id']}
+    for pkg in project['packages']:
+        for release in pkg['releases']:
+            for file in release['files']:
+                nitrc_filtered['downloads'] += file['download_count']
+    return nitrc_filtered
+
+
+def import_nitrc(cfg, db):
+    for p in db.keys():
+        if not cfg.has_option("nitrc ids", p):
+            continue
+        nitrc_spec = cfg.get("nitrc ids", p)
+        nitrc_data = nitrc_get(nitrc_spec)
+        nitrc_excerpt = parse_nitrc(nitrc_data)
+        if not nitrc_excerpt is None:
+            db[p]['nitrc'] = nitrc_excerpt
+    return db
+
+
 def import_dde(cfg, db):
     query_url = cfg.get('dde', 'pkgquery_url')
     for p in db.keys():
@@ -661,6 +706,8 @@ def main():
 
         # collect package information from DDE
         db = import_dde(cfg, db)
+        # get info from NITRC
+        db = import_nitrc(cfg, db)
         # store the new DB
         store_db(db, opts.db)
         # and be done
