@@ -86,7 +86,7 @@ as backports for Debian and recent Ubuntu releases.
   Please be sure to `read the information`_ about the differences
   between the Debian packaging and the official FSL releases.
 
-.. _read the information: http://git.debian.org/?p=pkg-exppsy/fsl.git;a=blob;f=debian/README.Debian;hb=debian"
+.. _read the information: http://git.debian.org/?p=pkg-exppsy/fsl.git;a=blob_plain;f=debian/README.Debian;hb=HEAD
 
 
 Usage information
