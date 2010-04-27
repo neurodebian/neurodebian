@@ -113,6 +113,9 @@
 .. _VTK: http://www.vtk.org/
 .. _ITK: http://www.itk.org/
 .. _swig: http://www.swig.org
+.. _NeuroDebian: :ref:`welcome`
+.. _Debian: http://www.debian.org
+.. _exppsy: http://alioth.debian.org/projects/pkg-exppsy
 
 .. Functional imaging labs
 .. _`functional imaging laboratory`: http://www.fil.ion.ucl.ac.uk
@@ -145,3 +148,7 @@
 .. _`wikipedia shear matrix`: http://en.wikipedia.org/wiki/Shear_matrix
 .. _`wikipedia reflection`: http://en.wikipedia.org/wiki/Reflection_(mathematics)
 .. _`wikipedia direction cosine`: http://en.wikipedia.org/wiki/Direction_cosine
+
+.. Homepages
+.. _yoh: http://www.onerussian.com
+.. _mih: http://mih.voxindeserto.de
