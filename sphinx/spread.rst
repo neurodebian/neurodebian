@@ -16,7 +16,7 @@ Rate or review
 
 NeuroDebian_ is `listed on the NITRC portal
 <http://www.nitrc.org/projects/neurodebian/>`_.  We would greatly
-appreciate if you rate it or express you opinion in a review (see
+appreciate if you rate it or express your opinion in a review (see
 "Reviews & Ratings").
 
 
