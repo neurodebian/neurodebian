@@ -31,18 +31,18 @@ banner by using following HTML code for a corresponding image:
 
 ::
 
- <A HREF="http://neuro.debian.net">
-  <IMG SRC="http://neuro.debian.net/_static/fmri_w200.png" border="0" WIDTH="200px" ALT="Enjoy NeuroDebian">
- </A>
+ <a href="http://neuro.debian.net">
+  <img src="http://neuro.debian.net/_static/fmri_w200.png" border="0" width="200px" alt="Enjoy in NeuroDebian">
+ </a>
 
 
 .. image:: _static/button_w200.png
 
 ::
 
- <A HREF="http://neuro.debian.net">
-  <IMG SRC="http://neuro.debian.net/_static/button_w200.png" border="0" WIDTH="200px" ALT="Enjoy NeuroDebian">
- </A>
+ <a href="http://neuro.debian.net">
+  <img src="http://neuro.debian.net/_static/button_w200.png" border="0" width="200px" alt="Enjoy in NeuroDebian">
+ </a>
 
 
 
