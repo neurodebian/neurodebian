@@ -29,7 +29,7 @@ fi
 
 . /home/neurodebian/neurodebian.git/tools/nd_cmdsettings.sh
 
-DEBEMAIL="pkg-exppsy-maintainers@lists.alioth.debian.org"
+DEBEMAIL="team@neuro.debian.net"
 DEBFULLNAME="NeuroDebian Maintainers"
 export DEBEMAIL DEBFULLNAME
 

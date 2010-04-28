@@ -122,7 +122,7 @@ are available too.
 
     (if there is any chance that some problem is specific to the package
     distributed through the NeuroDebian repository, please contact
-    pkg-exppsy-maintainers@lists.alioth.debian.org instead of the original
+    team@neuro.debian.net instead of the original
     maintainer)
 {% endif %}
 {% else %}
