@@ -166,8 +166,8 @@ The Team
 
 Our main goal is to provide neuroscience FOSS for Debian_. Thus the
 whole project would not be possible without the work of over 3,000
-Debian_ developers and contributors who are enthusiastically share
-our goal.  To add our share -- Debian_ packages of FOSS for
+Debian_ developers and contributors who are as enthusiastically pursuing
+a similar goal.  To add our share -- Debian_ packages of FOSS for
 neuroscience research -- the `Experimental Psychology Debian packaging
 project <http://alioth.debian.org/projects/pkg-exppsy>`_ was created
 to formally join the forces of
@@ -175,10 +175,10 @@ to formally join the forces of
 * `Michael Hanke <http://mih.voxindeserto.de>`_
 * `Yaroslav Halchenko <http://www.onerussian.com>`_
 
-Some packages provided within the NeuroDebian repository were not packaged
-by our team, but were provided by similar Debian teams.  Therefore we
-want to express particular gratitude to `Debian Med`_ and `Debian
-Science`_ teams for making their efforts.
+A number of packages that are now provided within the NeuroDebian repository
+were not packaged by our team, but similar Debian teams.  Therefore we want to
+express particular gratitude to `Debian Med`_ and `Debian Science`_ teams for
+making their efforts.
 
 
 Contacts
