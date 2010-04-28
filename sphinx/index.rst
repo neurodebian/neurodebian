@@ -150,7 +150,7 @@ environment without any sacrifice.
 Debian
 ------
 
-Having being exposed to the wonders of NeuroDebian_ you are no longer
+Having been exposed to the wonders of NeuroDebian_ you are no longer
 satisfied with your previous choice of operating system?  We would
 recommend installing Debian_ to replace or complement (dual-boot) your
 existing OS.  Please visit `"Getting Debian"
