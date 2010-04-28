@@ -140,7 +140,7 @@ Installation
 Virtual Machine
 ---------------
 
-If your are not running a Debian_ on a particular machine a :ref:`chap_vm` is
+If your are not running Debian_ on a particular machine a :ref:`chap_vm` is
 provided as a convenient testing and evaluation environment.  After a
 few simple steps to setup the virtual machine, you will be able to use
 NeuroDebian_ as an integral part of your existing working
@@ -166,19 +166,19 @@ The Team
 
 Our main goal is to provide neuroscience FOSS for Debian_. Thus the
 whole project would not be possible without the work of over 3,000
-Debian_ developers and contributors who are as enthusiastically share
-our goal.  To provide our share -- Debian_ packages of FOSS for
-neuroscience research -- `Experimental Psychology Debian packaging
+Debian_ developers and contributors who are enthusiastically share
+our goal.  To add our share -- Debian_ packages of FOSS for
+neuroscience research -- the `Experimental Psychology Debian packaging
 project <http://alioth.debian.org/projects/pkg-exppsy>`_ was created
 to formally join the forces of
 
 * `Michael Hanke <http://mih.voxindeserto.de>`_
 * `Yaroslav Halchenko <http://www.onerussian.com>`_
 
-Some packages provided within NeuroDebian repository were not packaged
+Some packages provided within the NeuroDebian repository were not packaged
 by our team, but were provided by similar Debian teams.  Therefore we
 want to express particular gratitude to `Debian Med`_ and `Debian
-Science`_ teams for making our job easier.
+Science`_ teams for making their efforts.
 
 
 Contacts

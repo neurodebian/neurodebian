@@ -3,24 +3,21 @@
 Spread The Word
 ===============
 
-Are you relying on a software packaged by |team| which is part of the
-main Debian_ distribution?  Or may be you are relying on the
-NeuroDebian |repos|?  Do you think that our efforts to make
-neuroscience FOSS readily available were worthwhile and you think that
-"it is the way to go"?  If so, it would benefit you, our project, and
-even the entire neuroscience community if more people become aware of
-Debian_ and NeuroDebian_ in particular.  Sharing your positive
-experience with your friends and/or colleagues could be one of the
-ways, alternatively you could...
+Are you relying on a particular software packaged by |team| that is part
+of the main Debian_ distribution?  Or do you rely on the NeuroDebian
+|repos|?  If you think that this project is useful, please help us to
+make more people aware of Debian_ and NeuroDebian_ in particular.
+Sharing your positive experience with your friends and/or colleagues
+is one possibility. Alternatively you could...
 
 
 Rate or review
 --------------
 
-NeuroDebian_ is `present on NITRC portal
+NeuroDebian_ is `listed on the NITRC portal
 <http://www.nitrc.org/projects/neurodebian/>`_.  We would greatly
-appreciate if you rate or express you opinion and/or gratitude in a
-review (see "Reviews & Ratings").
+appreciate if you rate it or express you opinion in a review (see
+"Reviews & Ratings").
 
 
 Reference from your website
