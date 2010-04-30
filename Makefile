@@ -26,7 +26,7 @@ distclean: clean
 
 
 source: source-stamp
-source-stamp:
+source-stamp: build/db.db
 	PYTHONPATH=. python neurodebian/dde.py \
 		--cfg neurodebian.cfg \
 		--db build/db.db \
