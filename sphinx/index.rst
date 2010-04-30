@@ -30,7 +30,7 @@ News
  new TWTR.Widget({
    version: 2,
    type: 'profile',
-   rpp: 4,
+   rpp: 10,
    interval: 6000,
    width: 'auto',
    height: 150,
