@@ -187,7 +187,7 @@ to formally join the forces of
 A number of packages that are now provided within the NeuroDebian repository
 were not packaged by our team, but similar Debian teams.  Therefore we want to
 express particular gratitude to `Debian Med`_ and `Debian Science`_ teams for
-making their efforts.
+all their work.
 
 
 Contacts
