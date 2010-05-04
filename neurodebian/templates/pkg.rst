@@ -18,11 +18,11 @@ External links:
   {%- endif -%}
   {% if db.blends %}{% for blend, name, url in db.blends.tasks -%}
   {%- if blend == 'debian-med' -%}
-  <a href="{{ url }}">
+  <a href="{{ url }}#{{ pkg }}">
   <img border="0" src="../_static/debianmed.png" title="Part of Debian Med {{ name }} task" /></a>
   {%- endif -%}
   {%- if blend == 'debian-science' -%}
-  <a href="{{ url }}">
+  <a href="{{ url }}#{{ pkg }}">
   <img border="0" src="../_static/debianscience.png" title="Part of Debian Science {{ name }} task" /></a>
   {%- endif -%}
   {%- endfor -%}
