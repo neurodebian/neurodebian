@@ -190,8 +190,8 @@ express particular gratitude to `Debian Med`_ and `Debian Science`_ teams for
 all their work.
 
 
-Contacts
-========
+Contact
+=======
 
 `Email us <team@neuro.debian.net>`_ if you have any suggestions or
 simply |spread| if you liked it.
