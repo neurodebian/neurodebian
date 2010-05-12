@@ -87,7 +87,11 @@ Debian, Debian, Debian -- What about Ubuntu?
   it is more efficient to spend time packaging for Debian. After the appearance
   of new packages in Debian, Ubuntu typically synchronizes them quickly and
   they become available in the *Ubuntu universe* -- a repository of Debian
-  packages rebuilt for a particular Ubuntu release.
+  packages rebuilt for a particular Ubuntu release.  We are not doing
+  rebuilding all already available in NeuroDebian packages for new Ubuntu
+  releases.  So you might find some packages present at NeuroDebian for older
+  Ubuntu releases being absent from newer releases until the point when a new
+  Debian version of the package comes out and gets built for all releases.
 
 
 How to create a mirror of the repository?
