@@ -66,7 +66,13 @@ News
  }).render().setUser('NeuroDebian').start();
  </script>
 
+Follow us on twitter_ to subscribe to the NeuroDebian news.
+
+.. _twitter: http://twitter.com/NeuroDebian
+
 .. _repository_howto:
+
+
 
 How to use this repository
 ==========================
