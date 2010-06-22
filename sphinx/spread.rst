@@ -4,7 +4,7 @@ Spread The Word
 ===============
 
 Are you relying on a particular software packaged by |team| that is part
-of the main Debian_ distribution?  Or do you rely on the NeuroDebian
+of the main Debian_ distribution?  Or do you rely on the
 |repos|?  If you think that this project is useful, please help us to
 make more people aware of Debian_ and NeuroDebian_ in particular.
 Sharing your positive experience with your friends and/or colleagues

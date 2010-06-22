@@ -5,20 +5,17 @@
 ***********************************************
 
 This repository provides mostly neuroscience-related packages to be used on
-Debian systems (or Debian-derivatives like Ubuntu). It contains both unofficial
-or prospective packages which are not (yet) available from the main Debian
-archive, as well backported or simply rebuilt packages also available
+Debian_ systems (or Debian-derivatives like Ubuntu_). It contains both unofficial
+or prospective packages which are not (yet) available from the main Debian_
+archive, as well as backported or simply rebuilt packages also available
 elsewhere. Please see the :ref:`faq` for more information about the goals of
 this project.
 
 This service is provided "as is". There is no guarantee that a package
-works as expected, so use them at your own risk. They might kill your
-system (although that is rather unlikely). You've been warned!
+works as expected, so use them at your own risk. If you encounter problems,
+please `report <#contact>`_ them.
 
-The repository contains both neuroscience-related packages, as well as general
-purpose software which is necessary to resolve dependencies, or such that is
-simply useful in the neuroscience context. All featured neuroscience software
-packages are available from the :ref:`full package list <full_pkg_list>`.
+Please |spread|, if you like it.
 
 .. raw:: html
 
@@ -28,6 +25,7 @@ packages are available from the :ref:`full package list <full_pkg_list>`.
  <a href="debian/pool"><img border="0" src="_static/pool.png" title="Go to the package pool (deep and cold, only for experts)" /></a>
  </p>
 
+.. _Ubuntu: http://www.ubuntu.com
 
 News
 ====
@@ -131,8 +129,8 @@ Or you will be asked questions like this over and over::
   Install these packages without verification [y/N]?
 
 This is because your APT installation initially does not know the GPG
-key that is used to sign the release files of this repository. Making
-APT happy again is easy:
+key that is used to sign the release files of this repository. It is easy to
+make APT happy again:
 
 1. Get the key. Either download the `repository key from here
    <_static/neuro.debian.net.asc>`_
@@ -155,11 +153,14 @@ Installation
 Virtual Machine
 ---------------
 
-If your are not running Debian_ on a particular machine a :ref:`chap_vm` is
-provided as a convenient testing and evaluation environment.  After a
-few simple steps to setup the virtual machine, you will be able to use
-NeuroDebian_ as an integral part of your existing working
-environment without any sacrifice.
+If you are not running Debian_ on a particular machine a :ref:`chap_vm` is
+provided as a convenient testing and evaluation environment.  After a few
+simple steps to setup the virtual machine, you will be able to use NeuroDebian_
+as an integral part of your existing working environment without any sacrifice.
+The virtual machine is also a suitable environment to temporarily deploy
+neuroscience software on machines running other operating systems, e.g. for the
+purpose of teaching a neuroimaging data analysis course in a multipurpose
+computer lab.
 
 
 Debian
@@ -179,10 +180,10 @@ hardware architecture and then simply add |repos|.
 The Team
 ========
 
-Our main goal is to provide neuroscience FOSS for Debian_. Thus the
+Our main goal is to provide neuroscience FOSS_ for Debian_. Thus the
 whole project would not be possible without the work of over 3,000
 Debian_ developers and contributors who are as enthusiastically pursuing
-a similar goal.  To add our share -- Debian_ packages of FOSS for
+a similar goal.  To add our share -- Debian_ packages of FOSS_ for
 neuroscience research -- the `Experimental Psychology Debian packaging
 project <http://alioth.debian.org/projects/pkg-exppsy>`_ was created
 to formally join the forces of
@@ -190,17 +191,19 @@ to formally join the forces of
 * `Michael Hanke <http://mih.voxindeserto.de>`_
 * `Yaroslav Halchenko <http://www.onerussian.com>`_
 
-A number of packages that are now provided within the NeuroDebian repository
+A number of packages that are now available from the NeuroDebian repository
 were not packaged by our team, but similar Debian teams.  Therefore we want to
-express particular gratitude to `Debian Med`_ and `Debian Science`_ teams for
-all their work.
+express particular gratitude to the `Debian Med`_ and `Debian Science`_ teams
+for all their work.
+
+.. _FOSS: http://en.wikipedia.org/wiki/Free_and_open_source_software
 
 
 Contact
 =======
 
-`Email us <team@neuro.debian.net>`_ if you have any suggestions or
-simply |spread| if you liked it.
+`Email us <team@neuro.debian.net>`_ if you have any suggestions or want to
+report a problem.
 
 .. toctree::
    :hidden:

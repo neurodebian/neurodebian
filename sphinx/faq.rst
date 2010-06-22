@@ -17,21 +17,21 @@ Frequently Asked Questions
 Why NeuroDebian?
 ----------------
 
-  In the course of our research endeavors |we| have joined the forces to
-  develop a `PyMVPA -- Python framework for multivariate pattern analysis of
-  neural data <http://www.pymvpa.org>`_.  To provide convenient deployment for
-  anyone using Debian-derived distribution this package repository was
-  created.  Besides PyMVPA_ project |we| collaborate with `NiPy team
+  In the course of our own research endeavors |we| have joined forces to
+  develop `PyMVPA -- a Python framework for multivariate pattern analysis of
+  neural data <http://www.pymvpa.org>`_.  To conveniently deployment PyMVPA for
+  anyone using Debian-derived distributions this package repository was created
+  initially.  Besides the PyMVPA_ project |we| collaborate with the `NiPy team
   <http://neuroimaging.scipy.org>`_ on various projects, such as NiBabel_ and
-  NiPype_.  Quickly NeuroDebian_ became our ultimate delivery mechanism for
-  all the projects we develop and package, so they are readily available for
-  deployment.
+  NiPype_.  Quickly NeuroDebian_ became the ultimate integrated environment for
+  all these projects. We are now constantly working on enriching this
+  environment with as many additional relevant software as possible.
 
 
 Why is NeuroDebian not a Pure Blend?
 ------------------------------------
 
-  Because there is not need for it to become one, as the existing Debian Pure
+  Because there is no need for it to become one, as the existing Debian Pure
   Blends already offer the desired functionality *within* Debian. Similar to
   Pure Blends, NeuroDebian's goal is to provide software for neuroscientists
   using the Debian operating system, and therefore the ultimate goal is to get
@@ -39,7 +39,7 @@ Why is NeuroDebian not a Pure Blend?
 
   However, various reasons exist that prevent a particular software from
   entering Debian. Some are temporary, i.e. a package is already useable, but
-  some technical bits do not meet Debian's standard yet or a licensing issue
+  some technical bits do not meet Debian's standards (yet) or a licensing issue
   needs to be resolved first. For some software the licensing is so restrictive
   that it cannot be distributed by Debian, and hence cannot even go into its
   *non-free* branch. Unfortunately, sometimes these issues cannot be solved to
@@ -87,12 +87,11 @@ Debian, Debian, Debian -- What about Ubuntu?
   it is more efficient to spend time packaging for Debian. After the appearance
   of new packages in Debian, Ubuntu typically synchronizes them quickly and
   they become available in the *Ubuntu universe* -- a repository of Debian
-  packages rebuilt for a particular Ubuntu release.  We are not carrying out
-  rebuilding of all already available in NeuroDebian packages for new Ubuntu
-  releases.  So you might find some packages present solely at NeuroDebian for
-  older Ubuntu releases being absent from newer releases until the point when
-  a new Debian version of the package comes out and gets built for all
-  releases.
+  packages rebuilt for a particular Ubuntu release.  We are not constantly
+  rebuilding of all available NeuroDebian packages for new Ubuntu
+  releases.  Therefore, you might find some packages only being available
+  for older Ubuntu releases -- until the point when a new package version is
+  made and gets built for all currently supported releases.
 
 
 How to create a mirror of the repository?
