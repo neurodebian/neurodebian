@@ -212,7 +212,6 @@ report a problem.
    pkgs
    spread
    vm
-   links_names
    substitutions
 
 .. probably should be purged altogether
@@ -222,6 +221,7 @@ report a problem.
    livecd
    gpg
    setup
+   links_names
 
 .. include:: links_names.rst
 .. include:: substitutions.rst
