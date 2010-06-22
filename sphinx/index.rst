@@ -1,4 +1,4 @@
-.. _welcome:
+.. _WELCOme:
 
 ***********************************************
  Welcome to the Debian Neuroscience Repository
@@ -212,8 +212,6 @@ report a problem.
    pkgs
    spread
    vm
-   links_names
-   substitutions
 
 .. probably should be purged altogether
 .. toctree::
@@ -222,6 +220,8 @@ report a problem.
    livecd
    gpg
    setup
+   links_names
+   substitutions
 
 .. include:: links_names.rst
 .. include:: substitutions.rst
