@@ -16,6 +16,7 @@ from ConfigParser import SafeConfigParser
 from optparse import OptionParser, Option, OptionGroup, OptionConflictError
 import sys
 import os
+import copy
 import shutil
 import urllib2
 import urllib
@@ -154,7 +155,7 @@ def add_pkgfromtaskfile(db, urls):
 def get_emptydbentry():
     return {'main': {}}
 
-def import_blendstask(db, url):
+def import_blendstask(cfg, db, url):
     cache = AptListsCache()
     fh = cache.get(url)
     task_name = None
@@ -251,6 +252,16 @@ def import_blendstask(db, url):
             else:
                 # just add this tasks name and id
                 db[p]['blends']['tasks'].append(task)
+
+            # handle pkg name aliases
+            if p in cfg.options('blend package aliases'):
+                src_entry = db[p].copy()
+                # remove original entry
+                del db[p]
+                # copy the entry into all aliases
+                for alias in cfg.get('blend package aliases', p).split():
+                    print "Aliasing %s to %s" % (p, alias)
+                    db[alias] = copy.deepcopy(src_entry)
 
     return db
 
@@ -697,7 +708,7 @@ def main():
         # get info from task files
         if cfg.has_option('packages', 'prospective'):
             for url in cfg.get('packages', 'prospective').split():
-                db = import_blendstask(db, url)
+                db = import_blendstask(cfg, db, url)
 
         # parse NeuroDebian repository
         if cfg.has_option('neurodebian', 'releases'):
