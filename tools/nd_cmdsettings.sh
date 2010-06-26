@@ -6,7 +6,7 @@ cowbuilderroot="/home/neurodebian"
 buildplace="${cowbuilderroot}/build"
 
 # all cuurently supported dists
-alldists="nd+debian-lenny nd+debian-squeeze nd+debian-sid \
+alldists="nd+debian-lenny nd+debian-squeeze \
           nd+ubuntu-lucid nd+ubuntu-karmic nd+ubuntu-jaunty"
 
 # default is debian
