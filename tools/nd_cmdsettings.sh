@@ -7,7 +7,7 @@ buildplace="${cowbuilderroot}/build"
 
 # all cuurently supported dists
 alldists="nd+debian-lenny nd+debian-squeeze \
-          nd+ubuntu-lucid nd+ubuntu-karmic nd+ubuntu-jaunty"
+          nd+ubuntu-maverick nd+ubuntu-lucid nd+ubuntu-karmic nd+ubuntu-jaunty"
 
 # default is debian
 aptcache="${cowbuilderroot}/debian_aptcache"
