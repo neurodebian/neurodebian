@@ -83,15 +83,17 @@ Debian, Debian, Debian -- What about Ubuntu?
 --------------------------------------------
 
   NeuroDebian offers backported binary packages for recent Ubuntu releases
-  whenever possible. However, since Ubuntu is a rather thin shell around Debian
-  it is more efficient to spend time packaging for Debian. After the appearance
-  of new packages in Debian, Ubuntu typically synchronizes them quickly and
-  they become available in the *Ubuntu universe* -- a repository of Debian
-  packages rebuilt for a particular Ubuntu release.  We are not constantly
-  rebuilding of all available NeuroDebian packages for new Ubuntu
-  releases.  Therefore, you might find some packages only being available
-  for older Ubuntu releases -- until the point when a new package version is
-  made and gets built for all currently supported releases.
+  whenever possible. However, since Ubuntu (like many other derivatives) uses
+  Debian as its foundation, it is more efficient to spend time maintaining
+  packages in Debian, instead of having to directly contribute to countless
+  child-distributions.  After the appearance of new packages in Debian, Ubuntu
+  typically synchronizes them quickly and they become available in the *Ubuntu
+  universe* -- a repository of Debian packages rebuilt for a particular Ubuntu
+  release.  We are not constantly rebuilding of all available NeuroDebian
+  packages for new Ubuntu releases.  Therefore, you might find some packages
+  temporarily being available for older Ubuntu releases only -- until the point
+  when a new package version is made and gets built for all currently supported
+  releases.
 
 
 How to create a mirror of the repository?
