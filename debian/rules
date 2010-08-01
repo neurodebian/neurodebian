@@ -1,0 +1,13 @@
+#!/usr/bin/make -f
+
+# one ring to rule them all ...
+%:
+	dh $@
+
+override_dh_auto_configure:
+
+override_dh_auto_build::
+
+override_dh_auto_install::
+
+override_dh_auto_test::

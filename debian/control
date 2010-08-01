@@ -1,0 +1,19 @@
+Source: neurodebian
+Section: science
+Priority: optional
+Maintainer: NeuroDebian Team <team@neuro.debian.net>
+Uploaders: Michael Hanke <michael.hanke@gmail.com>, Yaroslav Halchenko <debian@onerussian.com>
+Build-Depends: debhelper (>= 7.0.50~)
+Standards-Version: 3.9.0
+Homepage: http://neuro.debian.net
+Vcs-Browser: http://git.debian.org/?p=pkg-exppsy/neurodebian.git
+Vcs-Git: git://git.debian.org/git/pkg-exppsy/neurodebian.git
+XS-DM-Upload-Allowed: yes
+
+
+Package: neurodebian
+Architecture: all
+Depends: ${misc:Depends}
+Suggests:
+Description: neuroscience research environment
+ Pacifier

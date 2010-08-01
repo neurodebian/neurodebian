@@ -1,0 +1,11 @@
+Format-Specification: http://wiki.debian.org/Proposals/CopyrightFormat
+Name: NeuroDebian
+Maintainer: NeuroDebian team <team@neuro.debian.net>
+Source: http://neuro.debian.net
+
+
+Files: *
+Copyright: 2009-2010 NeuroDebian Team
+License: GPL-3+
+ On Debian systems the full text of the GNU General Public License can be found
+ in the `/usr/share/common-licenses/GPL-3' file.
