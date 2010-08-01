@@ -7,6 +7,9 @@
 override_dh_auto_configure:
 
 override_dh_auto_build::
+	# wallpaper
+	[ ! -d build/wallpaper ] && mkdir -p build/wallpaper
+	xcf2png -o build/wallpaper/neurodebian.png artwork/wallpaper_hotbrain.xcf
 
 override_dh_auto_install::
 
