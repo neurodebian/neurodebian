@@ -17,3 +17,11 @@ Depends: ${misc:Depends}
 Suggests:
 Description: neuroscience research environment
  Pacifier
+
+
+Package: neurodebian-dev
+Architecture: all
+Depends: ${misc:Depends}
+Suggests:
+Description: NeuroDebian development tools
+ Pacifier
