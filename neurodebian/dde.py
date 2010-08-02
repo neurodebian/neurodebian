@@ -498,7 +498,7 @@ def import_dde(cfg, db):
                 if q.has_key('popcon'):
                     db[p]['main']['debian_popcon'] = q['popcon']
                 # if we have debian, need to get ubuntu
-                q = dde_get(query_url + "/packages/prio-ubuntu-karmic/%s" % p)
+                q = dde_get(query_url + "/packages/prio-ubuntu-lucid/%s" % p)
                 if q and q.has_key('popcon'):
                     db[p]['main']['ubuntu_popcon'] = q['popcon']
             else:
