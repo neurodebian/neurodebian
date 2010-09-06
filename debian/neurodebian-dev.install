@@ -1,1 +1,4 @@
 tools/backport-dsc usr/bin/
+neurodebian.cfg /etc/neurodebian/
+pkgs usr/share/neurodebian/
+sphinx usr/share/neurodebian/
