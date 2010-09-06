@@ -19,7 +19,7 @@ bp_update_maintainer=1
 # whether or not to apply backport patches found in a package
 bp_apply_patches=1
 # produce fancy colored output
-bp_color_output=1'
+bp_color_output=1
 # enables additional status message if set to true
 bp_verbose=0
 # sed expressions to modify debian/control
