@@ -19,7 +19,7 @@ bp_update_maintainer=1
 # whether or not to apply backport patches found in a package
 bp_apply_patches=1
 # produce fancy colored output
-bp_color_output=1
+bp_color_output=1'
 # enables additional status message if set to true
 bp_verbose=0
 # sed expressions to modify debian/control
@@ -67,7 +67,7 @@ for format 3.0 (quilt) source packages) and allow modification of debian/control
 via arbitrary 'sed' expressions.
 
 Backport relevant patches can be embedded in source packages for use with
-backport-dsc. The distribution name (see --target-dsitribution) serves as an
+backport-dsc. The distribution name (see --target-distribution) serves as an
 identifier to search for patches in the source package that shall be applied
 for a particular distribution. For packages using format the 3.0 (quilt),
 backport-dsc will look for debian/patches/series-<distname> and append it to
@@ -108,7 +108,7 @@ Options:
 
 --mod-control <expression>
   sed expression to modify debian/control. The option can be given multiple
-  times and all expressions wil be passed to sed in the order of appearance.
+  times and all expressions will be passed to sed in the order of appearance.
   This can be used to, e.g. change build or runtime dependencies.
 
 --no-backport-patches
@@ -124,7 +124,7 @@ Options:
   backport and identify herself as the maintainer.
 
 -s <string>, --version-suffix <string>
-  Version suffix that will be appended to the orginal source package version,
+  Version suffix that will be appended to the original source package version,
   ideally indicating the backport target distribution. The resulting package
   version will follow this schema:
 
@@ -158,7 +158,7 @@ backport-dsc -d myown-backports -v mo2010 examplepkg_1.2.3-4.dsc
   Create backport for some custom distribution with custom version suffix.
 
 backport-dsc -d ubuntu-lucid -v myppa --mod-control "-e 's/iceweasel/firefox/g'" examplepkg_1.2.3-4.dsc
-  Create a backport for a fake ubuntu PPA repository, replacing all occurences
+  Create a backport for a fake Ubuntu PPA repository, replacing all occurrences
   of iceweasel in debian/control with firefox.
 
 
@@ -176,7 +176,7 @@ bp_distribution="lenny-backports"
 bp_version_suffix="bpo50"
   Version suffix (see --version-suffix)
 
-bp_maintainer_name="Unkown fellow"
+bp_maintainer_name="Unknown fellow"
   Name of the backport maintainer (see --maint-name)
 
 bp_maintainer_email="user@example.net"
