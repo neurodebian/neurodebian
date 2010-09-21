@@ -213,7 +213,9 @@ communication channels within the NeuroDebian community
 * neurodebian-users_: Discussions and support of NeuroDebian users
 
 * neurodebian-upstream_: General discussions and knowledge sharing
-  among developers of the neuroscience software
+  among developers of the neuroscience software.  We will also use it
+  to update you with summaries of recent relevant developments in
+  Debian project
 
 * neurodebian-devel_: Technical mailing list for discussions on
   NeuroDebian development
