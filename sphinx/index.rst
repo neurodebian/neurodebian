@@ -202,11 +202,26 @@ for all their work.
 .. _FOSS: http://en.wikipedia.org/wiki/Free_and_open_source_software
 
 
-Contact
-=======
+Contacts
+========
 
-`Email us <team@neuro.debian.net>`_ if you have any suggestions or want to
-report a problem.
+`Email us directly <team@neuro.debian.net>`_ with any "private"
+communication.  Otherwise please use our public mailing lists, which
+exist not only to provide user-support but also to establish
+communication channels within the NeuroDebian community
+
+* neurodebian-users_: Discussions and support of NeuroDebian users
+
+* neurodebian-upstream_: General discussions and knowledge sharing
+  among developers of the neuroscience software
+
+* neurodebian-devel_: Technical mailing list for discussions on
+  NeuroDebian development
+
+.. _neurodebian-users: http://lists.alioth.debian.org/mailman/listinfo/neurodebian-users
+.. _neurodebian-devel: http://lists.alioth.debian.org/mailman/listinfo/neurodebian-devel
+.. _neurodebian-upstream: http://lists.alioth.debian.org/mailman/listinfo/neurodebian-upstream
+
 
 .. toctree::
    :hidden:
