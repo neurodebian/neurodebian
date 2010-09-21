@@ -54,7 +54,7 @@ etckeeper init
 aptitude install module-assistant
 module-assistant prepare
 # note guest additions for 3.1.2 are broken, use 3.1.0
-bash /media/cdrom/VBoxLinuxAdditions-amd64.run (need 2.6.27+ kernel for direct rendering)
+bash /media/cdrom/VBoxLinuxAdditions-x86.run (need 2.6.27+ kernel for direct rendering)
 #make sure that xorg.conf has 'vboxvideo' as device driver and also
 echo "vboxvideo" >> /etc/modules
 
