@@ -25,3 +25,13 @@ Depends: ${misc:Depends}, devscripts
 Suggests:
 Description: NeuroDebian development tools
  Pacifier
+
+
+Package: neurodebian-desktop
+Architecture: all
+Depends: ${misc:Depends}
+Suggests:
+Description: neuroscience research environment
+ Pacifier
+
+
