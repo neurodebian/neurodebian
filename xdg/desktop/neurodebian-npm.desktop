@@ -1,0 +1,9 @@
+[Desktop Entry]
+Encoding=UTF-8
+GenericName=Non-parametric MRI Analysis
+Name=NPM
+Exec=npm
+Type=Application
+Terminal=false
+Categories=X-NeuroDebian-MedicalImaging
+Icon=mricron.xpm

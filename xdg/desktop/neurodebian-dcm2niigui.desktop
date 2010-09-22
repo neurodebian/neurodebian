@@ -1,0 +1,10 @@
+[Desktop Entry]
+Encoding=UTF-8
+GenericName=DICOM to NIfTI Conversion
+GenericName[ru]=Конвертор из DICOM в NIfTI
+Name=dcm2nii
+Exec=dcm2niigui %F
+Type=Application
+Terminal=false
+Categories=X-NeuroDebian-MedicalImaging
+Icon=mricron.xpm

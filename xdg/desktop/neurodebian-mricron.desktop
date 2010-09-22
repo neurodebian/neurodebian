@@ -1,0 +1,11 @@
+[Desktop Entry]
+Encoding=UTF-8
+GenericName=2D/3D MRI Image Viewer
+GenericName[de]=2D/3D Betrachter für MRT-Daten
+GenericName[ru]=Просмотр 2D/3D МРТ-данных
+Name=MRIcron
+Exec=mricron %F
+Type=Application
+Terminal=false
+Categories=X-NeuroDebian-MedicalImaging
+Icon=mricron.xpm

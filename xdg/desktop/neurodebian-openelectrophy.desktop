@@ -1,0 +1,10 @@
+[Desktop Entry]
+Encoding=UTF-8
+GenericName=Electrophysiological Data Analysis
+GenericName[de]=Elektrophysiologische Daten-Analyse
+Name=OpenElectrophy
+Exec=openelectrophy
+Type=Application
+Terminal=false
+Categories=X-NeuroDebian-Electrophysiology
+Icon=openelectrophy.png

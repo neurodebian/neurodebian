@@ -1,0 +1,12 @@
+[Desktop Entry]
+Encoding=UTF-8
+GenericName=MRI Image Viewer
+GenericName[de]=Betrachter für MRT-Daten
+Name=FSLView
+Exec=fslview %F
+Type=Application
+Terminal=false
+Comment=This program is part of FSL
+Comment[de]=Dieses Programm gehört zu FSL
+Categories=X-NeuroDebian-MedicalImaging
+Icon=fslview.xpm

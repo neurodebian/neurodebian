@@ -1,0 +1,40 @@
+<!DOCTYPE Menu PUBLIC "-//freedesktop//DTD Menu 1.0//EN"
+    "http://www.freedesktop.org/standards/menu-spec/menu-1.0.dtd">
+<Menu>
+    <Name>Applications</Name>
+<Menu>
+    <Name>neurodebian-main</Name>
+    <Directory>neurodebian.directory</Directory>
+    <Include>
+        <Category>X-NeuroDebian</Category>
+    </Include>
+<Menu>
+    <Name>neurodebian-electrophysiology</Name>
+    <Directory>neurodebian-electrophysiology.directory</Directory>
+    <Include>
+        <Category>X-NeuroDebian-Electrophysiology</Category>
+    </Include>
+</Menu>
+<Menu>
+    <Name>neurodebian-imaging</Name>
+    <Directory>neurodebian-imaging.directory</Directory>
+    <Include>
+        <Category>X-NeuroDebian-MedicalImaging</Category>
+    </Include>
+</Menu>
+<Menu>
+    <Name>neurodebian-psychophysics</Name>
+    <Directory>neurodebian-psychophysics.directory</Directory>
+    <Include>
+        <Category>X-NeuroDebian-Psychophysics</Category>
+    </Include>
+</Menu>
+<Menu>
+    <Name>neurodebian-support</Name>
+    <Directory>neurodebian-support.directory</Directory>
+    <Include>
+        <Category>X-NeuroDebian-Support</Category>
+    </Include>
+</Menu>
+</Menu>
+</Menu>

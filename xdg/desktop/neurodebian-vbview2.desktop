@@ -1,0 +1,8 @@
+[Desktop Entry]
+Encoding=UTF-8
+GenericName=VoxBo Image Viewer
+Name=VBView2
+Exec=vbview2 %F
+Type=Application
+Terminal=false
+Categories=X-NeuroDebian-MedicalImaging
