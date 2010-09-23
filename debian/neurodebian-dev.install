@@ -2,5 +2,6 @@ tools/backport-dsc usr/bin/
 tools/nd_querycfg usr/bin/
 tools/nd_backport usr/bin/
 neurodebian.cfg /etc/neurodebian/
+cmdsettings.sh /etc/neurodebian/
 pkgs usr/share/neurodebian/
 sphinx usr/share/neurodebian/
