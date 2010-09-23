@@ -15,7 +15,7 @@ fi
 
 
 
-. /home/neurodebian/neurodebian.git/tools/nd_cmdsettings.sh
+. /etc/neurodebian/cmdsettings.sh
 
 for d in $alldists; do
   dfamily=${d%%-*}

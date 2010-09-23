@@ -35,7 +35,7 @@ if [ -z "$arch" ]; then
   exit 1
 fi
 
-. /home/neurodebian/neurodebian.git/tools/nd_cmdsettings.sh
+. /etc/neurodebian/cmdsettings.sh
 
 # common options
 opts="--distribution $dist --aptcache $aptcache --buildplace $buildplace"

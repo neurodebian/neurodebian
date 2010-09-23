@@ -16,7 +16,7 @@ if [ -z "$dist" ]; then
 fi
 
 
-. /home/neurodebian/neurodebian.git/tools/nd_cmdsettings.sh
+. /etc/neurodebian/cmdsettings.sh
 
 # common options
 opts="--distribution $dist --debootstrap debootstrap --aptcache $aptcache"
