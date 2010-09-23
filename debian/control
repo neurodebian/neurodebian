@@ -21,13 +21,21 @@ Description: neuroscience research environment
 
 Package: neurodebian-dev
 Architecture: all
-Depends: ${misc:Depends}, devscripts
+Depends: ${misc:Depends}, devscripts, cowbuilder, python
 Suggests:
 Description: NeuroDebian development tools
  Pacifier
 
 
 Package: neurodebian-desktop
+Architecture: all
+Depends: ${misc:Depends}
+Suggests:
+Description: neuroscience research environment
+ Pacifier
+
+
+Package: neurodebian-trailer
 Architecture: all
 Depends: ${misc:Depends}
 Suggests:
