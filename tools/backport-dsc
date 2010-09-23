@@ -236,7 +236,7 @@ eval set -- "$CLOPTS"
 while true ; do
   case "$1" in
 	  -d|--target-distribution) shift; bp_distribution=$1; shift;;
-	  -s|--version-suffix) shift; backport_version=$1; shift;;
+	  -s|--version-suffix) shift; bp_version_suffix=$1; shift;;
 	  --maint-name) shift; bp_maintainer_name=$1; shift;;
 	  --maint-email) shift; bp_maintainer_email=$1; shift;;
 	  --no-maintainer-update) bp_update_maintainer=0; shift;;
