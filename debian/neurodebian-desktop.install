@@ -1,4 +1,5 @@
 build/wallpaper/neurodebian.png usr/share/backgrounds
+build/icons/* usr/share/pixmaps
 xdg/neurodebian.menu etc/xdg/menus/applications-merged
 xdg/directories/* usr/share/desktop-directories
 xdg/desktop/* usr/share/applications
