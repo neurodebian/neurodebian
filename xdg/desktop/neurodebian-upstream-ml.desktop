@@ -1,7 +1,7 @@
 [Desktop Entry]
-Name=User Mailing List Archive
+Name=Upstream Mailing List Archive
 Type=Application
-Exec=x-www-browser "http://lists.alioth.debian.org/pipermail/neurodebian-users"
+Exec=x-www-browser "http://lists.alioth.debian.org/pipermail/neurodebian-upstream"
 Comment=Opens the list archive in a browser window
 Icon=help-browser
 Categories=X-NeuroDebian-Support
