@@ -33,5 +33,7 @@ backport-dsc \
 	--maint-email "team@neuro.debian.net" \
 	--target-distribution "$release" \
 	--version-suffix "$(nd_querycfg "release backport ids" "$release")" \
-	--mod-control 's/^Depends:.*$/&, neurodebian-trailer/' \
 	"$dscfile"
+
+# not adding the auto-dep for now
+#	--mod-control 's/^Depends:.*$/&, neurodebian-trailer/' \
