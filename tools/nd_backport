@@ -1,18 +1,18 @@
 #!/bin/bash
+#
+# Simple frontend for backport-dsc to do it the NeuroDebian way
+#
+
+set -e
+set -u
 
 release=$1
 dscfile=$2
-
-set -e
 
 if [ -z "$release" ]; then
   echo "You need to provide a distribution codename (e.g. 'lenny', 'squeeze')."
   exit 1
 fi
-
-
-set -e
-set -u
 
 if [ -z "$2" ]; then
 cat << EOT
@@ -27,41 +27,11 @@ EOT
 exit 1
 fi
 
-. /home/neurodebian/neurodebian.git/tools/nd_cmdsettings.sh
-
-DEBEMAIL="team@neuro.debian.net"
-DEBFULLNAME="NeuroDebian Maintainers"
-export DEBEMAIL DEBFULLNAME
-
-srcname=${dscfile%%_*}
-srcversion=${dscfile#*_}
-srcversion=${srcversion%%.dsc}
-wdir=$(mktemp -d -t nd_backport.XXXXXX)
-sdir=$wdir/${srcname}-${srcversion}
-
-echo "Source package name: $srcname"
-echo "Source package version: $srcversion"
-echo "Extracting source package to: $sdir"
-
-dpkg-source -x $dscfile $sdir
-
-echo "Backporting to: $release"
-
-changelog_entry="Backport of Debian package version $srcversion for \
-NeuroDebian. Problems with the backport should be reported to the
-NeuroDebian maintainers and not to the original Debian maintainer."
-
-echo | debchange \
-         --noconf --force-bad-version \
-         -c $sdir/debian/changelog \
-         -D ${release} \
-         -b -l "~${release}.nd" \
-         $changelog_entry
-
-bpversion=$(dpkg-parsechangelog -l$sdir/debian/changelog | egrep '^Version: ' | cut -d ' ' -f 2,2)
-dpkg-source -b $sdir
-
-# cleanup
-rm -rf $wdir
-
-echo ${srcname}_$bpversion.dsc
+# assemble an appropriate backport-dsc call
+backport-dsc \
+	--maint-name "NeuroDebian Maintainers" \
+	--maint-email "team@neuro.debian.net" \
+	--target-distribution "$release" \
+	--version-suffix "$(nd_querycfg "release backport ids" "$release")" \
+	--mod-control 's/^Depends:.*$/&, neurodebian-trailer/' \
+	"$dscfile"
