@@ -1,0 +1,14 @@
+#!/usr/bin/python
+#
+# Dead simple script to query the NeuroDebian dev config.
+#
+import sys
+from ConfigParser import SafeConfigParser
+
+# XXX add check if it is there at all
+# XXX support more locations
+cfg_path="/etc/neurodebian/neurodebian.cfg"
+
+cfg = SafeConfigParser()
+cfg.read(cfg_path)
+print cfg.get(sys.argv[1], sys.argv[2])
