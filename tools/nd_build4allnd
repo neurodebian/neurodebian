@@ -21,6 +21,6 @@ for d in $alldists; do
   dfamily=${d%%-*}
   drelease=${d##*-}
 
-  bpdsc=$(nd_backport $drelease $1 | tail -n1)
+  bpdsc=$(nd_backport $drelease $1 | tail -n1 | sed -e 's/^.* //g')
   nd_build $dfamily $drelease $bpdsc
 done
