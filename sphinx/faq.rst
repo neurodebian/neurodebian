@@ -107,12 +107,17 @@ How to create a mirror of the repository?
 How do I get a new neuroscience-related FOSS into (Neuro)Debian?
 ----------------------------------------------------------------
 
-  * You can approach packaging it yourself (file an ITP_ (Intent to package)
-    bugreport) and `ask us <team@neuro.debian.net>`_ to mentor your upload to
-    Debian_ if you are not a Debian developer.
+The goal of NeuroDebian is to package neuroscience software for Debian. Hence
+getting software into NeuroDebian means trying to get it into Debian. There are
+at least two possibilities to achieve that:
 
-  * `Contact us <team@neuro.debian.net>`_, but then it might take longer
-    depending on our workload and interest to the particular software.
+* You can approach packaging it yourself. Start by filing an ITP_ (Intent to
+  package) bugreport) and `ask us <team@neuro.debian.net>`_ to mentor your
+  upload to Debian_, if you are not a Debian developer.
+
+* `Contact us <team@neuro.debian.net>`_ -- but then it might take a little
+  longer, depending on our current workload and interest in a particular
+  software.
 
 
 I have heard that some packages are non-free. Will you charge me for them?
