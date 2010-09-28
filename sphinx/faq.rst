@@ -115,5 +115,19 @@ How do I get a new neuroscience-related FOSS into (Neuro)Debian?
     depending on our workload and interest to the particular software.
 
 
+I have heard that some packages are non-free. Will you charge me for them?
+--------------------------------------------------------------------------
+
+  No. The term :term:`non-free` refers to an archive section. NeuroDebian uses
+  exactly the same :ref:`archive sections as Debian proper
+  <http://www.debian.org/doc/debian-policy/ch-archive.html>`.  The *non-free*
+  section contains packages that have certain restrictions regarding **your
+  freedom** to employ them for a particular purpose. In contrast, for packages
+  in the *main* section your are completely free to do whatever and in whatever
+  context you like. Regardless of the actual license or archive section, all
+  packages in NeuroDebian are provided free of charge and under the licensing
+  terms of the original developers.
+
+
 .. include:: links_names.rst
 .. include:: substitutions.rst
