@@ -88,16 +88,21 @@ releases and repository mirrors:
 .. include:: sources_lists
 
 .. note::
-  Thanks to the `Department of Psychological and Brain Sciences at
-  Dartmouth College`_ `[us-nh]` (primary mirror), the `Department of
-  Experimental Psychology at the University of Magdeburg`_ `[de]`, and
-  the `Medical-image Analysis and Statistical Interpretation lab at
-  Vanderbilt`_ `[us-tn]` for hosting a mirror.
+  Thanks to the following institutions and individuals for hosting a mirror:
+
+  * `Department of Psychological and Brain Sciences at Dartmouth College`_
+    `[us-nh]` (primary mirror)
+  * `Department of Experimental Psychology at the University of Magdeburg`_
+    `[de]`
+  * `Neurobot at Aristotle University of Thessaloniki, Greece`_ `[gr]`
+  * `Medical-image Analysis and Statistical Interpretation lab at Vanderbilt`_
+    `[us-tn]` for hosting a mirror.
 
   If your are interested in mirroring the repository, please see the :ref:`faq`.
 
-.. _Department of Experimental Psychology at the University of Magdeburg: http://apsy.gse.uni-magdeburg.de
 .. _Department of Psychological and Brain Sciences at Dartmouth College: http://www.dartmouth.edu/~psych
+.. _Department of Experimental Psychology at the University of Magdeburg: http://apsy.gse.uni-magdeburg.de
+.. _Neurobot at Aristotle University of Thessaloniki, Greece: http://neurobot.bio.auth.gr
 .. _Medical-image Analysis and Statistical Interpretation lab at Vanderbilt: https://masi.vuse.vanderbilt.edu
 
 Once this is done, you have to update the package index. Use your favorite
