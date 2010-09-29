@@ -13,7 +13,7 @@ this project.
 
 This service is provided "as is". There is no guarantee that a package
 works as expected, so use them at your own risk. If you encounter problems,
-please `report <#contact>`_ them.
+please `report <#contacts>`_ them.
 
 Please |spread|, if you like it.
 
