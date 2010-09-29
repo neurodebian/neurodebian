@@ -96,7 +96,7 @@ releases and repository mirrors:
     `[de]`
   * `Neurobot at Aristotle University of Thessaloniki, Greece`_ `[gr]`
   * `Medical-image Analysis and Statistical Interpretation lab at Vanderbilt`_
-    `[us-tn]` for hosting a mirror.
+    `[us-tn]`
 
   If your are interested in mirroring the repository, please see the :ref:`faq`.
 
