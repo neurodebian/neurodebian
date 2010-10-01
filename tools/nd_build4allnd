@@ -17,7 +17,7 @@ fi
 
 . /etc/neurodebian/cmdsettings.sh
 
-for d in $alldists; do
+for d in $allnddists; do
   dfamily=${d%%-*}
   drelease=${d##*-}
 
