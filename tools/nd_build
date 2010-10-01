@@ -92,6 +92,7 @@ for a in $arch; do
   cowbuilder --build $dscfile \
              --basepath ${cowbuilderroot}/cow/${family}-${dist}-${a}.cow \
              --buildresult . \
+             --logfile ${dscfile%.dsc}_${a}.build \
              $options \
              $*
 done
