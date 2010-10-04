@@ -1,0 +1,106 @@
+%-*- mode: latex; fill-column: 70 -*-
+% ex: set sts=4 ts=4 sw=4 et tw=70:
+%&pdflatex
+
+\documentclass[letterpaper,landscape]{report}
+\usepackage[landscape,margin=0.5cm]{geometry}
+\usepackage{color}
+\usepackage{flowfram}
+\usepackage[colorlinks]{hyperref}
+
+\usepackage{multicol}
+\setlength{\columnseprule}{1pt} % for visible divider
+\setlength{\columnsep}{1cm}
+
+\usepackage{graphicx}
+\graphicspath{
+ {../}
+}
+
+\pagestyle{empty}
+\begin{document}
+
+% DEBIAN
+\begin{multicols}{3}    % 3 columns
+
+\begin{center}
+\noindent
+\includegraphics[width=0.5\columnwidth]{openlogo}
+
+\url{http://www.debian.org}
+\end{center}
+
+
+buga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga duga
+\columnbreak
+
+buga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga duga
+\columnbreak
+
+buga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga duga
+\columnbreak
+\end{multicols}
+
+
+\pagebreak
+
+% NEURODEBIAN
+\begin{multicols}{3}    % 3 columns
+
+\begin{center}
+
+\noindent
+\includegraphics[width=\columnwidth]{logo_tuned/label}
+
+\url{http://neuro.debian.net}
+\end{center}
+
+\section*{What is NeuroDebian}
+
+\section*{What is in NeuroDebian}
+
+Icons for FSL, Caret, AFNI, etc
+
+
+\columnbreak
+
+\section*{How to get NeuroDebian}
+
+\begin{itemize}
+\item Debian/Ubuntu -- Repository
+\item Others -- Virtual Appliance
+\end{itemize}
+
+\section*{Developers oriented information}
+
+buga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga duga
+sdflkj
+slkdjf
+
+\columnbreak
+
+\section*{Who is using NeuroDebian}
+
+\noindent
+\includegraphics[width=\columnwidth]{usage_worldmap}
+
+buga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga duga
+
+\section*{Endorsements}
+
+some quotes from letters of support
+
+\columnbreak
+\end{multicols}
+
+
+
+\end{document}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% TeX-PDF-mode: t
+%%% whizzy-viewers: (("-pdf" "okular") ("-dvi" "xdvi") ("-ps" "gv"))
+%%% End:
