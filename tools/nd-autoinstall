@@ -1,0 +1,90 @@
+#!/bin/bash
+#emacs: -*- mode: shell-script; c-basic-offset: 4; tab-width: 4; indent-tabs-mode: nil -*- 
+#ex: set sts=4 ts=4 sw=4 et:
+
+# play save
+set -e
+set -u
+
+############
+# Defaults #
+############
+
+# Not used atm
+#ai_install_cmd="/usr/bin/gksudo '/usr/bin/aptitude install -y @PACKAGE@'"
+#ai_install_cmd_terminal=no
+
+
+print_help()
+{
+cat << EOT
+
+Usage:  nd-autoinstall <package> <command> [<command_options>]
+
+Runs the <command> if it is available, otherwise installs <package>
+first, and then runs the command.
+
+Exit status:
+  if <command> is available (or got sucesfully installed)
+    - exit status of the <command>
+  2 - incorrect invocation of nd-autoinstall
+  3 - <package> installation failure
+EOT
+}
+
+# Possible options: --environment-file  to source prior even 'which'
+
+if [ $# -lt 2 ] ; then
+    echo "ERROR: Incorrect invocation" >&2
+    print_help >&2
+    exit 2
+fi
+
+package=$1; shift
+command=$1; shift
+
+if ! which $command >/dev/null; then
+    if ! zenity --question \
+        --text="To run '$command', $package package needs to be installed.  Do you want to proceed?"; then
+        exit 2
+    fi
+
+    echo "I: Need to install $package to run $command"
+    #cmd=$ai_install_cmd
+    #[ "x$ai_install_cmd_terminal" = xyes ] \
+#       && cmd="/usr/bin/xterm -e /bin/bash -c '$cmd'"
+    cmd="${ai_install_cmd//@PACKAGE@/$package}"
+    #/usr/bin/gksudo "/usr/bin/aptitude install -y $package" > /tmp/nd-autoinstall.log 2>&1
+    # debconf has a nice debconf-apt-progress but it would require
+    # root access to each of commands for little benefit
+    #
+    # . /usr/share/debconf/confmodule
+    # debconf-apt-progress --start
+    # debconf-apt-progress --from 0 --to 100 -- apt-get -y install $package
+    # debconf-apt-progress --from 45 --to 90 -- apt-get -y install kde
+    # debconf-apt-progress --from 90 --to 100 -- apt-get -y install xfce4
+    # debconf-apt-progress --stop
+
+    logfile=$(mktemp -u /tmp/nd-autoinstall-XXXXXX.log)
+    # * aptitude for some reason does not return fail exit code
+    # * bloody gksudo swallows all stderr output (#599233) :-/
+    # So we just initiate it first to get the password
+    { /usr/bin/gksudo ls > /dev/null; }
+    # and then revert to sudo
+    # and enforce a GNOME front-end since otherwise things might go wrong
+    # and there is no way to enforce just some GUI frontend
+    { /usr/bin/sudo DEBIAN_FRONTEND=gnome /usr/bin/apt-get install -y $package 2>&1 \
+        && rm -f $logfile; } \
+        | tee $logfile \
+        | zenity --title="Installing $package" --progress --pulsate --auto-close --auto-kill
+    if [ -e $logfile ] ; then
+        zenity --title="Installation of $package has failed: see $logfile" \
+            --window-icon=error --timeout=60 \
+            --width=800 --height=600 \
+            --text-info --filename=$logfile
+        exit 3
+    fi
+fi
+
+echo "I: Running $command"
+$command "$@"

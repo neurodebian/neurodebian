@@ -3,3 +3,4 @@ build/icons/* usr/share/pixmaps
 xdg/neurodebian.menu etc/xdg/menus/applications-merged
 xdg/directories/* usr/share/desktop-directories
 xdg/desktop/* usr/share/applications
+tools/nd-autoinstall usr/bin
