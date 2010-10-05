@@ -22,6 +22,7 @@ Description: neuroscience research environment
 Package: neurodebian-dev
 Architecture: all
 Depends: ${misc:Depends}, devscripts, cowbuilder, python
+Recommends: virtualbox-ose, virtualbox-ose-fuse, zerofree
 Suggests:
 Description: NeuroDebian development tools
  Pacifier
