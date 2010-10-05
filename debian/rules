@@ -1,5 +1,7 @@
 #!/usr/bin/make -f
 
+ICONS_SIZE=32
+
 # one ring to rule them all ...
 %:
 	dh $@
@@ -12,8 +14,12 @@ override_dh_auto_build::
 	xcf2png -o build/wallpaper/neurodebian.png artwork/wallpaper_hotbrain.xcf
 	# icons
 	[ ! -d build/icons ] && mkdir -p build/icons
-	inkscape artwork/icon.svg -w 32 -h 32 -e build/icons/neurodebian.png
+	inkscape artwork/icon.svg -w $(ICONS_SIZE) -h $(ICONS_SIZE) \
+		-e build/icons/neurodebian.png
+	inkscape artwork/electrophysiology.svg -w $(ICONS_SIZE) -h $(ICONS_SIZE) \
+		-e build/icons/neurodebian-electrophysiology.png
 	cp artwork/icon.svg build/icons/neurodebian.svg
+	convert -geometry $(ICONS_SIZE)x$(ICONS_SIZE) artwork/mri.png build/icons/neurodebian-imaging.png
 	# manpages
 	[ ! -d build/man ] && mkdir -p build/man
 	help2man -h '--verbose-help' --no-info tools/backport-dsc \
