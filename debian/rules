@@ -13,6 +13,7 @@ override_dh_auto_build::
 	# icons
 	[ ! -d build/icons ] && mkdir -p build/icons
 	inkscape artwork/icon.svg -w 32 -h 32 -e build/icons/neurodebian.png
+	cp artwork/icon.svg build/icons/neurodebian.svg
 	# manpages
 	[ ! -d build/man ] && mkdir -p build/man
 	help2man -h '--verbose-help' --no-info tools/backport-dsc \

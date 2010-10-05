@@ -1,0 +1,39 @@
+#!/bin/bash -e
+
+# taken from gnome-icon-theme package postinst
+write_cache()
+{
+if [ -x /usr/bin/gtk-update-icon-cache ]; then
+    if ! gtk-update-icon-cache --force --quiet /usr/share/icons/gnome; then
+        echo "WARNING: icon cache generation failed"
+    fi
+fi
+}
+
+if [ "$1" = "triggered" ]; then
+    write_cache
+    exit 0
+fi
+
+
+if [ "$1" = "configure" -o "$1" = "abort-upgrade" ]; then
+    # Alternatives for the background (use higher priority than desktop-base
+    update-alternatives --install \
+        /usr/share/images/desktop-base/desktop-background \
+        desktop-background \
+        /usr/share/backgrounds/neurodebian.png 100
+
+    # push SVG icon and pixmaps for all relevant sizes
+    SIZES=$(ls /usr/share/icons/gnome/*/places | sed -rn 's,^.*/([0-9]+)x[0-9]+/.*$,\1,p')
+    command="update-alternatives --install /usr/share/icons/gnome/scalable/places/start-here.svg start-here.svg /usr/share/pixmaps/neurodebian.svg 100"
+    for s in $SIZES; do
+      command="$command --slave /usr/share/icons/gnome/${s}x${s}/places/start-here.png start-here-${s}.png /usr/share/pixmaps/neurodebian.png"
+    done
+    $command
+
+    # let GTK know about the change
+    write_cache
+fi
+
+#DEBHELPER#
+

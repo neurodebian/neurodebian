@@ -1,0 +1,66 @@
+#!/bin/bash
+
+# Standard Debian install
+
+# maybe have dedicated hard-drives for swap and home
+
+# hostname: neurodebian
+# domain: ''
+
+# all file in one partition
+
+# root: not there
+# user: brain
+# pwd: neurodebian
+
+
+# Do a minimal install
+# --------------------
+
+# All files in one partition/
+# just base system, run selection, but no tasks (not even 'Standard system')
+
+apt-get etckeeper
+
+# setup etckeeper
+git config --global user.name NeuroDebian
+git config --global user.email nd@localhost
+
+# install new stuff
+# -----------------
+
+# Add sources.list for backports and neurodebian
+wget -O /etc/apt/sources.list.d/neuro.debian.net.list http://neuro.debian.net/_static/neurodebian.squeeze.us.sources.list
+wget -O - http://neuro.debian.net/_static/neuro.debian.net.asc | apt-key add -
+
+echo "deb http://backports.debian.org/debian-backports squeeze-backports main contrib non-free" >> /etc/apt/sources.list.d/backports.debian.org.list
+cat << EOT >> /etc/apt/preferences.d/backports.debian.org
+Package: *
+Pin: release a=squeeze-backports
+Pin-Priority: 200
+EOT
+
+apt-get install neurodebian-guest-additions
+
+apt-get install --no-install-recommends \
+ desktop-base gdm gnome-core mc evince bash-completion ntpdate \
+ file-roller gnome-keyring gksu gnome-utils gnome-themes eog
+
+# intermediate cleanup to prevent virtual harddrive from fragmenting too much
+find /var/cache/apt/archives/ -name '*.deb' -delete
+
+# cleanup unwanted stuff
+# video drivers (all but vesa)
+apt-get purge $(apt-cache search --names-only --installed xserver-xorg-video | grep xserver-xorg-video | cut -d ' ' -f 1,1) xserver-xorg-video-vesa+
+apt-get purge gnome-media
+
+# and whatever is obsolete
+apt-get autoremove --purge
+
+# install network manager applet
+# but we don't want to have all the openvpn stuff that pull in an armada of
+# things: I did it by hand in aptitude
+
+# next step purge network interface config to give the power to network manager
+# important
+#adduser brain netdev

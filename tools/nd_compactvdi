@@ -37,9 +37,10 @@ rm -rf vbmnt/tmp/*
 find vbmnt/var/log -type f -delete
 # apt lists
 find vbmnt/var/lib/apt -type f -name '*debian*' -o -type f -name '*list*' -delete
-# history
-rm -f vbmnt/root/.bash_history
-rm -f vbmnt/home/*/.bash_history
+# user data
+rm -f vbmnt/root/.*history
+# everything for the default user
+find vbmnt/home/brain -mindepth 1 -delete
 
 # unmount filesystem
 umount vbmnt

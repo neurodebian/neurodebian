@@ -44,3 +44,14 @@ Description: neuroscience research environment
  Pacifier
 
 
+Package: neurodebian-guest-additions
+Architecture: all
+Depends: ${misc:Depends}, sudo, virtualbox-ose-guest-utils, virtualbox-ose-guest-x11, virtualbox-ose-guest-dkms, neurodebian-desktop
+Recommends: chromium-browser
+Suggests:
+Description: add-ons and configuration for the NeuroDebian virtual machine
+ This package configures a Debian installation as a guest operating system
+ in a VirtualBox-based virtual machine for NeuroDebian.
+ .
+ Do not install this package unless you know what you are doing! For example,
+ installation of this package relaxes several security mechanisms.

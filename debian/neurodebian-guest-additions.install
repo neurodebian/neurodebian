@@ -1,0 +1,2 @@
+etc/sudoers.d/nopasswd etc/sudoers.d/
+etc/xdg/autostart/* etc/xdg/autostart/

@@ -1,0 +1,13 @@
+#!/bin/sh -e
+
+#DEBHELPER#
+
+if [ "$1" = "remove" ] || [ "$1" = "deconfigure" ]; then
+    # remove background alternatives
+    update-alternatives --remove desktop-background \
+        /usr/share/backgrounds/neurodebian.png
+
+    # icons
+    update-alternatives --remove start-here.svg \
+        /usr/share/pixmaps/neurodebian.svg
+fi

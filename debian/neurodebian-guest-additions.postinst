@@ -1,0 +1,12 @@
+#!/bin/bash -e
+
+gdm_conf=/etc/gdm/gdm.conf
+if [ "$1" = "configure" -o "$1" = "abort-upgrade" ]; then
+    if [ -z "$(grep 'AutomaticLogin=brain' $gdm_conf)" ]; then
+        echo "Enabling autologin of user 'brain'."
+        sed -i -e 's/^\[daemon\]$/\[daemon\]\nAutomaticLoginEnable=true\nAutomaticLogin=brain\n/' $gdm_conf
+    fi
+fi
+
+#DEBHELPER#
+
