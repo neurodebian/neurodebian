@@ -1,0 +1,10 @@
+[Desktop Entry]
+Encoding=UTF-8
+GenericName=Psychology Stimuli IDE
+GenericName[ru]=IDE для психологических стимулов
+Name=PsychoPy
+Exec=nd-autoinstall psychopy %F
+Type=Application
+Terminal=false
+Categories=X-NeuroDebian-Psychophysics
+Icon=psychopy.xpm

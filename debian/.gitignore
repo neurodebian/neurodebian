@@ -1,0 +1,8 @@
+/files
+/neurodebian
+/neurodebian-desktop
+/neurodebian-dev
+/neurodebian-guest-additions
+/neurodebian-trailer
+/*.log
+/*.substvars
