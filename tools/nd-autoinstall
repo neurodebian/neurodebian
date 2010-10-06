@@ -1,5 +1,5 @@
 #!/bin/bash
-#emacs: -*- mode: shell-script; c-basic-offset: 4; tab-width: 4; indent-tabs-mode: nil -*- 
+#emacs: -*- mode: shell-script; c-basic-offset: 4; tab-width: 4; indent-tabs-mode: nil -*-
 #ex: set sts=4 ts=4 sw=4 et:
 
 # play save
@@ -10,57 +10,140 @@ set -u
 # Defaults #
 ############
 
+nd_autoinstall_version=0.1
+
 # Not used atm
 #ai_install_cmd="/usr/bin/gksudo '/usr/bin/aptitude install -y @PACKAGE@'"
 #ai_install_cmd_terminal=no
+
+# To be set by cmdline args
+ai_envfile=
+ai_package=
+ai_verbose=
+
+print_verbose()
+{
+	[ -z "$ai_verbose" ] || echo "I: $*"
+}
+
+print_version()
+{
+cat << EOT
+nd-autoinstall $nd_autoinstall_version
+
+Copyright (C) 2010 Yaroslav Halchenko <debian@onerussian.com>
+
+Licensed under GNU Public License version 3 or later.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+Written by Yaroslav Halchenko for the NeuroDebian project.
+
+EOT
+}
 
 
 print_help()
 {
 cat << EOT
 
-Usage:  nd-autoinstall <package> <command> [<command_options>]
+Usage:  nd-autoinstall [options] COMMAND [command_options]
 
-Runs the <command> if it is available, otherwise installs <package>
-first, and then runs the command.
+Runs the COMMAND if it is available, otherwise installs PACKAGE first,
+and then runs the command.  If an environment file is specified, it
+gets sourced first (PACKAGE gets installed if environment file is not
+available).
+
+Options:
+
+  -p, --package=PACKAGE
+    Name of the package to be installed if named differently than
+    COMMAND.
+
+  -e, --environment-file=FILE
+    File to be sourced before invocation of the COMMAND.  If not found,
+    PACKAGE gets installed first.
+
+  -v, --verbose
+    Enable additional progress messages.
+
+  -h, --help
+    Print short description, usage summary and option list.
+
+  --version
+    Print version information and exit.
 
 Exit status:
-  if <command> is available (or got sucesfully installed)
-    - exit status of the <command>
+
+  exit status of the COMMAND -
+      if COMMAND is available (or got sucesfully installed)
   2 - incorrect invocation of nd-autoinstall
-  3 - <package> installation failure
+  3 - PACKAGE installation failure
 EOT
 }
 
-# Possible options: --environment-file  to source prior even 'which'
+################################
+# Commandline options handling #
+################################
 
-if [ $# -lt 2 ] ; then
-    echo "ERROR: Incorrect invocation" >&2
+# Parse commandline options (taken from the getopt examples from the Debian util-linux package)
+# Note that we use `"$@"' to let each command-line parameter expand to a
+# separate word. The quotes around `$@' are essential!
+# We need CLOPTS as the `eval set --' would nuke the return value of getopt.
+CLOPTS=`getopt -o h,e:,p:,v --long help,version,environment-file:,package:,verbose, -n 'nd-autoinstall' -- "$@"`
+
+if [ $? != 0 ] ; then
+  echo "Terminating..." >&2
+  exit 2
+fi
+
+# Note the quotes around `$CLOPTS': they are essential!
+eval set -- "$CLOPTS"
+
+while true ; do
+  case "$1" in
+	  -e|--environment-file) shift; ai_envfile=$1; shift;;
+	  -p|--package) shift; ai_package=$1; shift;;
+	  -v|--verbose) ai_verbose=1; shift;;
+	  -h|--help) print_help; exit 0;;
+	  --version) print_version; exit 0;;
+	  --) shift ; break ;;
+	  *) echo "Internal error! ($1)"; exit 1;;
+  esac
+done
+
+
+if [ $# -lt 1 ] ; then
     print_help >&2
     exit 2
 fi
 
-package=$1; shift
-command=$1; shift
+ai_command=$1; shift
+[ -z "$ai_package" ] && ai_package=$ai_command
 
-if ! which $command >/dev/null; then
+ai_envfile_failed=
+if [ ! -z "$ai_envfile" ]; then
+	source "$ai_envfile" || ai_envfile_failed=1
+fi
+
+if [ ! -z "$ai_envfile_failed" ] || ! which $ai_command >/dev/null; then
     if ! zenity --question \
-        --text="To run '$command', $package package needs to be installed.  Do you want to proceed?"; then
+        --text="To run '$ai_command', $ai_package package needs to be installed.  Do you want to proceed?"; then
         exit 2
     fi
 
-    echo "I: Need to install $package to run $command"
+    print_verbose "Need to install $ai_package to run $ai_command"
     #cmd=$ai_install_cmd
     #[ "x$ai_install_cmd_terminal" = xyes ] \
 #       && cmd="/usr/bin/xterm -e /bin/bash -c '$cmd'"
-    cmd="${ai_install_cmd//@PACKAGE@/$package}"
-    #/usr/bin/gksudo "/usr/bin/aptitude install -y $package" > /tmp/nd-autoinstall.log 2>&1
+    cmd="${ai_install_cmd//@PACKAGE@/$ai_package}"
+    #/usr/bin/gksudo "/usr/bin/aptitude install -y $ai_package" > /tmp/nd-autoinstall.log 2>&1
     # debconf has a nice debconf-apt-progress but it would require
     # root access to each of commands for little benefit
     #
     # . /usr/share/debconf/confmodule
     # debconf-apt-progress --start
-    # debconf-apt-progress --from 0 --to 100 -- apt-get -y install $package
+    # debconf-apt-progress --from 0 --to 100 -- apt-get -y install $ai_package
     # debconf-apt-progress --from 45 --to 90 -- apt-get -y install kde
     # debconf-apt-progress --from 90 --to 100 -- apt-get -y install xfce4
     # debconf-apt-progress --stop
@@ -73,18 +156,25 @@ if ! which $command >/dev/null; then
     # and then revert to sudo
     # and enforce a GNOME front-end since otherwise things might go wrong
     # and there is no way to enforce just some GUI frontend
-    { /usr/bin/sudo DEBIAN_FRONTEND=gnome /usr/bin/apt-get install -y $package 2>&1 \
+    { /usr/bin/sudo DEBIAN_FRONTEND=gnome /usr/bin/apt-get install -y $ai_package 2>&1 \
         && rm -f $logfile; } \
         | tee $logfile \
-        | zenity --title="Installing $package" --progress --pulsate --auto-close --auto-kill
+        | zenity --title="nd-autoinstall" \
+		         --text="Installing $ai_package" \
+                 --progress --pulsate --auto-close --auto-kill
     if [ -e $logfile ] ; then
-        zenity --title="Installation of $package has failed: see $logfile" \
-            --window-icon=error --timeout=60 \
+        zenity --title="Installation of $ai_package has failed: see $logfile" \
+            --window-icon=error \
             --width=800 --height=600 \
             --text-info --filename=$logfile
         exit 3
     fi
+	[ -z "$ai_envfile_failed" ] || source "$ai_envfile" || {
+		zenity --text="Failed to source $ai_envfile even after installing $ai_package" \
+			--window-icon=error --error
+		exit 1
+	}
 fi
 
-echo "I: Running $command"
-$command "$@"
+print_verbose "Running $ai_command"
+$ai_command "$@"
