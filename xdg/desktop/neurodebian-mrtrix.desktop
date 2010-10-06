@@ -2,7 +2,7 @@
 Encoding=UTF-8
 GenericName=MRI Tractography View
 Name=MRview
-Exec=mrview %F
+Exec=nd-autoinstall -p mrtrix mrview %F
 Type=Application
 Terminal=false
 Categories=X-NeuroDebian-MedicalImaging

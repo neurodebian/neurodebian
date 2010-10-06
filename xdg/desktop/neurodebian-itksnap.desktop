@@ -2,7 +2,7 @@
 Encoding=UTF-8
 GenericName=3D Structure Segmentation
 Name=ITK-SNAP
-Exec=itksnap %F
+Exec=nd-autoinstall itksnap %F
 Type=Application
 Terminal=false
 Categories=X-NeuroDebian-MedicalImaging

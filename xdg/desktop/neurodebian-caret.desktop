@@ -2,7 +2,7 @@
 Encoding=UTF-8
 GenericName=Cortical Surface Reconstruction and Visualization
 Name=Caret
-Exec=caret5
+Exec=nd-autoinstall -p caret caret5
 Type=Application
 Terminal=false
 Categories=X-NeuroDebian-MedicalImaging;
