@@ -16,8 +16,9 @@ override_dh_auto_build::
 	[ ! -d build/icons ] && mkdir -p build/icons
 	inkscape artwork/icon.svg -w $(ICONS_SIZE) -h $(ICONS_SIZE) \
 		-e build/icons/neurodebian.png
-	inkscape artwork/electrophysiology.svg -w $(ICONS_SIZE) -h $(ICONS_SIZE) \
-		-e build/icons/neurodebian-electrophysiology.png
+	for d in electrophysiology psychophysics; do \
+		inkscape artwork/$$d.svg -w $(ICONS_SIZE) -h $(ICONS_SIZE) \
+			-e build/icons/neurodebian-$$d.png; done
 	cp artwork/icon.svg build/icons/neurodebian.svg
 	convert -geometry $(ICONS_SIZE)x$(ICONS_SIZE) artwork/mri.png build/icons/neurodebian-imaging.png
 	# manpages
