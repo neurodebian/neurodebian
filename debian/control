@@ -13,7 +13,7 @@ XS-DM-Upload-Allowed: yes
 
 Package: neurodebian
 Architecture: all
-Depends: ${misc:Depends}
+Depends: ${misc:Depends}, zenity
 Suggests:
 Description: neuroscience research environment
  Pacifier
