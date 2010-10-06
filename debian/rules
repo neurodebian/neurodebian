@@ -24,6 +24,8 @@ override_dh_auto_build::
 	[ ! -d build/man ] && mkdir -p build/man
 	help2man -h '--verbose-help' --no-info tools/backport-dsc \
 		-n "backport Debian source packages" > build/man/backport-dsc.1
+	help2man --no-info tools/nd-autoinstall \
+		-n "install (if necessary) and run an application" > build/man/nd-autoinstall.1
 
 override_dh_auto_install::
 
