@@ -1,0 +1,10 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=SigViewer
+GenericName=Biosignals (e.g. EEG, ECG) Viewer
+Version=1.0
+Exec=nd-autoinstall sigviewer %F
+Icon=sigviewer128.png
+Type=Application
+Terminal=false
+Categories=X-NeuroDebian-Electrophysiology
