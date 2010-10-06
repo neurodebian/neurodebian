@@ -30,7 +30,7 @@ Description: NeuroDebian development tools
 
 Package: neurodebian-desktop
 Architecture: all
-Depends: ${misc:Depends}
+Depends: ${misc:Depends}, ssh-askpass-gnome | ssh-askpass
 Suggests:
 Description: neuroscience research environment
  Pacifier
