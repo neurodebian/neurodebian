@@ -1,0 +1,7 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=3D Slicer
+Exec=nd-autoinstall -p slicer /usr/bin/slicer3
+Type=Application
+Icon=3DSlicerLogo-DesktopIcon-48x48x256.png
+Categories=X-NeuroDebian-MedicalImaging
