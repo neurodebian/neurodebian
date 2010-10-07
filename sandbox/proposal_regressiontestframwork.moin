@@ -1,0 +1,121 @@
+## This will eventually do to wiki.debian.org/RegressionTestFramework
+
+ * '''Created''': <<Date(2010-10-07)>>
+ * '''Contributors''': NeuroDebian
+ * '''Packages affected''': 
+ * '''See also''': 
+
+== Summary ==
+
+This specification describes the way we would like Debian specifications to be
+written. It takes the form of a specification itself.
+
+== Rationale ==
+
+As we develop new ideas for features in Debian, it's important to be able to
+communicate them clearly. This serves the purpose of making it clear what the
+feature is about, and allowing people to evolve an implementation strategy for
+it. 
+
+Publishing this content gives our community a chance to participate in the
+discussion and design of a feature, and increases the chance that community
+members will feel confident enough to start work on the implementation of the
+feature. 
+
+A good specification also allows community members who were not physically
+present at meetings discussing a topic to participate in the implementation of
+the spec.
+
+Bottom line: the better your spec, the better the chances that your ideas will
+clearly understood by every contributor that might help.
+
+== Use Cases ==
+
+  * Bob is the maintainer for the boot process for Debian. In the etch cycle,
+    he would like to work on getting the boot time down to two seconds from
+    boot manager to GDM screen. He creates an entry for the specification in the
+    wiki, discusses it at debconf, and starts writing out a braindump of it.
+
+  * Arnaud is a student participating in Google's Summer of code and wants to
+    make sure that his project fits the short description that has been given
+    on the ideas page. He writes a detailed spec in the wiki. His mentor can
+    then confirm that he's on good track. The specification is published on a
+    mailing list and people's comments help improve it even further.
+
+== Scope ==
+
+This specification covers feature specifications for Debian. It is not meant as
+a more general specification format.
+
+== Design ==
+
+A specification should be built with the following considerations:
+
+  * The person implementing it may not be the person writing it. It should be
+  * clear enough for someone to be able to read it and have a clear path
+  * towards implementing it. If it doesn't, it needs more detail.
+
+  * That the use cases covered in the specification should be practical
+  * situations, not contrived issues.
+
+  * Limitations and issues discovered during the creation of a specification
+  * should be clearly pointed out so that they can be dealt with explicitly.
+
+  * If you don't know enough to be able to competently write a spec, you should
+  * either get help or research the problem further. Avoid spending time making
+  * up a solution: base yourself on your peers' opinions and prior work.
+
+Specific issues related to particular sections are described further below.
+
+=== Summary ===
+
+The summary should not attempt to say '''why''' the spec is being defined, just
+'''what''' is being specified.
+
+=== Rationale ===
+
+This should be the description of '''why''' this spec is being defined.
+
+=== Scope and Use Cases ===
+
+While not always required, but in many cases they bring much better clarity to
+the scope and scale of the specification than could be obtained by talking in
+abstract terms.
+
+=== Implementation Plan ===
+
+This section is usually broken down into subsections, such as the packages
+being affected, data and system migration where necessary, user interface
+requirements and pictures     (photographs of drawings on paper work well).
+
+== Implementation ==
+
+To implement a specification, the developer should observe the use cases
+carefully, and follow the design specified. He should make note of places in
+which he has strayed from the design section, adding rationale describing why
+this happened. This is important so that next iterations of this specification
+(and new specifications that touch upon this subject) can use the specification
+as a reference.
+
+The implementation is very dependent on the type of feature to be implemented.
+Refer to the team leader for further suggestions and guidance on this topic.
+
+== Outstanding Issues ==
+
+The specification process requires experienced people to drive it. More
+documentation on the process should be produced.
+
+The drafting of a specification requires english skills and a very good
+understanding of the problem. It must also describe things to an extent that
+someone else could implement. This is a difficult set of conditions to ensure
+throughout all the specifications added.
+
+There is a lot of difficulty in gardening obsolete, unwanted and abandoned
+specifications in the Wiki.
+
+== BoF agenda and discussion ==
+
+Possible meetings where this specification will be discussed.
+----
+CategorySpec
+
