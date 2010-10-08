@@ -432,6 +432,8 @@ def dde_get(url, fail=False):
 def nitrc_get(spec, fail=False):
     nitrc_url = 'http://www.nitrc.org/export/site/projects.json.php'
     try:
+        # change into this from python 2.6 on
+        #data = json.loads(urllib2.urlopen(nitrc_url + '?spec=%s' % spec).read())
         data = json.read(urllib2.urlopen(nitrc_url + '?spec=%s' % spec).read())
         print "NITRC-SUCCESS:", spec
     except urllib2.HTTPError, e:
@@ -602,16 +604,20 @@ def write_sourceslist(jinja_env, cfg, outdir):
 
     repos = {}
     for release in cfg.options('release codenames'):
+        if release == 'data':
+            # no seperate list for the data archive
+            continue
         transrel = trans_codename(release, cfg)
         repos[transrel] = []
         for mirror in cfg.options('mirrors'):
             listname = 'neurodebian.%s.%s.sources.list' % (release, mirror)
             repos[transrel].append((mirror, listname))
             lf = open(os.path.join(outdir, '_static', listname), 'w')
-            aptcfg = '%s %s main contrib non-free\n' % (cfg.get('mirrors', mirror),
-                                                      release)
-            lf.write('deb %s' % aptcfg)
-            lf.write('deb-src %s' % aptcfg)
+            for rel in ('data', release):
+                aptcfg = '%s %s main contrib non-free\n' % (cfg.get('mirrors', mirror),
+                                                          rel)
+                lf.write('deb %s' % aptcfg)
+                lf.write('#deb-src %s' % aptcfg)
             lf.close()
 
     srclist_template = jinja_env.get_template('sources_lists.rst')
