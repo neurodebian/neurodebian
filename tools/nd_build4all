@@ -1,0 +1,19 @@
+#!/bin/bash
+
+if [ -z "$1" ]; then
+cat << EOT
+Backport and build a source package for all currently supported NeuroDebian
+releases and main Debian release.
+
+Synopsis
+--------
+
+  nd_build4all <dsc file>
+EOT
+exit 1
+fi
+
+dscfile=$1; shift
+
+nd_build4debianmain $dscfile "$@"
+nd_build4allnd $dscfile "$@"
