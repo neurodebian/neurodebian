@@ -633,8 +633,20 @@ def write_pkgpages(jinja_env, cfg, db, outdir, addenum_dir):
     # generate the TOC with all packages
     toc_template = jinja_env.get_template('pkgs_toc.rst')
     toc = codecs.open(os.path.join(outdir, 'pkgs.rst'), 'w', 'utf-8')
-    toc.write(toc_template.render(pkgs=db.keys()))
+    # this is a fragile test
+    toc.write(toc_template.render(
+        pkgs=[k for k in db.keys()
+                if not ('Datasets', 'neurodebian-data') in db[k]]))
     toc.close()
+    # and now only for dataset packages
+    toc_template = jinja_env.get_template('datasets_toc.rst')
+    toc = codecs.open(os.path.join(outdir, 'datasets.rst'), 'w', 'utf-8')
+    # this is a fragile test
+    toc.write(toc_template.render(
+        pkgs=[k for k in db.keys()
+                if ('Datasets', 'neurodebian-data') in db[k]]))
+    toc.close()
+
 
     # and now each individual package page
     pkg_template = jinja_env.get_template('pkg.rst')

@@ -1,7 +1,7 @@
-.. _full_pkg_list:
+.. _full_dataset_list:
 
-Software packages
-=================
+Dataset packages
+================
 
 .. toctree::
   :maxdepth: 1
