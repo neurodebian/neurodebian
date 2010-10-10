@@ -40,7 +40,7 @@ find vbmnt/var/lib/apt -type f -name '*debian*' -o -type f -name '*list*' -delet
 # user data
 rm -f vbmnt/root/.*history
 # everything for the default user
-find vbmnt/home/brain -mindepth 1 -delete
+#find vbmnt/home/brain -mindepth 1 -delete
 
 # unmount filesystem
 umount vbmnt

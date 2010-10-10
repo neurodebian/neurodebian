@@ -30,7 +30,7 @@ Description: NeuroDebian development tools
 
 Package: neurodebian-desktop
 Architecture: all
-Depends: ${misc:Depends}, ssh-askpass-gnome | ssh-askpass
+Depends: ${misc:Depends}, ssh-askpass-gnome | ssh-askpass, desktop-base, gnome-icon-themes
 Suggests:
 Description: neuroscience research environment
  Pacifier
@@ -46,7 +46,7 @@ Description: neuroscience research environment
 
 Package: neurodebian-guest-additions
 Architecture: all
-Depends: ${misc:Depends}, sudo, virtualbox-ose-guest-utils, virtualbox-ose-guest-x11, virtualbox-ose-guest-dkms, neurodebian-desktop
+Depends: ${misc:Depends}, sudo, virtualbox-ose-guest-utils, virtualbox-ose-guest-x11, virtualbox-ose-guest-dkms, neurodebian-desktop, gdm
 Recommends: chromium-browser
 Suggests:
 Description: add-ons and configuration for the NeuroDebian virtual machine

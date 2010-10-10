@@ -1,8 +1,14 @@
 #!/bin/bash
 
+# play safe
+set -e
+set -u
+
 # Standard Debian install
 
-# maybe have dedicated hard-drives for swap and home
+# prepare on hydra and use debproxy for speed
+
+# have dedicated hard-drives for swap and home
 
 # hostname: neurodebian
 # domain: ''
@@ -20,7 +26,9 @@
 # All files in one partition/
 # just base system, run selection, but no tasks (not even 'Standard system')
 
-apt-get etckeeper
+# set root password to 'neurodebian' too
+
+apt-get install etckeeper
 
 # setup etckeeper
 git config --global user.name NeuroDebian
@@ -33,18 +41,18 @@ git config --global user.email nd@localhost
 wget -O /etc/apt/sources.list.d/neuro.debian.net.list http://neuro.debian.net/_static/neurodebian.squeeze.us.sources.list
 wget -O - http://neuro.debian.net/_static/neuro.debian.net.asc | apt-key add -
 
-echo "deb http://backports.debian.org/debian-backports squeeze-backports main contrib non-free" >> /etc/apt/sources.list.d/backports.debian.org.list
-cat << EOT >> /etc/apt/preferences.d/backports.debian.org
+echo "deb http://backports.debian.org/debian-backports squeeze-backports main contrib non-free" > /etc/apt/sources.list.d/backports.debian.org.list
+cat << EOT > /etc/apt/preferences.d/backports.debian.org.pref
 Package: *
 Pin: release a=squeeze-backports
 Pin-Priority: 200
 EOT
 
-apt-get install neurodebian-guest-additions
-
-apt-get install --no-install-recommends \
- desktop-base gdm gnome-core mc evince bash-completion ntpdate \
- file-roller gnome-keyring gksu gnome-utils gnome-themes eog
+apt-get update
+apt-get install --no-install-recommends neurodebian-guest-additions \
+ gnome-core mc evince bash-completion ntpdate file-roller gnome-utils
+ gnome-themes eog vim
+ software-center gdebi update-notifier gedit-plugins gnome-media synaptic menu less
 
 # intermediate cleanup to prevent virtual harddrive from fragmenting too much
 find /var/cache/apt/archives/ -name '*.deb' -delete
@@ -52,7 +60,6 @@ find /var/cache/apt/archives/ -name '*.deb' -delete
 # cleanup unwanted stuff
 # video drivers (all but vesa)
 apt-get purge $(apt-cache search --names-only --installed xserver-xorg-video | grep xserver-xorg-video | cut -d ' ' -f 1,1) xserver-xorg-video-vesa+
-apt-get purge gnome-media
 
 # and whatever is obsolete
 apt-get autoremove --purge
@@ -64,3 +71,6 @@ apt-get autoremove --purge
 # next step purge network interface config to give the power to network manager
 # important
 #adduser brain netdev
+
+apt-get install flashplugin-nonfree sun-java6-plugin
+
