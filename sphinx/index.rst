@@ -20,7 +20,8 @@ Please |spread|, if you like it.
 .. raw:: html
 
  <p>
- <a href="pkgs.html"><img border="0" src="_static/package.png" title="List of available packages" /></a>
+ <a href="pkgs.html"><img border="0" src="_static/package.png" title="Software package list" /></a>
+ <a href="datasets.html"><img border="0" src="_static/datasets.png" title="Dataset package list" /></a>
  <a href="vm.html"><img border="0" src="_static/machine.png" title="Get NeuroDebian for your non-Debian computer" /></a>
  <a href="debian/pool"><img border="0" src="_static/pool.png" title="Go to the package pool (deep and cold, only for experts)" /></a>
  </p>
