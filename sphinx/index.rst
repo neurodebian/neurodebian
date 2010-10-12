@@ -92,12 +92,13 @@ releases and repository mirrors:
   Thanks to the following institutions and individuals for hosting a mirror:
 
   * `Department of Psychological and Brain Sciences at Dartmouth College`_
-    `[us-nh]` (primary mirror)
+    *[us-nh]* (primary mirror)
   * `Department of Experimental Psychology at the University of Magdeburg`_
-    `[de]`
-  * `Neurobot at Aristotle University of Thessaloniki, Greece`_ `[gr]`
+    *[de]*
+  * `Neurobot at Aristotle University of Thessaloniki, Greece`_ *[gr]*
+  * `Paul Ivanov’_ *[us-ca]*
   * `Medical-image Analysis and Statistical Interpretation lab at Vanderbilt`_
-    `[us-tn]`
+    *[us-tn]*
 
   If your are interested in mirroring the repository, please see the :ref:`faq`.
 
@@ -229,6 +230,13 @@ communication channels within the NeuroDebian community
 .. _neurodebian-users: http://lists.alioth.debian.org/mailman/listinfo/neurodebian-users
 .. _neurodebian-devel: http://lists.alioth.debian.org/mailman/listinfo/neurodebian-devel
 .. _neurodebian-upstream: http://lists.alioth.debian.org/mailman/listinfo/neurodebian-upstream
+
+
+Acknowledgements
+================
+
+We are grateful to Jim Haxby for his continued support and endless supply of
+Italian espresso.
 
 
 .. toctree::
