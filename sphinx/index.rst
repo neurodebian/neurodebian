@@ -235,8 +235,8 @@ communication channels within the NeuroDebian community
 Acknowledgements
 ================
 
-We are grateful to Jim Haxby for his continued support and endless supply of
-Italian espresso.
+We are grateful to Jim Haxby for his continued support and :ref:`endless supply of
+Italian espresso <coffeeart>`.
 
 
 .. toctree::
@@ -246,6 +246,7 @@ Italian espresso.
    pkgs
    spread
    vm
+   coffeeart
 
 .. probably should be purged altogether
 .. toctree::
