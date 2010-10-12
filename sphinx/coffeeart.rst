@@ -124,6 +124,11 @@ Coffee Art
     IMG_6863.JPG
 
 
+.. figure:: /pics/coffeeart/IMG_6869_.JPG
+
+    IMG_6869_.JPG
+
+
 .. figure:: /pics/coffeeart/IMG_6870.JPG
 
     IMG_6870.JPG
