@@ -96,7 +96,7 @@ releases and repository mirrors:
   * `Department of Experimental Psychology at the University of Magdeburg`_
     *[de]*
   * `Neurobot at Aristotle University of Thessaloniki, Greece`_ *[gr]*
-  * `Paul Ivanov’_ *[us-ca]*
+  * `Paul Ivanov`_ *[us-ca]*
   * `Medical-image Analysis and Statistical Interpretation lab at Vanderbilt`_
     *[us-tn]*
 
@@ -105,6 +105,7 @@ releases and repository mirrors:
 .. _Department of Psychological and Brain Sciences at Dartmouth College: http://www.dartmouth.edu/~psych
 .. _Department of Experimental Psychology at the University of Magdeburg: http://apsy.gse.uni-magdeburg.de
 .. _Neurobot at Aristotle University of Thessaloniki, Greece: http://neurobot.bio.auth.gr
+.. _Paul Ivanov: http://www.pirsquared.org
 .. _Medical-image Analysis and Statistical Interpretation lab at Vanderbilt: https://masi.vuse.vanderbilt.edu
 
 Once this is done, you have to update the package index. Use your favorite
