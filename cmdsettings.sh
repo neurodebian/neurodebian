@@ -18,7 +18,7 @@ mirror="http://debian.lcs.mit.edu/debian"
 # overwrite necessary bits for ubuntu
 if [ "${family#nd+}" = "ubuntu" ]; then
   aptcache="${cowbuilderroot}/ubuntu_aptcache"
-  components="main universe"
+  components="main universe multiverse"
   mirror="http://ubuntu.media.mit.edu/ubuntu"
 fi
 
