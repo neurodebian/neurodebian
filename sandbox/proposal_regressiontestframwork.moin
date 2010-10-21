@@ -1,33 +1,44 @@
 ## This will eventually do to wiki.debian.org/RegressionTestFramework
 
  * '''Created''': <<Date(2010-10-07)>>
- * '''Contributors''': NeuroDebian
+ * '''Contributors''': MichaelHanke
  * '''Packages affected''': 
  * '''See also''': 
 
 == Summary ==
 
-This specification describes the way we would like Debian specifications to be
-written. It takes the form of a specification itself.
+This specification describes conventions and tools that allow Debian to
+distribute and run regression test batteries developed by upstream or
+Debian developers in a uniform fashion.
 
 == Rationale ==
 
-As we develop new ideas for features in Debian, it's important to be able to
-communicate them clearly. This serves the purpose of making it clear what the
-feature is about, and allowing people to evolve an implementation strategy for
-it. 
+Ideally software packaged for Debian comes with an exhaustive test suite that
+can be used to determine whether this software works as expected on the Debian
+platform. However, especially for complex software, these test suites are often
+resource hungry (CPU time, memory, diskspace, network bandwidth) and cannot be
+ran at package build time by buildds. Consequently, test suites are only
+utilized by the packager on a particular machine, before uploading a new version
+to the archive.
 
-Publishing this content gives our community a chance to participate in the
-discussion and design of a feature, and increases the chance that community
-members will feel confident enough to start work on the implementation of the
-feature. 
+However, Debian is an integrated system and packaged software is typically made
+to rely on functionality provided by other Debian packages (e.g. shared
+libraries) instead of shipping duplicates with different versions in every
+package -- for many good reasons. Unfortunately, there is also a downside to
+this: Debian packages often use 3rd-party tools with different versions than
+those tested by upstream, and moreover, the actual versions might change
+frequently between to subsequent uploads of a package.  Currently a change in a
+dependency that introduces an incompatibility cannot be detected reliably
+(before users have filed a bug report) -- even if upstream provides a testsuite
+that would have caught the breakage. Although there are archive-wide QA efforts
+(e.g. constantly rebuilding all packages) these tests can only detect API/ABI
+breakage or functionality tested during build-time checks -- they are not
+exhaustive for the aforementioned reasons.
 
-A good specification also allows community members who were not physically
-present at meetings discussing a topic to participate in the implementation of
-the spec.
-
-Bottom line: the better your spec, the better the chances that your ideas will
-clearly understood by every contributor that might help.
+This is a proposal to, first of all, package upstream test suites in a way that
+they can be used to run expensive archive-wide QA tests. However, this is also
+a proposal to establish means to test interactions of software from multiple
+Debian packages and test proper, continued, integration into the Debian system.
 
 == Use Cases ==
 
