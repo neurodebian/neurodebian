@@ -660,6 +660,42 @@ img.logo {
     border: 0;
 }
 
+
+/* Epigraphs */
+
+blockquote.epigraph {
+    padding: 0 1em 0 1em;
+    background-color: #f2f2f2;
+	border-top: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+    font-style: italic;
+}
+
+blockquote.epigraph p {
+    margin: 0.2em 0 0.2em 0;
+}
+
+p.attribution {
+	padding: 0.2em 0 0 1em;
+	font-size: 80%;
+    font-style: normal;
+}
+
+p.attribution span.author {
+    margin: 0;
+    font-weight: bold;
+}
+
+p.attribution span.date {
+	font-size: 90%;
+}
+
+p.attribution span.affiliation, span.source {
+	font-size: 90%;
+	padding: 0 0 0 25px;
+	display: block;
+}
+
 /* :::: PRINT :::: */
 @media print {
     div.document,
