@@ -1,6 +1,6 @@
 include LaTeX.mk
 
-all: pics
+all:: pics
 
 .PHONY: pics
 pics:

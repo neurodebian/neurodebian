@@ -17,10 +17,14 @@
  {../}
 }
 
+\usepackage{enumitem}           % useful for control of listings
+
 \pagestyle{empty}
 \begin{document}
 
-% DEBIAN
+%%
+%% DEBIAN
+%%
 \begin{multicols}{3}    % 3 columns
 
 \begin{center}
@@ -28,6 +32,8 @@
 \includegraphics[width=0.5\columnwidth]{openlogo}
 
 \url{http://www.debian.org}
+\section*{Debian GNU/Linux}
+\subsection*{The Universal Operating System}
 \end{center}
 
 
@@ -38,21 +44,29 @@ buga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dug
 \columnbreak
 
 buga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga duga
+
+\section*{Acknowledgements}
+
 \columnbreak
 \end{multicols}
 
 
 \pagebreak
-
-% NEURODEBIAN
+%%
+%% NeuroDEBIAN
+%%
 \begin{multicols}{3}    % 3 columns
 
 \begin{center}
-
 \noindent
+\vspace{-3em}
 \includegraphics[width=\columnwidth]{logo_tuned/label}
 
 \url{http://neuro.debian.net}
+\section*{NeuroDebian Project}
+\subsection*{The Universal Research Environment}
+
+
 \end{center}
 
 \section*{What is NeuroDebian}
@@ -62,7 +76,7 @@ buga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dug
 Icons for FSL, Caret, AFNI, etc
 
 
-\columnbreak
+%\columnbreak
 
 \section*{How to get NeuroDebian}
 
@@ -77,7 +91,7 @@ buga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dug
 sdflkj
 slkdjf
 
-\columnbreak
+%\columnbreak
 
 \section*{Who is using NeuroDebian}
 
@@ -86,11 +100,43 @@ slkdjf
 
 buga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga duga
 
+
+\section*{Future\ldots}
+
+\begin{description}[leftmargin=1em]
+
+\item[Wider coverage]:\\
+  BioSig, NEURON, FreeSurfer, etc.
+
+\item[Assured interoperability]:\\
+  Intergration- and regression- testing
+
+\item[Snapshotting]
+
+\item[Data as 1st class citizen]
+
+\item[Universal Availability]:\\
+  \begin{itemize}
+  \item New versions of Virtual Appliance
+  \item Cloud computing images
+  \end{itemize}
+
+\end{description}
+
+
 \section*{Endorsements}
 
 some quotes from letters of support
 
-\columnbreak
+
+\section*{Acknowledgements}
+
+We are grateful to all Debian developers and contributors for the
+development of Debian OS, and to Prof. Jim Haxby (PBS Department,
+Dartmouth College) for his continued support and endless supply of
+Italian espresso.
+
+%\columnbreak
 \end{multicols}
 
 
