@@ -1,3 +1,5 @@
+.. _testimonials:
+
 Testimonials
 ============
 
