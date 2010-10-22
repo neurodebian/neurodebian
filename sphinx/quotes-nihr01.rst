@@ -1,4 +1,4 @@
-.. Generated on Thu Oct 21 22:21:37 EDT 2010
+.. Generated on Fri Oct 22 09:11:14 EDT 2010
 .. Do not edit directly
 
 .. quote::
@@ -9,6 +9,16 @@
    :group: Research institutions
 
    [...] software for neuroimage processing evolves rapidly and heterogeneously. It is a challenge for research organizations to remain current  [...] In this context we have begun to use the NeuroDebian repository  [...] We hope that this service will continue with an expanded scope  [...]
+
+
+.. quote::
+   :author: Prof. Daniel Y. Kimberg
+   :affiliation: Core Director, Data Processing Facility, Center for Functional Neuroimaging, University of Pennsylvania, Philadelphia, USA
+   :date: 2010-09-08
+   :tags:  lofs, software distribution, quality, reproducibility, practices, impact
+   :group: Research institutions
+
+   The approach taken with NeuroDebian is plainly the most appropriate approach to software distribution for the dominant platform in brain image analysis, and I have great confidence that this project will be a major asset to the neuroscience community in facilitating the distribution of stable software, improving the reliability and replicability of analyses, and in helping to improve software development practices.
 
 
 .. quote::
@@ -169,6 +179,16 @@
    :group: Research software projects
 
    Since 2007 we completely rely on the NeuroDebian project to provide users of the Debian/Ubuntu platform with FSL software packages and corresponding technical support.  [...] we have received a continuous stream of bug fixes and improvements that have been developed by members of the Debian community.  [...] we were able to benefit from work of people that would not otherwise contribute to the development of FSL – without any additional investment of my lab, but solely due to FSL’s presence in the Debian archive.  
+
+
+.. quote::
+   :author: Paolo Avesani
+   :affiliation: Neuroinformatics Laboratory, Center for Mind/Brain sciences -CIMEC-, University of Trento, Trento, Italy
+   :date: 2010-09-15
+   :tags:  lofs, money
+   :group: Individual laboratories and researchers
+
+   It [NeuroDebian] is of great advantage for the management of the computers of the lab because NeuroDebian allows to reduce the system administration costs.
 
 
 .. quote::
