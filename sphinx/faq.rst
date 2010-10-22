@@ -127,6 +127,39 @@ I have heard that some packages are non-free. Will you charge me for them?
   packages in NeuroDebian are provided free of charge and under the licensing
   terms of the original developers.
 
+.. _sec_pkg_authentication:
+
+What means "The following signatures couldn't be verified..."?
+--------------------------------------------------------------
+
+When you start using this repository, you probably get warning messages
+like this::
+
+  The following signatures couldn't be verified because
+  the public key is not available.
+
+Or you will be asked questions like this over and over::
+
+  WARNING: The following packages cannot be authenticated!
+  ...
+  Install these packages without verification [y/N]?
+
+This is because your APT installation initially does not know the GPG
+key that is used to sign the release files of this repository. It is easy to
+make APT happy again:
+
+1. Get the key. Either download the `repository key from here
+   <_static/neuro.debian.net.asc>`_
+   or fetch it from http://wwwkeys.pgp.net (2649A5A9).
+
+2. Now feed the key into APT by invoking::
+
+     apt-key add #file#
+
+   Where `#file#` has to be replaced with the location of the key file you just
+   downloaded. You need to have superuser-privileges to do this (either do it
+   as root or use sudo).
+
 
 .. include:: links_names.rst
 .. include:: substitutions.rst
