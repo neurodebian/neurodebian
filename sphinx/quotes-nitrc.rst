@@ -1,0 +1,19 @@
+.. Selected quotes from NITRC portal
+
+.. quote::
+   :author: Anonymous
+   :date: 2010-05-05
+   :tags:  nitrc, vm, ease, breadth
+   :group: Individual laboratories and researchers
+   :source: NITRC NeuroDebian reviews
+
+   brilliant! as promised, all problems are [on their way to being] solved. (well, at least in so far as neuroscience is concerned :) very cool and as pointed out, NeuroDebian lets you try out all the cool toys of neuroscience research with a very straightforward ease of use (esp. with the virtual machine). very nice...keep up the good work!
+
+.. quote::
+   :author: Anonymous
+   :date: 2010-05-05
+   :tags:  nitrc, vm
+   :group: Individual laboratories and researchers
+   :source: NITRC NeuroDebian reviews
+
+   [...] Best part for me is that I can run it in a VM without having to worry about replacing my native OS.
