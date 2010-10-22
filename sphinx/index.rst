@@ -41,7 +41,7 @@ News
  new TWTR.Widget({
    version: 2,
    type: 'profile',
-   rpp: 10,
+   rpp: 15,
    interval: 6000,
    width: 'auto',
    height: 150,
@@ -126,45 +126,21 @@ Now, you can proceed to install packages, e.g.::
   about which package version is available for which release and architecture,
   please have a look at the corresponding package pages.
 
-
-Package authentication
-----------------------
-
-When you start using this repository, you probably get warning messages
-like this::
-
-  The following signatures couldn't be verified because
-  the public key is not available.
-
-Or you will be asked questions like this over and over::
-
-  WARNING: The following packages cannot be authenticated!
-  ...
-  Install these packages without verification [y/N]?
-
-This is because your APT installation initially does not know the GPG
-key that is used to sign the release files of this repository. It is easy to
-make APT happy again:
-
-1. Get the key. Either download the `repository key from here
-   <_static/neuro.debian.net.asc>`_
-   or fetch it from http://wwwkeys.pgp.net (2649A5A9).
-
-2. Now feed the key into APT by invoking::
-
-     apt-key add #file#
-
-   Where `#file#` has to be replaced with the location of the key file you just
-   downloaded. You need to have superuser-privileges to do this (either do it
-   as root or use sudo).
+After this initial setup you probably also want to configure your package
+manager to recognize the NeuroDebian archive key. With this key the package
+manager can verify that packages haven't been modified and are identical with
+the ones in the main NeuroDebian archive, regardless of which mirror you
+downloaded them from. The NeuroDebian key id is **2649A5A9**. If you need further
+help setting up package authentication, please take a look at
+:ref:`corresponding FAQ <sec_pkg_authentication>`.
 
 
 .. _chap_installation:
 
-Installation
-============
+Ways to use NeuroDebian
+=======================
 
-Virtual Machine
+Virtual machine
 ---------------
 
 If you are not running Debian_ on a particular machine a :ref:`chap_vm` is
@@ -177,8 +153,8 @@ purpose of teaching a neuroimaging data analysis course in a multipurpose
 computer lab.
 
 
-Debian
-------
+Debian installation
+-------------------
 
 Having been exposed to the wonders of NeuroDebian_ you are no longer
 satisfied with your previous choice of operating system?  We would
@@ -191,7 +167,7 @@ hardware architecture and then simply add |repos|.
 .. _chap_team:
 
 
-The Team
+The team
 ========
 
 Our main goal is to provide neuroscience FOSS_ for Debian_. Thus the
