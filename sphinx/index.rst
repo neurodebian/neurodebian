@@ -12,13 +12,15 @@ Debian_ systems (or Debian-derivatives like Ubuntu_). It contains both unofficia
 or prospective packages which are not (yet) available from the main Debian_
 archive, as well as backported or simply rebuilt packages also available
 elsewhere. Please see the :ref:`faq` for more information about the goals of
-this project.
+this project, and :ref:`read what people say about it <testimonials>`.
+If you appreciate this service, please |spread|.
 
-This service is provided "as is". There is no guarantee that a package
-works as expected, so use them at your own risk. If you encounter problems,
-please `report <#contacts>`_ them.
+.. note::
 
-Please |spread|, if you like it.
+  This service is provided "as is". There is no guarantee that a package
+  works as expected, so use them at your own risk. If you encounter problems,
+  please `report <#contacts>`_ them.
+
 
 .. raw:: html
 
