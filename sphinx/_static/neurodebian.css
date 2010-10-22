@@ -665,14 +665,15 @@ img.logo {
 
 blockquote.epigraph {
     padding: 0 1em 0 1em;
-    background-color: #f2f2f2;
-	border-top: 1px solid #ccc;
-	border-bottom: 1px solid #ccc;
+    background-color: #faf2e9;
+    border-top: 1px solid #ad7a35;
+    border-bottom: 1px solid #ad7a35;
     font-style: italic;
 }
 
 blockquote.epigraph p {
     margin: 0.2em 0 0.2em 0;
+	font-size: 90%;
 }
 
 p.attribution {
