@@ -4,10 +4,32 @@
    ext.quote
    ~~~~~~~~~
 
-   Compile the quotes
+   Collect and render individual quotes (quote directive) or
+   selections (quotes directive) of quotes.
+
+   Example::
+
+      .. quote::
+         :author: Dr. Joe Black
+		 :affiliation: Someone important, somewhere nice
+		 :date: 1990-01-01
+		 :tags: software, Debian, sphinx
+		 :group: Research software projects
+
+	     quote.py is a wonderful extension
+
+	  .. quotes::
+	     :random: 1
+		 :tags: sphinx
+
 
    :copyright: Copyright 2010 Yaroslav O. Halchenko
    :license: BSD
+
+   Based on todo.py extension from sphinx:
+   :copyright: Copyright 2007-2010 by the Sphinx team, see AUTHORS.
+   :license: BSD, see LICENSE for details.
+
 """
 
 import operator
@@ -130,7 +152,7 @@ class Quotes(Directive):
 		'random': directives.positive_int, # how many to randomly output
 		'group': directives.unchanged,	   # what group to show
 		'tags': directives.unchanged,	# list of tags to be matched
-		#'sections': lambda a: directives.choice(a, ('date', 'group'))
+		# 'sections': lambda a: directives.choice(a, ('date', 'group'))
 		}
 
     def run(self):
@@ -147,10 +169,6 @@ class Quotes(Directive):
 
 
 def process_quote_nodes(app, doctree, fromdocname):
-    ## if not app.config['quote_include_quotes']:
-    ##     for node in doctree.traverse(quote_node):
-    ##         node.parent.remove(node)
-
     # Replace all quotes nodes with a list of the collected quotes.
     # Augment each quote with a backlink to the original location.
     env = app.builder.env
@@ -162,9 +180,6 @@ def process_quote_nodes(app, doctree, fromdocname):
 	#	  % (fromdocname, len(env.quote_all_quotes)))
 
     for node in doctree.traverse(quotes):
-        ## if not app.config['quote_include_quotes']:
-        ##     node.replace_self([])
-        ##     continue
 
         content = []
 		filters = []
@@ -189,35 +204,6 @@ def process_quote_nodes(app, doctree, fromdocname):
 						  [f(quote_entry) for f in filters],
 						  True):
 				continue
-			## Commented out mechanism to back-reference original
-			## location
-			##
-            ## para = nodes.paragraph(classes=['quote-source'])
-            ## filename = env.doc2path(quote_info['docname'], base=None)
-            ## description = _('(The <<original entry>> is located in '
-            ##                 ' %s, line %d.)') % (filename, quote_info['lineno'])
-            ## desc1 = description[:description.find('<<')]
-            ## desc2 = description[description.find('>>')+2:]
-            ## para += nodes.Text(desc1, desc1)
-
-            ## # Create a reference
-            ## newnode = nodes.reference('', '', internal=True)
-            ## innernode = nodes.emphasis(_('original entry'), _('original entry'))
-            ## try:
-            ##     newnode['refuri'] = app.builder.get_relative_uri(
-            ##         fromdocname, quote_info['docname'])
-            ##     newnode['refuri'] += '#' + quote_info['target']['refid']
-            ## except NoUri:
-            ##     # ignore if no URI can be determined, e.g. for LaTeX output
-            ##     pass
-            ## newnode.append(innernode)
-            ## para += newnode
-            ## para += nodes.Text(desc2, desc2)
-            ## #para += nodes.Text("XXX", "YYY")
-
-            # (Recursively) resolve references in the quote content
-            env.resolve_references(quote_entry, quote_info['docname'],
-                                   app.builder)
 
             # Insert into the quotes
             content.append(quote_entry)
@@ -239,8 +225,6 @@ def process_quote_nodes(app, doctree, fromdocname):
 			terms = list(set([x for x in terms if x]))
 			# Simply sort according to what to group on,
 			# and then insert sections?
-			#import pydb
-			#pydb.debugger()
 			section = nodes.section('')
 			section.extend(nodes.title('', 'XXX'))
 			section += content[:2]
@@ -264,9 +248,6 @@ def quotes_noop(self, node):
 	pass
 
 def setup(app):
-	## app.add_config_value('quotes_include_quotes', False, False)
-	#import pydb
-	#pydb.debugger()
     app.add_node(quotes)
     app.add_node(quote_node,
                  html=(quotes_noop, quotes_noop),
