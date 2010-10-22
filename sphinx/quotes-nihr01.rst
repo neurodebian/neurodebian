@@ -1,4 +1,4 @@
-.. Generated on Fri Oct 22 09:11:14 EDT 2010
+.. Generated on Fri Oct 22 13:05:28 EDT 2010
 .. Do not edit directly
 
 .. quote::
@@ -209,6 +209,16 @@
    :group: Individual laboratories and researchers
 
    I am writing this letter in support of the NeuroDebian team, whose efforts at producing high-quality free, open-source software have been invaluable to my graduate research.  
+
+
+.. quote::
+   :author: Dr. Attila Krajcsi
+   :affiliation: Lecturer, Cognitive Psychology Department, Eötvös University, Hungary
+   :date: 2010-09-06
+   :tags:  lofs, speed
+   :group: Individual laboratories and researchers
+
+   [NeuroDebian is] an extremely time saving solution
 
 
 .. quote::
