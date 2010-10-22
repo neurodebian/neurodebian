@@ -3,6 +3,10 @@
 NeuroDebian Virtual Machine
 ===========================
 
+.. quotes::
+   :random: 1
+   :tags: vm
+
 Those, who are not yet running a Debian-based operating system, but are already
 tired of fiddling with dozens of neuro-software packages, can get a glimpse of
 neuroscience research in a Debian environment via a `virtual machine`_.

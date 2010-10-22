@@ -4,6 +4,9 @@
  Welcome to the Debian Neuroscience Repository
 ***********************************************
 
+.. quotes::
+   :random: 1
+
 This repository provides mostly neuroscience-related packages to be used on
 Debian_ systems (or Debian-derivatives like Ubuntu_). It contains both unofficial
 or prospective packages which are not (yet) available from the main Debian_
@@ -248,6 +251,7 @@ Italian espresso <coffeeart>`.
    spread
    vm
    coffeeart
+   testimonials
 
 .. probably should be purged altogether
 .. toctree::
@@ -258,6 +262,8 @@ Italian espresso <coffeeart>`.
    setup
    links_names
    substitutions
+   quotes-nihr01
+   quotes-nitrc
 
 .. include:: links_names.rst
 .. include:: substitutions.rst
