@@ -240,7 +240,14 @@ efficiency in cognitive neuroscience research with NeuroDebian
 <_files/NeuroDebian_CNS2010.pdf>`_. *Poster presented at the annual
 meeting of the Cognitive Neuroscience Society*, Montréal, Canada.
 
+Halchenko, Y. O., Hanke, M. (2009). `An ecosystem of neuroimaging,
+statistical learning, and open-source software to make research more
+efficient, more open, and more fun
+<_files/HalchenkoHanke_FossEcosystemDC09.pdf>`_. *Talk given at*
+`Dartmouth College`_, New Hampshire, USA.
+
 .. _DebConf10: http://debconf10.debconf.org/
+.. _Dartmouth College: http://www.dartmouth.edu/
 
 
 .. toctree::
