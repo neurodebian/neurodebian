@@ -221,6 +221,28 @@ We are grateful to Jim Haxby for his continued support and :ref:`endless supply 
 Italian espresso <coffeeart>`.
 
 
+Publications
+============
+
+Halchenko, Y. O., Hanke, M., Haxby, J. V., Pollmann, S. & Raizada, R. D.
+(2010). Having trouble getting your Nature paper? Maybe you are not using the
+right tools? *Poster to be presented at the anual meeting of the Society for
+Neuroscience*, San Diego, USA.
+
+Hanke, M., Halchenko, Y. O. (2010). `Debian: The ultimate platform for
+neuroimaging research <_files/HankeHalchenko_NeuroDebianDebConf10.pdf>`_.
+*Talk given at* DebConf10_, New York City, USA. [video:
+`low resolution <http://meetings-archive.debian.net/pub/debian-meetings/2010/debconf10/low/1310_1310_Debian_The_ultimate_platform_for_neuroimaging_research.ogv>`_,
+`high resolution <http://meetings-archive.debian.net/pub/debian-meetings/2010/debconf10/high/1310_1310_Debian_The_ultimate_platform_for_neuroimaging_research.ogv>`_]
+
+Hanke, M., Halchenko, Y. O., Haxby, J. V. & Pollmann, S. (2010). `Improving
+efficiency in cognitive neuroscience research with NeuroDebian
+<_files/NeuroDebian_CNS2010.pdf>`_. *Poster presented at the annual
+meeting of the Cognitive Neuroscience Society*, Montréal, Canada.
+
+.. _DebConf10: http://debconf10.debconf.org/
+
+
 .. toctree::
    :hidden:
 
