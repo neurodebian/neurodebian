@@ -4,4 +4,4 @@ all:: pics
 
 .PHONY: pics
 pics:
-	@$(MAKE) -C ../ logo_tuned/label.pdf openlogo.pdf
+	@$(MAKE) -C ../ logo_tuned/label.pdf openlogo.pdf distro-dev.pdf
