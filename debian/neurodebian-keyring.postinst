@@ -1,0 +1,9 @@
+#!/bin/sh
+
+set -e
+
+if which apt-key > /dev/null; then
+    apt-key update
+fi
+
+#DEBHELPER#

@@ -11,14 +11,6 @@ Vcs-Git: git://git.debian.org/git/pkg-exppsy/neurodebian.git
 XS-DM-Upload-Allowed: yes
 
 
-Package: neurodebian
-Architecture: all
-Depends: ${misc:Depends}, zenity
-Suggests:
-Description: neuroscience research environment
- Pacifier
-
-
 Package: neurodebian-dev
 Architecture: all
 Depends: ${misc:Depends}, devscripts, cowbuilder, python
@@ -36,12 +28,12 @@ Description: neuroscience research environment
  Pacifier
 
 
-Package: neurodebian-trailer
+Package: neurodebian-keyring
 Architecture: all
 Depends: ${misc:Depends}
-Suggests:
-Description: neuroscience research environment
- Pacifier
+Description: GnuPG archive keys of the NeuroDebian archive
+ The NeuroDebian project digitally signs its Release files. This package
+ contains the archive keys used for that.
 
 
 Package: neurodebian-guest-additions
