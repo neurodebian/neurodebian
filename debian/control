@@ -38,12 +38,12 @@ Description: GnuPG archive keys of the NeuroDebian archive
 
 Package: neurodebian-guest-additions
 Architecture: all
-Depends: ${misc:Depends}, sudo, virtualbox-ose-guest-utils, virtualbox-ose-guest-x11, virtualbox-ose-guest-dkms, neurodebian-desktop, gdm, update-manager-gnome
+Depends: ${misc:Depends}, sudo, virtualbox-ose-guest-utils, virtualbox-ose-guest-x11, virtualbox-ose-guest-dkms, neurodebian-desktop, gdm, update-manager-gnome, update-notifier
 Recommends: chromium-browser
 Suggests:
 Description: add-ons and configuration for the NeuroDebian virtual machine
  This package configures a Debian installation as a guest operating system
  in a VirtualBox-based virtual machine for NeuroDebian.
  .
- Do not install this package unless you know what you are doing! For example,
+ DO NOT install this package unless you know what you are doing! For example,
  installation of this package relaxes several security mechanisms.
