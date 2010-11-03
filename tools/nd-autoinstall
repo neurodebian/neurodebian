@@ -16,6 +16,7 @@ nd_autoinstall_version=0.1
 ai_envfile=
 ai_package=
 ai_verbose=
+ai_force=0
 
 print_verbose()
 {
@@ -60,6 +61,9 @@ Options:
     File to be sourced before invocation of the COMMAND.  If not found,
     PACKAGE gets installed first.
 
+  -f, --force
+    Skip all checks and install package(s) provided via --package.
+
   -v, --verbose
     Enable additional progress messages.
 
@@ -86,7 +90,7 @@ EOT
 # Note that we use `"$@"' to let each command-line parameter expand to a
 # separate word. The quotes around `$@' are essential!
 # We need CLOPTS as the `eval set --' would nuke the return value of getopt.
-CLOPTS=`getopt -o h,e:,p:,v --long help,version,environment-file:,package:,verbose, -n 'nd-autoinstall' -- "$@"`
+CLOPTS=`getopt -o h,e:,p:,f,v --long help,version,environment-file:,package:,verbose,force -n 'nd-autoinstall' -- "$@"`
 
 if [ $? != 0 ] ; then
   echo "Terminating..." >&2
@@ -99,6 +103,7 @@ eval set -- "$CLOPTS"
 while true ; do
   case "$1" in
 	  -e|--environment-file) shift; ai_envfile=$1; shift;;
+	  -f|--force) ai_force=1; shift;;
 	  -p|--package) shift; ai_package=$1; shift;;
 	  -v|--verbose) ai_verbose=1; shift;;
 	  -h|--help) print_help; exit 0;;
@@ -131,12 +136,17 @@ if which $ai_command > /dev/null || [ -e $ai_command ]; then
 else
 	do_install=1
 fi
+if [ $ai_force -eq 1 ]; then
+	do_install=1
+fi
 
 if [ $do_install -eq 1 ]; then
-    if ! zenity --question \
-        --text="To run '$ai_command', $ai_package package needs to be installed.  Do you want to proceed?"; then
-        exit 2
-    fi
+    if [ $ai_force -eq 0 ]; then
+		if ! zenity --question \
+			--text="To run '$ai_command', $ai_package package needs to be installed.  Do you want to proceed?"; then
+			exit 2
+		fi
+	fi
 
     print_verbose "Need to install $ai_package to run $ai_command"
 
