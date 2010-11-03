@@ -77,7 +77,10 @@ EOT
 	sudo bash -c "mkdir -p $cfg_dir && touch $success_flag"
 fi
 
-packages=$(zenity --list --checklist --column="Install" --column="Description" \
+# create symlink to shared folder into homedir
+[ ! -e $HOME/host ] && ln -s /mnt/host $HOME/host
+
+packages=$(zenity --list $icon_opt --checklist --column="Install" --column="Description" \
 	   --column="Package Name" --print-column=3 --hide-column=3 --hide-header \
 	   --separator=' ' --text="Please select any additional component that shall be installed.
 
@@ -85,6 +88,7 @@ Please note that this selection will not affect packages already installed
 on the system. No installed packages will be reinstalled or removed, only
 additional components will be installed." \
 FALSE "Emacs" "emacs" \
+FALSE "GNU Image Manipulation Program (Gimp)" "gimp" \
 FALSE "OpenOffice.org" "openoffice.org" \
 FALSE "Scientific Python" "ipython,python-numpy,python-matplotlib" \
 FALSE "TeX Live" "texlive" \
@@ -97,6 +101,9 @@ if [ -n "$packages" ]; then
 		nd-autoinstall -f -p "${pkgs//,/ }" true
 	done
 fi
+
+# some sane ending
+zenity --info $icon_opt --text="Wizard has finished."
 
 # and start greeter
 x-www-browser http://neuro.debian.net/vm_welcome.html &
