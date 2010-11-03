@@ -83,3 +83,13 @@ apt-get autoremove --purge
 
 #apt-get install flashplugin-nonfree sun-java6-plugin
 
+
+# custom config
+# use NeuroDebian website as default homepage
+sed -i -e 's,http://www.debian.org,http://neuro.debian.net,g' /etc/chromium-browser/master_preferences
+
+# reduce grub timeout to speed up boot of VM
+sed -i -e 's/GRUB_TIMEOUT=5/GRUB_TIMEOUT=1/g' /etc/default/grub
+update-grub
+
+
