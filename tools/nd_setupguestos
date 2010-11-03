@@ -73,17 +73,6 @@ apt-get purge $(apt-cache search --names-only --installed xserver-xorg-video | g
 # and whatever is obsolete
 apt-get autoremove --purge
 
-# install network manager applet
-# but we don't want to have all the openvpn stuff that pull in an armada of
-# things: I did it by hand in aptitude
-
-# next step purge network interface config to give the power to network manager
-# important
-#adduser brain netdev
-
-#apt-get install flashplugin-nonfree sun-java6-plugin
-
-
 # custom config
 # use NeuroDebian website as default homepage
 sed -i -e 's,http://www.debian.org,http://neuro.debian.net,g' /etc/chromium-browser/master_preferences
