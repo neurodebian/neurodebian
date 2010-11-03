@@ -3,6 +3,6 @@
 /neurodebian-desktop
 /neurodebian-dev
 /neurodebian-guest-additions
-/neurodebian-trailer
+/neurodebian-keyring
 /*.log
 /*.substvars

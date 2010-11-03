@@ -2,3 +2,4 @@ etc/sudoers.d/nopasswd etc/sudoers.d/
 etc/xdg/autostart/* etc/xdg/autostart/
 etc/gconf/* usr/share/gconf/defaults/
 tools/nd-vmsetupwizard usr/bin
+xdg/desktop/neurodebianguest-* usr/share/applications
