@@ -1,5 +1,5 @@
-neurodebian (0.6) squeeze; urgency=low
+neurodebian (0.8) squeeze; urgency=low
 
   * Initial release.
 
- -- Michael Hanke <michael.hanke@gmail.com>  Wed, 03 Nov 2010 14:41:15 -0400
+ -- Michael Hanke <michael.hanke@gmail.com>  Wed, 03 Nov 2010 16:11:48 -0400

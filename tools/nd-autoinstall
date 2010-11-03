@@ -16,6 +16,7 @@ nd_autoinstall_version=0.1
 ai_envfile=
 ai_package=
 ai_verbose=
+ai_dialog_title=
 ai_force=0
 
 print_verbose()
@@ -67,6 +68,9 @@ Options:
   -v, --verbose
     Enable additional progress messages.
 
+  -t, --title
+    Optinal title of the installation dialog.
+
   -h, --help
     Print short description, usage summary and option list.
 
@@ -90,7 +94,7 @@ EOT
 # Note that we use `"$@"' to let each command-line parameter expand to a
 # separate word. The quotes around `$@' are essential!
 # We need CLOPTS as the `eval set --' would nuke the return value of getopt.
-CLOPTS=`getopt -o h,e:,p:,f,v --long help,version,environment-file:,package:,verbose,force -n 'nd-autoinstall' -- "$@"`
+CLOPTS=`getopt -o h,e:,p:,t:,f,v --long help,version,environment-file:,package:,title:,verbose,force -n 'nd-autoinstall' -- "$@"`
 
 if [ $? != 0 ] ; then
   echo "Terminating..." >&2
@@ -105,6 +109,7 @@ while true ; do
 	  -e|--environment-file) shift; ai_envfile=$1; shift;;
 	  -f|--force) ai_force=1; shift;;
 	  -p|--package) shift; ai_package=$1; shift;;
+	  -t|--title) shift; ai_dialog_title=$1; shift;;
 	  -v|--verbose) ai_verbose=1; shift;;
 	  -h|--help) print_help; exit 0;;
 	  --version) print_version; exit 0;;
@@ -121,6 +126,8 @@ fi
 
 ai_command=$1; shift
 [ -z "$ai_package" ] && ai_package=$ai_command
+
+[ -z "$ai_dialog_title" ] && ai_dialog_title="Package installation"
 
 ai_envfile_failed=
 if [ ! -z "$ai_envfile" ]; then
@@ -156,7 +163,7 @@ if [ $do_install -eq 1 ]; then
 		DEBIAN_FRONTEND=gnome /usr/bin/apt-get install -y $ai_package 2>&1 \
         && rm -f $logfile; } \
         | tee $logfile \
-        | zenity --title="Package installation" \
+        | zenity --title="$ai_dialog_title" \
 		         --text="Installing $ai_package" \
                  --progress --pulsate --auto-close --auto-kill
     if [ -e $logfile ] ; then

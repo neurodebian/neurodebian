@@ -52,14 +52,23 @@ fi
 
 packages=$(zenity --list --checklist --column="Install" --column="Description" \
 	   --column="Package Name" --print-column=3 --hide-column=3 --hide-header \
-	   --separator=' ' --text="This is the manual
-" \
-FALSE "one" "ipython" \
-FALSE "two" "vim" \
-FALSE "three" "bc dc" || true)
+	   --separator=' ' --text="Please select any additional component that shall be installed.
+
+Please note that this selection will not affect packages already installed
+on the system. No installed packages will be reinstalled or removed, only
+additional components will be installed." \
+FALSE "Emacs" "emacs" \
+FALSE "OpenOffice.org" "openoffice.org" \
+FALSE "Scientific Python" "ipython,python-numpy,python-matplotlib" \
+FALSE "TeX Live" "texlive" \
+FALSE "Adobe Flash browser plugin" "flashplugin-nonfree" \
+FALSE "Sun Java browser plugin" "sun-java6-plugin" \
+|| true)
 
 if [ -n "$packages" ]; then
-	nd-autoinstall -f -p "$packages" true
+	for pkgs in $packages; do
+		nd-autoinstall -f -p "${pkgs//,/ }" true
+	done
 fi
 
 # and start greeter
