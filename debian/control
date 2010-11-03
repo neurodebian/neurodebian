@@ -38,7 +38,7 @@ Description: GnuPG archive keys of the NeuroDebian archive
 
 Package: neurodebian-guest-additions
 Architecture: all
-Depends: ${misc:Depends}, sudo, virtualbox-ose-guest-utils, virtualbox-ose-guest-x11, virtualbox-ose-guest-dkms, neurodebian-desktop, gdm, update-manager-gnome, update-notifier, popularity-contest
+Depends: ${misc:Depends}, sudo, virtualbox-ose-guest-utils, virtualbox-ose-guest-x11, virtualbox-ose-guest-dkms, neurodebian-desktop, gdm, update-manager-gnome, update-notifier
 Recommends: chromium-browser
 Suggests:
 Description: add-ons and configuration for the NeuroDebian virtual machine
