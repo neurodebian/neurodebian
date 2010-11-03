@@ -6,7 +6,8 @@
 set -e
 set -u
 
-success_flag=/etc/neurodebian/guest/setupwizard_done
+cfg_dir=/etc/neurodebian/guest/setupwizard_done
+success_flag=$cfg_dir/setupwizard_done
 nd_icon=/usr/share/pixmaps/neurodebian.svg
 icon_opt="--window-icon=$nd_icon"
 
@@ -23,7 +24,7 @@ This is the first time you have started this virtual machine. We will now perfor
 fi
 
 if ! zenity --question $icon_opt --title="NeuroDebian Setup Wizard" \
---text="The setup procedure requires network access to download packages from the Debian archive. If you do not have network access right now, you can re-start this wizzard at any time from the NeuroDebian menu.
+--text="The setup procedure requires network access to download packages from the Debian archive. If you do not have network access right now, you can re-start this wizard at any time from the NeuroDebian menu.
 
 Do you want to proceed with updating the system?
 "; then
@@ -31,7 +32,7 @@ Do you want to proceed with updating the system?
 fi
 
 # initialize apt
-#update-manager -c
+update-manager -c
 
 if [ ! -e /etc/popularity-contest.conf ]; then
 	zenity --info $icon_opt --title="NeuroDebian Setup Wizard" \
@@ -46,7 +47,7 @@ fi
 
 # essential things are done -- let's mark sucess
 if [ $first_run -eq 1 ]; then
-	sudo touch $success_flag
+	sudo bash -c "mkdir -p $cfg_dir && touch $success_flag"
 fi
 
 packages=$(zenity --list --checklist --column="Install" --column="Description" \
@@ -55,7 +56,7 @@ packages=$(zenity --list --checklist --column="Install" --column="Description" \
 " \
 FALSE "one" "ipython" \
 FALSE "two" "vim" \
-FALSE "three" "bc dc")
+FALSE "three" "bc dc" || true)
 
 if [ -n "$packages" ]; then
 	nd-autoinstall -f -p "$packages" true
