@@ -10,6 +10,8 @@ set -u
 
 # have dedicated hard-drives for swap and home
 
+# expert install
+
 # hostname: neurodebian
 # domain: ''
 
@@ -27,8 +29,10 @@ set -u
 # just base system, run selection, but no tasks (not even 'Standard system')
 
 # set root password to 'neurodebian' too
+echo "Set root passwd:"
+passwd root
 
-apt-get install etckeeper
+apt-get install --no-install-recommends etckeeper
 
 # setup etckeeper
 git config --global user.name NeuroDebian
@@ -38,8 +42,7 @@ git config --global user.email nd@localhost
 # -----------------
 
 # Add sources.list for backports and neurodebian
-wget -O /etc/apt/sources.list.d/neuro.debian.net.list http://neuro.debian.net/_static/neurodebian.squeeze.us.sources.list
-wget -O - http://neuro.debian.net/_static/neuro.debian.net.asc | apt-key add -
+wget -O /etc/apt/sources.list.d/neuro.debian.net.list http://neuro.debian.net/_static/neurodebian.squeeze.us-nh.sources.list
 
 echo "deb http://backports.debian.org/debian-backports squeeze-backports main contrib non-free" > /etc/apt/sources.list.d/backports.debian.org.list
 cat << EOT > /etc/apt/preferences.d/backports.debian.org.pref
@@ -49,10 +52,16 @@ Pin-Priority: 200
 EOT
 
 apt-get update
-apt-get install --no-install-recommends neurodebian-guest-additions \
- gnome-core mc evince bash-completion ntpdate file-roller gnome-utils
- gnome-themes eog vim
- software-center gdebi update-notifier gedit-plugins gnome-media synaptic menu less
+apt-get install neurodebian-keyring
+apt-get update
+
+# to get all the stuff in recommends
+apt-get install dkms neurodebian-guest-additions
+
+apt-get install --no-install-recommends \
+ gnome-core mc evince bash-completion ntpdate file-roller gnome-utils \
+ gnome-themes eog vim \
+ software-center gdebi gedit-plugins gnome-media synaptic menu less
 
 # intermediate cleanup to prevent virtual harddrive from fragmenting too much
 find /var/cache/apt/archives/ -name '*.deb' -delete
@@ -72,5 +81,5 @@ apt-get autoremove --purge
 # important
 #adduser brain netdev
 
-apt-get install flashplugin-nonfree sun-java6-plugin
+#apt-get install flashplugin-nonfree sun-java6-plugin
 
