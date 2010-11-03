@@ -122,7 +122,17 @@ if [ ! -z "$ai_envfile" ]; then
 	source "$ai_envfile" || ai_envfile_failed=1
 fi
 
-if [ ! -z "$ai_envfile_failed" ] || ! which $ai_command >/dev/null; then
+do_install=0
+if [ ! -z "$ai_envfile_failed" ]; then
+	do_install=1
+fi
+if which $ai_command > /dev/null || [ -e $ai_command ]; then
+	do_install=0
+else
+	do_install=1
+fi
+
+if [ $do_install -eq 1 ]; then
     if ! zenity --question \
         --text="To run '$ai_command', $ai_package package needs to be installed.  Do you want to proceed?"; then
         exit 2
@@ -136,7 +146,7 @@ if [ ! -z "$ai_envfile_failed" ] || ! which $ai_command >/dev/null; then
 		DEBIAN_FRONTEND=gnome /usr/bin/apt-get install -y $ai_package 2>&1 \
         && rm -f $logfile; } \
         | tee $logfile \
-        | zenity --title="nd-autoinstall" \
+        | zenity --title="Package installation" \
 		         --text="Installing $ai_package" \
                  --progress --pulsate --auto-close --auto-kill
     if [ -e $logfile ] ; then
@@ -153,5 +163,8 @@ if [ ! -z "$ai_envfile_failed" ] || ! which $ai_command >/dev/null; then
 	}
 fi
 
-print_verbose "Running $ai_command"
-$ai_command "$@"
+if [ -x $ai_command ]; then
+	# only run if executable
+	print_verbose "Running $ai_command"
+	$ai_command "$@"
+fi
