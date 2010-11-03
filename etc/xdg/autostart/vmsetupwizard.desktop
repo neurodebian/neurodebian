@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=NeuroDebian VirtualMachine setup wizard
+Comment=Runs once to perform final configuration steps
+Exec=[ ! -e /etc/neurodebian/guest/setupwizard_done ] && nd-vmsetupwizard
+Terminal=false
+Type=Application

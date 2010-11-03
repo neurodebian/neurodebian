@@ -1,0 +1,65 @@
+#!/bin/bash
+#emacs: -*- mode: shell-script; c-basic-offset: 4; tab-width: 4; indent-tabs-mode: nil -*-
+#ex: set sts=4 ts=4 sw=4 et:
+
+# play save
+set -e
+set -u
+
+success_flag=/etc/neurodebian/guest/setupwizard_done
+nd_icon=/usr/share/pixmaps/neurodebian.svg
+icon_opt="--window-icon=$nd_icon"
+
+first_run=0
+if [ ! -e $success_flag ]; then
+	first_run=1
+fi
+
+if [ $first_run -eq 1 ]; then
+zenity --info $icon_opt --title="NeuroDebian Setup Wizard" \
+       --text="Welcome to the NeuroDebian virtual machine!
+
+This is the first time you have started this virtual machine. We will now perform a few simple steps to finalize its configuration. This includes upgrading the system to the latest available versions and installing additional software packages upon your request."
+fi
+
+if ! zenity --question $icon_opt --title="NeuroDebian Setup Wizard" \
+--text="The setup procedure requires network access to download packages from the Debian archive. If you do not have network access right now, you can re-start this wizzard at any time from the NeuroDebian menu.
+
+Do you want to proceed with updating the system?
+"; then
+	exit 0
+fi
+
+# initialize apt
+#update-manager -c
+
+if [ ! -e /etc/popularity-contest.conf ]; then
+	zenity --info $icon_opt --title="NeuroDebian Setup Wizard" \
+		--text="You will now be given the choice to participate in the package survey. If enabled, a list of installed packages will be anonymously sent to Debian (http://popcon.debian.org). Your participation is important for two reasons:
+
+1) Popular packages receive more attention from developers, bugs are fixed faster and updates are provided quicker.
+2) User statistics can help research software developers to acquire funding for continued development."
+
+	# install, but do not fail if something goes wrong
+	nd-autoinstall popularity-contest /etc/popularity-contest.conf || true
+fi
+
+# essential things are done -- let's mark sucess
+if [ $first_run -eq 1 ]; then
+	sudo touch $success_flag
+fi
+
+packages=$(zenity --list --checklist --column="Install" --column="Description" \
+	   --column="Package Name" --print-column=3 --hide-column=3 --hide-header \
+	   --separator=' ' --text="This is the manual
+" \
+FALSE "one" "ipython" \
+FALSE "two" "vim" \
+FALSE "three" "bc dc")
+
+if [ -n "$packages" ]; then
+	nd-autoinstall -f -p "$packages" true
+fi
+
+# and start greeter
+x-www-browser http://neuro.debian.net/vm_welcome.html &
