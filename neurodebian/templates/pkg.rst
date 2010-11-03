@@ -44,7 +44,7 @@ Citable reference:
   The software authors ask users to
   `register <{{ db.main.registration }}>`_. Available user statistics might be 
   helpful to acquire funding for this project and therefore foster continued
-  developement in the future.
+  development in the future.
 {% endif -%}
 
 {% if db.nitrc or db.main.debian_popcon or db.main.ubuntu_popcon or
