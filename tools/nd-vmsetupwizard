@@ -21,6 +21,33 @@ zenity --info $icon_opt --title="NeuroDebian Setup Wizard" \
        --text="Welcome to the NeuroDebian virtual machine!
 
 This is the first time you have started this virtual machine. We will now perform a few simple steps to finalize its configuration. This includes upgrading the system to the latest available versions and installing additional software packages upon your request."
+
+# install custom filter for synaptics
+sudo mkdir -p /root/.synaptic
+sudo cat << EOT >> /root/.synaptic/filters
+filter "NeuroDebian" {
+  section {
+    inclusive false;
+    sections {
+    };
+  };
+  status {
+    flags 0x1ffff;
+  };
+  pattern {
+    andMode 0;
+    patterns {
+      Origin; "neuro.debian.net"; false;
+      Maintainer; "team@neuro.debian.net"; false;
+    };
+  };
+  priority {
+  };
+  reducedview {
+    enabled false;
+  };
+};
+EOT
 fi
 
 if ! zenity --question $icon_opt --title="NeuroDebian Setup Wizard" \
