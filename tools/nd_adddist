@@ -21,22 +21,27 @@ fi
 # common options
 opts="--distribution $dist --debootstrap debootstrap --aptcache $aptcache"
 
+mkdir -p ${cowbuilderroot}/cow
 
 for a in i386 amd64; do
   echo "Building $a base path..."
-  if [ -d ${cowbuilderroot}/cow/${family}-${dist}-${a}.cow ]; then
-    echo "${cowbuilderroot}/cow/${family}-${dist}-${a}.cow exists. Ignoring arch."
+  cow="${cowbuilderroot}/cow/${family}-${dist}-${a}.cow"
+  if [ -d "$cow" ]; then
+    echo "${cow} exists. Ignoring arch."
     continue
   fi
   if [ "${family:0:3}" = "nd+" ]; then
   echo "Including NeuroDebian repository..."
-    cowbuilder --create --basepath ${cowbuilderroot}/cow/${family}-${dist}-${a}.cow $opts \
+    cowbuilder --create --basepath ${cow} $opts \
                --components "$components" \
                --mirror "$mirror" \
                --debootstrapopts --arch --debootstrapopts $a \
                --othermirror "deb http://neuro.debian.net/debian $dist main contrib non-free"
+	# deploy our key manually since archive with package is not yet
+	# available at this point
+	cp --preserve=mode {,${cow}}/etc/apt/trusted.gpg.d/neurodebian-archive-keyring.gpg
   else
-    cowbuilder --create --basepath ${cowbuilderroot}/cow/${family}-${dist}-${a}.cow $opts \
+    cowbuilder --create --basepath ${cow} $opts \
                --components "$components" \
                --mirror "$mirror" \
                --debootstrapopts --arch --debootstrapopts $a
