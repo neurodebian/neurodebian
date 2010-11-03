@@ -180,7 +180,7 @@ if [ $do_install -eq 1 ]; then
 	}
 fi
 
-if [ -x $ai_command ]; then
+if which $ai_command > /dev/null 2>&1; then
 	# only run if executable
 	print_verbose "Running $ai_command"
 	$ai_command "$@"
