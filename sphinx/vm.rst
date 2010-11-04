@@ -7,35 +7,27 @@ NeuroDebian Virtual Machine
    :random: 1
    :tags: vm
 
-Those, who are not yet running a Debian-based operating system, but are already
-tired of fiddling with dozens of neuro-software packages, can get a glimpse of
-neuroscience research in a Debian environment via a `virtual machine`_.
+For those who are not yet running a Debian-based operation system we offer a
+`virtual machine`_ that can be used with `VirtualBox`_ to allow users to benefit
+from a Debian-based research environment on other operating systems.
+This virtual machine initially comes as a compact Debian installation that can,
+once installed, be equipped with a large variety of neuroscience software with
+just a few mouse clicks (e.g. AFNI_, Caret_, FSL_, PyMVPA_).
 
 .. _virtual machine: http://en.wikipedia.org/wiki/Virtual_machine
-
-NeuroDebian offers a virtual machine that comes preinstalled with a number
-of popular neuroscience packages (e.g. AFNI_, Caret_, FSL_, PyMVPA_).
-
 .. _AFNI: http://afni.nimh.nih.gov/afni/
 .. _Caret: http://brainvis.wustl.edu/wiki/index.php/Caret:About
 .. _FSL: http://www.fmrib.ox.ac.uk/fsl/
 .. _PyMVPA: http://www.pymvpa.org
 
-The virtual machine contains an installation of `Debian 5.0 (lenny)`_ with a
-GNOME_ desktop environment. All installed software comes from standard Debian
-packages, or prospective Debian packages from NeuroDebian -- no custom
-installations whatsoever. This means that all contained software is readily
-available for any system running a Debian operating system (or a recent Ubuntu
-release). The virtual machine can be seen as a showcase of what Debian for
-neuroscience research feels like. Moreover, once downloaded this virtual
-machine can be kept up to date, just as any other Debian installation. Using
-convenient graphical package management tools users will benefit from security
-bugfixes provided by the Debian project for the whole operating system, as well
-as from software updates for neuroscience-related packages.
 
-.. _Debian 5.0 (lenny): http://www.debian.org/releases/stable
-.. _GNOME: http://www.gnome.org/
+Downloads
+---------
 
+* `NeuroDebian 6.0.0 image (amd64)
+  <http://neuro.debian.net/debian/vm/neurodebian_6.0.0_amd64.zip>`_ [~600MB]
+* `VirtualBox download page <http://www.virtualbox.org/wiki/Downloads>`_ (Windows, Linux, Mac,
+  Solaris)
 
 Installation
 ------------
@@ -117,6 +109,27 @@ the password, since `sudo` is configured to work without it.
 Enjoy!
 
 
+
+Details
+-------
+
+The virtual machine contains an installation of `Debian 5.0 (lenny)`_ with a
+GNOME_ desktop environment. All installed software comes from standard Debian
+packages, or prospective Debian packages from NeuroDebian -- no custom
+installations whatsoever. This means that all contained software is readily
+available for any system running a Debian operating system (or a recent Ubuntu
+release). The virtual machine can be seen as a showcase of what Debian for
+neuroscience research feels like. Moreover, once downloaded this virtual
+machine can be kept up to date, just as any other Debian installation. Using
+convenient graphical package management tools users will benefit from security
+bugfixes provided by the Debian project for the whole operating system, as well
+as from software updates for neuroscience-related packages.
+
+.. _Debian 5.0 (lenny): http://www.debian.org/releases/stable
+.. _GNOME: http://www.gnome.org/
+
+
+
 Troubleshooting
 ---------------
 
@@ -133,4 +146,3 @@ I cannot hear sounds played in the virtual machine.
 
   Sorry, but audio is not (yet) preconfigured properly. If you want to have that
   fixed, please drop us a note.
-

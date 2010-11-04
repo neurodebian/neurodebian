@@ -33,6 +33,8 @@ If you appreciate this service, please |spread|.
 
 .. _Ubuntu: http://www.ubuntu.com
 
+.. _news:
+
 News
 ====
 
@@ -190,6 +192,7 @@ for all their work.
 
 .. _FOSS: http://en.wikipedia.org/wiki/Free_and_open_source_software
 
+.. _support:
 
 Contacts
 ========
