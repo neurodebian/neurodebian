@@ -24,7 +24,7 @@ This is the first time you have started this virtual machine. We will now perfor
 fi
 
 if ! zenity --question $icon_opt --title="NeuroDebian Setup Wizard" \
---text="The setup procedure requires network access to download packages from the Debian archive. If you do not have network access right now, you can re-start this wizard at any time from the NeuroDebian menu.
+--text="The setup procedure requires network access to download packages from the Debian archive. If you do not have network access right now, you can re-start this wizard at any time from the NeuroDebian menu. If you proceed you may have to enter the superuser password with is by default 'neurodebian'.
 
 Do you want to proceed with updating the system?
 "; then

@@ -38,9 +38,11 @@ find vbmnt/var/log -type f -delete
 # apt lists
 find vbmnt/var/lib/apt -type f -name '*debian*' -o -type f -name '*list*' -delete
 # user data
+# cannot clean all root stuff, because it also contains useful thing (e.g. git setup)
+#find vbmnt/root -mindepth 1 -delete
 rm -f vbmnt/root/.*history
 # everything for the default user
-#find vbmnt/home/brain -mindepth 1 -delete
+find vbmnt/home/brain -mindepth 1 -delete
 
 # unmount filesystem
 umount vbmnt

@@ -55,6 +55,8 @@ apt-get update
 apt-get install neurodebian-keyring
 apt-get update
 
+# to cheat the VM check
+touch /dev/vboxguest
 # to get all the stuff in recommends
 apt-get install dkms neurodebian-guest-additions
 
@@ -69,6 +71,7 @@ find /var/cache/apt/archives/ -name '*.deb' -delete
 # cleanup unwanted stuff
 # video drivers (all but vesa)
 apt-get purge $(apt-cache search --names-only --installed xserver-xorg-video | grep xserver-xorg-video | cut -d ' ' -f 1,1) xserver-xorg-video-vesa+
+apt-get purge brasero
 
 # and whatever is obsolete
 apt-get autoremove --purge
@@ -81,4 +84,8 @@ sed -i -e 's,http://www.debian.org,http://neuro.debian.net,g' /etc/chromium-brow
 sed -i -e 's/GRUB_TIMEOUT=5/GRUB_TIMEOUT=1/g' /etc/default/grub
 update-grub
 
+# finally configure geomirror for APT and disable deb-src lists
+sed -i -e "s/10.0.0.1:9999/$(dpkg --print-architecture)-geomirror.debian.net/" \
+    -e "s/^deb-src/#deb-src/" /etc/apt/sources.list
 
+etckeeper commit "Initial VM setup done"
