@@ -1,0 +1,5 @@
+[Disable suspend]
+Identity=unix-user:*
+Action=org.freedesktop.upower.suspend;org.freedesktop.upower.hibernate
+ResultActive=no
+ResultAny=no

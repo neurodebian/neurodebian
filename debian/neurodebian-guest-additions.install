@@ -1,5 +1,6 @@
 etc/sudoers.d/nopasswd etc/sudoers.d/
 etc/xdg/autostart/* etc/xdg/autostart/
 etc/gconf/* usr/share/gconf/defaults/
+etc/polkit/neurodebian-vm-nosuspend.pkla var/lib/polkit-1/localauthority/20-org.d/
 tools/nd-vmsetupwizard usr/bin
 xdg/desktop/neurodebianguest-* usr/share/applications
