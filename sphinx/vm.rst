@@ -25,7 +25,7 @@ Downloads
 ---------
 
 * `NeuroDebian 6.0.0 image (amd64)
-  <http://neuro.debian.net/debian/vm/neurodebian_6.0.0_amd64.zip>`_ [~600MB]
+  <http://neuro.debian.net/debian/vm/neurodebian_6.0.0_amd64.zip>`_ [~570MB]
 * `VirtualBox download page <http://www.virtualbox.org/wiki/Downloads>`_ (Windows, Linux, Mac,
   Solaris)
 
