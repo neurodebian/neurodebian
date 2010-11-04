@@ -1,0 +1,27 @@
+#!/bin/bash
+
+set -e
+set -u
+
+# Settings/arguments
+vm_name="NeuroDebian VirtualMachine (64bit)"
+vm_version="6.0.0"
+vm_arch="amd64"
+outdir=.
+
+# Common
+eula="Virtual appliance comes with Free and Open Source Software (FOSS) released under licenses compliant with Debian Free Software Guidelines (DFSG, see http://www.debian.org/social_contract), such as, GPL, BSD, MIT, etc.  Such software is free to be used or customized for any purpose.
+
+In addition, Debian and NeuroDebian contrib/ and non-free/ repositories are enabled within the Virtual Machine to provide you with access to free software which is distributed under restrictive (e.g. closed-source, non-commercial, research-only) licenses.
+
+You must adhere to the terms of FOSS or free software you will use.  For copyright and license details of a particular software shipped in a PACKAGE please consult a corresponding /usr/share/doc/PACKAGE/copyright file before its use."
+
+out_ovf="${outdir}/NeuroDebian_${vm_version}_${vm_arch}.ovf"
+VBoxManage export "${vm_name}" -o "$out_ovf" \
+	--vsys 0 \
+	--product "$vm_name" \
+	--producturl "http://neuro.debian.net/vm.html" \
+	--vendor "NeuroDebian" \
+	--vendorurl "http://neuro.debian.net" \
+	--version "$vm_version" \
+	--eula "$eula"
