@@ -26,6 +26,8 @@ vdfuse -f "$vdifile" vbdev
 mount -o loop vbdev/Partition1 vbmnt
 
 # remove cruft
+#xapian indices
+find vbmnt/var/ -wholename '*xapian*.DB' -delete
 # package cache
 find vbmnt/var/cache/apt/archives/ -name '*.deb' -delete
 rm -f vbmnt/var/cache/apt/*.bin
@@ -39,10 +41,8 @@ find vbmnt/var/log -type f -delete
 find vbmnt/var/lib/apt -type f -name '*debian*' -o -type f -name '*list*' -delete
 # user data
 # cannot clean all root stuff, because it also contains useful thing (e.g. git setup)
-#find vbmnt/root -mindepth 1 -delete
 rm -f vbmnt/root/.*history
-# everything for the default user
-find vbmnt/home/brain -mindepth 1 -delete
+rm -f vbmnt/home/brain/.*history vbmnt/home/brain/nd*
 
 # unmount filesystem
 umount vbmnt
