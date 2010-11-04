@@ -2,7 +2,7 @@
 #emacs: -*- mode: shell-script; c-basic-offset: 4; tab-width: 4; indent-tabs-mode: nil -*-
 #ex: set sts=4 ts=4 sw=4 et:
 
-# play save
+# play safe
 set -e
 set -u
 
@@ -148,9 +148,16 @@ if [ $ai_force -eq 1 ]; then
 fi
 
 if [ $do_install -eq 1 ]; then
+    # Figure out amount of space to download/occupy
+    space_info="$(LC_ALL=C apt-get --print-uris install $ai_package 2>/dev/null \
+        | grep -e '^\(Need to get \|After this\)' || : )"
     if [ $ai_force -eq 0 ]; then
 		if ! zenity --question \
-			--text="To run '$ai_command', $ai_package package needs to be installed.  Do you want to proceed?"; then
+			--text="To run '$ai_command', $ai_package package needs to be installed.
+
+$space_info
+
+Do you want to proceed?"; then
 			exit 2
 		fi
 	fi
@@ -164,7 +171,8 @@ if [ $do_install -eq 1 ]; then
         && rm -f $logfile; } \
         | tee $logfile \
         | zenity --title="$ai_dialog_title" \
-		         --text="Installing $ai_package" \
+		         --text="Installing $ai_package
+$space_info" \
                  --progress --pulsate --auto-close --auto-kill
     if [ -e $logfile ] ; then
         zenity --title="Installation of $ai_package has failed: see $logfile" \
