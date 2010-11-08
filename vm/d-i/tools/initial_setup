@@ -29,10 +29,10 @@ set -u
 # just base system, run selection, but no tasks (not even 'Standard system')
 
 # set root password to 'neurodebian' too
-echo "Set root passwd:"
-passwd root
+#echo "Set root passwd:"
+#passwd root
 
-apt-get install --no-install-recommends etckeeper
+apt-get install --no-install-recommends -y etckeeper
 
 # setup etckeeper
 git config --global user.name NeuroDebian
@@ -51,16 +51,22 @@ Pin: release a=squeeze-backports
 Pin-Priority: 200
 EOT
 
-apt-get update
-apt-get install neurodebian-keyring
-apt-get update
+apt-get update -y
+# Backports' Release files signed with both ftpmaster and old backports keys
+# That causes APT to spit out a warning, but to not confuse users, lets simply
+# obtain that key if possible
+gpg --keyserver hkp://subkeys.pgp.net --recv-keys 16BA136C && \
+        gpg --export 16BA136C | apt-key add - || :
+
+apt-get install -y --allow-unauthenticated neurodebian-keyring
+apt-get update -y
 
 # to cheat the VM check
 touch /dev/vboxguest
 # to get all the stuff in recommends
-apt-get install dkms neurodebian-guest-additions
+apt-get install -y dkms neurodebian-guest-additions
 
-apt-get install --no-install-recommends \
+apt-get install --no-install-recommends -y \
  gnome-core mc evince bash-completion ntpdate file-roller gnome-utils \
  gnome-themes eog vim \
  software-center gdebi gedit-plugins gnome-media synaptic menu less
@@ -70,11 +76,11 @@ find /var/cache/apt/archives/ -name '*.deb' -delete
 
 # cleanup unwanted stuff
 # video drivers (all but vesa)
-apt-get purge $(apt-cache search --names-only --installed xserver-xorg-video | grep xserver-xorg-video | cut -d ' ' -f 1,1) xserver-xorg-video-vesa+
-apt-get purge brasero
+apt-get purge -y $(apt-cache search --names-only --installed xserver-xorg-video | grep xserver-xorg-video | cut -d ' ' -f 1,1) xserver-xorg-video-vesa+
+apt-get purge -y brasero
 
 # and whatever is obsolete
-apt-get autoremove --purge
+apt-get autoremove --purge -y
 
 # custom config
 # use NeuroDebian website as default homepage
