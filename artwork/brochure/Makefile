@@ -8,7 +8,7 @@ include LaTeX.mk
 
 .PHONY: pics
 pics:
-	@$(MAKE) -C ../ logo_tuned/label.pdf openlogo.pdf distro-dev.pdf openlogo-vsop.svg
+	@$(MAKE) -C ../ logo_tuned/label.pdf openlogo.pdf distro-dev.pdf openlogo-vsop.pdf
 
 # Can't be used as is since .gitignore would be searched for in this
 # directory
