@@ -6,6 +6,10 @@
 \usepackage[landscape,margin=0.5cm]{geometry}
 \usepackage{color}
 \usepackage{flowfram}
+%\usepackage{booktabs}           % for rules in tables
+\usepackage{tabularx}           % for column-width tables
+\usepackage[table]{xcolor}      % color control
+
 \usepackage[colorlinks]{hyperref}
 
 \usepackage{multicol}
@@ -29,11 +33,33 @@
 % Attempts to change bg color of *section headings
 %\definecolor{secbgcol}{rgb}{0.9, 0.85, 0.85}
 %\titleformat{\section}
-%{\color{red}\normalfont\Large\bfseries}{\thesection}{1em}{}
+%{\color{red}\normalfont\Large\bfseries}{\ndsection}{1em}{}
 %\titleformat{\subsection}
 %{\color{red}\normalfont\large\bfseries}{\begin{flushright}\hfill\thesubsection
 %  \end{flushright}}{1em}{}
 %
+%\usepackage{pstricks}
+
+% To create tables within multicols
+\makeatletter
+\newenvironment{ndtable}
+  {\def\@captype{table}}
+  {}
+
+
+\newcommand{\ndheading}[3]{%
+\vspace{0.5em}
+\begin{ndtable}%
+\rowcolors[\hline]{1}{#2}{} \arrayrulecolor{#3}
+\begin{tabularx}{\columnwidth}{>{\centering\arraybackslash}X}\vspace{-.5em}\normalfont\large\bfseries
+  #1\\\end{tabularx}
+\end{ndtable}
+\vspace{-.5em}
+}
+
+\newcommand{\ndsection}[1]{\ndheading{#1}{red!20}{red!30!gray}}
+\newcommand{\ndsubsection}[1]{\ndheading{#1}{red!10}{red!30!gray}}
+
 
 \begin{document}
 
@@ -48,14 +74,15 @@
 %\includegraphics[width=0.5\columnwidth]{openlogo-vsop}
 
 \url{http://www.debian.org}
-%\section*{Debian GNU/Linux}
+%\ndsection{Debian GNU/Linux}
 
 \section*{The Universal Operating System}
-\hrule
+% \hrule
 \end{center}
 \vspace{-1em}
 
-\section*{Debian}
+\ndsection{Debian}
+
 was founded by Ian Murdock in August 1993 with the goal
 to create an easy to install and maintain non-commercial GNU/Linux
 operating system that would be able to compete in the
@@ -73,7 +100,7 @@ The high quality and openness of Debian made it the foundation of choice for
 more than 120 derivative GNU/Linux distributions, such as Ubuntu and
 Mint.
 
-\subsection*{Debian is}
+\ndsubsection{Debian is}
 \begin{description}[nolistsep,leftmargin=0.8em]
 \item[V\textnormal{ersatile}]\hfill\url{http://packages.debian.org}\\
   Over 15000 software packages maintained by experts to provide
@@ -98,13 +125,13 @@ Could also stand for
 Very (Special|Stable) Operating Platform
 \end{comment}
 
-%\section*{Understand Debian}
+%\ndsection{Understand Debian}
 \columnbreak
-\subsection*{Three Debian suites}
+\ndsubsection{Three Debian suites}
 
 % Debian distribution comes in 3 major flavors
 
-\begin{description}[nolistsep,leftmargin=1pc,topsep=1em]
+\begin{description}[nolistsep,leftmargin=1pc,topsep=0em]
 
 %\item[Unstable] \emph{Constantly changing distribution}\\
 \item[Development]\hfill\emph{Unstable} (always \emph{sid})\\
@@ -139,7 +166,7 @@ Very (Special|Stable) Operating Platform
 \end{description}
 
 \begin{comment}
-\subsection*{It has names}
+\ndsubsection{It has names}
 
 The code names of Debian releases are names of characters from the Toy
 Story animation, e.g. sid, squeeze, lenny.  \emph{Unstable}
@@ -151,13 +178,13 @@ As soon as \emph{squeeze} gets released, \emph{Testing} will be given
 a new name -- \emph{wheezy}.
 \end{comment}
 
-\subsection*{Three Debian components}
+\ndsubsection{Three Debian components}
 
 % Debian distribution comes in 3 major flavors
 %Debian Free Software Guidelines (DFSG)\\
 %\url{http://www.debian.org/social_contract}
 
-\begin{description}[nolistsep,leftmargin=1pc,topsep=1em]
+\begin{description}[nolistsep,leftmargin=1pc,topsep=0em]
 \item[Free as in freedom]\hfill\emph{main}\\
   % This is the actual Debian with full support.\\
   All software in \emph{main} is distributed under FOSS licenses
@@ -175,7 +202,7 @@ a new name -- \emph{wheezy}.
 \end{description}
 
 
-\subsection*{Debian is driven by enthusiastic experts}
+\ndsubsection{Debian enthusiastic experts}
 % could be simply 'Debian People' or 'Debian Community'
 
 Debian is the only major operating system developed
@@ -196,7 +223,7 @@ reliable operation. Certain fields of applications have dedicated maintainer
 teams, such as Debian-Science or Debian-Med.
 
 %\columnbreak
-\subsection*{How to get Debian}
+\ndsubsection{How to get Debian}
 
 %\subsubsection*{Stable}
 \begin{description}[nolistsep,leftmargin=1pc,style=nextline]
@@ -207,13 +234,13 @@ teams, such as Debian-Science or Debian-Med.
 \item[Testing/Unstable version] \url{http://www.debian.org/devel/debian-installer}
 \end{description}
 
-% \subsection*{Get \emph{Testing/Unstable} Debian}
+% \ndsubsection{Get \emph{Testing/Unstable} Debian}
 %
 % Install on a hard-drive or in a Virtual Machine\\
 % \url{http://www.debian.org/devel/debian-installer}
 %
 
-\subsection*{How to install software}
+\ndsubsection{How to install software}
 
 GUI (Synaptic): \textit{Select and click ``Apply''}\\
 \includegraphics[width=\columnwidth]{shots/synaptic-fslview}
@@ -222,7 +249,7 @@ Command line: \texttt{apt-get install <packagename>}
 
 
 
-\subsection*{How to upgrade the entire system}
+\ndsubsection{How to upgrade the entire system}
 
 GUI (Synaptic):
 
@@ -231,7 +258,7 @@ Command line:
 
 \quad\texttt{apt-get update; apt-get dist-upgrade}
 
-\subsection*{How to get support}
+\ndsubsection{How to get support}
 
 \url{http://www.debian.org/support}
 
@@ -252,7 +279,7 @@ Command line:
 \end{description}
 
 \begin{comment}
-\section*{Reasons to choose Debian}
+\ndsection{Reasons to choose Debian}
 \paragraph{It is maintained by its users}
 
 If something needs to be fixed or improved, we just do it.
@@ -336,7 +363,7 @@ to submit bug reports and are notified when and why the bug was closed. This
 system allows Debian to respond to problems quickly and honestly.
 
 
-\section*{Acknowledgements}
+\ndsection{Acknowledgements}
 \end{comment}
 
 \end{multicols}
@@ -354,13 +381,13 @@ system allows Debian to respond to problems quickly and honestly.
 \includegraphics[width=\columnwidth]{logo_tuned/label}
 
 \url{http://neuro.debian.net}
-%\section*{NeuroDebian Project:}
+%\ndsection{NeuroDebian Project:}
 \section*{The Universal Research Platform}
-\hrule
-
+% \hrule
 \end{center}
+\vspace{-1em}
 
-\section*{NeuroDebian is}
+\ndsection{NeuroDebian is}
 
 a Debian project aiming to provide the Neuroscience community with a
 stable and versatile research platform -- the Debian OS.
@@ -378,7 +405,7 @@ These advantages make NeuroDebian increasingly popular among
 neuroscientists and scientific software developers.
 
 
-\subsection*{NeuroDebian is NOT}
+\ndsubsection{NeuroDebian is NOT}
 
 yet another Debian GNU/Linux derivative distribution.  All work done
 by the NeuroDebian project targets the official Debian operating system. This
@@ -386,7 +413,7 @@ approach helps to increase the longevity of the project by relying on the
 efforts of thousands of Debian contributors.
 
 
-\subsection*{Benefits from Debian integration}
+\ndsubsection{Benefits from Debian integration}
 
 \begin{itemize}[nolistsep,leftmargin=1pc]
 
@@ -425,7 +452,7 @@ efforts of thousands of Debian contributors.
 \end{itemize}
 
 
-\subsection*{NeuroDebian software coverage}
+\ndsubsection{NeuroDebian software coverage}
 \begin{flushright}
 \vspace{-0.5em}
 \url{http://neuro.debian.net/pkgs.html}
@@ -440,18 +467,18 @@ efforts of thousands of Debian contributors.
 
 %\columnbreak
 
-\subsection*{How to get NeuroDebian}
+\ndsubsection{How to get NeuroDebian}
 \begin{description}[nolistsep,leftmargin=1pc]
 \item[Debian/Ubuntu]\url{neuro.debian.net} repository
 \item[Others] NeuroDebian Virtual Machine
 % Here place a left-top corner of OSX with seamless mode
 \end{description}
 \begin{comment}
-\subsection*{Developers oriented information}
+\ndsubsection{Developers oriented information}
 
 %\columnbreak
 
-\subsection*{Who is using NeuroDebian}
+\ndsubsection{Who is using NeuroDebian}
 
 \noindent
 %\includegraphics[width=\columnwidth]{usage_worldmap}
@@ -461,7 +488,7 @@ buga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dug
 
 \def\blank{\hspace{0em}\vspace{-1em}}
 \columnbreak
-\subsection*{Work-in-progress}
+\ndsubsection{Work-in-progress}
 
 \begin{description}[nolistsep,leftmargin=1pc,topsep=1em,style=nextline]
 
@@ -489,11 +516,11 @@ buga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dug
 \end{description}
 
 
-\subsection*{Testimonials}
+\ndsubsection{Testimonials}
 \begin{flushright}
 \vspace{-0.5em}
 \url{http://neuro.debian.net/testimonials.html}
-\vspace{-1em}
+\vspace{-0.5em}
 \end{flushright}
 
 
@@ -507,7 +534,7 @@ development practices.}{Prof. Daniel Y. Kimberg}{Director, Data
 Processing Facility, Center for Functional Neuroimaging, University of
 Pennsylvania, Philadelphia, USA}
 
-\subsection*{Acknowledgements}
+\ndsubsection{Acknowledgements}
 
 NeuroDebian is grateful to all Debian developers and contributors for the
 development of Debian OS, and to Prof. James V. Haxby (PBS Department,
