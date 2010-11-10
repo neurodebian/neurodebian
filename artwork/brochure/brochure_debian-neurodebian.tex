@@ -13,7 +13,7 @@
 \usepackage[colorlinks]{hyperref}
 
 \usepackage{multicol}
-\setlength{\columnseprule}{1pt} % for visible divider
+%\setlength{\columnseprule}{1pt} % for visible divider
 \setlength{\columnsep}{1cm}
 
 \usepackage{graphicx}
@@ -52,7 +52,7 @@
 \begin{ndtable}%
 \rowcolors[\hline]{1}{#2}{} \arrayrulecolor{#3}
 \begin{tabularx}{\columnwidth}{>{\centering\arraybackslash}X}\vspace{-.5em}\normalfont\large\bfseries
-  #1\\\end{tabularx}
+  #1\vspace{0.05em}\\\end{tabularx}
 \end{ndtable}
 \vspace{-.5em}
 }
@@ -379,10 +379,7 @@ system allows Debian to respond to problems quickly and honestly.
 
 \section*{The Universal Research Platform}
 \begin{center}
-\noindent
-
 \includegraphics[width=\columnwidth]{logo_tuned/label}
-
 \url{http://neuro.debian.net}
 %\ndsection{NeuroDebian Project:}
 % \hrule
@@ -405,6 +402,7 @@ latest methodologies of the field for everyone, for free.
 These advantages make NeuroDebian increasingly popular among
 neuroscientists and scientific software developers.
 
+\vspace{2em}
 
 \ndsubsection{NeuroDebian is NOT}
 
@@ -413,6 +411,7 @@ by the NeuroDebian project targets the official Debian operating system. This
 approach helps to increase the longevity of the project by relying on the
 efforts of thousands of Debian contributors.
 
+\vspace{3em}
 \columnbreak
 
 \ndsubsection{Benefits from Debian integration}
