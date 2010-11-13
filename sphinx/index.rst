@@ -261,6 +261,7 @@ efficient, more open, and more fun
    spread
    vm
    coffeeart
+   photoalbum
    testimonials
 
 .. probably should be purged altogether
