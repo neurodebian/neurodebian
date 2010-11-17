@@ -1,0 +1,178 @@
+#!/usr/bin/python
+#emacs: -*- mode: python-mode; py-indent-offset: 4; tab-width: 4; indent-tabs-mode: nil -*- 
+#ex: set sts=4 ts=4 sw=4 noet:
+
+__author__ = 'Yaroslav Halchenko'
+__version__ = 'XXX'
+__copyright__ = 'Copyright (c) 2010 Yaroslav Halchenko'
+__license__ = 'GPL'
+
+import re
+import os.path
+from copy import deepcopy
+from debian_bundle import deb822
+from debian.changelog import Changelog
+
+topdir = '/home/yoh/deb/gits/pkg-exppsy/brian'
+
+blends_file = os.path.join(topdir, 'debian/blends')
+
+
+def parse_debian_blends(f='debian/blends'):
+    """Parses debian/blends file
+
+    Returns unprocessed list of customized Deb822 entries
+    """
+    # Linearize all the paragraphs since we are not using them
+    items = []
+    for p in deb822.Deb822.iter_paragraphs(open(f)):
+        items += p.items()
+
+    # Traverse and collect things
+    format_ = 'udd'
+    format_clean = False # do not propagate fields into a new pkg if True
+    pkg = None
+    pkgs = []
+    tasks = []
+
+    for k, v in items:
+        k = k.lower()
+        if k == 'format':
+            format_ = v.strip()
+            format_clean = format_.endswith('-clean')
+            if format_clean:
+                format_ = format_[:-6]
+        elif k == 'tasks':
+            tasks = v.split(',')
+            newtasks = True                 # either we need to provide tune-ups
+                                            # for current package
+        elif k == 'depends':                # new package
+            if format_clean or pkg is None:
+                pkg = deb822.Deb822()
+            else:
+                pkg = deepcopy(pkg)
+            pkg['Depends'] = v
+            pkgs.append(pkg)
+            pkg.tasks = dict( (t, deb822.OrderedSet()) for t in tasks )
+            pkg.format = format_
+            newtasks = False
+        else:
+            if newtasks:
+                # Add customization
+                for t in tasks:
+                    if not t in pkg.tasks:
+                        pkg.tasks[t] = deb822.Deb822Dict()
+                    pkg.tasks[t][k] = v
+            else:
+                # just store the key in the pkg itself
+                pkg[k] = v
+    return pkgs
+
+
+class DebianMaterials(object):
+    _WNPP_RE = re.compile('^ *\* *Initial release.*closes:? #(?P<bug>[0-9]*).*', re.I)
+
+    def __init__(self, topdir):
+        #self.topdir = topdir
+        self._debiandir = os.path.join(topdir, 'debian')
+        self._source = None
+        self._binaries = None
+
+    @property
+    def source(self):
+        if self._source is None:
+            self._assign_packages()
+        return self._source
+
+    @property
+    def binaries(self):
+        if self._binaries is None:
+            self._assign_packages()
+        return self._binaries
+
+    def fpath(self, name):
+        return os.path.join(self._debiandir, name)
+
+    def _assign_packages(self):
+        try:
+            control = deb822.Deb822.iter_paragraphs(
+                open(self.fpath('control')))
+        except Exception, e:
+            raise RuntimeError(
+                  "Cannot parse %s file necessary for the %s package entry. Error: %s"
+                  % (control_file, pkg['Depends'], str(e)))
+        self._binaries = {}
+        self._source = None
+        for v in control:
+            if v.get('Source', None):
+                self._source = v
+            else:
+                self._binaries[v['Package']] = v
+
+    def get_license(self, package=None, first_only=True):
+        """Return a license(s). Parsed out from debian/copyright if it is
+        in machine readable format
+        """
+        licenses = []
+        # may be package should carry custom copyright file
+        copyright_file_ = self.fpath('%s.copyright' % package)
+        if package and os.path.exists(copyright_file_):
+            copyright_file = copyright_file_
+        else:
+            copyright_file = self.fpath('copyright')
+
+        try:
+            for p in deb822.Deb822.iter_paragraphs(open(copyright_file)):
+                if not 'Files' in p or p['Files'].strip().startswith('debian/'):
+                    continue
+                l = p['License']
+                # Take only the short version of first line
+                l = re.sub('\n.*', '', l).strip()
+                if not len(l):
+                    l = 'custom'
+                if not l in licenses:
+                    licenses.append(l)
+                    if first_only:
+                        break
+        except Exception, e:
+            print e
+            return None
+        return ', '.join(licenses)
+
+    def get_wnpp(self):
+        """Search for a template changelog entry closing "Initial bug
+        """
+        for l in open(self.fpath('changelog')):
+            rr = self._WNPP_RE.match(l)
+            if rr:
+                return rr.groupdict()['bug']
+        return None
+
+    def get_responsible(self):
+        """Returns responsible, atm -- maintainer
+        """
+        return self.source['Maintainer']
+
+pkgs = parse_debian_blends(f)
+#pkgs2 = format_packages()
+debianm = None
+# Expand packages which format is complete
+for pkg in pkgs:
+    if pkg.format == 'complete':
+        # expanding, for that we need debian/control
+        if debianm is None:
+            debianm = DebianMaterials(topdir)
+        for k, m in (('License', lambda: debianm.get_license(pkg['Depends'])),
+                     ('WNPP', debianm.get_wnpp),
+                     ('Pkg-description',
+                      lambda: debianm.binaries[pkg['Depends']]['Description']),
+                     ('Responsible', debianm.get_responsible),
+                     ('Homepage', lambda: debianm.source.get('Homepage', None))):
+            if pkg.get(k, None):
+                continue
+            v = m()
+            if v:
+                pkg[k] = v
+        # VCS fields
+
+print pkgs[0]
