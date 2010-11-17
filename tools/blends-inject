@@ -68,8 +68,40 @@ def parse_debian_blends(f='debian/blends'):
                 pkg[k] = v
     return pkgs
 
+def expand_pkgs(pkgs):
+    """In-place modification of pkgs taking if necessary additional
+    information from Debian materials, and pruning empty fields
+    """
+    debianm = None
+    # Expand packages which format is complete
+    for pkg in pkgs:
+        if pkg.format == 'complete':
+            # expanding, for that we need debian/control
+            if debianm is None:
+                debianm = DebianMaterials(topdir)
+            for k, m in (('License', lambda: debianm.get_license(pkg['Depends'])),
+                         ('WNPP', debianm.get_wnpp),
+                         ('Pkg-description',
+                          lambda: debianm.binaries[pkg['Depends']]['Description']),
+                         ('Responsible', debianm.get_responsible),
+                         ('Homepage', lambda: debianm.source.get('Homepage', None))):
+                if pkg.get(k, None):
+                    continue
+                v = m()
+                if v:
+                    pkg[k] = v
+            # VCS fields
+            pkg.update(debianm.get_vcsfields())
+
+        # Perform string completions and removals
+        for k,v in pkg.iteritems():
+            pkg[k] = v % pkg
+            if v is None or not len(v.strip()):
+                pkg.pop(k)
 
 class DebianMaterials(object):
+    """Extract selected information from an existing debian/
+    """
     _WNPP_RE = re.compile('^ *\* *Initial release.*closes:? #(?P<bug>[0-9]*).*', re.I)
 
     def __init__(self, topdir):
@@ -135,7 +167,7 @@ class DebianMaterials(object):
                     if first_only:
                         break
         except Exception, e:
-            print e
+            # print e
             return None
         return ', '.join(licenses)
 
@@ -153,26 +185,15 @@ class DebianMaterials(object):
         """
         return self.source['Maintainer']
 
-pkgs = parse_debian_blends(f)
-#pkgs2 = format_packages()
-debianm = None
-# Expand packages which format is complete
-for pkg in pkgs:
-    if pkg.format == 'complete':
-        # expanding, for that we need debian/control
-        if debianm is None:
-            debianm = DebianMaterials(topdir)
-        for k, m in (('License', lambda: debianm.get_license(pkg['Depends'])),
-                     ('WNPP', debianm.get_wnpp),
-                     ('Pkg-description',
-                      lambda: debianm.binaries[pkg['Depends']]['Description']),
-                     ('Responsible', debianm.get_responsible),
-                     ('Homepage', lambda: debianm.source.get('Homepage', None))):
-            if pkg.get(k, None):
-                continue
-            v = m()
-            if v:
-                pkg[k] = v
-        # VCS fields
+    def get_vcsfields(self):
+        vcs = deb822.Deb822()
+        for f,v in self._source.iteritems():
+            if f.lower().startswith('vcs-'):
+                vcs[f] = v
+        return vcs
 
-print pkgs[0]
+pkgs = parse_debian_blends(blends_file)
+expand_pkgs(pkgs)
+
+print '\n'.join(str(p) for p in pkgs)
+#print pkgs[0]
