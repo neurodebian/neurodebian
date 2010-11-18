@@ -228,9 +228,9 @@ Publications
 ============
 
 Halchenko, Y. O., Hanke, M., Haxby, J. V., Pollmann, S. & Raizada, R. D.
-(2010). Having trouble getting your Nature paper? Maybe you are not using the
-right tools? *Poster to be presented at the anual meeting of the Society for
-Neuroscience*, San Diego, USA.
+(2010). `Having trouble getting your Nature paper? Maybe you are not using the
+right tools? <_files/NeuroDebian_SfN2010.png>`_ *Poster to be presented at the
+anual meeting of the Society for Neuroscience*, San Diego, USA.
 
 Hanke, M., Halchenko, Y. O. (2010). `Debian: The ultimate platform for
 neuroimaging research <_files/HankeHalchenko_NeuroDebianDebConf10.pdf>`_.
