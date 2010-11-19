@@ -1,21 +1,88 @@
 #!/usr/bin/python
-#emacs: -*- mode: python-mode; py-indent-offset: 4; tab-width: 4; indent-tabs-mode: nil -*- 
+#emacs: -*- mode: python-mode; py-indent-offset: 4; tab-width: 4; indent-tabs-mode: nil -*-
 #ex: set sts=4 ts=4 sw=4 noet:
+"""Script to help maintaining package definitions within Debian blends
+task files.
+
+Often it becomes necessary to duplicate the same information about a
+package within debian packaging and multiple blends task files,
+possibly of different blends.  This script allows to automate:
+
+- construction of entries
+- injection into task files
+- modification of existing entries if things changed
+- removal of previously injected entries
+
+Possible TODOs:
+---------------
+
+Whenever processing multiple files, figure out topdir automatically,
+so we could do
+
+blends-inject */debian/blends
+
+"""
+
+"""
+Configuration
+-------------
+
+Paths to the blends top directories, containing tasks directories are
+specified in ~/.blends-inject.cfg file, e.g.::
+
+ [debian-med]
+ path = /home/yoh/deb/debian-med/
+
+ [debian-science]
+ path = /home/yoh/deb/debian-science/
+
+
+Definition of the fields for task files by default are looked up
+within debian/blends, or files provided in the command line.
+
+Format of debian/blends
+-----------------------
+
+TODO:
+
+"""
+
+
+import re, os, sys
+from os.path import join, exists, expanduser, dirname, basename
+
+from ConfigParser import ConfigParser
+from optparse import OptionParser, Option
+
+from copy import deepcopy
+#from debian_bundle import deb822
+from debian import deb822
+from debian.changelog import Changelog
 
 __author__ = 'Yaroslav Halchenko'
-__version__ = 'XXX'
+__prog__ = os.path.basename(sys.argv[0])
+__version__ = '0.0.1'
 __copyright__ = 'Copyright (c) 2010 Yaroslav Halchenko'
 __license__ = 'GPL'
 
-import re
-import os.path
-from copy import deepcopy
-from debian_bundle import deb822
-from debian.changelog import Changelog
+# What fields initiate new package description
+PKG_FIELDS = ('depends', 'recommends', 'suggests', 'ignore', 'removed')
 
-topdir = '/home/yoh/deb/gits/pkg-exppsy/brian'
+# We might need to resort to assure some what a canonical order
+FIELDS_ORDER = ('depends', 'recommends', 'suggests', 'ignore',
+                'homepage', 'language', 'wnpp', 'responsible', 'license',
+                'vcs-', 'pkg-url', 'pkg-description',
+                'published-', 'x-', 'registration', 'remark')
 
-blends_file = os.path.join(topdir, 'debian/blends')
+verbosity = None
+
+def error(msg, exit_code):
+    sys.stderr.write(msg + '\n')
+    sys.exit(exit_code)
+
+def verbose(level, msg):
+    if level <= verbosity:
+        print " "*level, msg
 
 
 def parse_debian_blends(f='debian/blends'):
@@ -29,31 +96,38 @@ def parse_debian_blends(f='debian/blends'):
         items += p.items()
 
     # Traverse and collect things
-    format_ = 'udd'
+    format_ = 'plain'
     format_clean = False # do not propagate fields into a new pkg if True
-    pkg = None
+    pkg, source = None, None
     pkgs = []
     tasks = []
 
     for k, v in items:
-        k = k.lower()
-        if k == 'format':
+        kl = k.lower()
+        if kl == 'source':
+            source = v.strip()
+        elif kl == 'format':
             format_ = v.strip()
             format_clean = format_.endswith('-clean')
             if format_clean:
                 format_ = format_[:-6]
-        elif k == 'tasks':
+        elif kl == 'tasks':
             tasks = v.split(',')
             newtasks = True                 # either we need to provide tune-ups
                                             # for current package
-        elif k == 'depends':                # new package
+        elif kl in PKG_FIELDS: # new package
             if format_clean or pkg is None:
                 pkg = deb822.Deb822()
             else:
                 pkg = deepcopy(pkg)
-            pkg['Depends'] = v
+                for k_ in PKG_FIELDS:   # prune older depends
+                    pkg.pop(k_, None)
+            pkg['Pkg-Name'] = pkg[k] = v
+            if source is None:
+                source = v
+            pkg['Pkg-Source'] = source
             pkgs.append(pkg)
-            pkg.tasks = dict( (t, deb822.OrderedSet()) for t in tasks )
+            pkg.tasks = dict( (t.strip(), deb822.OrderedSet()) for t in tasks )
             pkg.format = format_
             newtasks = False
         else:
@@ -68,21 +142,22 @@ def parse_debian_blends(f='debian/blends'):
                 pkg[k] = v
     return pkgs
 
-def expand_pkgs(pkgs):
+
+def expand_pkgs(pkgs, topdir='.'):
     """In-place modification of pkgs taking if necessary additional
     information from Debian materials, and pruning empty fields
     """
     debianm = None
-    # Expand packages which format is complete
+    # Expand packages which format is extended
     for pkg in pkgs:
-        if pkg.format == 'complete':
+        if pkg.format == 'extended':
             # expanding, for that we need debian/control
             if debianm is None:
                 debianm = DebianMaterials(topdir)
-            for k, m in (('License', lambda: debianm.get_license(pkg['Depends'])),
+            for k, m in (('License', lambda: debianm.get_license(pkg['Pkg-Name'])),
                          ('WNPP', debianm.get_wnpp),
                          ('Pkg-description',
-                          lambda: debianm.binaries[pkg['Depends']]['Description']),
+                          lambda: debianm.binaries[pkg['Pkg-Name']]['Description']),
                          ('Responsible', debianm.get_responsible),
                          ('Homepage', lambda: debianm.source.get('Homepage', None))):
                 if pkg.get(k, None):
@@ -93,11 +168,145 @@ def expand_pkgs(pkgs):
             # VCS fields
             pkg.update(debianm.get_vcsfields())
 
-        # Perform string completions and removals
-        for k,v in pkg.iteritems():
-            pkg[k] = v % pkg
-            if v is None or not len(v.strip()):
-                pkg.pop(k)
+def key_prefix_compare(x, y, order, strict=False, case=False):
+    """Little helper to help with sorting
+
+    Sorts according to the order of string prefixes as given by
+    `order`.  If `strict`, then if no matching prefix found, would
+    raise KeyError; otherwise provides least priority to those keys
+    which were not found in `order`
+    """
+    if not case:
+        order = [v.lower() for v in order]
+
+    def prefix_index(t, order, strict=True, case=False):
+        x = t[0]
+        if not case:
+            x = x.lower()
+        for i, v in enumerate(order):
+            if x.startswith(v):
+                return i
+
+        if strict:
+            raise IndexError(
+                "Could not find location for %s as specified by %s" %
+                (x, order))
+        return 10000                    #  some large number ;)
+
+    cmp_res =  cmp(prefix_index(x, order, strict, case),
+                   prefix_index(y, order, strict, case))
+    if not cmp_res:                     # still unknown
+        return cmp(x, y)
+    return cmp_res
+
+
+def group_packages_into_tasks(pkgs):
+    """Given a list of packages (with .tasks) group them per each
+    task and perform necessary customizations stored in .tasks
+    """
+    # Time to take care about packages and tasks
+    # Unroll pkgs into a collection of pkgs per known task
+    tasks = {}
+    for pkg in pkgs:
+        # Lets just create deepcopies with tune-ups for each task
+        for itask, (task, fields) in enumerate(pkg.tasks.iteritems()):
+            pkg_ = deepcopy(pkg)
+            pkg_.update(fields)
+
+            # Perform string completions and removals
+            for k,v in pkg_.iteritems():
+                pkg_[k] = v % pkg_
+                if v is None or not len(v.strip()):
+                    pkg_.pop(k)
+
+            # Sort the fields according to FIELDS_ORDER. Unfortunately
+            # silly Deb822* cannot create from list of tuples, so will do
+            # manually
+            pkg__ = deb822.Deb822()
+            for k,v in sorted(pkg_.items(),
+                              cmp=lambda x, y:
+                              key_prefix_compare(x, y, order=FIELDS_ORDER)):
+                pkg__[k] = v
+
+            # Move Pkg-source/name into attributes
+            pkg__.source = pkg__.pop('Pkg-Source')
+            pkg__.name = pkg__.pop('Pkg-name')
+
+            tasks[task] = tasks.get(task, []) + [pkg__]
+
+    return tasks
+
+def inject_tasks(tasks, config):
+    # Now go through task files and replace/add entries
+    for task, pkgs in tasks.iteritems():
+        verbose(2, "Task %s with %d packages" % (task, len(pkgs)))
+        blend, puretask = task.split('/')
+        taskfile = join(config.get(blend, 'path'), 'tasks', puretask)
+
+        # Load the file
+        stats = dict(Added=[], Modified=[])
+        for pkg in pkgs:
+            msgs = {'Name': pkg.name.strip(), 'Action': None}
+            # Find either it is known to the task file already
+
+            # Load entirely so we could simply manipulate
+            entries = open(taskfile).readlines()
+            known = False
+            # We need to search by name and by source
+            # We need to search for every possible type of dependecy
+            regexp = re.compile('^ *(%s) *: *(%s) *$' %
+                                ('|'.join(PKG_FIELDS),
+                                '|'.join((pkg.name, pkg.source))),
+                                re.I)
+            for istart, e in enumerate(entries):
+                if regexp.search(e):
+                    verbose(4, "Found %s in position %i: %s" %
+                            (pkg.name, istart, e.rstrip()))
+                    known = True
+                    break
+
+            descr = ' ; Added by %s %s.  Modified manually: False\n' % \
+                    (__prog__,  __version__)
+            # Replace existing entry
+            if known:
+                # TODO: Check if previous copy does not have our preceding comment
+                # Find the previous end
+                icount = 1
+                try:
+                    while entries[istart+icount].strip() != '':
+                        icount += 1
+                except IndexError, e:
+                    pass                # if we go beyond
+
+                # Lets not change file without necessity, if entry is identical --
+                # do nothing
+                entry = pkg.dump()
+                old_entry = entries[istart:istart+icount]
+
+                if u''.join(old_entry) == entry:
+                   pass
+                else: # Rewrite the entry
+                   if __prog__ in entries[istart-1]:
+                       istart -= 1
+                       icount += 2
+                   if not 'Removed' in pkg.keys():
+                       entries = entries[:istart] + [descr + entry] + entries[istart+icount:]
+                       msgs['Action'] = 'Changed'
+                   else:
+                       while entries[istart-1].strip() == '':
+                           istart -=1
+                           icount +=2
+                       entries = entries[:istart] + entries[istart+icount:]
+                       msgs['Action'] = 'Removed'
+                   open(taskfile, 'w').write(''.join(entries))
+            elif not 'removed' in pkg:  # or Append one
+                msgs['Action'] = 'Added'
+                # could be as simple as
+                open(taskfile, 'a').write('\n%s%s' % (descr, pkg.dump(),))
+
+            if msgs['Action']:
+                verbose(3, "%(Action)s %(Name)s" % msgs)
+
 
 class DebianMaterials(object):
     """Extract selected information from an existing debian/
@@ -106,7 +315,7 @@ class DebianMaterials(object):
 
     def __init__(self, topdir):
         #self.topdir = topdir
-        self._debiandir = os.path.join(topdir, 'debian')
+        self._debiandir = join(topdir, 'debian')
         self._source = None
         self._binaries = None
 
@@ -123,7 +332,7 @@ class DebianMaterials(object):
         return self._binaries
 
     def fpath(self, name):
-        return os.path.join(self._debiandir, name)
+        return join(self._debiandir, name)
 
     def _assign_packages(self):
         try:
@@ -132,7 +341,7 @@ class DebianMaterials(object):
         except Exception, e:
             raise RuntimeError(
                   "Cannot parse %s file necessary for the %s package entry. Error: %s"
-                  % (control_file, pkg['Depends'], str(e)))
+                  % (control_file, pkg['Pkg-Name'], str(e)))
         self._binaries = {}
         self._source = None
         for v in control:
@@ -148,7 +357,7 @@ class DebianMaterials(object):
         licenses = []
         # may be package should carry custom copyright file
         copyright_file_ = self.fpath('%s.copyright' % package)
-        if package and os.path.exists(copyright_file_):
+        if package and exists(copyright_file_):
             copyright_file = copyright_file_
         else:
             copyright_file = self.fpath('copyright')
@@ -192,8 +401,62 @@ class DebianMaterials(object):
                 vcs[f] = v
         return vcs
 
-pkgs = parse_debian_blends(blends_file)
-expand_pkgs(pkgs)
 
-print '\n'.join(str(p) for p in pkgs)
-#print pkgs[0]
+def main():
+
+    p = OptionParser(
+                usage="%s [OPTIONS] [blends_files]\n\n" % __prog__ + __doc__,
+                version="%prog " + __version__)
+
+    p.add_option(
+        Option("-d", "--topdir", action="store",
+               dest="topdir", default=None,
+               help="Top directory of a Debian package. It is used to locate "
+               "'debian/blends' if none is specified, and where to look for "
+               "extended information."))
+
+    p.add_option(
+        Option("-c", "--config-file", action="store",
+               dest="config_file", default=join(expanduser('~'), '.%s.cfg' % __prog__),
+               help="Noise level."))
+
+    p.add_option(
+        Option("-v", "--verbosity", action="store", type="int",
+               dest="verbosity", default=1, help="Noise level."))
+
+    (options, infiles) = p.parse_args()
+    global verbosity; verbosity = options.verbosity
+
+    if not len(infiles):
+        infiles = [join(options.topdir or './', 'debian/blends')]     #  default one
+
+    # Load configuration
+    config = ConfigParser()
+    config.read(options.config_file)
+
+    for blends_file in infiles:
+        verbose(1, "Processing %s" % blends_file)
+        if not exists(blends_file):
+            error("Cannot find a file %s.  Either provide a file or specify top "
+                  "debian directory with -d." % blends_file, 1)
+        pkgs = parse_debian_blends(blends_file)
+        if options.topdir is None:
+            if dirname(blends_file).endswith('/debian'):
+                topdir = dirname(dirname(blends_file))
+            else:
+                topdir = '.'            # and hope for the best
+        else:
+            topdir = options.topdir
+        expand_pkgs(pkgs, topdir=topdir)
+        tasks = group_packages_into_tasks(pkgs)
+        inject_tasks(tasks, config)
+
+    #for t,v in tasks.iteritems():
+    #    print "-------TASK: ", t
+    #    print ''.join(str(t_) for t_ in v)
+    #print pkgs[0]
+    #print tasks['debian-med/documentation'][0]
+
+if __name__ == '__main__':
+    main()
+
