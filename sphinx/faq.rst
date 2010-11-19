@@ -146,7 +146,8 @@ Or you will be asked questions like this over and over::
 
 This is because your APT installation initially does not know the GPG
 key that is used to sign the release files of this repository. It is easy to
-make APT happy again:
+make APT happy again. The simplest way is to install the ``neurodebian-keyring``
+package that is available from the NeuroDebian repository. Alternatively:
 
 1. Get the key. Either download the `repository key from here
    <_static/neuro.debian.net.asc>`_
