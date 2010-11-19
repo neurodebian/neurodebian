@@ -26,10 +26,23 @@ Downloads
 
 * NeuroDebian 6.0.0 image (32bit) [coming soon; leave a comment below if you
   need it urgently]
+
+  *This image should work on virtually all systems that are supported by*
+  VirtualBox_ *and can be used whenever the, otherwise preferable, 64bit image
+  is not compatible with a host machine.*
+
 * `NeuroDebian 6.0.0 image (64bit)
   <http://neuro.debian.net/debian/vm/neurodebian_6.0.0_amd64.zip>`_ [~570MB]
+
+  *This image only works on 64bit host machines with active hardware
+  virtualization support. The should include all recent Apple hardware and most
+  64bit Windows systems.*
+
 * `VirtualBox download page <http://www.virtualbox.org/wiki/Downloads>`_ (Windows, Linux, Mac,
   Solaris)
+
+  *This webpage offers installers of the VirtualBox application, as well as the
+  documentation.*
 
 
 Documentation
