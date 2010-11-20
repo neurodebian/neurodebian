@@ -140,7 +140,7 @@ FIELDS_ORDER = ('depends', 'recommends', 'suggests', 'ignore',
 
 verbosity = None
 
-def error(msg, exit_code):
+def error(msg, exit_code=1):
     sys.stderr.write(msg + '\n')
     sys.exit(exit_code)
 
@@ -207,7 +207,8 @@ def parse_debian_blends(f='debian/blends'):
                 if pkg is None:
                     # So we had just source?
                     if source is None:
-                        error("No package or source is known where to add %s" % k)
+                        error("No package or source is known where to add %s" % (k,), 1)
+                        # TODO: just deduce source from DebianMaterials
                     pkg = new_pkg(pkg, source, source, tasks)
                     # Since only source is available, it should be Ignore:-ed
                     pkg['Ignore'] = source
