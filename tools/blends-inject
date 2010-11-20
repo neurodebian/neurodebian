@@ -16,10 +16,12 @@ possibly of different blends.  This script allows to automate:
 Possible TODOs:
 ---------------
 
-Whenever processing multiple files, figure out topdir automatically,
-so we could do
-
-blends-inject */debian/blends
+* For every package the same task file might be re-read/written (if
+  entry changed/added) from disk.
+  That allows to replace easily original entry for 'source' package
+  (listed as Ignore:) with actual first listed binary package.
+  This should be taken into consideration if current per-package
+  handling gets changed
 
 """
 
@@ -43,7 +45,61 @@ within debian/blends, or files provided in the command line.
 Format of debian/blends
 -----------------------
 
-TODO:
+Example::
+
+ ; If originally filed using project source name, and it is different
+ ; from the primary (first) binary package name, keep 'Source' to be
+ ; able to adopt previously included tasks entry
+Source: brian
+
+ ; Define the format on how entries should be handled.
+ ; Possible values:
+ ;   extended -- whenever package is not in Debian and additional
+ ;               fields should be obtained from debian/*:
+ ;               * License
+ ;               * WNPP
+ ;               * Pkg-Description
+ ;               * Responsible
+ ;               * Homepage
+ ;               * Vcs-*
+ ;   plain [default] -- only fields listed here should be mentioned.
+ ;               Common use -- whenever package is already known to UDD.
+ ;
+ ;  By default, all fields specified previously propagate into following
+ ;  packages as well.  If that is not desired, add suffix '-clean' to
+ ;  the Format
+Format: extended
+
+Tasks: debian-science/neuroscience-modeling
+
+ ; Could have Depends/Recommends/Suggests and Ignore
+ ; All those define Pkg-Name field which is not included
+ ; in the final "rendering" but is available as Pkg-Name item
+Depends: python-brian
+Pkg-URL: http://neuro.debian.net/pkgs/%(Pkg-Name)s.html
+Language: Python, C
+Published-Authors: Goodman D.F. and Brette R.
+Published-Title: Brian: a simulator for spiking neural networks in Python
+Published-In: Front. Neuroinform
+Published-Year: 2008
+Published-DOI: 10.3389/neuro.11.005.2008
+
+ ; May be some previous entry should be removed, thus say so
+Removed: python-brian-doc
+
+ ;Tasks: debian-med/imaging-dev
+ ;Why: Allows interactive development/scripting
+
+ ; ; It should be possible to switch between formats,
+ ; ; e.g. if some component is not yet in Debian
+ ;Format: extended
+ ;
+ ; ; Now some bogus one but with customizations
+ ;Tasks: debian-med/documentation
+ ;Recommends: python-brian-doc
+ ;Language:
+ ;Remark: some remark
+ ;
 
 """
 
@@ -57,11 +113,19 @@ from optparse import OptionParser, Option
 from copy import deepcopy
 #from debian_bundle import deb822
 from debian import deb822
+#import deb822
 from debian.changelog import Changelog
+
+# all files we are dealing with should be UTF8, thus
+# lets override
+import codecs
+
+def open(f, *args):
+    return codecs.open(f, *args, encoding='utf-8')
 
 __author__ = 'Yaroslav Halchenko'
 __prog__ = os.path.basename(sys.argv[0])
-__version__ = '0.0.1'
+__version__ = '0.0.2'
 __copyright__ = 'Copyright (c) 2010 Yaroslav Halchenko'
 __license__ = 'GPL'
 
@@ -95,6 +159,7 @@ def parse_debian_blends(f='debian/blends'):
     for p in deb822.Deb822.iter_paragraphs(open(f)):
         items += p.items()
 
+    verbose(6, "Got items %s" % items)
     # Traverse and collect things
     format_ = 'plain'
     format_clean = False # do not propagate fields into a new pkg if True
@@ -102,7 +167,24 @@ def parse_debian_blends(f='debian/blends'):
     pkgs = []
     tasks = []
 
+    def new_pkg(prev_pkg, bname, sname, tasks):
+        """Helper function to create a new package
+        """
+        if format_clean or prev_pkg is None:
+            pkg = deb822.Deb822()
+        else:
+            pkg = deepcopy(prev_pkg)
+            for k_ in PKG_FIELDS:   # prune older depends
+                pkg.pop(k_, None)
+        pkg['Pkg-Name'] = pkg[k] = bname
+        pkg['Pkg-Source'] = sname
+        pkgs.append(pkg)
+        pkg.tasks = dict( (t.strip(), deb822.Deb822Dict()) for t in tasks )
+        pkg.format = format_
+        return pkg
+
     for k, v in items:
+
         kl = k.lower()
         if kl == 'source':
             source = v.strip()
@@ -116,22 +198,20 @@ def parse_debian_blends(f='debian/blends'):
             newtasks = True                 # either we need to provide tune-ups
                                             # for current package
         elif kl in PKG_FIELDS: # new package
-            if format_clean or pkg is None:
-                pkg = deb822.Deb822()
-            else:
-                pkg = deepcopy(pkg)
-                for k_ in PKG_FIELDS:   # prune older depends
-                    pkg.pop(k_, None)
-            pkg['Pkg-Name'] = pkg[k] = v
             if source is None:
                 source = v
-            pkg['Pkg-Source'] = source
-            pkgs.append(pkg)
-            pkg.tasks = dict( (t.strip(), deb822.OrderedSet()) for t in tasks )
-            pkg.format = format_
+            pkg = new_pkg(pkg, v, source, tasks)
             newtasks = False
         else:
             if newtasks:
+                if pkg is None:
+                    # So we had just source?
+                    if source is None:
+                        error("No package or source is known where to add %s" % k)
+                    pkg = new_pkg(pkg, source, source, tasks)
+                    # Since only source is available, it should be Ignore:-ed
+                    pkg['Ignore'] = source
+                    newtasks = False
                 # Add customization
                 for t in tasks:
                     if not t in pkg.tasks:
@@ -147,6 +227,7 @@ def expand_pkgs(pkgs, topdir='.'):
     """In-place modification of pkgs taking if necessary additional
     information from Debian materials, and pruning empty fields
     """
+    verbose(4, "Expanding content for %d packages" % len(pkgs))
     debianm = None
     # Expand packages which format is extended
     for pkg in pkgs:
@@ -156,8 +237,8 @@ def expand_pkgs(pkgs, topdir='.'):
                 debianm = DebianMaterials(topdir)
             for k, m in (('License', lambda: debianm.get_license(pkg['Pkg-Name'])),
                          ('WNPP', debianm.get_wnpp),
-                         ('Pkg-description',
-                          lambda: debianm.binaries[pkg['Pkg-Name']]['Description']),
+                         ('Pkg-Description',
+                          lambda: debianm.get_description(pkg['Pkg-Name'])),
                          ('Responsible', debianm.get_responsible),
                          ('Homepage', lambda: debianm.source.get('Homepage', None))):
                 if pkg.get(k, None):
@@ -233,7 +314,8 @@ def group_packages_into_tasks(pkgs):
             pkg__.name = pkg__.pop('Pkg-name')
 
             tasks[task] = tasks.get(task, []) + [pkg__]
-
+    verbose(4, "Grouped %d packages into %d tasks: %s" %
+            (len(pkgs), len(tasks), ', '.join(tasks.keys())))
     return tasks
 
 def inject_tasks(tasks, config):
@@ -265,7 +347,7 @@ def inject_tasks(tasks, config):
                     known = True
                     break
 
-            descr = ' ; Added by %s %s.  Modified manually: False\n' % \
+            descr = ' ; Added by %s %s. [Please note here if modified manually]\n' % \
                     (__prog__,  __version__)
             # Replace existing entry
             if known:
@@ -298,11 +380,13 @@ def inject_tasks(tasks, config):
                            icount +=2
                        entries = entries[:istart] + entries[istart+icount:]
                        msgs['Action'] = 'Removed'
-                   open(taskfile, 'w').write(''.join(entries))
+                   output = ''.join(entries)         # 'compute' first
+                   open(taskfile, 'w').write(output) # then only overwrite
             elif not 'removed' in pkg:  # or Append one
                 msgs['Action'] = 'Added'
                 # could be as simple as
-                open(taskfile, 'a').write('\n%s%s' % (descr, pkg.dump(),))
+                output = '\n%s%s' % (descr, pkg.dump(),)
+                open(taskfile, 'a').write(output)
 
             if msgs['Action']:
                 verbose(3, "%(Action)s %(Name)s" % msgs)
@@ -401,6 +485,21 @@ class DebianMaterials(object):
                 vcs[f] = v
         return vcs
 
+    def get_description(self, pkg_name):
+        """Some logic to extract description.
+
+           If binary package matching pkg_name is found -- gets it description.
+           If no binary package with such name, and name matches source name,
+           obtain description of the first binary package.
+        """
+        if pkg_name in self.binaries:
+            pass
+        elif pkg_name.lower() == self.source['Source'].lower():
+            pkg_name = self.binaries.keys()[0]
+        else:
+            error("Name %s does not match any binary, nor source package in %s"
+                  % (pkg_name, self))
+        return self.binaries[pkg_name]['Description']
 
 def main():
 
@@ -444,18 +543,13 @@ def main():
             if dirname(blends_file).endswith('/debian'):
                 topdir = dirname(dirname(blends_file))
             else:
-                topdir = '.'            # and hope for the best
+                topdir = '.'            # and hope for the best ;)
         else:
             topdir = options.topdir
         expand_pkgs(pkgs, topdir=topdir)
         tasks = group_packages_into_tasks(pkgs)
         inject_tasks(tasks, config)
 
-    #for t,v in tasks.iteritems():
-    #    print "-------TASK: ", t
-    #    print ''.join(str(t_) for t_ in v)
-    #print pkgs[0]
-    #print tasks['debian-med/documentation'][0]
 
 if __name__ == '__main__':
     main()
