@@ -85,7 +85,7 @@ Published-Year: 2008
 Published-DOI: 10.3389/neuro.11.005.2008
 
  ; May be some previous entry should be removed, thus say so
-Removed: python-brian-doc
+Remove: python-brian-doc
 
  ;Tasks: debian-med/imaging-dev
  ;Why: Allows interactive development/scripting
@@ -125,18 +125,27 @@ def open(f, *args):
 
 __author__ = 'Yaroslav Halchenko'
 __prog__ = os.path.basename(sys.argv[0])
-__version__ = '0.0.2'
+__version__ = '0.0.3'
 __copyright__ = 'Copyright (c) 2010 Yaroslav Halchenko'
 __license__ = 'GPL'
 
 # What fields initiate new package description
-PKG_FIELDS = ('depends', 'recommends', 'suggests', 'ignore', 'removed')
+PKG_FIELDS = ('depends', 'recommends', 'suggests', 'ignore', 'remove')
 
 # We might need to resort to assure some what a canonical order
-FIELDS_ORDER = ('depends', 'recommends', 'suggests', 'ignore',
-                'homepage', 'language', 'wnpp', 'responsible', 'license',
+# Prefixes for "standard" blends/tasks fields.  Others do not get embedded
+# into tasks files
+BLENDS_FIELDS_PREFIXES = ('depends', 'recommends', 'suggests', 'ignore',
+                'why', 'homepage', 'wnpp', 'responsible', 'license',
                 'vcs-', 'pkg-url', 'pkg-description',
                 'published-', 'x-', 'registration', 'remark')
+# Additional fields which might come useful (e.g. for filing wnpp bugs)
+# but are not "standard" thus should be in the trailer
+CUSTOM_FIELDS_PREFIXES = ('author', 'language', 'pkg-name', 'pkg-source',
+                          'version', 'remove')
+# Other fields should cause Error for consistency
+
+FIELDS_ORDER = BLENDS_FIELDS_PREFIXES + CUSTOM_FIELDS_PREFIXES
 
 verbosity = None
 
@@ -250,7 +259,24 @@ def expand_pkgs(pkgs, topdir='.'):
             # VCS fields
             pkg.update(debianm.get_vcsfields())
 
-def key_prefix_compare(x, y, order, strict=False, case=False):
+
+def prefix_index(x, entries, strict=True, case=False, default=10000):
+    """Returns an index for the x in entries
+    """
+    if not case:
+        x = x.lower()
+    for i, v in enumerate(entries):
+        if x.startswith(v):
+            return i
+
+    if strict:
+        raise IndexError(
+            "Could not find location for %s as specified by %s" %
+            (x, entries))
+    return default
+
+
+def key_prefix_compare(x, y, order, strict=True, case=False):
     """Little helper to help with sorting
 
     Sorts according to the order of string prefixes as given by
@@ -261,22 +287,8 @@ def key_prefix_compare(x, y, order, strict=False, case=False):
     if not case:
         order = [v.lower() for v in order]
 
-    def prefix_index(t, order, strict=True, case=False):
-        x = t[0]
-        if not case:
-            x = x.lower()
-        for i, v in enumerate(order):
-            if x.startswith(v):
-                return i
-
-        if strict:
-            raise IndexError(
-                "Could not find location for %s as specified by %s" %
-                (x, order))
-        return 10000                    #  some large number ;)
-
-    cmp_res =  cmp(prefix_index(x, order, strict, case),
-                   prefix_index(y, order, strict, case))
+    cmp_res =  cmp(prefix_index(x[0], order, strict, case),
+                   prefix_index(y[0], order, strict, case))
     if not cmp_res:                     # still unknown
         return cmp(x, y)
     return cmp_res
@@ -312,7 +324,12 @@ def group_packages_into_tasks(pkgs):
 
             # Move Pkg-source/name into attributes
             pkg__.source = pkg__.pop('Pkg-Source')
-            pkg__.name = pkg__.pop('Pkg-name')
+            pkg__.name = pkg__.pop('Pkg-Name')
+            # Store the action taken on the package for later on actions
+            for f in PKG_FIELDS:
+                if f in pkg__:
+                    pkg__.action = f
+                    break
 
             tasks[task] = tasks.get(task, []) + [pkg__]
     verbose(4, "Grouped %d packages into %d tasks: %s" %
@@ -330,6 +347,17 @@ def inject_tasks(tasks, config):
         stats = dict(Added=[], Modified=[])
         for pkg in pkgs:
             msgs = {'Name': pkg.name.strip(), 'Action': None}
+
+            # Create a copy of the pkg with only valid tasks
+            # fields:
+            # TODO: make it configurable?
+            pkg = deepcopy(pkg)
+            for k in pkg:
+                if prefix_index(k, BLENDS_FIELDS_PREFIXES,
+                                strict=False, default=None) is None:
+                    pkg.pop(k) # remove it from becoming present in
+                               # the taskfile
+
             # Find either it is known to the task file already
 
             # Load entirely so we could simply manipulate
@@ -350,7 +378,9 @@ def inject_tasks(tasks, config):
 
             descr = ' ; Added by %s %s. [Please note here if modified manually]\n' % \
                     (__prog__,  __version__)
-            # Replace existing entry
+
+            entry = pkg.dump()
+            # Replace existing entry?
             if known:
                 # TODO: Check if previous copy does not have our preceding comment
                 # Find the previous end
@@ -363,33 +393,56 @@ def inject_tasks(tasks, config):
 
                 # Lets not change file without necessity, if entry is identical --
                 # do nothing
-                entry = pkg.dump()
                 old_entry = entries[istart:istart+icount]
 
                 if u''.join(old_entry) == entry:
-                   pass
+                    # no changes -- just go to the next one
+                    continue
                 else: # Rewrite the entry
                    if __prog__ in entries[istart-1]:
                        istart -= 1
                        icount += 2
-                   if not 'Removed' in pkg.keys():
-                       entries = entries[:istart] + [descr + entry] + entries[istart+icount:]
+                   if 'remove' != pkg.action:
+                       entry = descr + entry
                        msgs['Action'] = 'Changed'
                    else:
                        while entries[istart-1].strip() == '':
                            istart -=1
                            icount +=2
-                       entries = entries[:istart] + entries[istart+icount:]
+                       entry = ''
                        msgs['Action'] = 'Removed'
-                   output = ''.join(entries)         # 'compute' first
-                   open(taskfile, 'w').write(output) # then only overwrite
-            elif not 'removed' in pkg:  # or Append one
+                   entries_prior = entries[:istart]
+                   entries_post = entries[istart+icount:]
+            elif not 'remove' == pkg.action:  # or Append one
+                if pkg.name == 'python-brian-doc':
+                    import pydb
+                    pydb.debugger()
                 msgs['Action'] = 'Added'
+                entries_prior = entries
+                entry = descr + entry
+                entries_post = []
                 # could be as simple as
-                output = '\n%s%s' % (descr, pkg.dump(),)
-                open(taskfile, 'a').write(output)
+                # Lets do 'in full' for consistent handling of empty lines
+                # around
+                #output = '\n%s%s' % (descr, pkg.dump(),)
+                #open(taskfile, 'a').write(output)
 
             if msgs['Action']:
+                # Prepare for dumping
+                # Prune spaces before
+                while len(entries_prior) and entries_prior[-1].strip() == '':
+                    entries_prior = entries_prior[:-1]
+                if len(entries_prior) and not entries_prior[-1].endswith('\n'):
+                    entries_prior[-1] += '\n' # assure present trailing newline
+                # Prune spaces after
+                while len(entries_post) and entries_post[0].strip() == '':
+                    entries_post = entries_post[1:]
+                if len(entries_post) and len(entry):
+                    # only then trailing empty line
+                    entry += '\n'
+                output = ''.join(entries_prior + [ '\n' + entry ] + entries_post)
+                open(taskfile, 'w').write(output) # then only overwrite
+
                 verbose(3, "%(Action)s %(Name)s" % msgs)
 
 
