@@ -1,0 +1,11 @@
+Source: trellis-neuro
+Tasks: debian-science/neuroscience-electrophysiology
+Homepage: http://sourceforge.net/projects/trellis-neuro/
+License: GPL-3+ and LGPL-3+
+Author: Ripple, LLC
+Language: C, C++
+Pkg-Description: interface to neurophysiology data acquisition and stimulation instruments
+ Trellis-Neuro is an Open Source, multi-platform application suite for
+ interfacing with neurophysiology data acquisition and stimulation
+ instruments. It is based on the eXtensible Instrument Processing
+ Protocol (XIPP), QT 4, and C/C++.

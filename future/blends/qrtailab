@@ -1,0 +1,11 @@
+Source: qrtailab
+Tasks: debian-science/neuroscience-electrophysiology
+Homepage: http://qrtailab.sourceforge.net/
+Author: Holger Nahrstaedt
+License: LGPL-2
+Why: Useful and used in acquisition/analysis setups
+Pkg-Description: Qt-GUI for RTAI
+ QRtaiLab is a QT-based port of the software scope xrtailab of the
+ RTAI project. It can be used as virtual oscilloscope and monitoring
+ application for interacting with the real-time external.
+Version: 0.1.12
