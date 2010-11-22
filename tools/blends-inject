@@ -136,12 +136,12 @@ PKG_FIELDS = ('depends', 'recommends', 'suggests', 'ignore', 'remove')
 # Prefixes for "standard" blends/tasks fields.  Others do not get embedded
 # into tasks files
 BLENDS_FIELDS_PREFIXES = ('depends', 'recommends', 'suggests', 'ignore',
-                'why', 'homepage', 'wnpp', 'responsible', 'license',
+                'why', 'homepage', 'language', 'wnpp', 'responsible', 'license',
                 'vcs-', 'pkg-url', 'pkg-description',
                 'published-', 'x-', 'registration', 'remark')
 # Additional fields which might come useful (e.g. for filing wnpp bugs)
 # but are not "standard" thus should be in the trailer
-CUSTOM_FIELDS_PREFIXES = ('author', 'language', 'pkg-name', 'pkg-source',
+CUSTOM_FIELDS_PREFIXES = ('author', 'pkg-name', 'pkg-source',
                           'version', 'remove')
 # Other fields should cause Error for consistency
 
