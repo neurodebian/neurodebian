@@ -104,7 +104,7 @@ Remove: python-brian-doc
 """
 
 
-import re, os, sys
+import re, os, sys, tempfile
 from os.path import join, exists, expanduser, dirname, basename
 
 from ConfigParser import ConfigParser
@@ -125,7 +125,7 @@ def open(f, *args):
 
 __author__ = 'Yaroslav Halchenko'
 __prog__ = os.path.basename(sys.argv[0])
-__version__ = '0.0.3'
+__version__ = '0.0.4'
 __copyright__ = 'Copyright (c) 2010 Yaroslav Halchenko'
 __license__ = 'GPL'
 
@@ -155,7 +155,7 @@ def error(msg, exit_code=1):
 
 def verbose(level, msg):
     if level <= verbosity:
-        print " "*level, msg
+        sys.stderr.write(" "*level + msg + '\n')
 
 
 def parse_debian_blends(f='debian/blends'):
@@ -195,6 +195,7 @@ def parse_debian_blends(f='debian/blends'):
     for k, v in items:
 
         kl = k.lower()
+
         if kl == 'source':
             source = v.strip()
         elif kl == 'format':
@@ -204,7 +205,7 @@ def parse_debian_blends(f='debian/blends'):
                 format_ = format_[:-6]
         elif kl == 'tasks':
             tasks = v.split(',')
-            newtasks = True                 # either we need to provide tune-ups
+            newtasks = pkg is not None      # either we need to provide tune-ups
                                             # for current package
         elif kl in PKG_FIELDS: # new package
             if source is None:
@@ -212,16 +213,17 @@ def parse_debian_blends(f='debian/blends'):
             pkg = new_pkg(pkg, v, source, tasks)
             newtasks = False
         else:
+			if pkg is None:
+				# So we had just source?
+				if source is None:
+					error("No package or source is known where to add %s" % (k,), 1)
+					# TODO: just deduce source from DebianMaterials
+				pkg = new_pkg(pkg, source, source, tasks)
+				# Since only source is available, it should be only Suggest:-ed
+				pkg['Suggests'] = source
+				newtasks = False
+
             if newtasks:
-                if pkg is None:
-                    # So we had just source?
-                    if source is None:
-                        error("No package or source is known where to add %s" % (k,), 1)
-                        # TODO: just deduce source from DebianMaterials
-                    pkg = new_pkg(pkg, source, source, tasks)
-                    # Since only source is available, it should be only Suggest:-ed
-                    pkg['Suggests'] = source
-                    newtasks = False
                 # Add customization
                 for t in tasks:
                     if not t in pkg.tasks:
@@ -230,6 +232,7 @@ def parse_debian_blends(f='debian/blends'):
             else:
                 # just store the key in the pkg itself
                 pkg[k] = v
+
     return pkgs
 
 
@@ -239,6 +242,7 @@ def expand_pkgs(pkgs, topdir='.'):
     """
     verbose(4, "Expanding content for %d packages" % len(pkgs))
     debianm = None
+
     # Expand packages which format is extended
     for pkg in pkgs:
         if pkg.format == 'extended':
@@ -414,9 +418,6 @@ def inject_tasks(tasks, config):
                    entries_prior = entries[:istart]
                    entries_post = entries[istart+icount:]
             elif not 'remove' == pkg.action:  # or Append one
-                if pkg.name == 'python-brian-doc':
-                    import pydb
-                    pydb.debugger()
                 msgs['Action'] = 'Added'
                 entries_prior = entries
                 entry = descr + entry
@@ -555,6 +556,43 @@ class DebianMaterials(object):
                   % (pkg_name, self))
         return self.binaries[pkg_name]['Description']
 
+def print_wnpp(pkgs, config, wnpp_type="ITP"):
+    """Little helper to spit out formatted entry for WNPP bugreport
+
+    TODO: It would puke atm if any field is missing
+    """
+
+    pkg = pkgs[0]                       # everything is based on the 1st one
+    opts = dict(pkg.items())
+    opts['WNPP-Type'] = wnpp_type.upper()
+    opts['Pkg-Description-Short'] = re.sub('\n.*', '', pkg['Pkg-Description'])
+
+    subject = "%(WNPP-Type)s: %(Pkg-Name)s -- %(Pkg-Description-Short)s" % opts
+    body = """*** Please type your report below this line ***
+
+* Package name    : %(Pkg-Name)s
+  Version         : %(Version)s
+  Upstream Author : %(Author)s
+* URL             : %(Homepage)s
+* License         : %(License)s
+  Programming Lang: %(Language)s
+  Description     : %(Pkg-Description)s
+
+""" % opts
+
+    # Unfortunately could not figure out how to set the owner, so I will just print it out
+    if False:
+        tmpfile = tempfile.NamedTemporaryFile()
+        tmpfile.write(body)
+        tmpfile.flush()
+        cmd = "reportbug -b --paranoid --subject='%s' --severity=wishlist --body-file='%s' -o /tmp/o.txt wnpp" \
+              % (subject, tmpfile.name)
+        verbose(2, "Running %s" %cmd)
+        os.system(cmd)
+    else:
+        print "Subject: %s\n\n%s" % (subject, body)
+
+
 def main():
 
     p = OptionParser(
@@ -577,8 +615,23 @@ def main():
         Option("-v", "--verbosity", action="store", type="int",
                dest="verbosity", default=1, help="Noise level."))
 
+    # We might like to create a separate 'group' of options for commands
+    p.add_option(
+        Option("-w", action="store_true",
+               dest="wnpp", default=False,
+               help="Operate in WNPP mode: dumps cut-paste-able entry for WNPP bugreport"))
+
+    p.add_option(
+        Option("--wnpp", action="store",
+               dest="wnpp_mode", default=None,
+               help="Operate in WNPP mode: dumps cut-paste-able entry for WNPP bugreport"))
+
+
     (options, infiles) = p.parse_args()
     global verbosity; verbosity = options.verbosity
+
+	if options.wnpp and options.wnpp_mode is None:
+	     options.wnpp_mode = 'ITP'
 
     if not len(infiles):
         infiles = [join(options.topdir or './', 'debian/blends')]     #  default one
@@ -600,9 +653,14 @@ def main():
                 topdir = '.'            # and hope for the best ;)
         else:
             topdir = options.topdir
-        expand_pkgs(pkgs, topdir=topdir)
-        tasks = group_packages_into_tasks(pkgs)
-        inject_tasks(tasks, config)
+
+		expand_pkgs(pkgs, topdir=topdir)
+        if options.wnpp_mode is not None:
+		    print_wnpp(pkgs, config, options.wnpp_mode)
+        else:
+            # by default -- operate on blends/tasks files
+            tasks = group_packages_into_tasks(pkgs)
+            inject_tasks(tasks, config)
 
 
 if __name__ == '__main__':
