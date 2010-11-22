@@ -19,7 +19,7 @@ Possible TODOs:
 * For every package the same task file might be re-read/written (if
   entry changed/added) from disk.
   That allows to replace easily original entry for 'source' package
-  (listed as Ignore:) with actual first listed binary package.
+  (listed as Suggests:) with actual first listed binary package.
   This should be taken into consideration if current per-package
   handling gets changed
 
@@ -219,8 +219,8 @@ def parse_debian_blends(f='debian/blends'):
                         error("No package or source is known where to add %s" % (k,), 1)
                         # TODO: just deduce source from DebianMaterials
                     pkg = new_pkg(pkg, source, source, tasks)
-                    # Since only source is available, it should be Ignore:-ed
-                    pkg['Ignore'] = source
+                    # Since only source is available, it should be only Suggest:-ed
+                    pkg['Suggests'] = source
                     newtasks = False
                 # Add customization
                 for t in tasks:
