@@ -268,13 +268,12 @@ efficient, more open, and more fun
 .. toctree::
    :hidden:
 
+   datasets
    livecd
-   gpg
-   setup
-   links_names
-   substitutions
+   vm_welcome
    quotes-nihr01
    quotes-nitrc
 
-.. include:: links_names.rst
-.. include:: substitutions.rst
+
+.. include:: link_names.txt
+.. include:: substitutions.txt
