@@ -1,0 +1,18 @@
+Source: chronus
+Tasks: debian-science/neuroscience-electrophysiology
+Homepage: http://www.chronux.org/
+License: GPL-2+
+Author: Gerald Dalley, Catherine Loader
+Language: C, Matlab/Octave
+Version: 2.00
+Pkg-Description: platform for analysis of neural signals
+ Chronux is a Matlab toolbox for signal processing of neural time
+ series data, several specialized mini-packages for spike sorting,
+ local regression, audio segmentation and other tasks. It also
+ includes a graphical user interface (GUI). The current version of
+ the GUI contains a number of features specialised to the analysis of
+ electroencephalography (EEG) data. The eventual aim is to provide
+ domain speciﬁc user interfaces (UIs) for each experimental modality,
+ along with corresponding data management tools.
+Remark: last release more than 2 years ago, and no major vital signs since then
+Registration: http://www.chronux.org/register/
