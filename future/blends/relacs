@@ -1,0 +1,35 @@
+Source: relacs
+Tasks: debian-science/neuroscience-electrophysiology
+Homepage: http://www.relacs.net
+License: GPL-2+
+Author: Jan Benda <benda@bio.lmu.de>
+Language: C++
+Version: 0.9.7
+WNPP: 604564
+Pkg-Description: framework for closed-loop neurophysiological experiments
+ RELACS is designed as an framework for closed-loop experiments that
+ may considerably speed up this traditional approach and in addition
+ offers novel experimental possibilities. In a closed-loop experiment
+ a stimulus is presented, the resulting response is immediately
+ analyzed, and properties of the next stimulus (e.g. mean
+ intensity) are adjusted as needed.
+ .
+ RELACS comes with an extensive set of data-analysis functions. The
+ functions are implemented in C++ to allow fast and memory efficient
+ data-analysis as it is required for closed-loop experiments:
+  - Basic statistics (e.g. mean, standard deviation)
+  - Spectral analysis: power spectrum, transfer function, coherence
+  - Linear and nonlinear fits (Levenberg-Marquardt and Simplex)
+  - Peak detection
+  - Histograms, interpolation
+  - Stimulus generation: pulse, saw tooth, band-pass filtered white
+    noise, Ornstein-Uhlenbeck noise
+  - Firing rates: mean, binned, convolved with kernels (e.g. rectangle,
+    triangle, Gaussian)
+  - Interspike intervals: histogram, CV, serial correlation, etc.
+  - Spike timing precision: vector strength, reliability, correlation,
+    synchrony etc.
+ .
+ RELACS plugin infrastructure allows to adapt it to specific hardware
+ drivers and they allow you to implement research protocols, filters,
+ spike detectors, etc.

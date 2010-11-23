@@ -1,0 +1,16 @@
+Source: spike
+Tasks: debian-science/neuroscience-electrophysiology
+
+Language: C++, Octave/Matlab
+License: BSD-3 and Academic Free License
+Responsible: NeuroDebian Team <team@neuro.debian.net>
+Homepage: http://neuroanalysis.org
+Published-Title: Spike Train Analysis Toolkit: Enabling Wider Application of Information-Theoretic Techniques to Neurophysiology
+Published-Authors: David H. Goldberg, Jonathan D. Victor, Esther P. Gardner, and Daniel Gardner
+Published-In: Neuroinformatics, 7, 165–178
+Published-Year: 2009
+Published-DOI: 10.1007/s12021-009-9049-y
+Pkg-Description: spike train analysis toolbox
+ This toolbox implements several information-theoretic spike train analysis
+ techniques. This implementation behaves like a typical MATLAB toolbox, but
+ the underlying computations are coded in C and optimized for efficiency.
