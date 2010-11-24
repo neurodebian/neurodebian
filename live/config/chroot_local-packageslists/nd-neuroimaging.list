@@ -1,0 +1,7 @@
+amide caret dicomnifti
+fsl fsl-doc fslview fslview-doc
+lipsia lipsia-doc via-bin
+minc-tools  mricron  nifti-bin odin praat
+python-mvpa python-nifti python-nipype python-nibabel
+voxbo
+xmedcon

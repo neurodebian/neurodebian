@@ -5,19 +5,19 @@ set -eu
 # the Debian release to use as a basis for the live-cd
 nd_basedist="squeeze"
 nd_version="6.0.0"
-nd_mirror=
 
 deb_mirror="http://debproxy:9999"
 
+# enable recommends for now since we care about 'typical' use patterns atm
 lb config noauto \
   --apt apt \
-  --apt-recommends disabled \
+  --apt-recommends true \
   --architecture i386 \
   --archive-areas "main contrib non-free" \
   --binary-images iso-hybrid \
   --binary-indices none \
   --bootstrap-flavour minimal \
-  --debian-installer disabled \
+  --debian-installer netinst \
   --distribution ${nd_basedist} \
   --hostname neurodebian \
   --iso-application "NeuroDebian Live" \
@@ -26,6 +26,7 @@ lb config noauto \
   --mirror-bootstrap "${deb_mirror}/debian/" \
   --mirror-chroot "${deb_mirror}/debian/" \
   --mirror-chroot-security "${deb_mirror}/security/" \
+  --packages-lists "nd-basic nd-neuroimaging" \
   --repositories neuro.debian.net \
   --security true \
   --username brain \
