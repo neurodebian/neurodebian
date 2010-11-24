@@ -6,7 +6,7 @@ Debian booth at SfN2010 in San Diego
 .. image:: pics/sfn2010/SanDiegoConferenceCenter.jpg
    :width: 100%
 
-From November 13-17, 2010 the NeuroDebian team ran its first Debian booth at the
+During November 13-17, 2010 the NeuroDebian team ran its first Debian booth at the
 annual meeting of the `Society for Neuroscience`_ (SfN2010_) in San
 Diego, USA. We presented the upcoming release Debian 6.0 Squeeze and
 demonstrated its utility as a robust and versatile research environment for
@@ -32,8 +32,9 @@ running a Debian squeeze virtual machine on top of Mac OS X and Windows,
 respectively (CDs with the VM image were also available for visitors to take
 home). To demonstrate Debian's versatility, we had a complete Debian
 archive mirror that was used to show the full selection of available software
-and the simplicity of installation and upgrade procedures. All of this was
-powered by a small router box with attached external harddrive running DebWrt_.
+and the simplicity of installation and upgrade procedures.  The mirror
+was provided from an external harddrive by a commodity router box
+running Debian-based DebWrt_ distribution.
 All machines were connected to our own local wired network to avoid problems
 with conference center's free wireless network (poor at best). Finally, we had
 several hundred `tri-fold flyers`_ with general Debian facts on one side, and
@@ -56,8 +57,8 @@ aware of an operating system other than Windows and Mac OS.
 
 A number of visitors were involved in free software development -- at various
 levels. We talked to a Debian ftpmaster, a Gentoo developer, various developers
-of neuroscience-related software that is already packaged for Debian and many
-more whose work still needs to be packaged. This included representatives of
+of neuroscience-related software that is already integrated in Debian and many
+more whose work still needs to be packaged.  We got visited by representatives of
 companies looking for support to get their open-source products into Debian.
 The vast majority, however, were scientists looking for a better research
 platform for their labs. That included the struggling Phd-student, as well as
@@ -74,7 +75,7 @@ Debian users of their software.
 Debian-based systems are the preferred Linux environment
 --------------------------------------------------------
 
-The overwhelming majority of visitors running any Linux flavor used a
+The overwhelming majority of visitors running some Linux flavor used a
 Debian-based operating system -- including Debian_ itself, Ubuntu_ and
 sidux/apttosid_. Especially people using Python for research purposes seem to
 prefer the comprehensive support of Python modules in Debian, whereas e.g. R_
@@ -85,7 +86,7 @@ distribution that was present at this conference.
 In general, we had the impression that Linux users employ a larger variety of
 tools in their research activities, whereas users of proprietary operating
 systems tended to limit themselves to a more restricted set, or use an
-intermediate platform, such as Matlab.
+intermediate computing platform, such as Matlab.
 
 .. figure:: pics/sfn2010/NeuroDebianPosterSession.jpg
 
@@ -97,15 +98,15 @@ Take-home messages
 ------------------
 
 While there was a large variety of topics that were brought up by visitors there
-we some common patterns.
+were some common patterns.
 
 Visibility
 
   For a Debian developer it may be surprising, but many people still do not
   know that Debian exists -- even despite the fact that Debian is often a
-  perfect match of their particular requirements. People who got introduced to
-  Debian at the booth often couldn't believe what they were hearing: so much
-  software, runs on any hardware, all for free.
+  perfect match for their particular requirements. People who got introduced to
+  Debian at the booth often couldn't believe what they were hearing or
+  seeing: so much software, runs on any hardware, all for free.
 
   We believe it would be very beneficial for Debian to reach out beyond the IT
   sector and present itself in all fields of applications that it already
@@ -128,8 +129,11 @@ Electrophysiology tools
 
   Of all subfields of neuroscience, electrophysiology researchers expressed the
   greatest demand for better tools in Debian -- or basically at least some
-  specialized tools at all. We started a `new Debian Science Blend task`_ to
-  collect information about existing software and to eventually package it.
+  specialized tools at all.  Moreover, many research projects relying
+  on FOSS solutions in electrophysiology already use Debian-based
+  systems to accomplish the mission; they just rely on manual (from sources)
+  deployment of the necessary tools.  We started a `new Debian Science Blend task`_ to
+  collect information about existing relevant software and to eventually package it.
 
 Realtime capabilities
 
