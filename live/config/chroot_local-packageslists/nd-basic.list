@@ -1,3 +1,10 @@
 gnome-core mc evince bash-completion ntpdate file-roller gnome-utils
 gnome-themes eog vim
 software-center gdebi gedit-plugins gnome-media synaptic menu less
+
+#if ARCHIVE_AREAS non-free
+firmware-linux-nonfree
+#endif
+
+# NeuroDebian specifics
+neurodebian-desktop
