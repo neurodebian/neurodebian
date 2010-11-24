@@ -46,5 +46,5 @@ banner by using following HTML code for a corresponding image:
 
 
 
-.. include:: links_names.rst
-.. include:: substitutions.rst
+.. include:: link_names.txt
+.. include:: substitutions.txt
