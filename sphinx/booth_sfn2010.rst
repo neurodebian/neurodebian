@@ -34,7 +34,7 @@ home). To demonstrate Debian's versatility, we had a complete Debian
 archive mirror that was used to show the full selection of available software
 and the simplicity of installation and upgrade procedures.  The mirror
 was provided from an external harddrive by a commodity router box
-running Debian-based DebWrt_ distribution.
+running the Debian-based DebWrt_ distribution.
 All machines were connected to our own local wired network to avoid problems
 with conference center's free wireless network (poor at best). Finally, we had
 several hundred `tri-fold flyers`_ with general Debian facts on one side, and
@@ -58,7 +58,7 @@ aware of an operating system other than Windows and Mac OS.
 A number of visitors were involved in free software development -- at various
 levels. We talked to a Debian ftpmaster, a Gentoo developer, various developers
 of neuroscience-related software that is already integrated in Debian and many
-more whose work still needs to be packaged.  We got visited by representatives of
+more whose work still needs to be packaged.  We were visited by representatives of
 companies looking for support to get their open-source products into Debian.
 The vast majority, however, were scientists looking for a better research
 platform for their labs. That included the struggling Phd-student, as well as
