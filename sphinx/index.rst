@@ -228,7 +228,7 @@ Publications
 ============
 
 Hanke, M. & Halchenko, Y. O. (2010). :ref:`Report from the Debian booth at
-SfN2010 <chap_debian_booth_sfn2010>`. Annual meeting of the Society for
+SfN2010 <chap_debian_booth_sfn2010>`. *Annual meeting of the Society for
 Neuroscience*, San Diego, USA.
 
 Halchenko, Y. O., Hanke, M., Haxby, J. V., Pollmann, S. & Raizada, R. D.
