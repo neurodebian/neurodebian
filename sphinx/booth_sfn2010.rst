@@ -162,8 +162,8 @@ Acknowledgements
 ----------------
 
 This booth has been made possible by the generous support of Prof. James V.
-Haxby (Dartmouth College, New Hampshire, USA) and other donations to the Debian
-project.
+Haxby (Dartmouth College, New Hampshire, USA) and `other donations to the Debian
+project`_.
 
 
 .. _annual meeting: http://www.sfn.org/am2010/
@@ -180,3 +180,4 @@ project.
 .. _Debian wiki: http://wiki.debian.org/Cloud
 .. _new Debian Science Blend task: http://blends.alioth.debian.org/science/tasks/neuroscience-electrophysiology
 .. _download the poster: http://neuro.debian.net/_files/NeuroDebian_SfN2010.png
+.. _other donations to the Debian project: http://www.debian.org/donations
