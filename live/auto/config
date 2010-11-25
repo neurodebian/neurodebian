@@ -36,13 +36,16 @@ lb config noauto \
   --mirror-bootstrap "${deb_mirror}/debian/" \
   --mirror-chroot "${deb_mirror}/debian/" \
   --mirror-chroot-security "${deb_mirror}/security/" \
-  --packages-lists "gnome nd-basic nd-neuroimaging" \
+  --packages-lists "nd-basic nd-neuroimaging nd-electrphysiology" \
   --repositories neuro.debian.net \
   --security true \
   --syslinux-timeout 10 \
   --username brain \
   --win32-loader enabled \
   ${@}
+
+  # Leads to a stall... may be incorrect format
+  # seems to be KVM issue...
 
   # --mirror-bootstrap "http://debian.lcs.mit.edu/debian/" \
   # --packages-lists xfce \
