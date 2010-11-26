@@ -36,7 +36,7 @@ lb config noauto \
   --mirror-bootstrap "${deb_mirror}/debian/" \
   --mirror-chroot "${deb_mirror}/debian/" \
   --mirror-chroot-security "${deb_mirror}/security/" \
-  --packages-lists "nd-basic nd-neuroimaging nd-electrphysiology" \
+  --packages-lists "nd-core nd-neuroimaging nd-electrphysiology" \
   --repositories neuro.debian.net \
   --security true \
   --syslinux-timeout 10 \
