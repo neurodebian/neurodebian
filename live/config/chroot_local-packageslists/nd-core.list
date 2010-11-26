@@ -8,5 +8,8 @@ software-center gdebi gedit-plugins gnome-media synaptic menu less
 firmware-linux-nonfree
 #endif
 
+# Enable installer
+debian-installer-launcher
+
 # NeuroDebian specifics
 neurodebian-desktop
