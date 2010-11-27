@@ -1,0 +1,9 @@
+# NeuroDebian Software
+deb http://neuro.debian.net/debian @DISTRIBUTION@ @ARCHIVE_AREAS@
+#deb http://neuro.debian.net/debian @DISTRIBUTION@ @ARCHIVE_AREAS@
+
+# NeuroDebian Data
+deb http://neuro.debian.net/debian data @ARCHIVE_AREAS@
+#deb-src http://neuro.debian.net/debian data @ARCHIVE_AREAS@
+
+

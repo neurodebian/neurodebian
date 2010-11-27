@@ -1,0 +1,15 @@
+afni
+ants
+amide caret dicomnifti
+fsl fsl-doc fslview fslview-doc
+itksnap
+lipsia via-bin
+minc-tools  mricron
+nifti-bin
+mrtrix
+odin praat
+python-mvpa python-nifti python-nipype python-nibabel python-nitime
+psychopy
+slicer
+voxbo
+xmedcon
