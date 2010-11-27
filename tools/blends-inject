@@ -38,9 +38,16 @@ specified in ~/.blends-inject.cfg file, e.g.::
  [debian-science]
  path = /home/yoh/deb/debian-science/
 
-
 Definition of the fields for task files by default are looked up
-within debian/blends, or files provided in the command line.
+within debian/blends, or files provided in the command line.  Also for "-a"
+mode of operation you should define list of globs to match your debian/blends
+files::
+
+ [paths]
+ all=/home/yoh/deb/gits/pkg-exppsy/neurodebian/future/blends/*
+     /home/yoh/deb/gits/*/debian/blends
+	 /home/yoh/deb/gits/pkg-exppsy/*/debian/blends
+
 
 Format of debian/blends
 -----------------------
@@ -104,7 +111,7 @@ Remove: python-brian-doc
 """
 
 
-import re, os, sys, tempfile
+import re, os, sys, tempfile, glob
 from os.path import join, exists, expanduser, dirname, basename
 
 from ConfigParser import ConfigParser
@@ -125,7 +132,7 @@ def open(f, *args):
 
 __author__ = 'Yaroslav Halchenko'
 __prog__ = os.path.basename(sys.argv[0])
-__version__ = '0.0.4'
+__version__ = '0.0.5'
 __copyright__ = 'Copyright (c) 2010 Yaroslav Halchenko'
 __license__ = 'GPL'
 
@@ -185,8 +192,8 @@ def parse_debian_blends(f='debian/blends'):
             pkg = deepcopy(prev_pkg)
             for k_ in PKG_FIELDS:   # prune older depends
                 pkg.pop(k_, None)
-        pkg['Pkg-Name'] = pkg[k] = bname
-        pkg['Pkg-Source'] = sname
+        pkg['Pkg-Name'] = pkg[k] = bname.lower()
+        pkg['Pkg-Source'] = sname.lower()
         pkgs.append(pkg)
         pkg.tasks = dict( (t.strip(), deb822.Deb822Dict()) for t in tasks )
         pkg.format = format_
@@ -220,7 +227,7 @@ def parse_debian_blends(f='debian/blends'):
 					# TODO: just deduce source from DebianMaterials
 				pkg = new_pkg(pkg, source, source, tasks)
 				# Since only source is available, it should be only Suggest:-ed
-				pkg['Suggests'] = source
+				pkg['Suggests'] = source.lower()
 				newtasks = False
 
             if newtasks:
@@ -626,6 +633,11 @@ def main():
                dest="wnpp_mode", default=None,
                help="Operate in WNPP mode: dumps cut-paste-able entry for WNPP bugreport"))
 
+    p.add_option(
+        Option("-a", action="store_true",
+               dest="all_mode", default=False,
+               help="Process all files listed in paths.all"))
+
 
     (options, infiles) = p.parse_args()
     global verbosity; verbosity = options.verbosity
@@ -633,18 +645,26 @@ def main():
 	if options.wnpp and options.wnpp_mode is None:
 	     options.wnpp_mode = 'ITP'
 
-    if not len(infiles):
-        infiles = [join(options.topdir or './', 'debian/blends')]     #  default one
-
     # Load configuration
     config = ConfigParser()
     config.read(options.config_file)
+
+    if options.all_mode:
+        if len(infiles):
+            raise ValueError("Do not specify any files in -a mode.  Use configuration file, section paths, option all")
+        globs = config.get('paths', 'all', None).split()
+        infiles = reduce(list.__add__, (glob.glob(f) for f in globs))
+        verbose(1, "Found %d files in specified paths" % len(infiles))
+
+    if not len(infiles):
+        infiles = [join(options.topdir or './', 'debian/blends')]     #  default one
 
     for blends_file in infiles:
         verbose(1, "Processing %s" % blends_file)
         if not exists(blends_file):
             error("Cannot find a file %s.  Either provide a file or specify top "
                   "debian directory with -d." % blends_file, 1)
+
         pkgs = parse_debian_blends(blends_file)
         if options.topdir is None:
             if dirname(blends_file).endswith('/debian'):

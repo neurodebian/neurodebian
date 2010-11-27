@@ -1,0 +1,171 @@
+#!/bin/bash
+#emacs: -*- mode: shell-script; c-basic-offset: 4; tab-width: 4; indent-tabs-mode: nil -*- 
+#ex: set sts=4 ts=4 sw=4 noet:
+
+set -eu
+
+# TODO: arguments later on to become cmdline args
+#iso=debian-squeeze-di-beta1-amd64-businesscard.iso
+iso=debian-testing-i386-businesscard.iso
+di_cd=$(readlink -f $PWD/../../../neurodebian-images/$iso)
+di_host=hydra                   # where to look for di preseed
+
+build_dir=$PWD/build
+dist_dir=$PWD/dist
+vendor="NeuroDebian"
+vm_version="6.0.1"
+vm_ostype=Debian
+
+# Generic definitions
+eula="This virtual appliance contains Free and Open Source Software (FOSS) released under licenses compliant with the Debian Free Software Guidelines (DFSG, see http://www.debian.org/social_contract), such as, GPL, BSD, MIT, etc.  Such software is free to be used or customized for any purpose.
+
+However, by default this virtual machine is also enabled to install additional software from Debian and NeuroDebian repositories that is distributed under more restrictive licenses (e.g. closed-source, non-commercial, research-only). It is the user's responsibility to adhere to the terms and conditions of any particular software that is installed and used in this virtual machine. Copyright and license details for any installed PACKAGE are available in /usr/share/doc/PACKAGE/copyright inside the virtual machine."
+
+
+# Computed settings
+#vm_basepath=
+
+# By default 32bit unless installer image has amd64
+# TODO: might need to make more robust?
+vm_arch=i386
+vm_arch_name=" (32bit)"
+if file $di_cd | grep -q ' amd64 '; then
+    vm_arch=amd64
+    vm_ostype+="_64"
+    vm_arch_name=" (64bit)"
+fi
+
+vm_disk="$build_dir/nd-${vm_version}_${vm_arch}.vdi"
+vm_name="${vendor} VirtualMachine${vm_arch_name}"
+vm_ovf="${dist_dir}/${vendor}_${vm_version}_${vm_arch}.ovf"
+product_name="${vendor} VirtualMachine (${vm_arch})"
+
+_info() {
+    echo "I: $*"
+}
+
+clean_buildvm() {
+# TODO: remove whenever done
+VBoxManage storagectl "${vm_name}" \
+    --name "SATA Controller" --remove || :
+VBoxManage storagectl "${vm_name}" \
+    --name "IDE Controller" --remove || :
+
+VBoxManage closemedium disk "${vm_disk}" || :
+VBoxManage unregistervm "${vm_name}" --delete || :
+rm -f ${vm_disk}
+}
+
+clean_buildvm                   # clean things up
+
+# Check that no previous VM was left (can happen if previous failures
+# were "valid")
+if VBoxManage list vms | grep -q "^\"${vm_name}\".*"; then
+    echo >&2, "VM $vm_name still exists -- something is wrong, Can't continue"
+    exit 1
+fi
+
+_info Assure build directory
+mkdir -p $build_dir
+
+_info Create HardDisk for the VM
+VBoxManage createhd --filename $vm_disk \
+    --size 20000 --format VDI
+  # documented but not implemented:
+  #  --comment "Drive for NeuroDebian VM installer"
+
+_info Create VM
+VBoxManage createvm --name "${vm_name}" --register \
+    --ostype "${vm_ostype}" --basefolder $build_dir
+
+_info Tune VM
+VBoxManage modifyvm "${vm_name}" \
+    --audio alsa \
+    --audiocontroller  ac97 \
+    --boot1 disk \
+    --boot2 dvd \
+    --cpus 1 \
+    --ioapic  on \
+    --memory 1048 \
+    --mouse usbtablet \
+    --nic1 nat \
+    --rtcuseutc on \
+    --usb on \
+    --vram 32
+
+# Add HD controllers
+VBoxManage storagectl "${vm_name}" \
+    --name "IDE Controller" \
+    --add ide \
+    --controller "PIIX4"
+VBoxManage storageattach "${vm_name}" \
+    --storagectl "IDE Controller" \
+    --port 0 \
+    --device 0 \
+    --type dvddrive \
+    --medium  $di_cd
+
+VBoxManage storagectl "${vm_name}" \
+    --name "SATA Controller" \
+    --add sata \
+    --controller "IntelAHCI"
+
+VBoxManage storageattach  "${vm_name}" \
+    --storagectl "SATA Controller" \
+    --port 0 \
+    --device 0 \
+    --type hdd \
+    --medium "${vm_disk}"
+
+VBoxManage showvminfo  "${vm_name}"
+
+_info "Run Debian Installer"
+# When boot menu appears you will have to
+# press Esc
+# type  auto url=$di_host
+# press Enter"
+
+VBoxManage startvm "${vm_name}"
+
+sleep 5                         # give some time to make sure we get to menu
+# Send our sequence -- cruel way
+#VBoxManage controlvm "${vm_name}" keyboardputscancode \
+#    01 81 \
+#    1e 9e 16 96 14 94 18 98 39 b9 16 96 13 93 26 a6 0d 8d 23 a3 15 95 20 a0 13 93 1e 9e \
+#    1c 9c # ESCAPE, auto url=hydra, ENTER
+echo "typeGuest \"${vm_name}\" \"&ESC;Wauto url=${di_host}&ENTER;\"" | /usr/lib/virtualbox/vboxshell.py
+
+: "
+oops -- asked either I want to store Partitioning on the disk...
+
+didn't happen before
+"
+
+# wait for it to finish! -- found no cleaner way :-/
+sleep 10
+while VBoxManage showvminfo "${vm_name}" | grep -q running; do
+    sleep 5
+done
+
+_info Compacting VDI
+sudo ./nd_compactvdi "${vm_disk}"
+
+_info Exporting the appliance
+
+VBoxManage export "${vm_name}" -o "$vm_ovf" \
+	--vsys 0 \
+	--product "${vendor} VirtualMachine (${vm_arch})" \
+	--producturl "http://neuro.debian.net/vm.html" \
+	--vendor "${vendor}" \
+	--vendorurl "http://neuro.debian.net" \
+	--version "$vm_version" \
+	--eula "$eula"
+
+_info Cleaning after ourselves
+clean_buildvm
+
+_info Testing import of the appliance
+VBoxManage import "$vm_ovf" --vsys 0 --eula accept
+
+_info Starting imported machine
+VBoxManage startvm "${vm_name}"

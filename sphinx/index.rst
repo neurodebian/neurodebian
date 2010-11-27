@@ -227,10 +227,14 @@ Italian espresso <coffeeart>`.
 Publications
 ============
 
+Hanke, M. & Halchenko, Y. O. (2010). :ref:`Report from the Debian booth at
+SfN2010 <chap_debian_booth_sfn2010>`. *Annual meeting of the Society for
+Neuroscience*, San Diego, USA.
+
 Halchenko, Y. O., Hanke, M., Haxby, J. V., Pollmann, S. & Raizada, R. D.
 (2010). `Having trouble getting your Nature paper? Maybe you are not using the
 right tools? <_files/NeuroDebian_SfN2010.png>`_ *Poster to be presented at the
-anual meeting of the Society for Neuroscience*, San Diego, USA.
+annual meeting of the Society for Neuroscience*, San Diego, USA.
 
 Hanke, M., Halchenko, Y. O. (2010). `Debian: The ultimate platform for
 neuroimaging research <_files/HankeHalchenko_NeuroDebianDebConf10.pdf>`_.
@@ -268,13 +272,12 @@ efficient, more open, and more fun
 .. toctree::
    :hidden:
 
+   datasets
    livecd
-   gpg
-   setup
-   links_names
-   substitutions
+   vm_welcome
    quotes-nihr01
    quotes-nitrc
 
-.. include:: links_names.rst
-.. include:: substitutions.rst
+
+.. include:: link_names.txt
+.. include:: substitutions.txt

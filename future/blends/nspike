@@ -1,0 +1,13 @@
+Source: nspike
+Tasks: debian-science/neuroscience-electrophysiology
+Homepage: http://nspike.sourceforge.net
+Language: C++
+Version: 1.9.3
+License: GPL-2+
+Author: Loren M. Frank
+Pkg-Description: electrophysiological and behavioral data collection
+ This project is a electrophysiological and behavioral data collection
+ program that can distribute data collection tasks across multiple
+ machines. It is designed to interface with the NSpike hardware
+ system.
+Remark: Last vital signs from 2 years ago

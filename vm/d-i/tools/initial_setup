@@ -69,7 +69,7 @@ apt-get install -y dkms neurodebian-guest-additions
 apt-get install --no-install-recommends -y \
  gnome-core mc evince bash-completion ntpdate file-roller gnome-utils \
  gnome-themes eog vim \
- software-center gdebi gedit-plugins gnome-media synaptic menu less
+ software-center gdebi gedit-plugins gnome-media synaptic menu less libxp6
 
 # intermediate cleanup to prevent virtual harddrive from fragmenting too much
 find /var/cache/apt/archives/ -name '*.deb' -delete
