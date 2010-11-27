@@ -8,10 +8,14 @@ set -u
 # target VDI needs to have proper partition table and MBR
 # simplest solution: clonezilla
 
-vdifile=$(readlink -f $1)
+# No deferencing of symbolic links should be done
+# since otherwise might not be found by VirtualBox
+#vdifile=$(readlink -f $1)
+# Just asssume that we are providing full pathname
+vdifile="$1"
 
-if [ -z "$vdifile" ]; then
-  echo "You need to provide a VDI file."
+if [ -z "$vdifile" ] || [ ! -e "$vdifile" ] || [ "${vdifile:0:1}" != "/" ] ; then
+  echo "You need to provide full pathname to an existing VDI file."
   exit 1
 fi
 
