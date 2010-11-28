@@ -33,10 +33,10 @@ Paths to the blends top directories, containing tasks directories are
 specified in ~/.blends-inject.cfg file, e.g.::
 
  [debian-med]
- path = /home/yoh/deb/debian-med/
+ path = ~/deb/debian-med/
 
  [debian-science]
- path = /home/yoh/deb/debian-science/
+ path = ~/deb/debian-science/
 
 Definition of the fields for task files by default are looked up
 within debian/blends, or files provided in the command line.  Also for "-a"
@@ -44,9 +44,9 @@ mode of operation you should define list of globs to match your debian/blends
 files::
 
  [paths]
- all=/home/yoh/deb/gits/pkg-exppsy/neurodebian/future/blends/*
-     /home/yoh/deb/gits/*/debian/blends
-	 /home/yoh/deb/gits/pkg-exppsy/*/debian/blends
+ all=~/deb/gits/pkg-exppsy/neurodebian/future/blends/*
+     ~/deb/gits/*/debian/blends
+     ~/deb/gits/pkg-exppsy/*/debian/blends
 
 
 Format of debian/blends
@@ -352,7 +352,7 @@ def inject_tasks(tasks, config):
     for task, pkgs in tasks.iteritems():
         verbose(2, "Task %s with %d packages" % (task, len(pkgs)))
         blend, puretask = task.split('/')
-        taskfile = join(config.get(blend, 'path'), 'tasks', puretask)
+        taskfile = expanduser(join(config.get(blend, 'path'), 'tasks', puretask))
 
         # Load the file
         stats = dict(Added=[], Modified=[])
@@ -653,7 +653,7 @@ def main():
         if len(infiles):
             raise ValueError("Do not specify any files in -a mode.  Use configuration file, section paths, option all")
         globs = config.get('paths', 'all', None).split()
-        infiles = reduce(list.__add__, (glob.glob(f) for f in globs))
+        infiles = reduce(list.__add__, (glob.glob(expanduser(f)) for f in globs))
         verbose(1, "Found %d files in specified paths" % len(infiles))
 
     if not len(infiles):
