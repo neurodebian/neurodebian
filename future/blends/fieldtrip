@@ -1,0 +1,21 @@
+Source: fieldtrip
+Tasks: debian-science/neuroscience-cognitive
+Homepage: http://fieldtrip.fcdonders.nl
+Language: Matlab/Octave
+Version: 0.20101101
+License: GPL-2+
+Author: Donders Institute for Brain, Cognition and Behaviour
+Pkg-Description: toolbox for MEG and EEG analysis
+ The software includes algorithms for simple and advanced analysis of MEG and
+ EEG data, such as time-frequency analysis, source reconstruction using dipoles,
+ distributed sources and beamformers and non-parametric statistical testing. It
+ supports the data formats of all major MEG systems (CTF, Neuromag, BTi) and of
+ the most popular EEG systems, and new formats can be added easily. FieldTrip
+ contains high-level functions that you can use to construct your own analysis
+ protocols in Matlab. Furthermore, it easily allows developers to incorporate
+ low-level algorithms for new EEG/MEG analysis methods.
+Remark: The NIMH distributes a "port" of fieldtrip to Octave (at
+ http://kurage.nimh.nih.gov/meglab/Meg/Software). It needs to be figured out
+ whether this port can be incorporated into the official version, and to what
+ degree it is complete. Packaging fieldtrip is required to complete the
+ packaging of SPM8.
