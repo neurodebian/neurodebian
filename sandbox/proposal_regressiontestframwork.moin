@@ -42,21 +42,48 @@ Debian packages and test proper, continued, integration into the Debian system.
 
 == Use Cases ==
 
-  * Bob is the maintainer for the boot process for Debian. In the etch cycle,
-    he would like to work on getting the boot time down to two seconds from
-    boot manager to GDM screen. He creates an entry for the specification in the
-    wiki, discusses it at debconf, and starts writing out a braindump of it.
+  * Moritz is a member of the security team. Whenever he applies a patch to fix
+    a security issue he wants to make sure that the behavior of the software
+    remains unchanged. However, in general he only has access to test cases that
+    are included in the source package (if any). In the absence of proper tests
+    he can only either assume that is would work (bad by design), or rely on the
+    respective package maintainer to run the appropriate tests (introduces
+    delays). A packaged exhaustive regression test suite would allow Moritz to
+    perform comprehensive testing on his own and release the fixed package as
+    soon as the tests pass.
 
-  * Arnaud is a student participating in Google's Summer of code and wants to
-    make sure that his project fits the short description that has been given
-    on the ideas page. He writes a detailed spec in the wiki. His mentor can
-    then confirm that he's on good track. The specification is published on a
-    mailing list and people's comments help improve it even further.
+  * Michael is a Debian package maintainer that takes care of three packages
+    each providing a data format conversion utility. While all three tools have
+    their merits there is also lots of overlap. For example, given a particular
+    data file they should all generate identical output. With a Debian
+    regression test framework, Michael can write and package cross-package test
+    suites to ensure that this promise is fulfilled at any time. Moreover,
+    Michael can also develop/package "pipeline" tests that ensure proper
+    functioning of multi-stage/package processing pipelines. For example,
+    testing a whole processing stream from a raw data format conversion, feeding
+    into an analysis to into a visualization package.
+
+  * Albert is a scientist using Debian for his research activities. The
+    developers of his favorite software tell him to rather use the GreenPants
+    distribution, because they cannot guarantee that their software works
+    properly on Debian. The reason their giving is that Debian has a different
+    version of a numerical library that hasn't been "tested" by the authors.
+    With packaged regression test suites Albert can run, at any given point,
+    a complete test of his Debian system to ensure that everything is working
+    properly given the exact set of base library installed at this very moment.
+    This includes the test suite of the authors of his favorite software, but
+    also all distribution test suites written by Debian developers (see above).
+
+  * Finally, Lucas likes to run all kinds of tests on all packages in the Debian
+    archive. However, they are mostly concerned with individual packages. A
+    Debian-wide regression test framework would allow Lucas to execute complex
+    tests (suites for individual packages, interoperability tests, or
+    comparative) in an automated fashion, and file bug reports against the
+    respective packages whenever something fails.
 
 == Scope ==
 
-This specification covers feature specifications for Debian. It is not meant as
-a more general specification format.
+This specification is applicable to all Debian packages, and Debian as a whole.
 
 == Design ==
 
