@@ -1,0 +1,15 @@
+Source: moose
+Tasks: debian-science/neuroscience-modeling
+Homepage: http://moose.sourceforge.net
+Language: C++, Python
+License: LGPL
+Pkg-Description: multiscale simulation environment for neuroscience
+ MOOSE is the Multiscale Object-Oriented Simulation Environment. It is the base
+ and numerical core for large, detailed simulations including Computational
+ Neuroscience and Systems Biology.
+ MOOSE spans the range from single molecules to sub-cellular networks, from
+ single cells to neuronal networks, and to still larger systems. It is
+ backwards-compatible with GENESIS, and forward compatible with Python and
+ XML-based model definition standards like SBML and MorphML.
+ MOOSE is coordinating with the GENESIS-3 project towards the goals of
+ developing educational resources for modeling.

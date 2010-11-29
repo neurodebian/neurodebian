@@ -1,0 +1,22 @@
+Source: pcsim
+Tasks: debian-science/neuroscience-modeling
+Homepage: http://www.lsm.tugraz.at/pcsim/
+License: GPL-3+
+Author: Thomas Natschläger
+Language: C, Python
+Version: 0.5.4
+Pkg-Description: simulator of heterogeneous networks of neurons and synapses
+ PCSIM is a tool for simulating heterogeneous networks composed of
+ different model neurons and synapses. This simulator is written in
+ C++ with a primary interface to the programming language Python. It
+ is intended to simulate networks containing up to millions of neurons
+ and on the order of billions of synapses. This is achieved by
+ distributing the network over different nodes of a computing cluster
+ by using MPI.
+WNPP: 605414
+Published-Title: PCSIM: a parallel simulation environment for neural circuits fully integrated with Python
+Published-Authors: Pecevski D, Natschläger T and Schuch K
+Published-In: Front. Neuroinform. 3:11
+Published-Year: 2009
+Published-DOI: 10.3389/neuro.11.011.2009
+Remark: last release is more than 1 year ago, but there is development in newbuild branch
