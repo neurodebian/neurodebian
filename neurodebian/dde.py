@@ -233,7 +233,7 @@ def import_blendstask(cfg, db, url):
                     pub['doi'] = st['Published-DOI']
                     # need at least one URL
                     if not pub.has_key('url'):
-                        pub['url'] = st['Published-DOI']
+                        pub['url'] = "http://dx.doi.org/%s" % st['Published-DOI']
 
                 db[p]['main']['publication'] = pub
 
