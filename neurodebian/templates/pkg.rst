@@ -46,6 +46,10 @@ Citable reference:
   helpful to acquire funding for this project and therefore foster continued
   development in the future.
 {% endif -%}
+{% if db.blends and db.blends.remark %}
+.. note::
+{{ db.blends.remark | indent(width=2, indentfirst=true) }}
+{% endif -%}
 
 {% if db.nitrc or db.main.debian_popcon or db.main.ubuntu_popcon or
       db.main.recommends or db.main.suggests -%}
@@ -154,10 +158,6 @@ Please see the corresponding
 `intent-to-package bug report <http://bugs.debian.org/{{ db.main.debian_itp }}>`_
 for more information about its current status.
 {% endif %}
-{% if db.blends and db.blends.remark %}
-.. note::
-{{ db.blends.remark | indent(width=2, indentfirst=true) }}
-{% endif -%}
 {% endfor %}
 
 
