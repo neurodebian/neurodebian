@@ -220,7 +220,12 @@ def import_blendstask(cfg, db, url):
 
             # Publications
             if st.has_key('Published-Title'):
-                pub = {'title': st['Published-Title']}
+                title = st['Published-Title']
+                if title[-1] == '.':
+                    # trip trailing dot -- added later
+                    pub = {'title': title[:-1]}
+                else:
+                    pub = {'title': title}
                 if st.has_key('Published-Authors'):
                     pub['authors'] = st['Published-Authors']
                 if st.has_key('Published-Year'):
