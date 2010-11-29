@@ -72,8 +72,9 @@ News
  }).render().setUser('NeuroDebian').start();
  </script>
 
-Follow us on twitter_ to subscribe to the NeuroDebian news.
+Follow us on identi.ca_ or twitter_ to subscribe to the NeuroDebian news.
 
+.. _identi.ca: http://identi.ca/neurodebian
 .. _twitter: http://twitter.com/NeuroDebian
 
 .. _repository_howto:
