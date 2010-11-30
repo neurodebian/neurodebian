@@ -1,0 +1,11 @@
+Source: klustakwik
+Tasks: debian-science/neuroscience-electrophysiology
+Homepage: http://klustakwik.sourceforge.net
+Published-Title: Accuracy of Tetrode Spike Separation as Determined by Simultaneous Intracellular and Extracellular Measurements
+Published-Authors: Kenneth D. Harris, Darrell A. Henze, Jozsef Csicsvari, Hajime Hirase, and György Buzsáki
+Published-In: Journal of Neurophysiology, 84, 401-414
+Published-Year: 2000
+Pkg-Description: spike sorting tool
+ A program for unsupervised classification of multidimensional
+ continuous data. It arose from a specific need - automatic sorting of neuronal
+ action potential waveforms.
