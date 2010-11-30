@@ -1,0 +1,22 @@
+Source: PyBCI
+Tasks: debian-science/neuroscience-bci
+Homepage: http://pybci.sourceforge.net/
+Author: Benedikt Zoefel
+Language: Python, C++
+License: MIT
+Version: 0.4
+Vcs-Browser: http://pybci.git.sourceforge.net/git/gitweb-index.cgi
+Vcs-Git: git://pybci.git.sourceforge.net/gitroot/pybci/pybci
+Pkg-Description: Brain Computer Interface module for Brain Vision Recorder
+ This module gives you the possibility to create a Brain Computer
+ Interface (BCI), and herewith to get EEG data online and evaluate the
+ data while you are receiving it.  The module is made for all users of
+ the Brain Vision Recorder because of the therein implemented function
+ of Remote Data Access. It is not possible to use it with another EEG
+ Recorder Software, but this will be a project in the future.
+ .
+ Using the PyBCI module, you are able to get a numpy data array in up
+ to every few ten milliseconds and therewith evaluate the data almost
+ in realtime with other powerful Python packages, for example using
+ PyMVPA.
+Remark: No activity since Sep 2009
