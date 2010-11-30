@@ -134,6 +134,25 @@ This specification is applicable to all Debian packages, and Debian as a whole.
 
 == Design ==
 
+A specification should be built with the following considerations:
+
+  * The person implementing it may not be the person writing it. Specification should be
+  * clear enough for someone to be able to read it and have a clear path
+  * towards implementing it. If it is not straightforward, it needs more detail.
+
+  * Use cases covered in the specification should be practical
+  * situations, not contrived issues.
+
+  * Limitations and issues discovered during the creation of a specification
+  * should be clearly pointed out so that they can be dealt with explicitly.
+
+  * If you don't know enough to be able to competently write a spec, you should
+  * either get help or research the problem further. Avoid spending time making
+  * up a solution: base yourself on your peers' opinions and prior work.
+
+Specific issues related to particular sections are described further below.
+
+
 === Core components ===
 
  * Organization of the framework
@@ -158,6 +177,7 @@ This specification is applicable to all Debian packages, and Debian as a whole.
    'test-<packagename>' to allow easy test discovery and retrival via
    debtest tools.
 
+
 ==== debtest tools ====
 
  * Invocation:
@@ -171,30 +191,15 @@ This specification is applicable to all Debian packages, and Debian as a whole.
      + interface to some dashboard
 
 
-
 ==== Maintainer helpers ====
 
    Helpers:
    - assess resources/performance:
 
 
-A specification should be built with the following considerations:
+=== Supplementary infrastructure ===
 
-  * The person implementing it may not be the person writing it. Specification should be
-  * clear enough for someone to be able to read it and have a clear path
-  * towards implementing it. If it is not straightforward, it needs more detail.
-
-  * Use cases covered in the specification should be practical
-  * situations, not contrived issues.
-
-  * Limitations and issues discovered during the creation of a specification
-  * should be clearly pointed out so that they can be dealt with explicitly.
-
-  * If you don't know enough to be able to competently write a spec, you should
-  * either get help or research the problem further. Avoid spending time making
-  * up a solution: base yourself on your peers' opinions and prior work.
-
-Specific issues related to particular sections are described further below.
+==== Dashboard server ====
 
 === Implementation Plan ===
 
