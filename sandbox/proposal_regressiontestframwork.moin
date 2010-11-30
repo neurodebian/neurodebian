@@ -112,8 +112,9 @@ for the Debian systems.
 
   * Linus is an upstream developer. He just loves the fact that he can tell any
     of his Debian-based users to just 'apt-get install' something and send him
-    the output of a command, whenever they claim that his software doesn't work
-    properly.
+    the output of a debtest command, whenever they claim that his software
+    doesn't work properly. It pleases him to see his carefully developed test
+    suite to be conveniently accessible for users.
 
   * Finally, Lucas has access to a powerful computing facility and
     likes to run all kinds of tests on all packages in the Debian archive.
