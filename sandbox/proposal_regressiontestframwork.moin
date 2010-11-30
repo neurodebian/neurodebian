@@ -7,11 +7,10 @@
 
 == Summary ==
 
-This specification describes DebTest framework consisting of
-conventions and tools that would allow Debian to distribute test
-batteries developed by upstream or Debian developers.  DebTest will
-enable an extensive testing of a deployed Debian system or a
-particular software of interest in a uniform fashion.
+This specification describes DebTest -- a framework with conventions and tools
+that allow Debian to distribute test batteries developed by upstream or Debian
+developers.  DebTest will enable an extensive testing of a deployed Debian
+system or a particular software of interest in a uniform fashion.
 
 == Rationale ==
 
@@ -113,7 +112,7 @@ for the Debian systems.
 
   * Finally, Lucas has access to a powerful computing facility and
     likes to run all kinds of tests on all packages in the Debian archive.
-	A Debian-wide regression test framework would allow Lucas to execute
+    A Debian-wide regression test framework would allow Lucas to execute
     complex test collections (suites for individual packages,
     interoperability tests, or comparative) in an automated fashion,
     and file bug reports against the respective packages whenever a
