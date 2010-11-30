@@ -1,0 +1,12 @@
+Source: Emokit
+Tasks: debian-science/neuroscience-bci,
+	   debian-med/imaging-dev
+Homepage: https://github.com/daeken/Emokit
+Author: Cody Brocious <cody.brocious@gmail.com>
+Language: Python, C
+License: BSD-3
+Version: Unknown
+Vcs-Browser: https://github.com/daeken/Emokit
+Vcs-Git: git://github.com/daeken/Emokit.git
+Pkg-Description: Emotiv EPOC headset Python interface
+ Emotive is an interface to a budget Emotiv EPOC EEG headset.
