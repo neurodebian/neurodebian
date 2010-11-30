@@ -102,13 +102,18 @@ for the Debian systems.
     the stability and function as promised within the stable
     environment.
 
-  * Mark creates a Debian-derived distribution and wants to acquire a
-    large userbase by promising a correctly functioning user-friendly
-    environment. Unfortunately he has no resources to provide adequate
-    testing of all the packages through the lifetime of his
-    derivative. With DebTest he acquires automated assurance that the
-    "cut" of Debian distribution he relies upon is functioning
-    correctly alongside with his additions to the distribution.
+  * Mark wants to create a Debian-derived distribution and needs to
+    modify a number some essential packages in order to achieve the desired
+    improvements. He hopes that these changes do not break other Debian
+    packages, but he is not really sure. A comprehensive test battery for the
+    whole Debian system would offer him a way to verify proper functioning
+    of his modified snapshot of Debian -- without having to manually replicate
+    the testing efforts done by thousands of Debian contributors.
+
+  * Linus is an upstream developer. He just loves the fact that he can tell any
+    of his Debian-based users to just 'apt-get install' something and send him
+    the output of a command, whenever they claim that his software doesn't work
+    properly.
 
   * Finally, Lucas has access to a powerful computing facility and
     likes to run all kinds of tests on all packages in the Debian archive.
@@ -116,13 +121,58 @@ for the Debian systems.
     complex test collections (suites for individual packages,
     interoperability tests, or comparative) in an automated fashion,
     and file bug reports against the respective packages whenever a
-    malfunction is detected.
+    malfunction is detected. Some of Lucas friends are not brave enough to file
+    bugs, but still want to contribute. They simply run (selected) tests
+    on their local machines that in turn report results/logs to a Debian
+    dashboard server, where interested parties can get a weather report of
+    Debian's status.
 
 == Scope ==
 
 This specification is applicable to all Debian packages, and Debian as a whole.
 
 == Design ==
+
+=== Core components ===
+
+ * Organization of the framework
+   - packages might register ways to run basic tests against installed
+     versions
+   register:
+    - executable?
+
+
+==== Packaged tests ====
+
+ * Metainformation:
+   - duration: ....
+   - resources:
+   - suites:
+
+ * Debug symbols: ....
+   - do not strip symbols from test binary
+   - 
+
+
+==== debtest tools ====
+
+ * Invocation:
+   - single package tests
+   - all (with -f to force even if resources are not sufficient)
+   - given specific resources demands, just run
+     the ones matching those
+ * Customization/Output:
+   - plugins
+     + output: some structured output
+     + interface to some dashboard
+
+
+
+==== Maintainer helpers ====
+
+   Helpers:
+   - assess resources/performance:
+
 
 A specification should be built with the following considerations:
 
@@ -159,35 +209,6 @@ as a reference.
 
 The implementation is very dependent on the type of feature to be implemented.
 Refer to the team leader for further suggestions and guidance on this topic.
-
- * Organization of the framework
-   - packages might register ways to run basic tests against installed
-     versions
-   register:
-    - executable?
-
- * Metainformation:
-   - duration: ....
-   - resources:
-   - suites:
-
-   Helpers:
-   - assess resources/performance:
-
- * Invocation:
-   - single package tests
-   - all (with -f to force even if resources are not sufficient)
-   - given specific resources demands, just run
-     the ones matching those
-
- * Customization/Output:
-   - plugins
-     + output: some structured output
-     + interface to some dashboard
-
- * Debug symbols: ....
-   - do not strip symbols from test binary
-   - 
 
  * Implementation language:
    - Python unless someone takes the burden to develop
