@@ -17,23 +17,23 @@ Ideally software packaged for Debian comes with an exhaustive test suite that
 can be used to determine whether this software works as expected on the Debian
 platform. However, especially for complex software, these test suites are often
 resource hungry (CPU time, memory, diskspace, network bandwidth) and cannot be
-ran at package build time by buildds. Consequently, test suites are only
-utilized by the packager on a particular machine, before uploading a new version
-to the archive.
+ran at package build time by buildds. Consequently, test suites are typically
+only utilized by the respective packager on a particular machine, before
+uploading a new version to the archive.
 
 However, Debian is an integrated system and packaged software is typically made
 to rely on functionality provided by other Debian packages (e.g. shared
 libraries) instead of shipping duplicates with different versions in every
 package -- for many good reasons. Unfortunately, there is also a downside to
 this: Debian packages often use 3rd-party tools with different versions than
-those tested by upstream, and moreover, the actual versions might change
-frequently between to subsequent uploads of a package.  Currently a change in a
-dependency that introduces an incompatibility cannot be detected reliably
-(before users have filed a bug report) -- even if upstream provides a testsuite
-that would have caught the breakage. Although there are archive-wide QA efforts
-(e.g. constantly rebuilding all packages) these tests can only detect API/ABI
-breakage or functionality tested during build-time checks -- they are not
-exhaustive for the aforementioned reasons.
+those tested by upstream, and moreover, the actual versions of dependencies
+might change frequently between to subsequent uploads of a package.  Currently
+a change in a dependency that introduces an incompatibility cannot be detected
+reliably (before users have filed a bug report) -- even if upstream provides a
+test suite that would have caught the breakage. Although there are archive-wide
+QA efforts (e.g. constantly rebuilding all packages) these tests can only
+detect API/ABI breakage or functionality tested during build-time checks --
+they are not exhaustive for the aforementioned reasons.
 
 This is a proposal to, first of all, package upstream test suites in a way that
 they can be used to run expensive archive-wide QA tests. However, this is also
@@ -70,7 +70,7 @@ Debian packages and test proper, continued, integration into the Debian system.
     version of a numerical library that hasn't been "tested" by the authors.
     With packaged regression test suites Albert can run, at any given point,
     a complete test of his Debian system to ensure that everything is working
-    properly given the exact set of base library installed at this very moment.
+    properly given the exact set of base libraries installed at this very moment.
     This includes the test suite of the authors of his favorite software, but
     also all distribution test suites written by Debian developers (see above).
 
@@ -104,21 +104,6 @@ A specification should be built with the following considerations:
   * up a solution: base yourself on your peers' opinions and prior work.
 
 Specific issues related to particular sections are described further below.
-
-=== Summary ===
-
-The summary should not attempt to say '''why''' the spec is being defined, just
-'''what''' is being specified.
-
-=== Rationale ===
-
-This should be the description of '''why''' this spec is being defined.
-
-=== Scope and Use Cases ===
-
-While not always required, but in many cases they bring much better clarity to
-the scope and scale of the specification than could be obtained by talking in
-abstract terms.
 
 === Implementation Plan ===
 
