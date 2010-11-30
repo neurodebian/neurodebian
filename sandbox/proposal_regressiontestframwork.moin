@@ -153,6 +153,9 @@ This specification is applicable to all Debian packages, and Debian as a whole.
    - do not strip symbols from test binary
    - 
 
+ * Packages that register tests might provide a virtual package
+   'test-<packagename>' to allow easy test discovery and retrival via
+   debtest tools.
 
 ==== debtest tools ====
 
