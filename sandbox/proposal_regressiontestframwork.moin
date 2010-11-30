@@ -103,7 +103,7 @@ for the Debian systems.
     environment.
 
   * Mark wants to create a Debian-derived distribution and needs to
-    modify a number some essential packages in order to achieve the desired
+    modify a number of essential packages in order to achieve the desired
     improvements. He hopes that these changes do not break other Debian
     packages, but he is not really sure. A comprehensive test battery for the
     whole Debian system would offer him a way to verify proper functioning
