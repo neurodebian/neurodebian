@@ -165,13 +165,12 @@ Specific issues related to particular sections are described further below.
 ==== Packaged tests ====
 
  * Metainformation:
-   - duration: ....
-   - resources:
-   - suites:
+   * duration: ....
+   * resources:
+   * suites:
 
  * Debug symbols: ....
-   - do not strip symbols from test binary
-   - 
+   * do not strip symbols from test binary
 
  * Packages that register tests might provide a virtual package
    'test-<packagename>' to allow easy test discovery and retrival via
@@ -180,15 +179,22 @@ Specific issues related to particular sections are described further below.
 
 ==== debtest tools ====
 
- * Invocation:
-   - single package tests
-   - all (with -f to force even if resources are not sufficient)
-   - given specific resources demands, just run
+ * Invocation::
+   * single package tests
+   * all (with -f to force even if resources are not sufficient)
+   * given specific resources demands, just run
      the ones matching those
- * Customization/Output:
-   - plugins
-     + output: some structured output
-     + interface to some dashboard
+ * Customization/Output::
+   plugins::
+     * job resources requirement adjustments
+	   . manual customization
+       . request from dashboard for the system (or alike)
+	 * executioners
+       . local execution (monitor resources)
+       . submit to cluster/cloud
+     * output/reports
+	   . some structured output
+	   . interfaces to dashboards
 
 
 ==== Maintainer helpers ====
