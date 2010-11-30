@@ -160,6 +160,39 @@ as a reference.
 The implementation is very dependent on the type of feature to be implemented.
 Refer to the team leader for further suggestions and guidance on this topic.
 
+ * Organization of the framework
+   - packages might register ways to run basic tests against installed
+     versions
+   register:
+    - executable?
+
+ * Metainformation:
+   - duration: ....
+   - resources:
+   - suites:
+
+   Helpers:
+   - assess resources/performance:
+
+ * Invocation:
+   - single package tests
+   - all (with -f to force even if resources are not sufficient)
+   - given specific resources demands, just run
+     the ones matching those
+
+ * Customization/Output:
+   - plugins
+     + output: some structured output
+     + interface to some dashboard
+
+ * Debug symbols: ....
+   - do not strip symbols from test binary
+   - 
+
+ * Implementation language:
+   - Python unless someone takes the burden to develop
+     and maintain for upcoming years.
+
 == Outstanding Issues ==
 
 The specification process requires experienced people to drive it. More
