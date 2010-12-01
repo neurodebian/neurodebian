@@ -1,0 +1,19 @@
+Source: rtxi
+Tasks: debian-science/neuroscience-electrophysiology
+Homepage: http://www.rtxi.org
+License: GPL-2+
+Author: Jonathan Bettencourt <jbetten@med.cornell.edu>
+Language: C++
+Version: 1.1.2
+Pkg-Description: real-time data acquisition and control applications in biological research
+ The Real-Time eXperiment Interface (RTXI) is a collaborative
+ open-source software development project aimed at producing a
+ real-time Linux based software system for hard real-time data
+ acquisition and control applications in biological research.
+ .
+ Core functionality of RTXI gets extended via plugins, such as
+ - Data Recorder
+ - Virtual Dendrite
+ - Spike-triggered Average
+ - Phase Response Curve
+ - Signal processing
