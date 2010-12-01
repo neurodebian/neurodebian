@@ -5,6 +5,7 @@ set -eu
 # the Debian release to use as a basis for the live-cd
 nd_basedist="squeeze"
 nd_version="6.0.0"
+nd_arch=i386
 
 deb_mirror="http://debproxy:9999"
 
@@ -21,7 +22,7 @@ fi
 lb config noauto \
   --apt apt \
   --apt-recommends true \
-  --architecture i386 \
+  --architecture ${nd_arch} \
   --archive-areas "main contrib non-free" \
   --binary-images iso-hybrid \
   --binary-indices none \
@@ -30,8 +31,9 @@ lb config noauto \
   --distribution ${nd_basedist} \
   --hostname neurodebian \
   --iso-application "NeuroDebian Live" \
-  --iso-preparer "NeuroDebian v.{nd_version}; http://neuro.debian.net" \
+  --iso-preparer "NeuroDebian ${nd_version}; http://neuro.debian.net" \
   --iso-publisher "NeuroDebian project; http://neuro.debian.net" \
+  --iso-volume "NeuroDebian Live ${nd_version} ($nd_arch)" \
   --keyring-packages "debian-archive-keyring neurodebian-keyring" \
   --memtest memtest86+ \
   --mirror-bootstrap "${deb_mirror}/debian/" \

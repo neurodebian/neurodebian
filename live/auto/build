@@ -1,2 +1,11 @@
 #!/bin/sh
+
 lb build noauto ${@} 2>&1 | tee binary.log
+
+iso=binary-hybrid.iso
+release_name=$(isoinfo -d -i "${iso}" \
+	| sed -n -e '/Volume id:/s,.*: *,,gp' \
+	| sed -e 's, [Ll]ive,-live,g' \
+	| tr 'A-Z ' 'a-z_' \
+	| sed -e 's,[()],,g')
+mv binary-hybrid.iso "${release_name}.iso"
