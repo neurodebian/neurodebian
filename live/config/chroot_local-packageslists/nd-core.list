@@ -1,15 +1,38 @@
-gnome-core mc evince bash-completion ntpdate file-roller gnome-utils
-gnome-themes eog vim
-software-center gdebi gedit-plugins gnome-media synaptic menu less
-
 #include <gnome-core>
+gnome-desktop-environment
+gnome-randr-applet
+
+# Provided by gnome-desktop-environment above
+# gnome-core evince gnome-utils gnome-themes gnome-media
+
+#if MODE debian
+system-config-printer
+#endif
+
+
+mc bash-completion ntpdate file-roller
+software-center gdebi synaptic
+eog
+menu less
+vim gedit-plugins
+
 
 #if ARCHIVE_AREAS non-free
 firmware-linux-nonfree
+firmware-brcm80211
 #endif
+
+# Just to make sure those are present for WiFi
+wireless-tools
 
 # Enable installer
 debian-installer-launcher
 
 # NeuroDebian specifics
 neurodebian-desktop
+
+# So users could test 3D availability
+mesa-utils
+
+# Reasonable x-www-browser
+chromium-browser
