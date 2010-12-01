@@ -4,6 +4,7 @@ Homepage: http://fieldtrip.fcdonders.nl
 Language: Matlab/Octave
 Version: 0.20101101
 License: GPL-2+
+WNPP: 605492
 Author: Donders Institute for Brain, Cognition and Behaviour
 Pkg-Description: toolbox for MEG and EEG analysis
  The software includes algorithms for simple and advanced analysis of MEG and
