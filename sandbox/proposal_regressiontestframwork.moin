@@ -94,6 +94,12 @@ for the Debian systems.
     This includes the test suite of the authors of his favorite software, but
     also all distribution test suites provided by Debian developers (see above).
 
+  * Sylvestre is a Debian developer of a core computational library
+    new version (or a custom build) of which promises performance
+    advantages.  Using DebTest he could not only verify the absence of
+    regressions but also to obtain direct performance comparison
+    against the previous version across a range of applications.
+
   * Joerg maintains a repository of backports of Debian packages to be
     installed in a stable environment.  He wants to assure that
     backporting of the packages has not caused a deviation in their
@@ -182,6 +188,8 @@ Specific issues related to particular sections are described further below.
  * Invocation::
    * single package tests
    * all (with -f to force even if resources are not sufficient)
+   * tests of dependent packages (discovered via rdepends,
+     "rrecommends" and "rsuggests")
    * given specific resources demands, just run
      the ones matching those
  * Customization/Output::
