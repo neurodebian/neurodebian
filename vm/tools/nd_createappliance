@@ -6,7 +6,7 @@ set -eu
 
 # TODO: arguments later on to become cmdline args
 #iso=debian-squeeze-di-beta1-amd64-businesscard.iso
-iso=debian-testing-i386-businesscard.iso
+iso=debian-testing-${ARCH:=amd64}-businesscard.iso
 di_cd=$(readlink -f $PWD/../../../neurodebian-images/$iso)
 di_host=hydra                   # where to look for di preseed
 
@@ -15,6 +15,8 @@ dist_dir=$PWD/dist
 vendor="NeuroDebian"
 vm_version="6.0.1"
 vm_ostype=Debian
+vendor_url="http://neuro.debian.net"
+product_url="${vendor_url}/vm.html"
 
 # Generic definitions
 eula="This virtual appliance contains Free and Open Source Software (FOSS) released under licenses compliant with the Debian Free Software Guidelines (DFSG, see http://www.debian.org/social_contract), such as, GPL, BSD, MIT, etc.  Such software is free to be used or customized for any purpose.
@@ -35,9 +37,11 @@ if file $di_cd | grep -q ' amd64 '; then
     vm_arch_name=" (64bit)"
 fi
 
-vm_disk="$build_dir/nd-${vm_version}_${vm_arch}.vdi"
-vm_name="${vendor} VirtualMachine${vm_arch_name}"
-vm_ovf="${dist_dir}/${vendor}_${vm_version}_${vm_arch}.ovf"
+vm_fprefix="${vendor}_${vm_version}_${vm_arch}" # common prefix for files
+#vm_disk="$build_dir/nd-${vm_version}_${vm_arch}.vdi"
+vm_disk="$build_dir/${vm_fprefix}.vdi"
+vm_name="${vendor} ${vm_version} ${vm_arch_name}"
+vm_ovf="${dist_dir}/${vm_fprefix}.ovf"
 product_name="${vendor} VirtualMachine (${vm_arch})"
 
 _info() {
@@ -58,6 +62,7 @@ rm -f ${vm_disk}
 
 clean_buildvm                   # clean things up
 
+#exit
 # Check that no previous VM was left (can happen if previous failures
 # were "valid")
 if VBoxManage list vms | grep -q "^\"${vm_name}\".*"; then
@@ -70,7 +75,7 @@ mkdir -p $build_dir
 
 _info Create HardDisk for the VM
 VBoxManage createhd --filename $vm_disk \
-    --size 20000 --format VDI
+    --size 20480 --format VDI
   # documented but not implemented:
   #  --comment "Drive for NeuroDebian VM installer"
 
@@ -154,8 +159,8 @@ _info Exporting the appliance
 
 VBoxManage export "${vm_name}" -o "$vm_ovf" \
 	--vsys 0 \
-	--product "${vendor} VirtualMachine (${vm_arch})" \
-	--producturl "http://neuro.debian.net/vm.html" \
+	--product "${product_name}" \
+	--producturl "${product_url}" \
 	--vendor "${vendor}" \
 	--vendorurl "http://neuro.debian.net" \
 	--version "$vm_version" \
