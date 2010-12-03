@@ -1,0 +1,17 @@
+Format: extended
+Tasks: debian-science/neuroscience-modeling
+Suggests: nest
+License: non-FOSS
+Responsible: Yury V. Zaytsev <yury@shurup.com>
+Published-Authors: Gewaltig M-O and Diesmann M
+Published-Title: NEST (Neural Simulation Tool)
+Published-In: Scholarpedia 2(4):1430
+Published-Year: 2007
+Pkg-URL: http://git.zaytsev.net/?p=nest-packaging.git;a=summary
+Pkg-Description: A simulator for networks of spiking neurons
+ NEST is a simulation system for large networks of biologically realistic
+ point-neurons and neurons with a small number of electrical compartments.
+Remark: Mentioned packaging is not providing NEST itself but rather
+ only packaging materials so you could build package yourself.
+Registration: http://www.nest-initiative.org/download/Software:Download.php
+
