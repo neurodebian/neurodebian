@@ -17,15 +17,20 @@ Depends: ${misc:Depends}, devscripts, cowbuilder, python, neurodebian-keyring
 Recommends: virtualbox-ose, virtualbox-ose-fuse, zerofree
 Suggests:
 Description: NeuroDebian development tools
- Pacifier
+ neuro.debian.net sphinx website sources and development tools used by
+ NeuroDebian to provide backports for a range of Debian/Ubuntu
+ releases.
 
 
 Package: neurodebian-desktop
 Architecture: all
-Depends: ${misc:Depends}, ssh-askpass-gnome | ssh-askpass, desktop-base, gnome-icon-theme
+Depends: ${misc:Depends}, ssh-askpass-gnome | ssh-askpass, desktop-base, gnome-icon-theme,
+		 neurodebian-popularity-contest
 Suggests:
 Description: neuroscience research environment
- Pacifier
+ This package contains NeuroDebian artwork (icons, background image)
+ and a NeuroDebian menu featuring most popular neuroscience tools
+ automatically installed upon initial invocation.
 
 
 Package: neurodebian-keyring
