@@ -3,12 +3,10 @@
 popcon_conf=/etc/popularity-contest.conf
 if [ "$1" = "configure" -o "$1" = "abort-upgrade" ]; then
 	# Adjust popularity-contest.conf
-	if [ -e "$popcon_conf" ]; then
+	if [ -e "$popcon_conf" ] && ! grep -q 'SUBMITURLS.*neuro.debian.net' "$popcon_conf"; then
 		echo "Adding NeuroDebian url for Popularity Contest submissions."
-		grep -q 'SUBMITURLS.*neuro.debian.net' "$popcon_conf" || \
-			echo -e 'SUBMITURLS+=" http://neuro.debian.net/cgi-bin/popcon-submit.cgi"' >> "$popcon_conf"
+		echo -e 'SUBMITURLS+=" http://neuro.debian.net/cgi-bin/popcon-submit.cgi"' >> "$popcon_conf"
 	fi
 fi
 
 #DEBHELPER#
-
