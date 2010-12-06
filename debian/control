@@ -35,6 +35,28 @@ Description: GnuPG archive keys of the NeuroDebian archive
  The NeuroDebian project digitally signs its Release files. This package
  contains the archive keys used for that.
 
+Package: neurodebian-popularity-contest
+Architecture: all
+Depends: ${misc:Depends}, popularity-contest
+Description: Helper for NeuroDebian popularity contest submissions
+ This package is a complement to a generic popularity-contest package
+ to enable submission of usage statistics to NeuroDebian in addition
+ to the submissions to the underlying distribution (e.g. Debian or
+ Ubuntu) popcon server.
+ .
+ It has an effect only if you have decided to participate in the
+ Popularity Contest.
+ .
+ Your participation in popcon is important for following reasons:
+  - Popular packages receive more attention from developers, bugs are
+    fixed faster and updates are provided quicker.
+  - Assure that we do not drop support for a previous release of Debian
+    or Ubuntu while are active users.
+  - User statistics could be used by upstream research software
+    developers to acquire funding for continued development.
+ .
+ You can always enable or disable your participation in popcon by
+ running 'dpkg-reconfigure popularity-contest' as root.
 
 Package: neurodebian-guest-additions
 Architecture: all
