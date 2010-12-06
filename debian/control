@@ -25,7 +25,7 @@ Description: NeuroDebian development tools
 Package: neurodebian-desktop
 Architecture: all
 Depends: ${misc:Depends}, ssh-askpass-gnome | ssh-askpass, desktop-base, gnome-icon-theme,
-		 neurodebian-popularity-contest
+         neurodebian-popularity-contest
 Suggests:
 Description: neuroscience research environment
  This package contains NeuroDebian artwork (icons, background image)
