@@ -1,3 +1,9 @@
+neurodebian (0.21) unstable; urgency=low
+
+  * Fixing bashism in popcon post-scripts -- no "+=" operator
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Tue, 07 Dec 2010 08:48:53 -0500
+
 neurodebian (0.20) unstable; urgency=low
 
   * New package neurodebian-popularity-contest, which all backported
