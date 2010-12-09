@@ -214,7 +214,7 @@ def parse_debian_blends(f='debian/blends'):
             if format_clean:
                 format_ = format_[:-6]
         elif kl == 'tasks':
-            tasks = v.split(',')
+            tasks = [x.strip() for x in v.split(',')]
             newtasks = pkg is not None      # either we need to provide tune-ups
                                             # for current package
         elif kl in PKG_FIELDS: # new package
