@@ -35,7 +35,7 @@ Existing Electrophysiology FOSS
 -------------------------------
 
 We have initiated a `Debian Science Electrophysiology task page
-<http://blends.alioth.debian.org/science/tasks/neuroscience-electrophysiology>`_
+<http://blends.alioth.debian.org/science/tasks/electrophysiology>`_
 to collect all relevant FOSS for the field and signal their status in
 respect to inclusion in Debian distribution or presence of not (yet)
 official Debian packages.  The list is constantly growing (and
@@ -90,7 +90,7 @@ Offline data analysis
 
 
 .. _chap_debian_booth_sfn2010: http://neuro.debian.net/booth_sfn2010.html
-.. _blends_neuroscience_electrophysiology: http://blends.alioth.debian.org/science/tasks/neuroscience-electrophysiology
+.. _blends_neuroscience_electrophysiology: http://blends.alioth.debian.org/science/tasks/electrophysiology
 
 .. _annual meeting: http://www.sfn.org/am2010/
 .. _SfN2010: http://www.sfn.org/am2010/

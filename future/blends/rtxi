@@ -1,5 +1,5 @@
 Source: rtxi
-Tasks: debian-science/neuroscience-electrophysiology
+Tasks: debian-science/electrophysiology
 Homepage: http://www.rtxi.org
 License: GPL-2+
 Author: Jonathan Bettencourt <jbetten@med.cornell.edu>

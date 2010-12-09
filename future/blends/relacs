@@ -1,5 +1,5 @@
 Source: relacs
-Tasks: debian-science/neuroscience-electrophysiology
+Tasks: debian-science/electrophysiology
 Homepage: http://www.relacs.net
 License: GPL-2+
 Author: Jan Benda <benda@bio.lmu.de>

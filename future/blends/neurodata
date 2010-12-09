@@ -1,5 +1,5 @@
 Source: neurodata
-Tasks: debian-science/neuroscience-electrophysiology
+Tasks: debian-science/electrophysiology
 
 Homepage: http://sourceforge.net/projects/neurodata/
 Language: C++, Octave/Matlab, Perl
