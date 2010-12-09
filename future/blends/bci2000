@@ -1,0 +1,25 @@
+Source: BCI2000
+Tasks: debian-science/neuroscience-bci
+Homepage: http://bci2000.org
+Author: Gerwin Schalk and Company
+Language: C++
+License: non-free (non-commercial applications)
+Version: 2.1
+Pkg-Description: platform for brain-computer interface systems
+ BCI2000 supports a variety of data acquisition systems, brain
+ signals, and study/feedback paradigms. During operation, BCI2000
+ stores data in a common format (BCI2000 native or GDF), along with
+ all relevant event markers and information about system
+ configuration. BCI2000 also includes several tools for data
+ import/conversion (e.g., a routine to load BCI2000 data files
+ directly into Matlab) and export facilities into ASCII.
+ .
+ BCI2000 also facilitates interactions with other software.  For
+ example, Matlab scripts can be executed in real-time from within
+ BCI2000, or BCI2000 filters can be compiled to execute as stand-alone
+ programs.  Furthermore, a simple network-based interface allows for
+ interactions with external programs written in any programming
+ language.  For example, a robotic arm application that is external to
+ BCI2000 may be controlled in real time based on brain signals
+ processed by BCI2000, or BCI2000 may use and store along with brain
+ signals behavioral-based inputs such as eye-tracker coordinates.
