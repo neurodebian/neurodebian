@@ -1,5 +1,5 @@
 Source: Emokit
-Tasks: debian-science/neuroscience-bci,
+Tasks: debian-science/bci,
 	   debian-med/imaging-dev
 Homepage: https://github.com/daeken/Emokit
 Author: Cody Brocious <cody.brocious@gmail.com>

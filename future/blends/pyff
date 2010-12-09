@@ -1,5 +1,5 @@
 Source: pyff
-Tasks: debian-science/neuroscience-bci
+Tasks: debian-science/bci
 Homepage: http://bbci.de/pyff/
 License: GPL-2+
 Author: Bastian Venthur <venthur at cs tu-berlin de>

@@ -1,5 +1,5 @@
 Source: 
-Tasks: debian-science/neuroscience-bci,
+Tasks: debian-science/bci,
 	   debian-science/neuroscience-modeling
 	   debian-med/imaging
 Homepage: 

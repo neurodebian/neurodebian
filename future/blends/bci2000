@@ -1,5 +1,5 @@
 Source: BCI2000
-Tasks: debian-science/neuroscience-bci
+Tasks: debian-science/bci
 Homepage: http://bci2000.org
 Author: Gerwin Schalk and Company
 Language: C++

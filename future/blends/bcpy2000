@@ -1,5 +1,5 @@
 Source: BCPy2000
-Tasks: debian-science/neuroscience-bci
+Tasks: debian-science/bci
 Homepage: http://bci2000.org/downloads/BCPy2000/BCPy2000.html
 Author: Jeremy Hill, Thomas Schreiner, Christian Puzicha and Jason Farquhar
 Language: Python, C++ 

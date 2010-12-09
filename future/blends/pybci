@@ -1,5 +1,5 @@
 Source: PyBCI
-Tasks: debian-science/neuroscience-bci
+Tasks: debian-science/bci
 Homepage: http://pybci.sourceforge.net/
 Author: Benedikt Zoefel
 Language: Python, C++
