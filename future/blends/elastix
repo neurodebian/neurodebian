@@ -1,0 +1,21 @@
+Source: elastix
+Tasks: debian-med/imaging
+Homepage: http://elastix.isi.uu.nl/index.php
+Author: Stefan Klein, 	Marius Staring
+Language: C++
+License: BSD-3
+Version: 4.4
+Pkg-Description: toolbox for rigid and nonrigid registration of images
+ elastix is open source software, based on the well-known Insight
+ Segmentation and Registration Toolkit (ITK). The software consists of
+ a collection of algorithms that are commonly used to solve (medical)
+ image registration problems. The modular design of elastix allows the
+ user to quickly configure, test, and compare different registration
+ methods for a specific application. A command-line interface enables
+ automated processing of large numbers of data sets, by means of
+ scripting.
+Published-Title: elastix: a toolbox for intensity based medical image registration
+Published-Authors: S. Klein, M. Staring, K. Murphy, M.A. Viergever, J.P.W. Pluim
+Published-In: IEEE Transactions on Medical Imaging, vol. 29, no. 1, pp. 196 - 205
+Published-Year: 2010
+Registration: http://elastix.isi.uu.nl/download.php
