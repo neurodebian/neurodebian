@@ -94,5 +94,5 @@ for a in $arch; do
              --buildresult . \
              --logfile ${dscfile%.dsc}_${a}.build \
              $options \
-             $*
+             "$@"
 done
