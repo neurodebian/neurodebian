@@ -547,6 +547,24 @@ def import_dde(cfg, db):
 
     return db
 
+def assure_unicode(s):
+    """Assure that argument is unicode
+
+    Necessary if strings are not carrying out Pythonish 'u' prefix to
+    signal UTF8 strings, but are in fact UTF8
+    """
+    if type(s) is unicode:
+        return s
+    elif type(s) is str:
+        # attempt regular unicode call and if fails -- just decode it
+        # into utf8
+        try:
+            return unicode(s)
+        except UnicodeDecodeError, e:
+            return s.decode('utf8')
+    else:
+        return assure_unicode(str(s))
+
 
 def convert_longdescr(ld):
     ld = ld.replace('% ', '%% ')
@@ -578,7 +596,8 @@ def generate_pkgpage(pkg, cfg, db, template, addenum_dir):
     page = template.render(
             pkg=pkg,
             title=title,
-            long_description=convert_longdescr(pkgdb['main']['long_description']),
+            long_description=convert_longdescr(
+                assure_unicode(pkgdb['main']['long_description'])),
             cfg=cfg,
             db=pkgdb,
             fulldb=db)
