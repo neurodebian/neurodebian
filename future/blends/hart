@@ -1,0 +1,12 @@
+Source: hart
+Tasks: debian-science/dataacquisition
+Homepage: http://hart.sourceforge.net/
+Author: HART Developers
+Language: C
+License: GPL
+Version: 0.4
+Pkg-Description: toolbox to generate DAQ Scicos-blocks for hardware
+  The HART (Hardware Access in Real-Time) Toolbox can be used to
+  generate Scicos-blocks for hardware that have a C/C++ interface. The
+  blocks can be used under Linux for soft and hard real time tasks
+  (RTAI). Blocks are provided for DAQ (COMEDI)

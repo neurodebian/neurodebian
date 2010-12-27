@@ -63,7 +63,11 @@ TODO:
 - provide verbal summary on existing solutions
 - mention RT-Preempt kernel images being available
 - point to 'cooked' solutions on how to build using RTAI-patches
-
+- existing pre-built RTAI kernel packages:
+  
+  http://www.linuxcnc.org/lucid/
+  carries for hardy and lucid
+  pointed there from http://hart.sourceforge.net/
 
 Online Frameworks
 ~~~~~~~~~~~~~~~~~
