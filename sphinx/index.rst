@@ -213,10 +213,6 @@ communication channels within the NeuroDebian community
 * neurodebian-devel_: Technical mailing list for discussions on
   NeuroDebian development
 
-.. _neurodebian-users: http://lists.alioth.debian.org/mailman/listinfo/neurodebian-users
-.. _neurodebian-devel: http://lists.alioth.debian.org/mailman/listinfo/neurodebian-devel
-.. _neurodebian-upstream: http://lists.alioth.debian.org/mailman/listinfo/neurodebian-upstream
-
 
 Acknowledgements
 ================

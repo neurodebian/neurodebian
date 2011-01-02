@@ -159,3 +159,8 @@
 .. Debian specifics
 .. _ITP: http://www.debian.org/devel/wnpp
 .. _ITPs: http://www.debian.org/devel/wnpp
+
+.. mailing lists
+.. _neurodebian-users: http://lists.alioth.debian.org/mailman/listinfo/neurodebian-users
+.. _neurodebian-devel: http://lists.alioth.debian.org/mailman/listinfo/neurodebian-devel
+.. _neurodebian-upstream: http://lists.alioth.debian.org/mailman/listinfo/neurodebian-upstream
