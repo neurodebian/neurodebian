@@ -53,6 +53,18 @@ Why is NeuroDebian not a Pure Blend?
 .. _Debian Med Imaging: http://debian-med.alioth.debian.org/tasks/imaging
 
 
+I want to help. How do I get involved?
+--------------------------------------
+
+  We always need people to help with maintaining existing package. If you need
+  some additional software packaged and you want to try it on your own, we would
+  be happy to mentor you. We also have a :ref:`list of ongoing and planned
+  projects <projects>`, each listing a number of tasks that need to be done.
+
+  If you found something you are interested in, please email the
+  neurodebian-devel_ mailing list and let us know about it. Thanks!
+
+
 When does a package migrate from NeuroDebian into Debian proper?
 ----------------------------------------------------------------
 
