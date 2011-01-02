@@ -13,7 +13,8 @@ or prospective packages which are not (yet) available from the main Debian_
 archive, as well as backported or simply rebuilt packages also available
 elsewhere. Please see the :ref:`faq` for more information about the goals of
 this project, and :ref:`read what people say about it <testimonials>`.
-If you appreciate this service, please |spread|.
+Take a look at the :ref:`list of our current and planned projects <projects>` if
+you want to get involved. If you appreciate this service, please |spread|.
 
 .. note::
 
@@ -29,6 +30,7 @@ If you appreciate this service, please |spread|.
  <a href="datasets.html"><img border="0" src="_static/datasets.png" title="Dataset package list" /></a>
  <a href="vm.html"><img border="0" src="_static/machine.png" title="Get NeuroDebian for your non-Debian computer" /></a>
  <a href="debian/pool"><img border="0" src="_static/pool.png" title="Go to the package pool (deep and cold, only for experts)" /></a>
+ <a href="projects.html"><img border="0" src="_static/workarea.png" title="Current and planned projects: Get involved!" /></a>
  </p>
 
 .. _Ubuntu: http://www.ubuntu.com
