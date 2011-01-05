@@ -135,7 +135,7 @@ def open(f, *args):
 
 __author__ = 'Yaroslav Halchenko'
 __prog__ = os.path.basename(sys.argv[0])
-__version__ = '0.0.6'
+__version__ = '0.0.7'
 __copyright__ = 'Copyright (c) 2010 Yaroslav Halchenko'
 __license__ = 'GPL'
 
@@ -196,7 +196,9 @@ def parse_debian_blends(f='debian/blends'):
             for k_ in PKG_FIELDS:   # prune older depends
                 pkg.pop(k_, None)
         pkg['Pkg-Name'] = pkg[k] = bname.lower()
-        pkg['Pkg-Source'] = sname.lower()
+        if sname is not None:
+            sname = sname.lower()
+        pkg['Pkg-Source'] = sname
         pkgs.append(pkg)
         pkg.tasks = dict( (t.strip(), deb822.Deb822Dict()) for t in tasks )
         pkg.format = format_
@@ -218,7 +220,7 @@ def parse_debian_blends(f='debian/blends'):
             newtasks = pkg is not None      # either we need to provide tune-ups
                                             # for current package
         elif kl in PKG_FIELDS: # new package
-            if source is None:
+            if source is None and not format_ in ['extended']:
                 source = v
             pkg = new_pkg(pkg, v, source, tasks)
             newtasks = False
@@ -264,7 +266,9 @@ def expand_pkgs(pkgs, topdir='.'):
                          ('Pkg-Description',
                           lambda: debianm.get_description(pkg['Pkg-Name'])),
                          ('Responsible', debianm.get_responsible),
-                         ('Homepage', lambda: debianm.source.get('Homepage', None))):
+                         ('Homepage', lambda: debianm.source.get('Homepage', None)),
+                         ('Pkg-source', lambda: debianm.source.get('Source', None)),
+                         ):
                 if pkg.get(k, None):
                     continue
                 v = m()
@@ -378,11 +382,13 @@ def inject_tasks(tasks, config):
             entries = open(taskfile).readlines()
             known = False
             # We need to search by name and by source
-            # We need to search for every possible type of dependecy
-            regexp = re.compile('^ *(%s) *: *(%s) *$' %
-                                ('|'.join(PKG_FIELDS),
-                                '|'.join((pkg.name, pkg.source))),
-                                re.I)
+            # We need to search for every possible type of dependency
+            regexp_str = '^ *(%s) *: *(%s) *$' \
+                         % ('|'.join(PKG_FIELDS),
+                            '|'.join((pkg.name, pkg.source)).replace('+', '\+'))
+            verbose(4, "Searching for presence in %s using regexp: '%s'"
+                    % (taskfile, regexp_str))
+            regexp = re.compile(regexp_str, re.I)
             for istart, e in enumerate(entries):
                 if regexp.search(e):
                     verbose(4, "Found %s in position %i: %s" %
@@ -497,7 +503,9 @@ class DebianMaterials(object):
             if v.get('Source', None):
                 self._source = v
             else:
-                self._binaries[v['Package']] = v
+                # Since it might be hash-commented out
+                if 'Package' in v:
+                    self._binaries[v['Package']] = v
 
     def get_license(self, package=None, first_only=True):
         """Return a license(s). Parsed out from debian/copyright if it is
