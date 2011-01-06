@@ -32,6 +32,7 @@ source-stamp: build/db.db
 		--db build/db.db \
 		--outdir build/src \
 		--pkgaddenum pkgs \
+		--extracts /home/www/neuro.debian.net/www/debian/extracts \
 		commandisirrelevant
 	rm -f html-stamp
 	touch $@

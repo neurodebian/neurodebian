@@ -583,7 +583,8 @@ def convert_longdescr(ld):
     return ld
 
 
-def generate_pkgpage(pkg, cfg, db, template, addenum_dir):
+def generate_pkgpage(pkg, cfg, db, template, addenum_dir, extracts_dir):
+    print pkg
     # local binding for ease of use
     pkgdb = db[pkg]
     # do nothing if there is not at least the very basic stuff
@@ -593,6 +594,11 @@ def generate_pkgpage(pkg, cfg, db, template, addenum_dir):
     underline = '*' * (len(title) + 2)
     title = '%s\n %s\n%s' % (underline, title, underline)
 
+    ex_dir = None
+    if 'sv' in pkgdb['main']:
+        ex_dir = os.path.join(extracts_dir, pkgdb['main']['sv'].split()[0])
+        if not os.path.exists(ex_dir):
+            ex_dir = None
     page = template.render(
             pkg=pkg,
             title=title,
@@ -600,7 +606,9 @@ def generate_pkgpage(pkg, cfg, db, template, addenum_dir):
                 assure_unicode(pkgdb['main']['long_description'])),
             cfg=cfg,
             db=pkgdb,
-            fulldb=db)
+            fulldb=db,
+            extracts_dir=ex_dir,
+            op=os.path)
     # the following can be replaced by something like
     # {% include "sidebar.html" ignore missing %}
     # in the template whenever jinja 2.2 becomes available
@@ -650,7 +658,7 @@ def write_sourceslist(jinja_env, cfg, outdir):
     sl.close()
 
 
-def write_pkgpages(jinja_env, cfg, db, outdir, addenum_dir):
+def write_pkgpages(jinja_env, cfg, db, outdir, addenum_dir, extracts_dir):
     create_dir(outdir)
     create_dir(os.path.join(outdir, 'pkgs'))
 
@@ -675,7 +683,7 @@ def write_pkgpages(jinja_env, cfg, db, outdir, addenum_dir):
     # and now each individual package page
     pkg_template = jinja_env.get_template('pkg.rst')
     for p in db.keys():
-        page = generate_pkgpage(p, cfg, db, pkg_template, addenum_dir)
+        page = generate_pkgpage(p, cfg, db, pkg_template, addenum_dir, extracts_dir)
         # when no page is available skip this package
         if page is None:
             continue
@@ -708,6 +716,9 @@ def prepOptParser(op):
                   help="None")
 
     op.add_option("--pkgaddenum", action="store", dest="addenum_dir",
+                  type="string", default=None, help="None")
+
+    op.add_option("--extracts", action="store", dest="extracts_dir",
                   type="string", default=None, help="None")
 
 
@@ -773,7 +784,7 @@ def main():
     jinja_env = Environment(loader=PackageLoader('neurodebian', 'templates'))
 
     # generate package pages and TOC and write them to files
-    write_pkgpages(jinja_env, cfg, db, opts.outdir, opts.addenum_dir)
+    write_pkgpages(jinja_env, cfg, db, opts.outdir, opts.addenum_dir, opts.extracts_dir)
 
     write_sourceslist(jinja_env, cfg, opts.outdir)
 
