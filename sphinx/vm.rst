@@ -38,6 +38,17 @@ Downloads
   virtualization support. The should include all recent Apple hardware and most
   64bit Windows systems.*
 
+.. note::
+
+  You can verify that you have downloaded archives correctly using
+  `md5sums -c MD5SUMS
+  <http://neuro.debian.net/debian/vm/MD5SUMS>`_ . You can also verify
+  the authenticity of the `MD5SUMS
+  <http://neuro.debian.net/debian/vm/MD5SUMS>`_ itself using `gpg
+  --verify MD5SUMS.gpg
+  <http://neuro.debian.net/debian/vm/MD5SUMS.gpg>`_ signed with
+  NeuroDebian archive key.
+
 * `VirtualBox download page <http://www.virtualbox.org/wiki/Downloads>`_ (Windows, Linux, Mac,
   Solaris)
 
