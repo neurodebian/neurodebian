@@ -1,3 +1,31 @@
+neurodebian (0.22) unstable; urgency=low
+
+  [ Yaroslav Halchenko ]
+  * blends-inject :
+    * [6833800] 0.0.6: skip files based on regexp and "emptiness"
+    * [69030fb] 0.0.7: NF/BF -- obtain source name from control,
+      skip hash-commented control entries
+  * [bed4bfa] added future/blends skeleton file (skel) and a set of
+    new blends files
+  * tools/*
+    * [66e4c32] fixed passing of optional cmdline args in nd_ tools:
+      must use "$@" instead of plain $*
+    * [fd2c503] tools/nd_build: generate/update summary.build file with
+      OK/FAILED per .build
+  * [0872417] Slight clarifications in the description of
+    -popularity-contest package
+
+  [ Michael Hanke ]
+  * [56d8e62] Enable TODO items in sphinx.
+  * [b98b0b7] Move mailing list links into common list.
+  * [56fde2f] Draft for a project list and two proposals.
+  * [a12bc58] Link new projects list into the FAQ
+  * [82b92d5] Renamed matlab -> matlab-support
+  * [69f6512] Put icon links to extracts from DSCs (README, changelog,
+    copyright)
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Mon, 10 Jan 2011 11:06:54 -0500
+
 neurodebian (0.21) unstable; urgency=low
 
   * Fixing bashism in popcon post-scripts -- no "+=" operator
