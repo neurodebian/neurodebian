@@ -20,6 +20,7 @@ Current projects
    :maxdepth: 1
 
    proj_afni
+   proj_debtest
    proj_matlab
 
 
