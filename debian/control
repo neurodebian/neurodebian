@@ -44,13 +44,10 @@ Package: neurodebian-popularity-contest
 Architecture: all
 Depends: ${misc:Depends}, popularity-contest
 Description: Helper for NeuroDebian popularity contest submissions
- This package is a complement to a generic popularity-contest package
- to enable submission of usage statistics to NeuroDebian in addition
- to the submissions to the underlying distribution (e.g. Debian or
- Ubuntu) popcon server.
- .
- It has an effect only if you have decided to participate in the
- Popularity Contest.
+ This package is a complement to the generic popularity-contest
+ package to enable anonymous submission of usage statistics to
+ NeuroDebian in addition to the popcon submissions to the underlying
+ distribution (e.g. Debian or Ubuntu) popcon server.
  .
  Your participation in popcon is important for following reasons:
   - Popular packages receive more attention from developers, bugs are
@@ -60,6 +57,8 @@ Description: Helper for NeuroDebian popularity contest submissions
   - User statistics could be used by upstream research software
     developers to acquire funding for continued development.
  .
+ It has an effect only if you have decided to participate in the
+ Popularity Contest of your distribution, i.e. Debian or Ubuntu.
  You can always enable or disable your participation in popcon by
  running 'dpkg-reconfigure popularity-contest' as root.
 
