@@ -13,5 +13,6 @@ Pkg-Description: A simulator for networks of spiking neurons
  NEST is a simulation system for large networks of biologically realistic
  point-neurons and neurons with a small number of electrical compartments.
 Remark: Mentioned packaging is not providing NEST itself but rather only packaging materials so you could build package yourself.
+Homepage: http://www.nest-initiative.org/index.php/Software:About_NEST
 Registration: http://www.nest-initiative.org/download/Software:Download.php
 
