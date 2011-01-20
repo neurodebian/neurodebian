@@ -135,6 +135,8 @@ def add_pkgfromtaskfile(db, urls):
         for stanza in deb822.Packages.iter_paragraphs(fh):
             if stanza.has_key('Depends'):
                 pkg = stanza['Depends']
+            elif stanza.has_key('Recommends'):
+                pkg = stanza['Recommends']
             elif stanza.has_key('Suggests'):
                 pkg = stanza['Suggests']
             else:
@@ -178,6 +180,8 @@ def import_blendstask(cfg, db, url):
 
         if st.has_key('Depends'):
             pkg = st['Depends']
+        elif st.has_key('Recommends'):
+            pkg = st['Recommends']
         elif st.has_key('Suggests'):
             pkg = st['Suggests']
         else:
