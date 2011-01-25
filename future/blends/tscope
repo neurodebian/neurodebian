@@ -1,0 +1,16 @@
+Source: tscope
+Tasks: debian-science/psychophysics
+Homepage: http://users.ugent.be/~masteven/tscope
+Author: Michael Stevens <Michael.Stevens@UGent.be>
+Language: C
+License: GPL
+Version: 1.0.176
+Pkg-Description: C/C++ experiment programming library for cognitive scientists
+ Tscope is a C/C++ experiment programming library for cognitive
+ scientists. It provides functions for graphics,
+ sound, timing, randomization and response registration.
+Published-Title: Tscope: A C library for programming cognitive experiments on the MS Windows platform
+Published-Authors:  Stevens, M., Lammertyn, J., Verbruggen, F., & Vandierendonk, A.
+Published-In: Behavior Research Methods, 38, 280-286.
+Published-Year: 2006
+Remark: Primarily targeting Windows platform, provides some functionality on Linux
