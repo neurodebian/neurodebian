@@ -8,7 +8,7 @@ NeuroDebian Projects
 ********************
 
 This page lists current and planned NeuroDebian projects. Each description
-lists a couple of tasks the remain to be done to accomplish the goal of a
+lists a couple of tasks remaining to reach the goal of a
 particular project. If you want to contribute, take a look at them and email the
 neurodebian-devel_ mailing list with your intention to help.
 
@@ -22,7 +22,6 @@ Current projects
    proj_afni
    proj_debtest
    proj_matlab
-
 
 ..
  Planned projects

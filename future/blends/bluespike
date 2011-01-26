@@ -1,0 +1,22 @@
+Source: bluespike
+Tasks: debian-science/electrophysiology
+Homepage: https://github.com/globalvariable/BlueSpike
+Author: Mehmet Kocaturk <kocaturk@gmail.com>
+Language: C
+License: GPL-2+
+Version: 0.3
+WNPP: 611211
+Pkg-Description: Data Acquisition and Neural Spike Processing Software
+ BlueSpike is an electrophysiology tool to perform real-time data 
+ acquisition, visualization and sorting of neuronal spikes. It 
+ continuously acquires data every 1 ms and realizes digital signal 
+ processing on retrieved data. Contains four components:
+ .
+ - KernelSpike: a kernel module.
+ - SpikeViewever
+ - SpikeSorter
+ - Channel Reviewer
+Published-Title: Real-time experimental interface for electrophysiology experiments
+Published-Authors: Mehmet Kocaturk <kocaturk@gmail.com> et al.
+Published-In: SfN2010, Poster 818.22/OOO43
+Published-Year: 2010
