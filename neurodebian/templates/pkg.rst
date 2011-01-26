@@ -63,6 +63,7 @@ Citable reference:
 {% if db.blends and db.blends.remark %}
 .. note::
 {{ db.blends.remark | indent(width=2, indentfirst=true) }}
+
 {% endif -%}
 
 {% if db.nitrc or db.main.debian_popcon or db.main.ubuntu_popcon or
