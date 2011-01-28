@@ -36,8 +36,8 @@ neurodebian-devel_, neurodebian-upstream_ mailing lists).
 .. todo:: Electrophysiology coverage
 
    * Help to ensure adequate status in Debian of the necessary core components,
-     e.g. Comedi_, RTAI_ (see |DBTS|: 606122_, 608091_, 609633_):
-   * Consider packaging prebuilt kernels with |RTAI| patches/support to make
+     e.g. Comedi, RTAI (see DBTS: 606122, 608091, 609633):
+   * Consider packaging prebuilt kernels with RTAI patches/support to make
      available from NeuroDebian repository
 
 .. _606122: http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=606122
