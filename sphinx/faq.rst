@@ -130,8 +130,8 @@ I have heard that some packages are non-free. Will you charge me for them?
 --------------------------------------------------------------------------
 
   No. The term :term:`non-free` refers to an archive section. NeuroDebian uses
-  exactly the same :ref:`archive sections as Debian proper
-  <http://www.debian.org/doc/debian-policy/ch-archive.html>`.  The *non-free*
+  exactly the same `archive sections as Debian proper
+  <http://www.debian.org/doc/debian-policy/ch-archive.html>`_.  The *non-free*
   section contains packages that have certain restrictions regarding **your
   freedom** to employ them for a particular purpose. In contrast, for packages
   in the *main* section your are completely free to do whatever and in whatever
