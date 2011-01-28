@@ -138,12 +138,17 @@ are available too.
 {% if loop.last %}
 .. seealso::
 
+{% if "neuro.debian.net" in distpkg.maintainer %}
+  - Maintainer: {{ distpkg.maintainer }}
+  - Bug reports: neurodebian-users_
+{% else %}
   - Original Maintainer: {{ distpkg.maintainer }}
 
     (if there is any chance that some problem is specific to the package
-    distributed through the NeuroDebian repository, please contact
-    team@neuro.debian.net instead of the original
+    distributed through the NeuroDebian repository, please email
+    neurodebian-users_ instead of the original
     maintainer)
+{% endif %}
 {% endif %}
 {% else %}
 *There are no packages in the NeuroDebian repository.*
@@ -195,3 +200,5 @@ Ubuntu
 {% else %}
 *There are no official Ubuntu packages available.*
 {% endfor %}
+
+.. include:: ../link_names.txt
