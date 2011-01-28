@@ -179,3 +179,7 @@
 .. _neuroscience-electrophysiology: http://blends.alioth.debian.org/science/tasks/neuroscience-electrophysiology
 .. _task_bci: http://blends.alioth.debian.org/science/tasks/bci
 .. _task_dataacquisition: http://blends.alioth.debian.org/science/tasks/dataacquisition
+.. _task_psychophysics: http://blends.alioth.debian.org/science/tasks/psychophysics>
+
+.. more to sort out
+.. _NeuralEnsemble: http://www.neuralensemble.org

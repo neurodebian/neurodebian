@@ -193,8 +193,6 @@ were not packaged by our team, but similar Debian teams.  Therefore we want to
 express particular gratitude to the `Debian Med`_ and `Debian Science`_ teams
 for all their work.
 
-.. _FOSS: http://en.wikipedia.org/wiki/Free_and_open_source_software
-
 .. _support:
 
 Contacts
@@ -265,18 +263,20 @@ efficient, more open, and more fun
    vm
    coffeeart
    photoalbum
+   projects
    testimonials
 
 .. probably should be purged altogether
 .. toctree::
    :hidden:
 
+   booth_sfn2010
    datasets
    livecd
-   vm_welcome
    quotes-nihr01
    quotes-nitrc
-
+   sources_lists
+   vm_welcome
 
 .. include:: link_names.txt
 .. include:: substitutions.txt
