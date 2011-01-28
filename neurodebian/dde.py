@@ -23,6 +23,7 @@ import urllib
 import codecs
 import subprocess
 import time
+import re
 # templating
 from jinja2 import Environment, PackageLoader
 
@@ -584,6 +585,8 @@ def convert_longdescr(ld):
     ld = ld.replace('#NEWLINEMARKER# ', '\n\n')
     # cleanup any leftover (e.g. trailing markers)
     ld = ld.replace('#NEWLINEMARKER#', '')
+    # safe-guard ReST active symbols
+    ld = re.sub(r'([\'`*])', r'\\\1', ld)
     return ld
 
 
