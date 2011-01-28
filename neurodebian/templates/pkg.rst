@@ -59,6 +59,7 @@ Citable reference:
   `register <{{ db.main.registration }}>`_. Available user statistics might be 
   helpful to acquire funding for this project and therefore foster continued
   development in the future.
+
 {% endif -%}
 {% if db.blends and db.blends.remark %}
 .. note::
@@ -132,7 +133,7 @@ are available too.
   :ref:`front page <repository_howto>`.
 {% endif %}
 {{ dist[0] }} [{{ distpkg.component}}]:
-  `{{distpkg.version}} <../../debian/{{ distpkg.poolurl }}>`_ [{{ ', '.join(distpkg.architecture) }}]
+  `{{distpkg.version}} <../../debian/{{ distpkg.poolurl }}>`__ [{{ ', '.join(distpkg.architecture) }}]
 
 {% if loop.last %}
 .. seealso::
@@ -156,7 +157,7 @@ Debian
 {% if loop.first %}
 {% endif %}
 {{ dist[0] }} [{{ distpkg.component}}]:
-  `{{distpkg.version}} <http://packages.debian.org/search?suite={{ distpkg.release}}&keywords={{ pkg }}>`_ [{{ ', '.join(distpkg.architecture) }}]
+  `{{distpkg.version}} <http://packages.debian.org/search?suite={{ distpkg.release}}&keywords={{ pkg }}>`__ [{{ ', '.join(distpkg.architecture) }}]
 
 {% if loop.last %}
 .. seealso::
@@ -183,7 +184,7 @@ Ubuntu
 {% if loop.first %}
 {% endif %}
 {{ dist[0] }} [{{ distpkg.component }}]:
-  `{{distpkg.version}} <http://packages.ubuntu.com/search?suite={{ distpkg.release }}&keywords={{ pkg }}>`_ [{{ ', '.join(distpkg.architecture) }}]
+  `{{distpkg.version}} <http://packages.ubuntu.com/search?suite={{ distpkg.release }}&keywords={{ pkg }}>`__ [{{ ', '.join(distpkg.architecture) }}]
 
 {% if loop.last %}
 .. seealso::
