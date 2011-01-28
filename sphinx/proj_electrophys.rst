@@ -1,7 +1,7 @@
 .. -*- mode: rst; fill-column: 78 -*-
 .. ex: set sts=4 ts=4 sw=4 et tw=79:
 
-.. _project_electrophys:
+.. _project_electrophysiology:
 
 *****************
 Electrophysiology
@@ -56,6 +56,7 @@ References
 * `Debian-Science Electrophysiology task page <http://blends.alioth.debian.org/science/tasks/electrophysiology>`_.
 * `Debian-Science Data acquisition task page <http://blends.alioth.debian.org/science/tasks/dataacquisition>`_.
 * `Debian-Science Brain-Computer Interface task page <http://blends.alioth.debian.org/science/tasks/bci>`_.
+* _NeuralEnsemble
 
 
 .. include:: link_names.txt
