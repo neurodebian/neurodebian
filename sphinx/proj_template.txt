@@ -21,3 +21,5 @@ References
 ----------
 
 <references>
+
+.. include:: link_names.txt
