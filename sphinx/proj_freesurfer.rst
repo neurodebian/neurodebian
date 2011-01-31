@@ -10,11 +10,11 @@ Packaging FreeSurfer
 Status
 ------
 
-We have been in contact with upstream developers and awaiting on the
-resolution of legal aspects which would allow redistribution of FreeSurfer
-under reasonable |FOSS| license terms.
+We are in contact with Freesurfer developers and are awaiting the resolution of
+legal issues that currently prevent legal redistribution of FreeSurfer.
 
-This project will continue as soon as licensing issue gets resolved.
+This project will continue as soon as the Freesurfer source code is available
+under |FOSS| license terms.
 
 ..
  .. todo:: 
