@@ -7,7 +7,11 @@
 NeuroDebian Projects
 ********************
 
-This page lists current and planned NeuroDebian projects. Each description
+We share a lot of common interests with other teams in Debian.  So we are
+actively collaborating with `Debian Med`_ and `Debian Science`_ projects to
+improve Debian_ infrastructure and software coverage to fulfil our goals.
+
+This page provides an overview of current and planned NeuroDebian_ projects. Each description
 lists a couple of tasks remaining to reach the goal of a
 particular project. If you want to contribute, take a look at them and email the
 neurodebian-devel_ mailing list with your intention to help.
@@ -65,12 +69,12 @@ Promotion
   - `Debian / NeuroDebian tri-fold
     <http://neuro.debian.net/_files/brochure_debian-neurodebian.pdf>`_
 
-* Conferences presence.  To promote NeuroDebian project we consider
-  (conditioned on funding and agreements with organizers) to present
-  NeuroDebian at
+* Conferences presence.  To promote NeuroDebian_ project we consider
+  (conditioned on funding and agreements with organizers) presenting
+  NeuroDebian_ at
 
- - HBM 2011
- - `Invite us <mailto:team@neuro.debian.net>`_
+  - `HBM 2011 <http://www.humanbrainmapping.org/HBM2011>`_
+  - `Invite us <mailto:team@neuro.debian.net>`_
 
 * `Inviting contributions and new members to join the NeuroDebian project
   <https://openhatch.org/+projects/NeuroDebian>`_
