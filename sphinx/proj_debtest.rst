@@ -62,7 +62,7 @@ that can be used to develop test suites.
 
 .. todo:: DebTest
 
-  * Finish the SPEC.
+  * Finish the SPEC_.
   * Initiate discussion.
   * Identify and package relevant neuroscience datasets that can be used to
     develop multi-software regression/pipeline tests.
@@ -74,3 +74,6 @@ References
 ----------
 
 * :ref:`full_dataset_list`
+* `DebTest discussions on debian-devel <http://lists.debian.org/debian-devel/2011/01/msg00704.html>`_
+
+.. include:: link_names.txt
