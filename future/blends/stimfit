@@ -1,5 +1,5 @@
 Source: stimfit
-Tasks: debian-science/neuroscience-electrophysiology
+Tasks: debian-science/electrophysiology
 Homepage: http://code.google.com/p/stimfit/
 Version: 0.10.0
 Author: Christoph Schmidt-Hieber <c.schmidt-hieber@wibr.ucl.ac.uk>

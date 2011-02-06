@@ -1,0 +1,13 @@
+Source: openvibe
+Tasks: debian-science/bci,
+	   debian-med/physics
+Homepage: http://openvibe.inria.fr
+License: LGPL
+WNPP: 580247
+Pkg-Description: platform for the design, test and use of BCI
+ OpenViBE enables to design, test and use Brain-Computer Interfaces (BCI).
+ OpenViBE is a software for real-time neurosciences (that is, for
+ real-time processing of brain signals). It can be used to acquire, filter,
+ process, classify and visualize brain signals in real time.
+Author: OpenViBE Team
+Language: C++

@@ -9,39 +9,40 @@
 
 This specification describes DebTest -- a framework with conventions and tools
 that allow Debian to distribute test batteries developed by upstream or Debian
-developers.  DebTest will enable an extensive testing of a deployed Debian
-system or a particular software of interest in a uniform fashion.
+developers.  DebTest aims to enable developers and users to perform extensive
+testing of a deployed Debian system or a particular software of interest in a
+uniform fashion.
 
 == Rationale ==
 
 Ideally software packaged for Debian comes with an exhaustive test suite that
-can be used to determine whether this software works as expected on the Debian
-platform. However, especially for complex software, these test suites are often
-resource hungry (CPU time, memory, diskspace, network bandwidth) and cannot be
-ran at package build time by buildds. Consequently, test suites are typically
-utilized manually only by the respective packager on a particular machine, before
-uploading a new version to the archive.
+can be used to determine whether this particular software works as expected on
+the Debian platform. However, especially for complex software, these test
+suites are often resource hungry (CPU time, memory, disk space, network
+bandwidth) and cannot be ran at package build time by buildds. Consequently,
+test suites are typically utilized manually and only by the respective packager
+on a particular machine, before uploading a new version to the archive.
 
-However, Debian is an integrated system and packaged software typically
-relies on functionality provided by other Debian packages (e.g. shared
-libraries) instead of shipping duplicates with different versions in every
-package -- for many good reasons. Unfortunately, there is also a downside to
-this: Debian packages often use versions of 3rd-party tools different from
-those tested by upstream, and moreover, the actual versions of dependencies
-might change frequently between subsequent uploads of a dependent package.  Currently
+However, Debian is an integrated system and packaged software typically relies
+on functionality provided by other Debian packages (e.g. shared libraries)
+instead of shipping duplicates with different versions in every package -- for
+many good reasons. Unfortunately, there is also a downside to this: Debian
+packages often use versions of 3rd-party tools that are different from those
+tested by upstream, and moreover, the actual versions of dependencies might
+change frequently between subsequent uploads of a dependent package.  Currently
 a change in a dependency that introduces an incompatibility cannot be detected
-reliably even if upstream provides a test suite that would have caught
-the breakage.  Therefore integration testing heavily relies on users to detect
-incorrect functioning and file bug reports. Although there are archive-wide
-QA efforts (e.g. constantly rebuilding all packages) these tests can only
-detect API/ABI breakage or functionality tested during build-time checks --
-they are not exhaustive for the aforementioned reasons.
+reliably even if upstream provides a test suite that would have caught the
+breakage.  Therefore integration testing heavily relies on users to detect
+incorrect functioning and file bug reports. Although there are archive-wide QA
+efforts (e.g. constantly rebuilding all packages) these tests can only detect
+API/ABI breakage or functionality tested during build-time checks -- they are
+not exhaustive for the aforementioned reasons.
 
 This is a proposal to, first of all, package upstream test suites in a way that
 they can be used to run expensive archive-wide QA tests. However, this is also
-a proposal to establish means to test interactions between software from multiple
-Debian packages to provide more thorough continued integration and regression testing
-for the Debian systems.
+a proposal to establish means to test interactions between software from
+multiple Debian packages to provide more thorough continued integration and
+regression testing for the Debian systems.
 
 == Use Cases ==
 
@@ -94,8 +95,8 @@ for the Debian systems.
     This includes the test suite of the authors of his favorite software, but
     also all distribution test suites provided by Debian developers (see above).
 
-  * Sylvestre is a Debian developer of a core computational library
-    new version (or a custom build) of which promises performance
+  * Sylvestre maintains a core computational library in Debian.
+    A new version (or other modification) of this library promises performance
     advantages.  Using DebTest he could not only verify the absence of
     regressions but also to obtain direct performance comparison
     against the previous version across a range of applications.

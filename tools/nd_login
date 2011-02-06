@@ -50,4 +50,4 @@ fi
 cowbuilder --login \
              --basepath ${cowbuilderroot}/cow/${family}-${dist}-${arch}.cow \
              $options \
-             $*
+             "$@"

@@ -13,7 +13,8 @@ or prospective packages which are not (yet) available from the main Debian_
 archive, as well as backported or simply rebuilt packages also available
 elsewhere. Please see the :ref:`faq` for more information about the goals of
 this project, and :ref:`read what people say about it <testimonials>`.
-If you appreciate this service, please |spread|.
+Take a look at the :ref:`list of our current and planned projects <projects>` if
+you want to get involved. If you appreciate this service, please |spread|.
 
 .. note::
 
@@ -29,6 +30,7 @@ If you appreciate this service, please |spread|.
  <a href="datasets.html"><img border="0" src="_static/datasets.png" title="Dataset package list" /></a>
  <a href="vm.html"><img border="0" src="_static/machine.png" title="Get NeuroDebian for your non-Debian computer" /></a>
  <a href="debian/pool"><img border="0" src="_static/pool.png" title="Go to the package pool (deep and cold, only for experts)" /></a>
+ <a href="projects.html"><img border="0" src="_static/workarea.png" title="Current and planned projects: Get involved!" /></a>
  </p>
 
 .. _Ubuntu: http://www.ubuntu.com
@@ -191,8 +193,6 @@ were not packaged by our team, but similar Debian teams.  Therefore we want to
 express particular gratitude to the `Debian Med`_ and `Debian Science`_ teams
 for all their work.
 
-.. _FOSS: http://en.wikipedia.org/wiki/Free_and_open_source_software
-
 .. _support:
 
 Contacts
@@ -212,10 +212,6 @@ communication channels within the NeuroDebian community
 
 * neurodebian-devel_: Technical mailing list for discussions on
   NeuroDebian development
-
-.. _neurodebian-users: http://lists.alioth.debian.org/mailman/listinfo/neurodebian-users
-.. _neurodebian-devel: http://lists.alioth.debian.org/mailman/listinfo/neurodebian-devel
-.. _neurodebian-upstream: http://lists.alioth.debian.org/mailman/listinfo/neurodebian-upstream
 
 
 Acknowledgements
@@ -267,18 +263,20 @@ efficient, more open, and more fun
    vm
    coffeeart
    photoalbum
+   projects
    testimonials
 
 .. probably should be purged altogether
 .. toctree::
    :hidden:
 
+   booth_sfn2010
    datasets
    livecd
-   vm_welcome
    quotes-nihr01
    quotes-nitrc
-
+   sources_lists
+   vm_welcome
 
 .. include:: link_names.txt
 .. include:: substitutions.txt

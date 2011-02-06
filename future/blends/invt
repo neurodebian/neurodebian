@@ -1,0 +1,25 @@
+Source: iNVT
+Tasks: debian-science/neuroscience-modeling
+Homepage: http://ilab.usc.edu/toolkit/
+Author: iLab at USC
+Language: C++ + Perl, Tcl, Matlab
+License: GPL-2+
+Version: 0.0.0.14308 (SVN revision)
+Pkg-Description: iLab Neuromorphic Vision C++ Toolkit
+ The iLab Neuromorphic Vision C++ Toolkit (iNVT, pronounced
+ ``invent'') is a comprehensive set of C++ classes for the development
+ of neuromorphic models of vision. Neuromorphic models are
+ computational neuroscience algorithms whose architecture and function
+ is closely inspired from biological brains. The iLab Neuromorphic
+ Vision C++ Toolkit comprises not only base classes for images,
+ neurons, and brain areas, but also fully-developed models such as our
+ model of bottom-up visual attention and of Bayesian surprise.
+ .
+ Features at a glance:
+  * Low-level neural network simulation classes.
+  * High-level neuromorphic classes.
+  * Neuromorphic models of visual attention.
+  * Hardware interfacing
+  * Parallel processing classes for the simulation of complex models.
+  * Neuromorphic modeling environment.
+Registration: http://ilab.usc.edu/cgi-bin/yabb/YaBB.pl?board=;action=register

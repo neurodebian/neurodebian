@@ -15,6 +15,10 @@ set -u
 # hostname: neurodebian
 # domain: ''
 
+# Needs to be assured since it got reset to debian
+hostname neurodebian
+sed -i -e 's/^127\.0\.1\.1.*/127.0.1.1\tneurodebian/g' /etc/hosts
+
 # all file in one partition
 
 # root: not there
@@ -95,3 +99,7 @@ sed -i -e "s/10.0.0.1:9999/$(dpkg --print-architecture)-geomirror.debian.net/" \
     -e "s/^deb-src/#deb-src/" /etc/apt/sources.list
 
 etckeeper commit "Initial VM setup done"
+
+# Create a link to automatically mounted Shared folder
+# Created by the Welcome Wizard
+#sudo -u brain ln -s /mnt/host /home/brain/

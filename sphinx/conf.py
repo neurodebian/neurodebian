@@ -43,7 +43,11 @@ def artworkdir():
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
 #extensions = []
 sys.path.append(os.path.abspath('.'))
-extensions = ['sphinxext.quote']
+extensions = ['sphinxext.quote',
+              'sphinx.ext.todo']
+
+# show todo items
+todo_include_todos = True
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']

@@ -17,15 +17,20 @@ Depends: ${misc:Depends}, devscripts, cowbuilder, python, neurodebian-keyring
 Recommends: virtualbox-ose, virtualbox-ose-fuse, zerofree
 Suggests:
 Description: NeuroDebian development tools
- Pacifier
+ neuro.debian.net sphinx website sources and development tools used by
+ NeuroDebian to provide backports for a range of Debian/Ubuntu
+ releases.
 
 
 Package: neurodebian-desktop
 Architecture: all
-Depends: ${misc:Depends}, ssh-askpass-gnome | ssh-askpass, desktop-base, gnome-icon-theme
+Depends: ${misc:Depends}, ssh-askpass-gnome | ssh-askpass, desktop-base, gnome-icon-theme,
+         neurodebian-popularity-contest
 Suggests:
 Description: neuroscience research environment
- Pacifier
+ This package contains NeuroDebian artwork (icons, background image)
+ and a NeuroDebian menu featuring most popular neuroscience tools
+ automatically installed upon initial invocation.
 
 
 Package: neurodebian-keyring
@@ -35,6 +40,27 @@ Description: GnuPG archive keys of the NeuroDebian archive
  The NeuroDebian project digitally signs its Release files. This package
  contains the archive keys used for that.
 
+Package: neurodebian-popularity-contest
+Architecture: all
+Depends: ${misc:Depends}, popularity-contest
+Description: Helper for NeuroDebian popularity contest submissions
+ This package is a complement to the generic popularity-contest
+ package to enable anonymous submission of usage statistics to
+ NeuroDebian in addition to the popcon submissions to the underlying
+ distribution (e.g. Debian or Ubuntu) popcon server.
+ .
+ Your participation in popcon is important for following reasons:
+  - Popular packages receive more attention from developers, bugs are
+    fixed faster and updates are provided quicker.
+  - Assure that we do not drop support for a previous release of Debian
+    or Ubuntu while are active users.
+  - User statistics could be used by upstream research software
+    developers to acquire funding for continued development.
+ .
+ It has an effect only if you have decided to participate in the
+ Popularity Contest of your distribution, i.e. Debian or Ubuntu.
+ You can always enable or disable your participation in popcon by
+ running 'dpkg-reconfigure popularity-contest' as root.
 
 Package: neurodebian-guest-additions
 Architecture: all

@@ -1,0 +1,21 @@
+Source: eeglab
+Tasks: debian-science/neuroscience-cognitive,
+	   debian-med/imaging
+Homepage: http://sccn.ucsd.edu/eeglab
+Responsible: NeuroDebian Team <team@neuro.debian.net>
+Language: C, Matlab/Octave
+Version: 9
+Author: Arnaud Delorme <arno@ucsd.edu>, Scott Makeig <smakeig@ucsd.edu>
+License: GPL-2+
+WNPP: 605739
+Published-Title: EEGLAB: an open source toolbox for analysis of single-trial EEG dynamics
+Published-Authors: Delorme A and Makeig S
+Published-In: Journal of Neuroscience Methods 134:9-21
+Published-Year: 2004
+Pkg-Description: toolbox for processing and visualization of electrophysiological data
+ EEGLAB is an interactive Matlab toolbox for processing continuous and
+ event-related EEG, MEG and other electrophysiological data
+ incorporating independent component analysis (ICA), time/frequency
+ analysis, artifact rejection, event-related statistics, and several
+ useful modes of visualization of the averaged and single-trial data.
+Registration: http://sccn.ucsd.edu/eeglab/install.html

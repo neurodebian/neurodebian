@@ -89,10 +89,15 @@ for a in $arch; do
     options="$opts --debbuildopts -B"
   fi
   echo "Building for $family $dist $a ..."
+  buildfile="${dscfile%.dsc}_${a}.build"
   cowbuilder --build $dscfile \
              --basepath ${cowbuilderroot}/cow/${family}-${dist}-${a}.cow \
              --buildresult . \
-             --logfile ${dscfile%.dsc}_${a}.build \
+             --logfile "${buildfile}" \
              $options \
-             $*
+             "$@" && status='OK' || status='FAILED'
+  # Update the summary of builds
+  touch summary.build                               # Assure existence
+  sed -i -e '/${buildfile}/d' summary.build         # Prune previous entry
+  echo -e "${buildfile}\t$status" >> summary.build  # Add current one
 done

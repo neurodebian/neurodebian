@@ -178,6 +178,6 @@ project`_.
 .. _tri-fold flyers: http://neuro.debian.net/_files/brochure_debian-neurodebian.pdf
 .. _sources are available: http://git.debian.org/?p=pkg-exppsy/neurodebian.git;a=tree;hb=HEAD;f=artwork/brochure
 .. _Debian wiki: http://wiki.debian.org/Cloud
-.. _new Debian Science Blend task: http://blends.alioth.debian.org/science/tasks/neuroscience-electrophysiology
+.. _new Debian Science Blend task: http://blends.alioth.debian.org/science/tasks/electrophysiology
 .. _download the poster: http://neuro.debian.net/_files/NeuroDebian_SfN2010.png
 .. _other donations to the Debian project: http://www.debian.org/donations

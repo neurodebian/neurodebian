@@ -47,6 +47,9 @@ files::
  all=~/deb/gits/pkg-exppsy/neurodebian/future/blends/*
      ~/deb/gits/*/debian/blends
      ~/deb/gits/pkg-exppsy/*/debian/blends
+ # Python regular expression on which files to skip
+ # Default is listed below
+ #skip=.*[~#]$
 
 
 Format of debian/blends
@@ -132,7 +135,7 @@ def open(f, *args):
 
 __author__ = 'Yaroslav Halchenko'
 __prog__ = os.path.basename(sys.argv[0])
-__version__ = '0.0.5'
+__version__ = '0.0.7'
 __copyright__ = 'Copyright (c) 2010 Yaroslav Halchenko'
 __license__ = 'GPL'
 
@@ -193,7 +196,9 @@ def parse_debian_blends(f='debian/blends'):
             for k_ in PKG_FIELDS:   # prune older depends
                 pkg.pop(k_, None)
         pkg['Pkg-Name'] = pkg[k] = bname.lower()
-        pkg['Pkg-Source'] = sname.lower()
+        if sname is not None:
+            sname = sname.lower()
+        pkg['Pkg-Source'] = sname
         pkgs.append(pkg)
         pkg.tasks = dict( (t.strip(), deb822.Deb822Dict()) for t in tasks )
         pkg.format = format_
@@ -211,11 +216,11 @@ def parse_debian_blends(f='debian/blends'):
             if format_clean:
                 format_ = format_[:-6]
         elif kl == 'tasks':
-            tasks = v.split(',')
+            tasks = [x.strip() for x in v.split(',')]
             newtasks = pkg is not None      # either we need to provide tune-ups
                                             # for current package
         elif kl in PKG_FIELDS: # new package
-            if source is None:
+            if source is None and not format_ in ['extended']:
                 source = v
             pkg = new_pkg(pkg, v, source, tasks)
             newtasks = False
@@ -261,7 +266,9 @@ def expand_pkgs(pkgs, topdir='.'):
                          ('Pkg-Description',
                           lambda: debianm.get_description(pkg['Pkg-Name'])),
                          ('Responsible', debianm.get_responsible),
-                         ('Homepage', lambda: debianm.source.get('Homepage', None))):
+                         ('Homepage', lambda: debianm.source.get('Homepage', None)),
+                         ('Pkg-source', lambda: debianm.source.get('Source', None)),
+                         ):
                 if pkg.get(k, None):
                     continue
                 v = m()
@@ -375,11 +382,13 @@ def inject_tasks(tasks, config):
             entries = open(taskfile).readlines()
             known = False
             # We need to search by name and by source
-            # We need to search for every possible type of dependecy
-            regexp = re.compile('^ *(%s) *: *(%s) *$' %
-                                ('|'.join(PKG_FIELDS),
-                                '|'.join((pkg.name, pkg.source))),
-                                re.I)
+            # We need to search for every possible type of dependency
+            regexp_str = '^ *(%s) *: *(%s) *$' \
+                         % ('|'.join(PKG_FIELDS),
+                            '|'.join((pkg.name, pkg.source)).replace('+', '\+'))
+            verbose(4, "Searching for presence in %s using regexp: '%s'"
+                    % (taskfile, regexp_str))
+            regexp = re.compile(regexp_str, re.I)
             for istart, e in enumerate(entries):
                 if regexp.search(e):
                     verbose(4, "Found %s in position %i: %s" %
@@ -494,7 +503,9 @@ class DebianMaterials(object):
             if v.get('Source', None):
                 self._source = v
             else:
-                self._binaries[v['Package']] = v
+                # Since it might be hash-commented out
+                if 'Package' in v:
+                    self._binaries[v['Package']] = v
 
     def get_license(self, package=None, first_only=True):
         """Return a license(s). Parsed out from debian/copyright if it is
@@ -600,6 +611,20 @@ def print_wnpp(pkgs, config, wnpp_type="ITP"):
         print "Subject: %s\n\n%s" % (subject, body)
 
 
+def is_template(p):
+    """Helper to return true if pkg definition looks like a template
+       and should not be processed
+    """
+    # We might want to skip some which define a skeleton
+    # (no source/homepage/etc although fields are there)
+    for f in ['vcs-browser', 'pkg-url', 'pkg-description',
+              'published-Title', 'pkg-name', 'homepage',
+              'author']:
+        if f in p and p[f] != "":
+            return False
+    return True
+
+
 def main():
 
     p = OptionParser(
@@ -646,7 +671,7 @@ def main():
 	     options.wnpp_mode = 'ITP'
 
     # Load configuration
-    config = ConfigParser()
+    config = ConfigParser(defaults={'skip': '.*[~#]$'})
     config.read(options.config_file)
 
     if options.all_mode:
@@ -659,12 +684,16 @@ def main():
     if not len(infiles):
         infiles = [join(options.topdir or './', 'debian/blends')]     #  default one
 
+    skip_re = re.compile(config.get('paths', 'skip', None))
+
     for blends_file in infiles:
         verbose(1, "Processing %s" % blends_file)
         if not exists(blends_file):
             error("Cannot find a file %s.  Either provide a file or specify top "
                   "debian directory with -d." % blends_file, 1)
-
+        if skip_re.match(blends_file):
+            verbose(2, "W: Skipped since matches paths.skip regexp")
+            continue
         pkgs = parse_debian_blends(blends_file)
         if options.topdir is None:
             if dirname(blends_file).endswith('/debian'):
@@ -675,6 +704,11 @@ def main():
             topdir = options.topdir
 
 		expand_pkgs(pkgs, topdir=topdir)
+
+        pkgs = [p for p in pkgs if not is_template(p)]
+        if not len(pkgs):
+            verbose(2, "W: Skipping since seems to contain templates only")
+            continue
         if options.wnpp_mode is not None:
 		    print_wnpp(pkgs, config, options.wnpp_mode)
         else:

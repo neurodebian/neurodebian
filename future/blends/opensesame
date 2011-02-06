@@ -1,0 +1,19 @@
+Source: opensesame
+Tasks: debian-science/psychophysics
+Homepage: http://www.cogsci.nl/software/opensesame
+Author:  Sebastiaan Mathôt <s.mathot@psy.vu.nl>
+License: GPL-3
+Pkg-Description: graphical experiment builder for the social sciences
+ OpenSesame is a graphical experiment builder. OpenSesame provides an
+ easy to use, point-and-click interface for creating psychological
+ experiments. In addition to a powerful sketchpad for creating visual
+ stimuli, OpenSesame features a sampler and synthesizer for sound
+ playback. For more complex tasks, OpenSesame supports Python
+ scripting using the built-in editor with syntax highlighting.
+Pkg-URL: http://files.cogsci.nl/software/opensesame/
+Published-Title: OpenSesame (Version 0.22) [Computer software and manual]
+Published-Authors: Mathôt, S., & Theeuwes, J.
+Published-In: http://www.cogsci.nl/software/opensesame
+Published-Year: Retrieved December 18, 2010
+Responsible: Sebastiaan Mathôt <s.mathot@psy.vu.nl>
+WNPP: 611640

@@ -1,0 +1,19 @@
+#!/bin/bash -e
+
+popcon_conf=/etc/popularity-contest.conf
+if [ "$1" = "configure" -o "$1" = "abort-upgrade" ]; then
+	# Adjust popularity-contest.conf
+	if [ -e "$popcon_conf" ]; then
+		# Fix dashism missing += operator
+		if grep -q 'SUBMITURLS+="' "$popcon_conf"; then
+			echo "Adjusting addition of new entries in $popcon_conf for dash."
+			sed -i -e 's,SUBMITURLS+=",SUBMITURLS="$SUBMITURLS,g' "$popcon_conf"
+		fi
+		if ! grep -q 'SUBMITURLS.*neuro.debian.net' "$popcon_conf"; then
+			echo "Adding NeuroDebian url for Popularity Contest submissions."
+			echo -e 'SUBMITURLS="$SUBMITURLS http://neuro.debian.net/cgi-bin/popcon-submit.cgi"' >> "$popcon_conf"
+		fi
+	fi
+fi
+
+#DEBHELPER#

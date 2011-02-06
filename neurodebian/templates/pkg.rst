@@ -12,6 +12,20 @@ External links:
 
   <p><a href="{{ db.main.homepage }}">
   <img border="0" src="../_static/go-home.png" title="Go to {{ pkg }} homepage" /></a>
+  {%- if extracts_dir -%}
+    {%- if op.exists(op.join(extracts_dir, 'copyright')) -%}
+      <a href="../debian/extracts/{{ db.main.sv.split()[0] }}/copyright">
+      <img border="0" src="../_static/legal.png" title="Copyright information for this package" /></a>
+    {%- endif -%}
+    {%- if op.exists(op.join(extracts_dir, 'changelog')) -%}
+      <a href="../debian/extracts/{{ db.main.sv.split()[0] }}/changelog">
+      <img border="0" src="../_static/debian-changelog.png" title="Debian changelog of this software" /></a>
+    {%- endif -%}
+    {%- if op.exists(op.join(extracts_dir, 'README.Debian')) -%}
+      <a href="../debian/extracts/{{ db.main.sv.split()[0] }}/README.Debian">
+      <img border="0" src="../_static/info.png" title="Information on Debian-specific aspects of this software" /></a>
+    {%- endif -%}
+  {%- endif -%}
   {%- if cfg.has_option("nitrc ids", pkg) -%}
   <a href="http://www.nitrc.org/project?group_id={{ cfg.get("nitrc ids", pkg) }}">
   <img border="0" src="../_static/nitrc_listed.png" title="See the entry on nitrc.org" /></a>
@@ -45,10 +59,12 @@ Citable reference:
   `register <{{ db.main.registration }}>`_. Available user statistics might be 
   helpful to acquire funding for this project and therefore foster continued
   development in the future.
+
 {% endif -%}
 {% if db.blends and db.blends.remark %}
 .. note::
 {{ db.blends.remark | indent(width=2, indentfirst=true) }}
+
 {% endif -%}
 
 {% if db.nitrc or db.main.debian_popcon or db.main.ubuntu_popcon or
@@ -117,17 +133,22 @@ are available too.
   :ref:`front page <repository_howto>`.
 {% endif %}
 {{ dist[0] }} [{{ distpkg.component}}]:
-  `{{distpkg.version}} <../../debian/{{ distpkg.poolurl }}>`_ [{{ ', '.join(distpkg.architecture) }}]
+  `{{distpkg.version}} <../../debian/{{ distpkg.poolurl }}>`__ [{{ ', '.join(distpkg.architecture) }}]
 
 {% if loop.last %}
 .. seealso::
 
+{% if "neuro.debian.net" in distpkg.maintainer %}
+  - Maintainer: {{ distpkg.maintainer }}
+  - Bug reports: neurodebian-users_
+{% else %}
   - Original Maintainer: {{ distpkg.maintainer }}
 
     (if there is any chance that some problem is specific to the package
-    distributed through the NeuroDebian repository, please contact
-    team@neuro.debian.net instead of the original
+    distributed through the NeuroDebian repository, please email
+    neurodebian-users_ instead of the original
     maintainer)
+{% endif %}
 {% endif %}
 {% else %}
 *There are no packages in the NeuroDebian repository.*
@@ -141,7 +162,7 @@ Debian
 {% if loop.first %}
 {% endif %}
 {{ dist[0] }} [{{ distpkg.component}}]:
-  `{{distpkg.version}} <http://packages.debian.org/search?suite={{ distpkg.release}}&keywords={{ pkg }}>`_ [{{ ', '.join(distpkg.architecture) }}]
+  `{{distpkg.version}} <http://packages.debian.org/search?suite={{ distpkg.release}}&keywords={{ pkg }}>`__ [{{ ', '.join(distpkg.architecture) }}]
 
 {% if loop.last %}
 .. seealso::
@@ -168,7 +189,7 @@ Ubuntu
 {% if loop.first %}
 {% endif %}
 {{ dist[0] }} [{{ distpkg.component }}]:
-  `{{distpkg.version}} <http://packages.ubuntu.com/search?suite={{ distpkg.release }}&keywords={{ pkg }}>`_ [{{ ', '.join(distpkg.architecture) }}]
+  `{{distpkg.version}} <http://packages.ubuntu.com/search?suite={{ distpkg.release }}&keywords={{ pkg }}>`__ [{{ ', '.join(distpkg.architecture) }}]
 
 {% if loop.last %}
 .. seealso::
@@ -179,3 +200,5 @@ Ubuntu
 {% else %}
 *There are no official Ubuntu packages available.*
 {% endfor %}
+
+.. include:: ../link_names.txt

@@ -23,6 +23,7 @@ import urllib
 import codecs
 import subprocess
 import time
+import re
 # templating
 from jinja2 import Environment, PackageLoader
 
@@ -135,6 +136,8 @@ def add_pkgfromtaskfile(db, urls):
         for stanza in deb822.Packages.iter_paragraphs(fh):
             if stanza.has_key('Depends'):
                 pkg = stanza['Depends']
+            elif stanza.has_key('Recommends'):
+                pkg = stanza['Recommends']
             elif stanza.has_key('Suggests'):
                 pkg = stanza['Suggests']
             else:
@@ -178,6 +181,8 @@ def import_blendstask(cfg, db, url):
 
         if st.has_key('Depends'):
             pkg = st['Depends']
+        elif st.has_key('Recommends'):
+            pkg = st['Recommends']
         elif st.has_key('Suggests'):
             pkg = st['Suggests']
         else:
@@ -547,6 +552,24 @@ def import_dde(cfg, db):
 
     return db
 
+def assure_unicode(s):
+    """Assure that argument is unicode
+
+    Necessary if strings are not carrying out Pythonish 'u' prefix to
+    signal UTF8 strings, but are in fact UTF8
+    """
+    if type(s) is unicode:
+        return s
+    elif type(s) is str:
+        # attempt regular unicode call and if fails -- just decode it
+        # into utf8
+        try:
+            return unicode(s)
+        except UnicodeDecodeError, e:
+            return s.decode('utf8')
+    else:
+        return assure_unicode(str(s))
+
 
 def convert_longdescr(ld):
     ld = ld.replace('% ', '%% ')
@@ -562,10 +585,13 @@ def convert_longdescr(ld):
     ld = ld.replace('#NEWLINEMARKER# ', '\n\n')
     # cleanup any leftover (e.g. trailing markers)
     ld = ld.replace('#NEWLINEMARKER#', '')
+    # safe-guard ReST active symbols
+    ld = re.sub(r'([\'`*])', r'\\\1', ld)
     return ld
 
 
-def generate_pkgpage(pkg, cfg, db, template, addenum_dir):
+def generate_pkgpage(pkg, cfg, db, template, addenum_dir, extracts_dir):
+    print pkg
     # local binding for ease of use
     pkgdb = db[pkg]
     # do nothing if there is not at least the very basic stuff
@@ -575,13 +601,21 @@ def generate_pkgpage(pkg, cfg, db, template, addenum_dir):
     underline = '*' * (len(title) + 2)
     title = '%s\n %s\n%s' % (underline, title, underline)
 
+    ex_dir = None
+    if 'sv' in pkgdb['main']:
+        ex_dir = os.path.join(extracts_dir, pkgdb['main']['sv'].split()[0])
+        if not os.path.exists(ex_dir):
+            ex_dir = None
     page = template.render(
             pkg=pkg,
             title=title,
-            long_description=convert_longdescr(pkgdb['main']['long_description']),
+            long_description=convert_longdescr(
+                assure_unicode(pkgdb['main']['long_description'])),
             cfg=cfg,
             db=pkgdb,
-            fulldb=db)
+            fulldb=db,
+            extracts_dir=ex_dir,
+            op=os.path)
     # the following can be replaced by something like
     # {% include "sidebar.html" ignore missing %}
     # in the template whenever jinja 2.2 becomes available
@@ -631,7 +665,7 @@ def write_sourceslist(jinja_env, cfg, outdir):
     sl.close()
 
 
-def write_pkgpages(jinja_env, cfg, db, outdir, addenum_dir):
+def write_pkgpages(jinja_env, cfg, db, outdir, addenum_dir, extracts_dir):
     create_dir(outdir)
     create_dir(os.path.join(outdir, 'pkgs'))
 
@@ -656,7 +690,7 @@ def write_pkgpages(jinja_env, cfg, db, outdir, addenum_dir):
     # and now each individual package page
     pkg_template = jinja_env.get_template('pkg.rst')
     for p in db.keys():
-        page = generate_pkgpage(p, cfg, db, pkg_template, addenum_dir)
+        page = generate_pkgpage(p, cfg, db, pkg_template, addenum_dir, extracts_dir)
         # when no page is available skip this package
         if page is None:
             continue
@@ -689,6 +723,9 @@ def prepOptParser(op):
                   help="None")
 
     op.add_option("--pkgaddenum", action="store", dest="addenum_dir",
+                  type="string", default=None, help="None")
+
+    op.add_option("--extracts", action="store", dest="extracts_dir",
                   type="string", default=None, help="None")
 
 
@@ -754,7 +791,7 @@ def main():
     jinja_env = Environment(loader=PackageLoader('neurodebian', 'templates'))
 
     # generate package pages and TOC and write them to files
-    write_pkgpages(jinja_env, cfg, db, opts.outdir, opts.addenum_dir)
+    write_pkgpages(jinja_env, cfg, db, opts.outdir, opts.addenum_dir, opts.extracts_dir)
 
     write_sourceslist(jinja_env, cfg, opts.outdir)
 

@@ -1,5 +1,14 @@
-.. Generated on Fri Oct 22 13:05:28 EDT 2010
+.. Generated on Tue Feb  1 12:05:45 EST 2011
 .. Do not edit directly
+
+Quotes from NIH R01 grant proposal letters of recommendation
+============================================================
+
+.. note::
+   Only the quotes which were approved for redistribution by the original
+   authors are included.
+
+
 
 .. quote::
    :author: Prof. Thomas J. Grabowski, Jr.

@@ -1,0 +1,16 @@
+Source: visionegg
+Tasks: debian-science/psychophysics,
+       debian-med/psychology
+Homepage: http://www.visionegg.org
+License: LGPL
+WNPP: 365856
+Pkg-Description: Python library for 2D/3D visual stimulus generation
+ The Vision Egg is a programming library that uses standard, inexpensive
+ computer graphics cards to produce visual stimuli for vision research
+ experiments.
+Published-Title: Vision Egg: An Open-Source Library for Realtime Visual Stimulus Generation
+Published-Authors: Andrew Straw
+Published-In: Frontiers in Neuroinformatics
+Published-Year: 2008
+Published-URL: http://frontiersin.org/neuroinformatics/paper/10.3389/neuro.11/004.2008/
+Published-DOI: 10.3389/neuro.11.004.2008

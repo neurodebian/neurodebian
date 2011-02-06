@@ -1,5 +1,5 @@
 Source: spike
-Tasks: debian-science/neuroscience-electrophysiology
+Tasks: debian-science/electrophysiology
 
 Language: C++, Octave/Matlab
 License: BSD-3 and Academic Free License

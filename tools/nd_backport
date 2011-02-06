@@ -27,13 +27,21 @@ EOT
 exit 1
 fi
 
+upstream_name=${dscfile%%_*}
+
+# To overcome bash desire to claim empty array unbound under 'set -u'
+# above, lets just specify empty rule for sed when nothing to be done
+mod_control=""
+if [ "$upstream_name" != "neurodebian" ]; then
+	# Avoid injection into neurodebian package itself
+	mod_control='s/\(^Depends:\) */\1 neurodebian-popularity-contest, /g'
+fi
+
 # assemble an appropriate backport-dsc call
 backport-dsc \
 	--maint-name "NeuroDebian Maintainers" \
 	--maint-email "team@neuro.debian.net" \
 	--target-distribution "$release" \
 	--version-suffix "$(nd_querycfg "release backport ids" "$release")" \
+	--mod-control "$mod_control" \
 	"$dscfile"
-
-# not adding the auto-dep for now
-#	--mod-control 's/^Depends:.*$/&, neurodebian-trailer/' \

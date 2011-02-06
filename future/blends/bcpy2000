@@ -1,0 +1,26 @@
+Source: BCPy2000
+Tasks: debian-science/bci
+Homepage: http://bci2000.org/downloads/BCPy2000/BCPy2000.html
+Author: Jeremy Hill, Thomas Schreiner, Christian Puzicha and Jason Farquhar
+Language: Python, C++ 
+License: LGPL-3+ and GPL-3+ and non-free (BCI2000)
+Version: 20100708
+Pkg-Description: platform for brain-computer interface systems
+ BCPy2000 provides a platform for rapid, flexible development of
+ experimental brain-computer interface systems. It is based on, and
+ hosted by, the BCI2000 project. From the developer's point of view,
+ the implementation is carried out in Python, taking advantage of
+ various high-level packages: VisionEgg for stimulus presentation,
+ NumPy and SciPy for signal processing and classification, and IPython
+ for interactive debugging.
+ .
+ Being a BCI2000 system, it is modular, consisting of an Application
+ module (the stimulus presentation part), a Signal Processing module
+ (the machine-learning part), and a Signal Source module (the toy data
+ generation part). You can choose to use Python to implement one, two,
+ or all three of these modules, and use other pre-existing BCI2000
+ modules for the remainder of the system (for example, for the Signal
+ Source, you can choose from BCI2000's comprehensive range of EEG
+ acquisition modules). The modules communicate over TCP/IP, so they
+ can run on different machines (and possibly different operating
+ systems) if necessary.
