@@ -1,3 +1,46 @@
+neurodebian (0.23) unstable; urgency=low
+
+  [ Michael Hanke ]
+  * [de48f60] Condor to Blends
+  * Website:
+    - [56fde2f] Introduced NeuroDebian projects page
+    - [c87e701] Debtest
+    - [7a0bd3b] Put 'I want to help' button from openhatch.
+    - [2da9ec1] Reword Freesurfer project description.
+    - [530fe7f] Mention squeeze as stable and wheezy as the new testing.
+
+  [ Yaroslav Halchenko ]
+  * Additional blends tasks entries: NEST, pyxnat, tscope, bluespike,
+    opensesame, etc.
+  * [860e3d1] tools/nd_build: generate/update summary.build file with
+    OK/FAILED per .build
+  * Website:
+    - Extending projects list
+    - [0a4391e] Consider also "Recommends" to select packages from task
+      pages
+    - [578734b] minor fixes in FAQ
+    - [7b9afd5] BF: pkg.rst -- explicit empty line after a note before
+      section title
+    - [173adb7] tids and bits into proj_matlab
+    - [0825acb] more links and abbreviations
+    - [26c856d] enh: annonymous links to mirrors
+    - [6ad3e3c] BF: Disabling openhatche's copy of jquery, even though
+      loosing cool tipsy functionality for now
+    - [bd82cfe] adding section titles to the master quote pages
+  * VM:
+    - [746861f] vm-6.0.2 version - use released squeeze
+    - [a000afb] fixing up redirection of an echo cmd
+    - [dd6accf] nd-vmsetupwizard - handle installed (but disabled) by
+      default popcon
+    - [5090ef2] assure persistent hostname 'neurodebian' - write it into
+      /etc/hostname
+  * Live-CD:
+    - [84193f6] add more of gnome and utils into a live cd
+    - [defaab3] give sensible values for the volume label and use it for
+      .iso filename
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Mon, 07 Feb 2011 14:44:30 -0500
+
 neurodebian (0.22) unstable; urgency=low
 
   [ Yaroslav Halchenko ]
