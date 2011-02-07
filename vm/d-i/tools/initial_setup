@@ -76,6 +76,16 @@ apt-get install --no-install-recommends -y \
  gnome-themes eog vim \
  software-center gdebi gedit-plugins gnome-media synaptic menu less libxp6
 
+# Clean-up installed development files which got pulled in for some reason
+apt-get purge -y libc6-dev
+dpkg -l | grep '^ii.*linux-headers' | xargs -r apt-get purge -y
+
+# Gnome optional pulled by gnome-core:
+apt-get purge -y gnome-core evolution-common evolution libevolution
+
+# And utter cleanup
+apt-get autoremove
+
 # intermediate cleanup to prevent virtual harddrive from fragmenting too much
 find /var/cache/apt/archives/ -name '*.deb' -delete
 
