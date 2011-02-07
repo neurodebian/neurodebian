@@ -76,7 +76,8 @@ apt-get install --no-install-recommends -y \
  gnome-themes eog vim \
  software-center gdebi gedit-plugins gnome-media synaptic menu less libxp6
 
-# Clean-up installed development files which got pulled in for some reason
+# Clean-up installed development files which got pulled in for
+# VM guest additions (to build kernel modules via DKMS)
 apt-get purge -y libc6-dev
 dpkg -l | grep '^ii.*linux-headers' | xargs -r apt-get purge -y
 
