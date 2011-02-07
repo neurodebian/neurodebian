@@ -34,15 +34,22 @@ fi
 # initialize apt
 update-manager -c
 
-if [ ! -e /etc/popularity-contest.conf ]; then
+popconf=/etc/popularity-contest.conf
+if [ ! -e "$popconf" ] || grep -q -e '^PARTICIPATE.*no' "$popconf" ;
+then
 	zenity --info $icon_opt --title="NeuroDebian Setup Wizard" \
 		--text="You will now be given the choice to participate in the package survey. If enabled, a list of installed packages will be anonymously sent to Debian (http://popcon.debian.org). Your participation is important for two reasons:
 
 1) Popular packages receive more attention from developers, bugs are fixed faster and updates are provided quicker.
 2) User statistics can help research software developers to acquire funding for continued development."
 
+	if [ -e "$popconf" ] ; then
+	# just reconfigure so user could get a chance to participate
+		sudo DEBIAN_FRONTEND=gnome dpkg-reconfigure popularity-contest	
+	else
 	# install, but do not fail if something goes wrong
-	nd-autoinstall popularity-contest /etc/popularity-contest.conf || true
+		nd-autoinstall popularity-contest /etc/popularity-contest.conf || true
+	fi
 fi
 
 # install custom filter for synaptics
