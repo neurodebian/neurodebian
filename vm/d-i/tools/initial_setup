@@ -73,7 +73,7 @@ apt-get install -y dkms neurodebian-guest-additions
 
 apt-get install --no-install-recommends -y \
  gnome-core mc evince bash-completion ntpdate file-roller gnome-utils \
- gnome-themes eog vim \
+ gnome-themes eog vim reportbug \
  software-center gdebi gedit-plugins gnome-media synaptic menu less libxp6
 
 # Clean-up installed development files which got pulled in for
