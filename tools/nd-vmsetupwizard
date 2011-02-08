@@ -88,6 +88,19 @@ EOT
 	sudo bash -c "mkdir -p $cfg_dir && touch $success_flag"
 fi
 
+if ! grep -q '/etc/fsl/fsl.sh' $HOME/.profile && \
+   zenity --question $icon_opt --title="FSL/AFNI Environments" \
+--text="Packages, such as AFNI and FSL, provide large collections of command line tools which are available from their private directories, and require custom environment variables to be set for proper functioning.  Usually you need to source /etc/fsl/fsl.sh or /etc/afni/afni.sh in your environments.
+
+Do you want to get those files, if available, sourced automatically for your environment?
+"; then
+   for t in fsl afni; do
+	cf="/etc/$t/$t.sh"
+	grep -q -e "$cf" $HOME/.profile || \
+		echo "[ -e \"$cf\" ] && . $cf" >> $HOME/.profile
+   done
+fi
+
 # create symlink to shared folder into homedir
 [ ! -e $HOME/host ] && ln -s /mnt/host $HOME/host
 
