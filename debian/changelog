@@ -1,3 +1,20 @@
+neurodebian (0.24) unstable; urgency=low
+
+  * Tuning up VM setup
+  * [ed8864b] lightweighting of VM image (removing -dev packages)
+  * [847fc01] fixing up additional cleaning
+  * [1cbcacd] install reportbug
+  * [c4e51a7] nd-vmsetupwizard - invoke update-software-center to
+    overcome #612437
+  * [6aaefb0] nd-autoinstall - add --trivial-only to prevent actual
+    installation while getting sizes msg
+  * [0b16d50] nd-vmsetupwizard - add Octave (including qtoctave) as
+    the choice for installing
+  * [0ea682f] nd-vmsetupwizard - add option for sourcing of FSL/AFNI
+    .sh files in user"s .profile
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Tue, 08 Feb 2011 12:41:28 -0500
+
 neurodebian (0.23) unstable; urgency=low
 
   [ Michael Hanke ]
