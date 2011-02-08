@@ -24,15 +24,15 @@ just a few mouse clicks (e.g. AFNI_, Caret_, FSL_, PyMVPA_).
 Downloads
 ---------
 
-* `NeuroDebian 6.0.1 image (32bit)
-  <http://neuro.debian.net/debian/vm/neurodebian_6.0.1_i386.zip>`_ [~560MB]
+* `NeuroDebian 6.0.2 image (32bit)
+  <http://neuro.debian.net/debian/vm/neurodebian_6.0.2_i386.zip>`_ [~545MB]
 
   *This image should work on virtually all systems that are supported by*
   VirtualBox_ *and can be used whenever the, otherwise preferable, 64bit image
   is not compatible with a host machine.*
 
-* `NeuroDebian 6.0.1 image (64bit)
-  <http://neuro.debian.net/debian/vm/neurodebian_6.0.1_amd64.zip>`_ [~570MB]
+* `NeuroDebian 6.0.2 image (64bit)
+  <http://neuro.debian.net/debian/vm/neurodebian_6.0.2_amd64.zip>`_ [~560MB]
 
   *This image only works on 64bit host machines with active hardware
   virtualization support. The should include all recent Apple hardware and most
