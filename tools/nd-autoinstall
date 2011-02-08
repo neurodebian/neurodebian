@@ -149,7 +149,7 @@ fi
 
 if [ $do_install -eq 1 ]; then
     # Figure out amount of space to download/occupy
-    space_info="$(LC_ALL=C apt-get --print-uris install $ai_package 2>/dev/null \
+    space_info="$(LC_ALL=C apt-get --trivial-only --print-uris install $ai_package 2>/dev/null \
         | grep -e '^\(Need to get \|After this\)' || : )"
     if [ $ai_force -eq 0 ]; then
 		if ! zenity --question \
