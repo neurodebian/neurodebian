@@ -1,10 +1,12 @@
 Source: stimfit
 Tasks: debian-science/electrophysiology
 Homepage: http://code.google.com/p/stimfit/
-Version: 0.10.0
+Version: 0.10.7
+Language: C, Python
 Author: Christoph Schmidt-Hieber <c.schmidt-hieber@wibr.ucl.ac.uk>
 License: GPL-2
-Pkg-Description: viewing and analyzing of electrophysiological data
+WNPP: 612375
+Pkg-Description: view and analyze electrophysiological data
  Stimfit is a free, fast and simple program for viewing and analyzing
  electrophysiological data.  It features an embedded Python shell that
  allows you to extend the program functionality by using numerical
