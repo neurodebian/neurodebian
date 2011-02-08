@@ -100,6 +100,7 @@ on the system. No installed packages will be reinstalled or removed, only
 additional components will be installed." \
 FALSE "Emacs" "emacs" \
 FALSE "GNU Image Manipulation Program (Gimp)" "gimp" \
+FALSE "Octave" "octave,qtoctave" \
 FALSE "OpenOffice.org" "openoffice.org" \
 FALSE "Scientific Python" "ipython,python-numpy,python-matplotlib" \
 FALSE "TeX Live" "texlive" \
