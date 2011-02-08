@@ -34,6 +34,10 @@ fi
 # initialize apt
 update-manager -c
 
+sudo update-software-center --debug 2>&1 | \
+	zenity $icon_opt --title="Updating Software Center Repository"  \
+		--progress  --pulsate --auto-close --auto-kill 
+
 popconf=/etc/popularity-contest.conf
 if [ ! -e "$popconf" ] || grep -q -e '^PARTICIPATE.*no' "$popconf" ;
 then
