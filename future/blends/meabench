@@ -1,0 +1,27 @@
+Source: meabench
+Tasks: debian-science/electrophysiology
+Homepage: http://www.its.caltech.edu/~daw/meabench/
+Author: Daniel Wagenaar <wagenaar@caltech.edu>
+Language: C++
+License: GPL-2+
+Version: 1.2.2
+WNPP: 611363
+Pkg-Description: tools for recording from MEAs and RT processing
+ Meabench is a set of interacting linux programs for recording data
+ from MEAs and real time processing. It can be used to acquire and
+ visualize data from MultiChannel Systems multi-electrode array
+ hardware in real time. On-line spike detection is available, as well
+ as suppression of artifacts induced by 60 Hz pickup and by
+ stimulation. A growing number of small utilities for data analysis is
+ included with the source code, and you can easily add your
+ own. Meabench provides continuous and triggered recording of raw
+ electrode data as well as extracted spike data. Meabench is very
+ suitable for real-time feedback stimulation, since roundtrip times
+ from pre-amplifier to stimulator is less than 200 ms worst-case (less
+ than 50 ms average).
+Published-Title: MEABench: A Toolset for Multi-electrode Data Acquisition and On-line Analysis
+Published-Authors: D. A. Wagenaar, T. B. DeMarse, and S. M. Potter
+Published-In: Proc. 2nd Int. IEEE EMBS Conf. Neural Eng., 518–521
+Published-Year: 2005
+Published-URL: http://www.its.caltech.edu/~daw/abstracts/05-WDP.html
+Remark: 64-bit port is not yet fully tested/supported
