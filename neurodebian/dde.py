@@ -675,7 +675,7 @@ def write_pkgpages(jinja_env, cfg, db, outdir, addenum_dir, extracts_dir):
     # this is a fragile test
     toc.write(toc_template.render(
         pkgs=[k for k in db.keys()
-                if not ('Datasets', 'neurodebian-data') in db[k]]))
+                if not ('Datasets (data)', 'neurodebian-data') in db[k]]))
     toc.close()
     # and now only for dataset packages
     toc_template = jinja_env.get_template('datasets_toc.rst')
@@ -683,7 +683,7 @@ def write_pkgpages(jinja_env, cfg, db, outdir, addenum_dir, extracts_dir):
     # this is a fragile test
     toc.write(toc_template.render(
         pkgs=[k for k in db.keys()
-                if ('Datasets', 'neurodebian-data') in db[k]]))
+                if ('Datasets (data)', 'neurodebian-data') in db[k]]))
     toc.close()
 
 
