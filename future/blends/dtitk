@@ -1,0 +1,35 @@
+Source: dtitk
+Tasks: debian-med/imaging
+Homepage: http://www.nitrc.org/projects/dtitk
+Author: Hui Zhang <garyhuizhang@gmail.com>
+Language: C++
+License: GPL-3+
+Version: 0.0.20110208
+WNPP: 612619
+Pkg-Description: DTI spatial normalization and atlas construction toolkit
+ DTI-TK is a spatial normalization & atlas construction toolkit,
+ designed from ground up to support the manipulation of
+ diffusion-tensor images (DTI) with special cares taken to respect the
+ tensorial nature of the data. It implements a state-of-the-art
+ registration algorithm that drives the alignment of white matter (WM)
+ tracts by matching the orientation of the underlying fiber bundle at
+ each voxel. The algorithm has been shown to both improve WM tract
+ alignment and to enhance the power of statistical inference in
+ clinical settings.  The key features include:
+ .
+  - NIfTI support for scalar, vector and DTI volumes
+  - tool chains for manipulating DTI volumes: resampling, smoothing,
+    warping, registration & visualization
+  - pipelines for WM morphometry: spatial normalization & atlas
+    construction for population-based studies
+  - built-in cluster-computing support
+  - interoperability with other major DTI tools: AFNI, Camino,
+    DTIStudio & FSL
+Published-Title: Deformable registration of diffusion tensor MR images
+ with explicit orientation optimization
+Published-Authors: H Zhang, P A Yushkevich, D C Alexander, and J C Gee
+Published-In: Medical Image Analysis - Special Issue: The Eighth International
+ Conference on Medical Imaging and Computer Assisted intervention - MICCAI 2005,
+ 10(5):764-785
+Published-Year: 2006
+Published-DOI: 10.1016/j.media.2006.06.004
