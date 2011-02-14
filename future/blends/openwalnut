@@ -1,0 +1,18 @@
+Source: openwalnut
+Tasks: debian-med/imaging
+Homepage: http://berkeley.informatik.uni-leipzig.de/trac/ow-public/
+Author: OpenWalnut Team: http://berkeley.informatik.uni-leipzig.de/trac/ow-public/wiki/People
+Language: C++
+License: LGPL-3+
+Version: 1.2
+WNPP: 613419
+Pkg-Description: multi-modal medical and brain data visualization
+ OpenWalnut is an open source tool for multi-modal medical and brain
+ data visualization. Its universality allows it to be easily extended
+ and used in a large variety of application cases. It is both, a tool
+ for the scientific user and a powerful framework for the visualization
+ researcher.
+Published-Title: OpenWalnut - An Open-Source Visualization System
+Published-Authors: Sebastian Eichelbaum, Mario Hlawitschka, Alexander Wiebel, Gerik Scheuermann
+Published-In: Werner Benger et al., editors, Proceedings of 6th High-End Visualization Workshop. Lehmanns
+Published-Year: 2010
