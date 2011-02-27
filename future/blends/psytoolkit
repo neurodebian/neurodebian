@@ -1,0 +1,32 @@
+Source: psytoolkit
+Tasks: debian-science/psychophysics
+Homepage: http://psytoolkit.leeds.ac.uk
+Author: Gijsbert Stoet <g dot stoet AT leeds.ac.uk>
+Language: Ruby
+License: GPL-3+
+Version: 1.0.2
+Pkg-Description: programming and running psychological experiments
+ Psytoolkit offers
+  * Scripting language designed for psychological experiments:
+   o Structure designed for experiments (tasks/trials/trial
+     lists/random selection/blocks).
+   o Use of bitmaps (png,jpeg,tiff,and many more).
+   o Use of MPEG videos.
+   o Read from keyboard, mouse, and external devices.
+   o Voicekey support via IoLab device
+   o Easy programming of parallel port and advanced IO cards.
+   o Use of variables.
+   o Conditional expressions (if/then/while).
+   o Easy interfacing with statistical software R for online
+     feedback to participants.
+   o Easy interfacing with C language.
+   o It is easy to use.
+  * Easy functions for visual and auditory stimulus presentation.
+  * Precise timing of stimulus presentation and data collection.
+  * Can be used as scripting language, but also comes with a
+    C-library.
+  * Comes with a questionnaire presenter psyquest
+  * Online Documentation.
+Pkg-URL: http://psytoolkit.leeds.ac.uk/download-installation.html
+Remark: Depends on libhid removed from Debian due to needed TLC
+
