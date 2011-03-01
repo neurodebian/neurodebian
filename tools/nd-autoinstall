@@ -18,6 +18,7 @@ ai_package=
 ai_verbose=
 ai_dialog_title=
 ai_force=0
+ai_file=
 
 print_verbose()
 {
@@ -65,6 +66,10 @@ Options:
   -f, --force
     Skip all checks and install package(s) provided via --package.
 
+  -F, --file=FILE
+    If specified file is not present, install the PACKAGE and run
+    the COMMAND.
+
   -v, --verbose
     Enable additional progress messages.
 
@@ -94,7 +99,7 @@ EOT
 # Note that we use `"$@"' to let each command-line parameter expand to a
 # separate word. The quotes around `$@' are essential!
 # We need CLOPTS as the `eval set --' would nuke the return value of getopt.
-CLOPTS=`getopt -o h,e:,p:,t:,f,v --long help,version,environment-file:,package:,title:,verbose,force -n 'nd-autoinstall' -- "$@"`
+CLOPTS=`getopt -o h,e:,p:,t:,f,F:,v --long help,version,environment-file:,package:,title:,verbose,force,file: -n 'nd-autoinstall' -- "$@"`
 
 if [ $? != 0 ] ; then
   echo "Terminating..." >&2
@@ -106,10 +111,11 @@ eval set -- "$CLOPTS"
 
 while true ; do
   case "$1" in
-	  -e|--environment-file) shift; ai_envfile=$1; shift;;
+	  -e|--environment-file) shift; ai_envfile="$1"; shift;;
 	  -f|--force) ai_force=1; shift;;
-	  -p|--package) shift; ai_package=$1; shift;;
-	  -t|--title) shift; ai_dialog_title=$1; shift;;
+	  -F|--file) shift; ai_file="$1"; shift;;
+	  -p|--package) shift; ai_package="$1"; shift;;
+	  -t|--title) shift; ai_dialog_title="$1"; shift;;
 	  -v|--verbose) ai_verbose=1; shift;;
 	  -h|--help) print_help; exit 0;;
 	  --version) print_version; exit 0;;
@@ -124,8 +130,8 @@ if [ $# -lt 1 ] ; then
     exit 2
 fi
 
-ai_command=$1; shift
-[ -z "$ai_package" ] && ai_package=$ai_command
+ai_command="$1"; shift
+[ -z "$ai_package" ] && ai_package=$(basename "$ai_command")
 
 [ -z "$ai_dialog_title" ] && ai_dialog_title="Package installation"
 
@@ -134,16 +140,24 @@ if [ ! -z "$ai_envfile" ]; then
 	source "$ai_envfile" || ai_envfile_failed=1
 fi
 
+#
+# Decide either installation is necessary
+#
 do_install=0
 if [ ! -z "$ai_envfile_failed" ]; then
+    print_verbose "Environment file $ai_envfile failed to source. Install $ai_package"
 	do_install=1
 fi
-if which $ai_command > /dev/null || [ -e $ai_command ]; then
-	do_install=0
-else
+if [ ! -z "$ai_file" ] && [ ! -e "$ai_file" ]; then
+    print_verbose "File $ai_file absent. Install $ai_package"
+    do_install=1
+fi
+if ! which "$ai_command" > /dev/null && [ ! -e "$ai_command" ]; then
+    print_verbose "Command $ai_command is not available. Install $ai_package"
 	do_install=1
 fi
 if [ $ai_force -eq 1 ]; then
+    print_verbose "Force installation of $ai_package"
 	do_install=1
 fi
 
