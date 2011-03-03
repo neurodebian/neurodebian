@@ -217,9 +217,10 @@ communication channels within the NeuroDebian community
 Acknowledgements
 ================
 
-We are grateful to Jim Haxby for his continued support and :ref:`endless supply of
+We are grateful to `Jim Haxby`_ for his continued support and :ref:`endless supply of
 Italian espresso <coffeeart>`.
 
+.. _Jim Haxby: http://haxbylab.dartmouth.edu/ppl/jim.html
 
 Publications
 ============
