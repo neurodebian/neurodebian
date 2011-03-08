@@ -88,16 +88,22 @@ for a in $arch; do
   else
     options="$opts --debbuildopts -B"
   fi
+
   echo "Building for $family $dist $a ..."
   buildfile="${dscfile%.dsc}_${a}.build"
+  tsfile="${buildfile}.timestamp.`date +%s`" # "unique" timestamp file
+  /usr/bin/time -f "%E real, %U user, %S sys, %K mem, %O out" -o "${tsfile}" \
   cowbuilder --build $dscfile \
              --basepath ${cowbuilderroot}/cow/${family}-${dist}-${a}.cow \
              --buildresult . \
              --logfile "${buildfile}" \
              $options \
              "$@" && status='OK' || status='FAILED'
+
+  timeinfo=$(cat "${tsfile}")
   # Update the summary of builds
   touch summary.build                               # Assure existence
-  sed -i -e '/${buildfile}/d' summary.build         # Prune previous entry
-  echo -e "${buildfile}\t$status" >> summary.build  # Add current one
+  sed -i -e "s/\(${buildfile}.*out$\)/\1 OLD/g" summary.build  # Mark previous entry as OLD
+  echo -e "${buildfile}\t$status\t$timeinfo" >> summary.build  # Add current one
+  rm -f "${tsfile}"
 done
