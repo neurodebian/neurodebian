@@ -1,0 +1,18 @@
+Source: miview
+Tasks: debian-med/imaging
+Homepage: http://www.gbooksoft.com/
+Author: Greg Book <gbook at gbook dot org>
+Language: C++
+License: GPL-3+
+Version: 0.6+build391
+Pkg-Description: Medical Images viewer and converter
+ MIView features
+ - DICOM files browser
+ - volume rendering
+ - reads DICOM v3, NEMA/ACR, Papyrus, Jpeg, GIF, bitmap, TIFF,
+   Analyze 7.5, and Nifti1 files
+ - can convert to raster (jpeg, bitmap, etc) and Analyze/Nifti1
+Remark: At the moment available only for Windows, but author says
+ there should be no major showstoppers to build it on Linux -- just
+ needs building infrastructure
+Why: Seems to be quite neat
