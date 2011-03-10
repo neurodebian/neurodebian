@@ -92,7 +92,7 @@ for a in $arch; do
   echo "Building for $family $dist $a ..."
   buildfile="${dscfile%.dsc}_${a}.build"
   tsfile="${buildfile}.timestamp.`date +%s`" # "unique" timestamp file
-  /usr/bin/time -f "%E real, %U user, %S sys, %K mem, %O out" -o "${tsfile}" \
+  /usr/bin/time -f "%E real, %U user, %S sys, %O out" -o "${tsfile}" \
   cowbuilder --build $dscfile \
              --basepath ${cowbuilderroot}/cow/${family}-${dist}-${a}.cow \
              --buildresult . \
@@ -100,7 +100,7 @@ for a in $arch; do
              $options \
              "$@" && status='OK' || status='FAILED'
 
-  timeinfo=$(cat "${tsfile}")
+  timeinfo=$(tail -n 1 "${tsfile}")
   # Update the summary of builds
   touch summary.build                               # Assure existence
   sed -i -e "s/\(${buildfile}.*out$\)/\1 OLD/g" summary.build  # Mark previous entry as OLD
