@@ -10,5 +10,5 @@ interesting:
 * :ref:`NeuroDebian news <news>`
 * :ref:`User support <support>`
 * :ref:`Virtual machine tutorial video <chap_vm>`
-* :ref:`Known issues <chap_vm>`
+* :ref:`Known issues and troubleshooting <chap_vm_troubleshooting>`
 

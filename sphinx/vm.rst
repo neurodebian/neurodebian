@@ -180,8 +180,32 @@ virtual machine.
           frameborder="0"></iframe>
 
 
+.. _chap_vm_troubleshooting:
+
 Troubleshooting
 ~~~~~~~~~~~~~~~
+
+Updating the VM or installing new packages doesn't work.
+
+  The VM uses as service that tries to figure out the best/closest package
+  repository for you. In some network environments this service might not work
+  well, or not at all. To check if this is a problem, you can modify the
+  respective configuration by hand. Edit ``/etc/apt/sources.list`` (you need to
+  use ``sudo`` for that) and replace the package repository URL with a mirror
+  close to you. A comprehensive list of mirrors is available at:
+  http://www.debian.org/mirror/list
+
+  Pick one and replace all ``geomirror.debian.net`` URLs with the new mirror
+  URL. For example, in Canada you might want to change::
+
+    deb http://i386-geomirror.debian.net/debian squeeze main non-free contrib
+
+  to::
+
+    deb http://ftp.ca.debian.org/debian/ squeeze main non-free contrib
+
+  Only modify lines that refer to ``geomirror`` (all of them), but do **not**
+  modify entries for ``security.debian.org``.
 
 I cannot hear sounds played in the virtual machine.
 
