@@ -44,6 +44,7 @@ def artworkdir():
 #extensions = []
 sys.path.append(os.path.abspath('.'))
 extensions = ['sphinxext.quote',
+              'sphinxext.feed',
               'sphinx.ext.todo']
 
 # show todo items
@@ -209,3 +210,9 @@ latex_documents = [
 
 # If false, no module index is generated.
 #latex_use_modindex = True
+
+# RSS feed
+# --------
+feed_base_url = 'http://neuro.debian.net/blog'
+feed_description = "Debian for neuroscience and neuroscience in Debian"
+feed_filename = 'rss.xml'
