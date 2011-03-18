@@ -18,8 +18,14 @@ def setup(app):
     if not isinstance(app, Sphinx): return
     app.add_config_value('feed_base_url', '', 'html')
     app.add_config_value('feed_description', '', 'html')
-    app.add_config_value('feed_filename', 'rss.xml', 'html')
-    
+    app.add_config_value('feed_title', '', 'html')
+    app.add_config_value('feed_subtitle', '', 'html')
+    app.add_config_value('feed_author_name', '', 'html')
+    app.add_config_value('feed_author_email', '', 'html')
+    app.add_config_value('feed_categories', [], 'html')
+    app.add_config_value('feed_variants',
+                         {'all': {'filename': 'rss.xml', 'categories': None}},
+                         'html')
     app.connect('html-page-context', create_feed_item)
     app.connect('html-page-context', inject_feed_url)
     app.connect('build-finished', emit_feed)
@@ -35,9 +41,8 @@ def create_feed_container(app):
     global feed_entries
     rss_fragment_path = os.path.realpath(os.path.join(app.outdir, '..', 'rss_entry_fragments'))
     feed_entries = FSDict(work_dir=rss_fragment_path)
-    app.builder.env.feed_url = app.config.feed_base_url + '/' + \
-        app.config.feed_filename
-    
+    app.builder.env.feed_url = app.config.feed_base_url + '/' + 'feed_container'
+
 def inject_feed_url(app, pagename, templatename, ctx, doctree):
     #We like to provide our templates with a way to link to the rss output file
     ctx['rss_link'] = app.builder.env.feed_url #app.config.feed_base_url + '/' + app.config.feed_filename
@@ -72,10 +77,19 @@ def create_feed_item(app, pagename, templatename, ctx, doctree):
       'link': link,
       'unique_id': link,
       'description': absolutify(ctx.get('body'), link),
-      'pubdate': pub_date
+      'pubdate': pub_date,
+      'categories': ()
     }
+    if 'tags' in metadata:
+        item['categories'] = metadata['tags'].split(",")
     if 'author' in metadata:
-        item['author'] = metadata['author']
+        item['author_name'] = metadata['author']
+    else:
+        item['author_name'] = app.config.feed_author_name
+    if 'author_email' in metadata:
+        item['author_email'] = metadata['author_email']
+    else:
+        item['author_email'] = app.config.feed_author_email
     feed_entries[nice_name(pagename, pub_date)] = item    
 
 def remove_dead_feed_item(app, env, docname):
@@ -94,26 +108,37 @@ def emit_feed(app, exc):
     import os.path
     
     feed_dict = {
-      'title': app.config.project,
+      'title': app.config.feed_title,
+      'subtitle': app.config.feed_subtitle,
       'link': app.config.feed_base_url,
       'feed_url': app.config.feed_base_url,
-      'description': app.config.feed_description
+      'description': app.config.feed_description,
+      'categories': app.config.feed_categories,
+      'author_name': app.config.feed_author_name,
+      'author_email': app.config.feed_author_email
     }
     if app.config.language:
         feed_dict['language'] = app.config.language
     if app.config.copyright:
         feed_dict['feed_copyright'] = app.config.copyright
-    feed = feedgenerator.Rss201rev2Feed(**feed_dict)
-    app.builder.env.feed_feed = feed
-    ordered_keys = feed_entries.keys()
-    ordered_keys.sort(reverse=True)
-    for key in ordered_keys:
-        feed.add_item(**feed_entries[key])     
-    outfilename = os.path.join(app.builder.outdir,
-      app.config.feed_filename)
-    fp = open(outfilename, 'w')
-    feed.write(fp, 'utf-8')
-    fp.close()
+    # loop over all feed variants
+    for feedvar in app.config.feed_variants:
+        feedvar_settings = app.config.feed_variants[feedvar]
+        feed = feedgenerator.Rss201rev2Feed(**feed_dict)
+        app.builder.env.feed_feed = feed
+        ordered_keys = feed_entries.keys()
+        ordered_keys.sort(reverse=True)
+        for key in ordered_keys:
+            item = feed_entries[key]
+            # only take the ones that should be in this feed
+            if feedvar_settings['tag'] is None \
+                    or feedvar_settings['tag'] in item['categories']:
+                feed.add_item(**feed_entries[key])
+        outfilename = os.path.join(app.builder.outdir,
+          feedvar_settings['filename'])
+        fp = open(outfilename, 'w')
+        feed.write(fp, 'utf-8')
+        fp.close()
 
 def nice_name(docname, date):
     """
