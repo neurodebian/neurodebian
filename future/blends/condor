@@ -11,6 +11,7 @@ Published-Authors: Michael Litzkow, Miron Livny, and Matt Mutka
 Published-In: Proceedings of the 8th International Conference of Distributed Computing Systems, pp. 104-111
 Published-Year: 1988
 Registration: http://www.cs.wisc.edu/condor/downloads-v2/
+Pkg-URL: http://neuro.debian.net/pkgs/condor.html
 Pkg-Description: workload management system
  Like other full-featured batch systems, Condor provides a job queueing
  mechanism, scheduling policy, priority scheme, resource monitoring, and
