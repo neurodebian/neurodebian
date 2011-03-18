@@ -214,8 +214,9 @@ latex_documents = [
 # RSS feed
 # --------
 feed_base_url = 'http://neuro.debian.net/blog'
-feed_title = "Debian for neuroscience and neuroscience in Debian"
-feed_description = "Debian for neuroscience and neuroscience in Debian"
+feed_title = "NeuroDebian Insider"
+feed_subtitle = "This solves all your problems"
+feed_description = "A blog about using the ultimate operating system in neuroscience research"
 feed_variants = {'planetdebian': {'filename': 'debian-planet.xml',
                                   'tag': 'debian'},
                  'all': {'filename': 'all.xml', 'tag': None}}
