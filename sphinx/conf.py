@@ -213,7 +213,7 @@ latex_documents = [
 
 # RSS feed
 # --------
-feed_base_url = 'http://neuro.debian.net/blog'
+feed_base_url = 'http://neuro.debian.net'
 feed_title = "NeuroDebian Insider"
 feed_subtitle = "This solves all your problems"
 feed_description = "A blog about using the ultimate operating system in neuroscience research"
