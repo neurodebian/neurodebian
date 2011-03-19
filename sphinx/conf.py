@@ -217,9 +217,9 @@ feed_base_url = 'http://neuro.debian.net'
 feed_title = "NeuroDebian Insider"
 feed_subtitle = "This solves all your problems"
 feed_description = "A blog about using the ultimate operating system in neuroscience research"
-feed_variants = {'planetdebian': {'filename': 'debian-planet.xml',
+feed_variants = {'planetdebian': {'filename': 'feeds/for-debian-planet.xml',
                                   'tag': 'debian'},
-                 'all': {'filename': 'all.xml', 'tag': None}}
+                 'all': {'filename': 'feeds/blog.xml', 'tag': None}}
 feed_categories = ['debian', 'neuroscience']
 feed_author_name = 'NeuroDebian team'
 feed_author_email = 'team@neuro.debian.net'

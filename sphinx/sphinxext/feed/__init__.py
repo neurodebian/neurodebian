@@ -144,6 +144,10 @@ def emit_feed(app, exc):
                 feed.add_item(**feed_entries[key])
         outfilename = os.path.join(app.builder.outdir,
           feedvar_settings['filename'])
+        # make sure the directory exists
+        feed_dir = os.path.dirname(outfilename)
+        if feed_dir and not os.path.exists(feed_dir):
+            os.makedirs(os.path.dirname(outfilename))
         fp = open(outfilename, 'w')
         feed.write(fp, 'utf-8')
         fp.close()
