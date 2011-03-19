@@ -1,7 +1,9 @@
+# -*- coding: utf-8 -*-
 from fsdict import FSDict
 import feedgenerator
 from urllib import quote_plus
 import os.path
+import re
 
 #global
 feed_entries = None
@@ -72,11 +74,16 @@ def create_feed_item(app, pagename, templatename, ctx, doctree):
     #     unique_id=None, enclosure=None, categories=(), item_copyright=None,
     #     ttl=None,
     link = app.config.feed_base_url + '/' + ctx['current_page_name'] + ctx['file_suffix']
+    # bring main body of the feed item into shape
+    body = ctx.get('body')
+    # remove all header links (they make ugly characters in feed readers)
+    body = re.sub('\<a class\="headerlink".*\>.</a\>', '', body)
+
     item = {
       'title': ctx.get('title'),
       'link': link,
       'unique_id': link,
-      'description': absolutify(ctx.get('body'), link),
+      'description': absolutify(body, link),
       'pubdate': pub_date,
       'categories': ()
     }
@@ -121,13 +128,14 @@ def emit_feed(app, exc):
         feed_dict['language'] = app.config.language
     if app.config.copyright:
         feed_dict['feed_copyright'] = app.config.copyright
+    # sort items
+    ordered_keys = feed_entries.keys()
+    ordered_keys.sort(reverse=True)
     # loop over all feed variants
     for feedvar in app.config.feed_variants:
         feedvar_settings = app.config.feed_variants[feedvar]
         feed = feedgenerator.Rss201rev2Feed(**feed_dict)
         app.builder.env.feed_feed = feed
-        ordered_keys = feed_entries.keys()
-        ordered_keys.sort(reverse=True)
         for key in ordered_keys:
             item = feed_entries[key]
             # only take the ones that should be in this feed
