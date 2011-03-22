@@ -6,6 +6,7 @@ import pysvn
 import json
 from debian_bundle import deb822
 import numpy as np
+import jinja2
 
 # Lets first assure no guarding (but annoying) warnings
 import warnings
@@ -768,16 +769,29 @@ def write_pkgpages(jinja_env, cfg, db, outdir, addenum_dir, extracts_dir):
         ids = pkgsdict.keys()
         for id_ in np.unique(ids):
             label = ('pkgs-%s-%s' % (sectitle, id_)).lower().replace(' ', '_').replace('/', '_')
-            toc = codecs.open(os.path.join(outdir,
-                                           'pkglists',
-                                           '%s.rst' % label),
-                              'w', 'utf-8')
-            toc.write(toc_template.render(
-                        label=label,
-                        title=underline_text(title_tmpl % id_, '='),
-                        pkgs=pkgsdict[id_],
-                        db=db))
-            toc.close()
+            if not len(pkgsdict[id_]):
+                continue
+            try:
+                plist = toc_template.render(
+                            label=label,
+                            title=underline_text(title_tmpl % id_, '='),
+                            pkgs=pkgsdict[id_],
+                            db=db)
+                if not plist:
+                    continue
+                toc = codecs.open(os.path.join(outdir,
+                                               'pkglists',
+                                               '%s.rst' % label),
+                                  'w', 'utf-8')
+                toc.write(toc_template.render(
+                            label=label,
+                            title=underline_text(title_tmpl % id_, '='),
+                            pkgs=pkgsdict[id_],
+                            db=db))
+                toc.close()
+            except jinja2.exceptions.UndefinedError:
+                # ignore crap
+                pass
             hltoc.write('* :ref:`%s`\n' % label)
         hltoc.write('\n\n')
 
