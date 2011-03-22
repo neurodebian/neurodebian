@@ -87,60 +87,29 @@ Follow us on identi.ca_ or twitter_ to subscribe to the NeuroDebian news.
 How to use this repository
 ==========================
 
-The easiest way to use this repository is to download an APT-configuration file
-(`sources.list`). Simply choose your target distribution/release and download
-the configuration for a mirror close to you (depending on your browser, you
-might have to right-click and choose 'save as'). Once downloaded, put the file
-in the `/etc/apt/sources.list.d/` directory on your system. Moving files in
-this directory will require superuser privileges, therefore you should probably
-download the file into a temporary directory and subsequently move it into
-`/etc/apt/sources.list.d/`. APT-configurations are available for the following
-releases and repository mirrors:
+To enable the NeuroDebian repository on your system, select your Debian or
+Ubuntu release and a repository mirror from the lists below. Upon selection
+a short command snippet will be displayed that can be copied and pasted into
+a terminal session. These commands will configure the system package manager
+with the NeuroDebian repository key and package source information.
 
 .. include:: sources_lists
 
-.. note::
-  Thanks to the following institutions and individuals for hosting a mirror:
-
-  * `Department of Psychological and Brain Sciences at Dartmouth College`_
-    *[us-nh]* (primary mirror)
-  * `Department of Experimental Psychology at the University of Magdeburg`_
-    *[de]*
-  * `Neurobot at Aristotle University of Thessaloniki, Greece`_ *[gr]*
-  * `Paul Ivanov`_ *[us-ca]*
-  * `Medical-image Analysis and Statistical Interpretation lab at Vanderbilt`_
-    *[us-tn]*
-
-  If your are interested in mirroring the repository, please see the :ref:`faq`.
-
-.. _Department of Psychological and Brain Sciences at Dartmouth College: http://www.dartmouth.edu/~psych
-.. _Department of Experimental Psychology at the University of Magdeburg: http://apsy.gse.uni-magdeburg.de
-.. _Neurobot at Aristotle University of Thessaloniki, Greece: http://neurobot.bio.auth.gr
-.. _Paul Ivanov: http://www.pirsquared.org
-.. _Medical-image Analysis and Statistical Interpretation lab at Vanderbilt: https://masi.vuse.vanderbilt.edu
-
 Once this is done, you have to update the package index. Use your favorite
-package manager, e.g. synaptic, adept, or whatever you like. In the terminal
-you can use :command:`aptitude` to achieve the same::
+package manager, e.g. synaptic, adept. In the terminal you can use
+:command:`apt-get` to achieve this::
 
-  sudo aptitude update
+  sudo apt-get update
 
-Now, you can proceed to install packages, e.g.::
+Now, you can install packages, e.g.::
 
-  sudo aptitude install lipsia
+  sudo apt-get install mricron
 
 .. note::
+
   Not every package is available for all distributions/releases. For information
   about which package version is available for which release and architecture,
   please have a look at the corresponding package pages.
-
-After this initial setup you probably also want to configure your package
-manager to recognize the NeuroDebian archive key. With this key the package
-manager can verify that packages haven't been modified and are identical with
-the ones in the main NeuroDebian archive, regardless of which mirror you
-downloaded them from. The NeuroDebian key id is **2649A5A9**. If you need further
-help setting up package authentication, please take a look at
-:ref:`corresponding FAQ <sec_pkg_authentication>`.
 
 
 .. _chap_installation:
@@ -222,6 +191,26 @@ We are grateful to `Jim Haxby`_ for his continued support and :ref:`endless supp
 Italian espresso <coffeeart>`.
 
 .. _Jim Haxby: http://haxbylab.dartmouth.edu/ppl/jim.html
+
+Thanks to the following institutions and individuals for hosting a mirror:
+
+* `Department of Psychological and Brain Sciences at Dartmouth College`_
+  *[us-nh]* (primary mirror)
+* `Department of Experimental Psychology at the University of Magdeburg`_
+  *[de]*
+* `Neurobot at Aristotle University of Thessaloniki, Greece`_ *[gr]*
+* `Paul Ivanov`_ *[us-ca]*
+* `Medical-image Analysis and Statistical Interpretation lab at Vanderbilt`_
+  *[us-tn]*
+
+If your are interested in mirroring the repository, please see the :ref:`faq`.
+
+.. _Department of Psychological and Brain Sciences at Dartmouth College: http://www.dartmouth.edu/~psych
+.. _Department of Experimental Psychology at the University of Magdeburg: http://apsy.gse.uni-magdeburg.de
+.. _Neurobot at Aristotle University of Thessaloniki, Greece: http://neurobot.bio.auth.gr
+.. _Paul Ivanov: http://www.pirsquared.org
+.. _Medical-image Analysis and Statistical Interpretation lab at Vanderbilt: https://masi.vuse.vanderbilt.edu
+
 
 Publications
 ============

@@ -639,7 +639,7 @@ def read_db(filename):
 
 def write_sourceslist(jinja_env, cfg, outdir):
     create_dir(outdir)
-    create_dir(os.path.join(outdir, '_static'))
+    create_dir(os.path.join(outdir, 'lists'))
 
     repos = {}
     for release in cfg.options('release codenames'):
@@ -649,9 +649,9 @@ def write_sourceslist(jinja_env, cfg, outdir):
         transrel = trans_codename(release, cfg)
         repos[transrel] = []
         for mirror in cfg.options('mirrors'):
-            listname = 'neurodebian.%s.%s.sources.list' % (release, mirror)
+            listname = '%s.%s' % (release, mirror)
             repos[transrel].append((mirror, listname))
-            lf = open(os.path.join(outdir, '_static', listname), 'w')
+            lf = open(os.path.join(outdir, 'lists', listname), 'w')
             for rel in ('data', release):
                 aptcfg = '%s %s main contrib non-free\n' % (cfg.get('mirrors', mirror),
                                                           rel)
@@ -659,9 +659,20 @@ def write_sourceslist(jinja_env, cfg, outdir):
                 lf.write('#deb-src %s' % aptcfg)
             lf.close()
 
+    id2codename = dict([(cfg.get('release backport ids', r), r)
+                            for r in cfg.options('release codenames')])
+    id2relname = dict([(cfg.get('release backport ids', r), trans_codename(r, cfg))
+                            for r in cfg.options('release codenames')])
+    mirror2name = dict([(m, cfg.get('mirror names', m))
+                            for m in cfg.options('mirrors')])
+    mirror2url = dict([(m, cfg.get('mirrors', m))
+                            for m in cfg.options('mirrors')])
     srclist_template = jinja_env.get_template('sources_lists.rst')
     sl = open(os.path.join(outdir, 'sources_lists'), 'w')
-    sl.write(srclist_template.render(repos=repos))
+    sl.write(srclist_template.render(id2codename=id2codename,
+                                     id2relname=id2relname,
+                                     mirror2name=mirror2name,
+                                     mirror2url=mirror2url))
     sl.close()
 
 
