@@ -767,7 +767,8 @@ def write_pkgpages(jinja_env, cfg, db, outdir, addenum_dir, extracts_dir):
         pkgsdict, sectitle, title_tmpl = def_
         hltoc.write(underline_text(sectitle, '-'))
         ids = pkgsdict.keys()
-        for id_ in np.unique(ids):
+        ids.sort()
+        for id_ in ids:
             label = ('pkgs-%s-%s' % (sectitle, id_)).lower().replace(' ', '_').replace('/', '_')
             if not len(pkgsdict[id_]):
                 continue
