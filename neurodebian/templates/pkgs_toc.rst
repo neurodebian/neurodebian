@@ -1,11 +1,8 @@
-.. _full_pkg_list:
+.. _{{ label }}:
 
-Software packages
-=================
+{{ title }}
 
-.. toctree::
-  :maxdepth: 1
 {% for p in pkgs|sort %}
-  pkgs/{{ p }}.rst
+* :ref:`{{ p }} <pkg_{{ p }}>` ({{ db[p].main.description }})
 {%- endfor %}
 

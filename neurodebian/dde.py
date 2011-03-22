@@ -5,6 +5,7 @@
 import pysvn
 import json
 from debian_bundle import deb822
+import numpy as np
 
 # Lets first assure no guarding (but annoying) warnings
 import warnings
@@ -590,16 +591,19 @@ def convert_longdescr(ld):
     return ld
 
 
+def underline_text(text, symbol):
+    underline = symbol * len(text)
+    return '%s\n%s\n' % (text, underline)
+
+
 def generate_pkgpage(pkg, cfg, db, template, addenum_dir, extracts_dir):
-    print pkg
     # local binding for ease of use
     pkgdb = db[pkg]
     # do nothing if there is not at least the very basic stuff
     if not pkgdb['main'].has_key('description'):
         return
     title = '**%s** -- %s' % (pkg, pkgdb['main']['description'])
-    underline = '*' * (len(title) + 2)
-    title = '%s\n %s\n%s' % (underline, title, underline)
+    title = underline_text(title, '*')
 
     ex_dir = None
     if 'sv' in pkgdb['main']:
@@ -676,27 +680,118 @@ def write_sourceslist(jinja_env, cfg, outdir):
     sl.close()
 
 
+def sort_by_tasks(db):
+    tasks = {}
+    for pkg in db.keys():
+        if not 'blends' in db[pkg]:
+            # no blend info
+            continue
+        blendinfo = db[pkg]['blends']
+        if not 'tasks' in blendinfo:
+            # no task info in blend data
+            continue
+        taskinfo = blendinfo['tasks']
+        for task in taskinfo:
+            taskname = task[1]
+            if not taskname in tasks:
+                tasks[taskname] = []
+            else:
+                tasks[taskname].append(pkg)
+    return tasks
+
+
+def sort_by_maintainer(db):
+    maints = {}
+    for pkg in db.keys():
+        if not 'main' in db[pkg]:
+            # no info
+            continue
+        info = db[pkg]['main']
+        if not 'maintainer' in info:
+            # no maintainer info
+            continue
+        if 'original_maintainer' in info and not info['original_maintainer'] is None:
+            maint = info['original_maintainer']
+        else:
+            maint = info['maintainer']
+        if maint is None:
+            # no sane maintainer info
+            continue
+        # safeguard: <> confuses sphinx and we don't care about different emails
+        maint = maint[:maint.find('<')].strip()
+        if not maint in maints:
+            maints[maint] = []
+        else:
+            maints[maint].append(pkg)
+    # remove duplicates
+    for m in maints:
+        maints[m] = np.unique(maints[m])
+    return maints
+
+
+def sort_by_release(db):
+    rels = {}
+    for pkg in db.keys():
+        pkginfo = db[pkg]
+        for sec in pkginfo:
+            if not isinstance(sec, tuple):
+                # only releases are of interest
+                continue
+            relname = sec[0]
+            if not relname in rels:
+                rels[relname] = []
+            else:
+                rels[relname].append(pkg)
+    # remove duplicates
+    for r in rels:
+        rels[r] = np.unique(rels[r])
+    return rels
+
+
 def write_pkgpages(jinja_env, cfg, db, outdir, addenum_dir, extracts_dir):
     create_dir(outdir)
     create_dir(os.path.join(outdir, 'pkgs'))
-
-    # generate the TOC with all packages
+    create_dir(os.path.join(outdir, 'pkglists'))
+    # template for individual package listings
     toc_template = jinja_env.get_template('pkgs_toc.rst')
-    toc = codecs.open(os.path.join(outdir, 'pkgs.rst'), 'w', 'utf-8')
-    # this is a fragile test
-    toc.write(toc_template.render(
-        pkgs=[k for k in db.keys()
-                if not ('Datasets (data)', 'neurodebian-data') in db[k]]))
-    toc.close()
-    # and now only for dataset packages
-    toc_template = jinja_env.get_template('datasets_toc.rst')
-    toc = codecs.open(os.path.join(outdir, 'datasets.rst'), 'w', 'utf-8')
-    # this is a fragile test
-    toc.write(toc_template.render(
-        pkgs=[k for k in db.keys()
-                if ('Datasets (data)', 'neurodebian-data') in db[k]]))
-    toc.close()
+    # the high-level package list overview
+    hltoc = codecs.open(os.path.join(outdir, 'pkgs.rst'), 'w', 'utf-8')
+    hltoc.write('.. _pkglists:\n\n')
+    hltoc.write(underline_text('Software packages', '='))
+    defs = [(sort_by_tasks(db), 'By purpose', 'Packages for %s'),
+            (sort_by_release(db), 'By release', 'Packages for %s'),
+            (sort_by_maintainer(db), 'By maintainer', 'Packages by %s')]
+    for def_ in defs:
+        # TOC for each thingie
+        pkgsdict, sectitle, title_tmpl = def_
+        hltoc.write(underline_text(sectitle, '-'))
+        ids = pkgsdict.keys()
+        for id_ in np.unique(ids):
+            label = ('pkgs-%s-%s' % (sectitle, id_)).lower().replace(' ', '_').replace('/', '_')
+            toc = codecs.open(os.path.join(outdir,
+                                           'pkglists',
+                                           '%s.rst' % label),
+                              'w', 'utf-8')
+            toc.write(toc_template.render(
+                        label=label,
+                        title=underline_text(title_tmpl % id_, '='),
+                        pkgs=pkgsdict[id_],
+                        db=db))
+            toc.close()
+            hltoc.write('* :ref:`%s`\n' % label)
+        hltoc.write('\n\n')
 
+
+    # now a complete list of all packages
+    hltoc.write(underline_text('Complete list', '-'))
+    toc = codecs.open(os.path.join(outdir, 'pkglists', 'pkgs-all.rst'),
+                      'w', 'utf-8')
+    toc.write(toc_template.render(label='full_pkg_list',
+                title=underline_text('Complete package list', '='),
+                pkgs=db.keys(), db=db))
+    toc.close()
+    hltoc.write('* :ref:`full_pkg_list`\n')
+    hltoc.close()
 
     # and now each individual package page
     pkg_template = jinja_env.get_template('pkg.rst')
