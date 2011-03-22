@@ -703,31 +703,45 @@ def sort_by_tasks(db):
 
 def sort_by_maintainer(db):
     maints = {}
+    maint_ids = {}
     for pkg in db.keys():
-        if not 'main' in db[pkg]:
+        maint = None
+        pkginfo = db[pkg]
+        # start with the blends info
+        if 'blends' in pkginfo and 'responsible' in pkginfo['blends']:
+            maint = pkginfo['blends']['responsible']
+        if not 'main' in db[pkg] and maint is None:
             # no info
             continue
         info = db[pkg]['main']
-        if not 'maintainer' in info:
+        if not 'maintainer' in info and maint is None:
             # no maintainer info
             continue
         if 'original_maintainer' in info and not info['original_maintainer'] is None:
             maint = info['original_maintainer']
-        else:
+        elif 'maintainer' in info and not info['maintainer'] is None:
             maint = info['maintainer']
         if maint is None:
             # no sane maintainer info
             continue
         # safeguard: <> confuses sphinx and we don't care about different emails
         maint = maint[:maint.find('<')].strip()
-        if not maint in maints:
-            maints[maint] = []
+        # kick out non-ascii ones (should not be, but too tired to find the bug)
+        try:
+            codecs.ascii_decode(maint)
+        except UnicodeEncodeError:
+            continue
+        if not maint.lower() in maints:
+            maints[maint.lower()] = []
+            maint_ids[maint.lower()] = [maint]
         else:
-            maints[maint].append(pkg)
+            maint_ids[maint.lower()].append(maint)
+        maints[maint.lower()].append(pkg)
     # remove duplicates
+    out = {}
     for m in maints:
-        maints[m] = np.unique(maints[m])
-    return maints
+        out[maint_ids[m][0]] = np.unique(maints[m])
+    return out
 
 
 def sort_by_release(db):
@@ -770,29 +784,21 @@ def write_pkgpages(jinja_env, cfg, db, outdir, addenum_dir, extracts_dir):
         ids.sort()
         for id_ in ids:
             label = ('pkgs-%s-%s' % (sectitle, id_)).lower().replace(' ', '_').replace('/', '_')
-            if not len(pkgsdict[id_]):
+            # filter out crap
+            filtered_pkgs = [p for p in pkgsdict[id_] if p in db]
+            if not len(filtered_pkgs):
                 continue
-            try:
-                plist = toc_template.render(
-                            label=label,
-                            title=underline_text(title_tmpl % id_, '='),
-                            pkgs=pkgsdict[id_],
-                            db=db)
-                if not plist:
-                    continue
-                toc = codecs.open(os.path.join(outdir,
-                                               'pkglists',
-                                               '%s.rst' % label),
-                                  'w', 'utf-8')
-                toc.write(toc_template.render(
-                            label=label,
-                            title=underline_text(title_tmpl % id_, '='),
-                            pkgs=pkgsdict[id_],
-                            db=db))
-                toc.close()
-            except jinja2.exceptions.UndefinedError:
-                # ignore crap
-                pass
+            plist = toc_template.render(
+                        label=label,
+                        title=underline_text(title_tmpl % id_, '='),
+                        pkgs=filtered_pkgs,
+                        db=db)
+            toc = codecs.open(os.path.join(outdir,
+                                           'pkglists',
+                                           '%s.rst' % label),
+                              'w', 'utf-8')
+            toc.write(plist)
+            toc.close()
             hltoc.write('* :ref:`%s`\n' % label)
         hltoc.write('\n\n')
 
