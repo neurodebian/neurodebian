@@ -1,7 +1,12 @@
 #!/bin/bash
 
-family=$1
-dist=$2
+if [ $# -eq 1 ]; then
+  family=${1%%-*}
+  dist=${1##*-}
+elif [ $# -eq 2 ]; then
+  family=$1
+  dist=$2
+fi
 
 set -e
 
@@ -15,7 +20,7 @@ if [ -z "$dist" ]; then
   exit 1
 fi
 
-. /etc/neurodebian/cmdsettings.sh
+. /etc/neurodebian/cmdsettings.sh "$family" "$dist"
 
 # common options
 opts="--distribution $dist --aptcache $aptcache --buildplace $buildplace"
