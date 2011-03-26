@@ -592,7 +592,7 @@ def convert_longdescr(ld):
                 isindented = True
             else:
                 # leave as is
-                ld[i] = ' %s\n' + l
+                ld[i] = ' %s\n' % l
         descr += ld[i][1:]
 
     descr = descr.replace('#NEWLINEMARKER# ', '\n\n')
