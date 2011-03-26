@@ -574,22 +574,33 @@ def assure_unicode(s):
 
 
 def convert_longdescr(ld):
+    descr = u''
     ld = ld.replace('% ', '%% ')
     ld = ld.split('\n')
+    isindented = False
     for i, l in enumerate(ld):
         if l == ' .':
-            ld[i] = ' #NEWLINEMARKER#'
+            isindented = False
+            ld[i] = ' #NEWLINEMARKER# '
         # look for embedded lists
-        elif len(l) >=3 and l[:2] == '  ' and l[2] in '-*':
-            ld[i] = ' #NEWLINEMARKER# ' + l[2:]
+        elif len(l) >=3 and l[:2] == '  ':
+            if l[2] in '-*':
+                isindented = False
+                ld[i] = ' #NEWLINEMARKER# ' + l[2:]
+            elif not isindented:
+                ld[i] = ' \n::\n\n' + l
+                isindented = True
+            else:
+                # leave as is
+                ld[i] = ' %s\n' + l
+        descr += ld[i][1:]
 
-    ld = u' '.join([l[1:] for l in ld])
-    ld = ld.replace('#NEWLINEMARKER# ', '\n\n')
+    descr = descr.replace('#NEWLINEMARKER# ', '\n\n')
     # cleanup any leftover (e.g. trailing markers)
-    ld = ld.replace('#NEWLINEMARKER#', '')
+    descr = descr.replace('#NEWLINEMARKER#', '')
     # safe-guard ReST active symbols
-    ld = re.sub(r'([\'`*])', r'\\\1', ld)
-    return ld
+    descr = re.sub(r'([\'`*])', r'\\\1', descr)
+    return descr
 
 
 def underline_text(text, symbol):
