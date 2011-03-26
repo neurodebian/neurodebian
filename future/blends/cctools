@@ -12,6 +12,7 @@ Published-Authors: Douglas Thain, Christopher Moretti, and Jeffrey Hemmes
 Published-In: Journal of Grid Computing, 7, 51-72
 Published-Year: 2009
 Published-DOI: 10.1007/s10723-008-9100-5
+Pkg-URL: http://neuro.debian.net/pkgs/cctools.html
 Pkg-Description: cooperative computing tools
  This is a collection of software that help users to share resources in a
  complex, heterogeneous, and unreliable computing environment. This includes:
