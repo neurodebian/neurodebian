@@ -3,7 +3,7 @@
 if [ $# -eq 1 ]; then
   family=${1%%-*}
   dist=${1##*-}
-elif [ $# -eq 2 ]; then
+elif [ $# -ge 2 ]; then
   family=$1
   dist=$2
 fi
