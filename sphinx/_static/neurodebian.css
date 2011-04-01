@@ -42,6 +42,30 @@ div.sphinxsidebar {
     font-size: 90%;
 }
 
+div#identica_widget {
+    font-size: 80%;
+}
+
+div#identica_widget p {
+	margin-top: 0.2em;
+	margin-bottom: 0.2em;
+	display: list-item;
+	list-style-image:url(neurodebian_bullet.png);
+}
+
+div.tweet {
+    border-bottom: 1px dotted #aaa;
+	margin-left: 2em;
+}
+
+span.time:before {
+    content: "[";
+}
+
+span.time:after {
+    content: "]";
+}
+
 div.clearer {
     clear: both;
 }

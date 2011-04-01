@@ -43,39 +43,18 @@ News
 
 .. raw:: html
 
- <script src="http://widgets.twimg.com/j/2/widget.js"></script>
- <script>
- new TWTR.Widget({
-   version: 2,
-   type: 'profile',
-   rpp: 15,
-   interval: 6000,
-   width: 'auto',
-   height: 150,
-   theme: {
-     shell: {
-       background: '#898989',
-       color: '#ffffff'
-     },
-     tweets: {
-       background: '#ffffff',
-       color: '#000000',
-       links: '#82032f'
-     }
-   },
-   features: {
-     scrollbar: true,
-     loop: false,
-     live: false,
-     hashtags: true,
-     timestamp: true,
-     avatars: false,
-     behavior: 'all'
-   }
- }).render().setUser('NeuroDebian').start();
+ <script src="_static/jquery.livetwitter.min.js"></script>
+ <div id="identica_widget"></div>
+ <script type="text/javascript">
+ $("#identica_widget").liveTwitter('neurodebian',
+                                   {service: 'identi.ca',
+                                    mode: 'user_timeline',
+                                    limit: 10,
+                                    rate: 300000});
  </script>
 
-Follow us on identi.ca_ or twitter_ to subscribe to the NeuroDebian news.
+Older news items are available on identi.ca_. Follow us on identi.ca_
+(preferred) or twitter_ to subscribe to the NeuroDebian news.
 
 .. _identi.ca: http://identi.ca/neurodebian
 .. _twitter: http://twitter.com/NeuroDebian
