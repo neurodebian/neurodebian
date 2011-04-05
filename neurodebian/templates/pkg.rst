@@ -201,4 +201,14 @@ Ubuntu
 *There are no official Ubuntu packages available.*
 {% endfor %}
 
+{% if db.main.other_pkg and not "neuro.debian" in db.main.other_pkg -%}
+
+Other Debian/Ubuntu Packages
+----------------------------
+
+- {{ db.main.other_pkg }}
+
+{% endif %}
+
+
 .. include:: ../link_names.txt
