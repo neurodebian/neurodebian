@@ -574,33 +574,112 @@ def assure_unicode(s):
 
 
 def convert_longdescr(ld):
+    """
+
+    yoh: I think all this long description conversion will keep giving
+    us problems since per se there is no strict regulations,
+    especially in blends files
+    """
     descr = u''
     ld = ld.replace('% ', '%% ')
+    ld = ld.replace(r'\t', '    ') # just in case assuming tab 4
     ld = ld.split('\n')
-    isindented = False
-    for i, l in enumerate(ld):
-        if l == ' .':
-            isindented = False
-            ld[i] = ' #NEWLINEMARKER# '
-        # look for embedded lists
-        elif len(l) >=3 and l[:2] == '  ':
-            if l[2] in '-*':
-                isindented = False
-                ld[i] = ' #NEWLINEMARKER# ' + l[2:]
-            elif not isindented:
-                ld[i] = ' \n::\n\n' + l
-                isindented = True
-            else:
-                # leave as is
-                ld[i] = ' %s\n' % l
-        descr += ld[i][1:]
+    re_leadblanks = re.compile("^ *")
+    re_itemized = re.compile("^[o*-+] +")
+    re_itemized_gr = re.compile("^( *)([-o*+] +)?(.*?)$")
+    re_description_gr = re.compile("^( *[^-]+ - )(.*?)$")
 
-    descr = descr.replace('#NEWLINEMARKER# ', '\n\n')
-    # cleanup any leftover (e.g. trailing markers)
-    descr = descr.replace('#NEWLINEMARKER#', '')
-    # safe-guard ReST active symbols
-    descr = re.sub(r'([\'`*])', r'\\\1', descr)
-    return descr
+    def unwrap_lines(lines):
+        out = []
+        indent_levels = [-1]
+        for l in lines:
+            match = re_itemized_gr.search(l).groups()
+            if ((len(match[0]) in indent_levels and match[1] is None)
+                or (len(match[0]) > max(indent_levels)+4)) \
+                and match[2].strip() != '.':
+                # append to previous
+                if not out[-1].endswith(" "):
+                    out[-1] += " "
+                out[-1] += match[2]
+            else:
+                out.append(l)
+
+            indent_levels = [len(match[0])]
+            if match[1] is not None:
+                indent_levels += [len(match[0]) + len(match[1])]
+            if match[2].strip() == '.':
+                # reset though if '.'
+                indent_levels = [-1]
+        return out
+
+    def dedent_withlevel(lines):
+        """Dedent `lines` given in a list provide dedented lines and how much was dedented
+        """
+        nleading = min([re_leadblanks.search(l).span()[1]
+                        for l in lines])
+        return [l[nleading:] for l in lines], nleading
+
+    def block_lines(ld, level=0):
+        # so we got list of lines
+        # dedent all of them first
+        ld, level = dedent_withlevel(ld)
+
+        # lets collect them in blocks/paragraphs
+        # 1. into paragraphs split by '.'
+        blocks, block = [], None
+
+        # next block can begin if
+        #  1.  . line
+        #  2. it was an itemized list and all items begin with
+        #     the same symbol or get further indented accordingly
+        #     so let's first check if it is an itemized list
+        itemized_match = re_itemized.search(ld[0])
+        if itemized_match:
+            allow_indents = " "*itemized_match.span()[1]
+        else:
+            allow_indents = None
+        for l in ld:
+            if block is None or l.strip() == '.' \
+                   or (len(l) and ( len(block) and (
+                (l.startswith(' ') and not block[-1].startswith(' '))
+                or
+                (not l.startswith(' ') and block[-1].startswith(' '))))):
+                block = []
+                blocks.append(block)
+            if l.strip() != '.':
+                block.append(l)
+        if len(blocks) == 1:
+            return blocks[0]
+        else:
+            return [block_lines(b, level+1) for b in blocks]
+
+    def blocks_to_rst(bls, level=0):
+        # check if this block is an itemized beast
+        #itemized_match = re_itemized_gr.search(bls[0][0])
+        #if itemized_match:
+        #    res += ' 'allow_indents = " "*itemized_match.span()[1]
+        out = ''
+        for b in bls:
+            if isinstance(b, list):
+                if len(b) == 1:
+                    out += " "*level + b[0] + '\n\n'
+                else:
+                    out += blocks_to_rst(b, level+1)
+            else:
+                e = " "*level + b + '\n'
+                if not re_itemized.search(b):
+                    pass
+                    #e += '\n'
+                elif len(e) and e[0] == ' ':
+                    # strip 1 leading blank
+                    e = e[1:]
+                out += e
+        out += '\n'
+        return out
+
+    ld = unwrap_lines(ld)
+    bls = block_lines(ld)
+    return blocks_to_rst(bls)
 
 
 def underline_text(text, symbol):
@@ -890,6 +969,21 @@ def main():
     cfg = SafeConfigParser()
     cfg.read(opts.cfg)
 
+    if cmd == 'debug_ld':
+        # load the db from file
+        db = read_db(opts.db)
+
+        for p in db.keys():
+        #for p in ['dtitk', 'psychopy', 'psytoolkit', 'ginkgo-cadx', 'gridengine-master', 'cctools']:
+            if not 'long_description' in db[p]['main']:
+                continue
+            ld = db[p]['main']['long_description']
+
+            print ">>>>>>>>> ", p
+            #print ld
+            print "----"
+            print convert_longdescr(ld)
+        raise SystemExit
     # load existing db, unless renew is requested
     if cmd == 'updatedb':
         db = {}
