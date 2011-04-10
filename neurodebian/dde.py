@@ -651,7 +651,7 @@ def convert_longdescr(ld):
         if len(blocks) == 1:
             return blocks[0]
         else:
-            return [block_lines(b, level+1) for b in blocks]
+            return [block_lines(b, level+1) for b in blocks if len(b)]
 
     def blocks_to_rst(bls, level=0):
         # check if this block is an itemized beast
