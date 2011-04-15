@@ -74,14 +74,11 @@ with the NeuroDebian repository key and package source information.
 
 .. include:: sources_lists
 
-Once this is done, you have to update the package index. Use your favorite
-package manager, e.g. synaptic, adept. In the terminal you can use
-:command:`apt-get` to achieve this::
+Once this is done, you have to update the package index and you are ready to
+install packages. Use your favorite package manager, e.g. synaptic, adept. In
+the terminal you can use :command:`apt-get`::
 
   sudo apt-get update
-
-Now, you can install packages, e.g.::
-
   sudo apt-get install mricron
 
 .. note::
