@@ -13,12 +13,12 @@ Why NeuroDebian?
 
   In the course of our own research endeavors |we| have joined forces to
   develop `PyMVPA -- a Python framework for multivariate pattern analysis of
-  neural data <http://www.pymvpa.org>`_.  To conveniently deployment PyMVPA for
+  neural data <http://www.pymvpa.org>`_.  To conveniently deploy PyMVPA for
   anyone using Debian-derived distributions this package repository was created
   initially.  Besides the PyMVPA_ project |we| collaborate with the `NiPy team
   <http://neuroimaging.scipy.org>`_ on various projects, such as NiBabel_ and
   NiPype_.  Quickly NeuroDebian_ became the ultimate integrated environment for
-  all these projects. We are now constantly working on enriching this
+  all these projects -- and we are constantly working on enriching this
   environment with as many additional relevant software as possible.
 
 
@@ -43,7 +43,7 @@ Why is NeuroDebian not a Pure Blend?
 
   NeuroDebian aims to be a platform that provides a staging area for
   neuroscience software packages on their way into Debian. All packages are
-  properly registered with the relevant `Debian Pure Blends`_, e.g.
+  properly registered in the relevant `Debian Pure Blends`_, e.g.
   `Debian Science Cognitive Neuroscience`_ or `Debian Med Imaging`_. Inside
   Debian these efforts already provide a suitable framework for this purpose,
   and hence there is no need to establish yet another one.
@@ -56,7 +56,7 @@ Why is NeuroDebian not a Pure Blend?
 I want to help. How do I get involved?
 --------------------------------------
 
-  We always need people to help with maintaining existing package. If you need
+  We always need people to help maintaining existing packages. If you need
   some additional software packaged and you want to try it on your own, we would
   be happy to mentor you. We also have a :ref:`list of ongoing and planned
   projects <projects>`, each listing a number of tasks that need to be done.
