@@ -79,7 +79,7 @@ Package popularity
 - Debian [1]_: {{ db.main.debian_popcon.insts }} (`more info <http://qa.debian.org/popcon.php?package={{ db.main.sv.split()[0] }}>`_)
 {% endif -%}
 {% if db.main.ubuntu_popcon -%}
-- Ubuntu [1]_: {{ db.main.ubuntu_popcon.insts }}
+- Ubuntu [1]_: {{ db.main.ubuntu_popcon.insts }} (`more info <http://popcon2.net/package/{{ db.main.sv.split()[0] }}.html#graph-1>`_)
 {% endif %}
 {% if db.nitrc and db.nitrc.downloads -%}
 - NITRC [2]_: {{ db.nitrc.downloads }}
