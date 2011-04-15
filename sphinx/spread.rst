@@ -19,6 +19,15 @@ NeuroDebian_ is `listed on the NITRC portal
 appreciate if you rate it or express your opinion in a review (see
 "Reviews & Ratings").
 
+Connect with us
+---------------
+
+We are not on Facebook. But if you are a NeuroDebian user, contributor, or
+simply a fan you are more than welcome to follow us on identi.ca_ or join
+the `NeuroDebian group on LinkedIn`_.
+
+.. _identi.ca: http://identi.ca/neurodebian
+.. _NeuroDebian group on LinkedIn: http://www.linkedin.com/groups?gid=3694689
 
 Reference from your website
 ---------------------------
