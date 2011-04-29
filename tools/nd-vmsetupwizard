@@ -115,7 +115,7 @@ FALSE "Emacs" "emacs" \
 FALSE "GNU Image Manipulation Program (Gimp)" "gimp" \
 FALSE "Octave" "octave,qtoctave" \
 FALSE "OpenOffice.org" "openoffice.org" \
-FALSE "Scientific Python" "ipython,python-numpy,python-matplotlib" \
+FALSE "Scientific Python" "ipython,python-scipy,python-matplotlib" \
 FALSE "TeX Live" "texlive" \
 FALSE "Adobe Flash browser plugin" "flashplugin-nonfree" \
 FALSE "Sun Java browser plugin" "sun-java6-plugin" \
