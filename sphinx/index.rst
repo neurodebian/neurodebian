@@ -191,6 +191,12 @@ If your are interested in mirroring the repository, please see the :ref:`faq`.
 Publications
 ============
 
+Hanke, M. (2011). `Integrating Condor into the Debian operating system
+<_files/Hanke_CondorDebianIntegration_CondorWeek2011.pdf>`_.
+*Talk given at* `CondorWeek 2011
+<http://www.cs.wisc.edu/condor/CondorWeek2011/wednesday_condor.html>`_,
+Madison, Wisconsin, USA.
+
 Hanke, M. & Halchenko, Y. O. (2010). :ref:`Report from the Debian booth at
 SfN2010 <chap_debian_booth_sfn2010>`. *Annual meeting of the Society for
 Neuroscience*, San Diego, USA.
