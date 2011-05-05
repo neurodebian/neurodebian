@@ -1,21 +1,2 @@
-Source: stimfit
 Tasks: debian-science/electrophysiology
-Homepage: http://code.google.com/p/stimfit/
-Version: 0.10.7
-Language: C, Python
-Author: Christoph Schmidt-Hieber <c.schmidt-hieber@wibr.ucl.ac.uk>
-License: GPL-2
-WNPP: 612375
-Pkg-Description: view and analyze electrophysiological data
- Stimfit is a free, fast and simple program for viewing and analyzing
- electrophysiological data.  It features an embedded Python shell that
- allows you to extend the program functionality by using numerical
- libraries such as NumPy and SciPy.
- .
- It includes stfio module which supports some electrophysiological
- file formats:
-  - Read/write: CFS binary data, HDF5 files, Axon text files,
-    ASCII files
-  - Read-only: Axon binary files (*.abf), Axograph files (*.axgd,
-    *.axgx), HEKA files (*.dat, from version 0.10)
-    * Write-only: Igor binary waves (*.ibw)
+Suggests: stimfit
