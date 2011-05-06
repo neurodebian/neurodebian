@@ -159,6 +159,8 @@ communication channels within the NeuroDebian community
 * neurodebian-devel_: Technical mailing list for discussions on
   NeuroDebian development
 
+You are welcome also to join #neurodebian IRC room on OFTC network if
+you have quick questions or want to join a live discussion.
 
 Acknowledgements
 ================
