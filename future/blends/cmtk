@@ -1,0 +1,20 @@
+Source: cmtk
+Tasks: debian-med/imaging
+Homepage: http://www.nitrc.org/projects/cmtk/
+Author: Torsten Rohlfing <torsten@nospam@synapse.sri.com>
+Language: C++
+License: GPL-3+
+Version: 1.7.0
+WNPP: 626225
+Pkg-Description: The Computational Morphometry Toolkit
+  A software toolkit for computational morphometry of biomedical
+  images, CMTK comprises a set of command line tools and a back-end
+  general-purpose library for processing and I/O.
+  .
+  The command line tools primarily provide the following
+  functionality: registration (affine and nonrigid; single and
+  multi-channel; pairwise and groupwise), image correction (MR bias
+  field estimation; interleaved image artifact correction), processing
+  (filters; combination of segmentations via voting and STAPLE;
+  shape-based averaging), statistics (t-tests; general linear
+  regression).
