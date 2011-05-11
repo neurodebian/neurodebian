@@ -46,6 +46,7 @@ Position: ``undergraduate, phd student, postdoc, professor/supervisor, sysadmin`
 employer: ``higher education (private/public funding), research facility
 (private/public funding, company)``
 country: ``long list``
+do you develop software intended to be used by other researchers: ``yes, no``
 
 Personal computing environment
 ------------------------------
@@ -58,6 +59,8 @@ If you are using multiple environment, please describe the one that you find
 most productive for research purposes. If you don't have access to a machine
 for research purposes that you administer yourself, instead, please indicate
 what kind of environment you would like to be doing your research in.
+
+Do you have it: ``yes, no``
 
 Type: ``laptop, commodity desktop, dedicated workstation,
 compute cluster, grid/cloud computing environment``
@@ -72,8 +75,10 @@ I prefer this environment because is offers (check all items that apply):
 Institutionally provided computing environment
 ----------------------------------------------
 
-The following questions are about 
+The following questions are about
 What your employer offers.
+
+Do you use it: ``yes, no``
 
 Type: ``laptop, commodity desktop, dedicated workstation,
 compute cluster, grid/cloud computing environment``
@@ -84,31 +89,39 @@ I dislike (check all items that apply):
 
 ``checkboxes (limited set of available software; slow admin response; ...)``
 
+
+
 Virtualization
 --------------
 
-Do you use it:
+Do you use it? ``yes, no``
 
 IF
 ~~
 
 What solution: ``multi select vbox, vmware, kvm, xem, qemu``
 On what host system: ``detailed list``
-With what client system ``detailed list``
+With what guest system ``detailed list``
 
-Why do you use it:
+Why do you use it: ``multi select``
 
-Otherwise incompatible with my system
-Flexible snapshots
-Portable
+  - Otherwise software incompatible with my system
+  - Flexible snapshots
+  - Portable (test developed software across platforms)
 
 What fraction of computing task do you do in a VM?
+
+Do you do computing on clusters?
+Do you do computing in a cloud?
 
 
 Software usage
 --------------
 
 What software are you using in your research?
+
+? Do you use real-time Linux kernel? if yes, which: ``multi select RTAI, Xenomai, RT_Linux``
+
 
 General purpose computing
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -118,6 +131,12 @@ General purpose computing
 Matlab, R, Python, Octave, ...
 
 ``various collections of software for various purposes``
+
+
+NeuroDebian
+-----------
+
+Do you use NeuroDebian repository: ``yes, no``
 
 ....
 
