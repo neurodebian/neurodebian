@@ -141,6 +141,136 @@ Do you use NeuroDebian repository: ``yes, no``
 ....
 
 
+Generic computing/scripting/programming environments
+
+C/C++
+IDL
+LISREL
+Maple
+Mathcad
+Mathematica
+Matlab
+Octave
+Perl
+Python
+R
+Ruby
+Scilab
+SPSS
+SCIRun
+Shell scripting
+
+
+Distributed Computing - frameworks and controllers
+
+SGE
+Torque/OpenPBS/Maui
+Condor
+Globus
+MPI (any)
+IPython
+
+
+Imaging
+
+3D Slicer
+AFNI
+Aeskulap
+Amide
+BIRN Tools
+BRAINS Tools
+Bioimage Suite
+BrainMap
+BrainVISA/Anatomist
+BrainVoyager
+CMTK
+Caret
+ConnectomeViewer
+DSI Studio
+DTI-TK
+Diffusion Toolkit/Trackvis
+FSL
+Fiji
+FreeSurfer
+ITK/SNAP
+ImageJ
+Invesalius
+LONI
+Lipsia
+MIPAV/JIST
+MRIcron
+MRtrix
+Mango
+NiPy/NiTime/DiPy/NiPype
+PyMVPA
+REST
+SPM
+V3D
+VoxBo
+
+Data management
+
+XNAT/PyXNAT/...
+Human Imaging Database (HID)
+
+Neural Systems Modeling
+
+Brian
+iqr
+iNVT
+NEURON
+NEST
+Genesis
+Moose
+PCSIM
+PyNN
+
+Electrophysiology
+
+BioSig
+BrainStorm
+Chronus
+EEGLAB
+Fieldtrip
+LORETA/sLORETA
+OpenMEEG
+Openelectrophy
+RTXI
+Relacs
+?Trellis-neuro
+
+Brain-computer interface
+
+BCI2000
+OpenVIBE
+Pyff
+
+Hardware interface/Data acquisition
+
+Comedi
+EPICS
+MX
+
+Real-time solutions
+
+RTAI
+Xenomai
+RTLinux
+PREEMPT_RT
+
+Psychophysics/Experimental Control
+
+E-Prime
+Presentation
+PsychoPy
+PyEPL
+Psychtoolbox
+Psytoolkit
+OpenSesame
+VisionEgg
+Tscope
+
+
 .. raw:: html
 
    <input value="Go" type="button" onclick='JavaScript:xmlhttpPost("/cgi-bin/surveycollector.cgi")'></p>
