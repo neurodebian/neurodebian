@@ -150,8 +150,23 @@ software environment you would like to be doing your research in.
 .. raw:: html
 
    <table>
-   <tr>
+   <tr class="oddrow">
    <td>
+
+What fraction of your research activity time do you spend in this software
+environment as opposed to any other environment that you migh have access to?
+
+.. raw:: html
+
+   </td><td class="response">
+   <select name="pers_time" size="1">
+   <option value="none" selected="selected" label="Select an option">Select an option</option>
+   <option value="notime" label="None/I don't have this environment">None/I don't have this environment</option>
+   <option value="little" label="Less then half of the time">Less then half of the time</option>
+   <option value="most" label="More than half of the time">More than half of the time</option>
+   <option value="always" label="All of the time">All of the time</option>
+   </select>
+   </td></tr><tr><td>
 
 What type of hardware are you using?
 
@@ -166,7 +181,7 @@ What type of hardware are you using?
    <option value="cluster" label="Compute cluster">Compute cluster</option>
    <option value="grid" label="Grid/Cloud-computing facility">Grid/Cloud-computing facility</option>
    </select>
-   </td></tr><tr><td>
+   </td></tr><tr class="oddrow"><td>
 
 What operating system is this environment running on?
 
@@ -180,21 +195,6 @@ What operating system is this environment running on?
 
 .. raw:: html
 
-   </select>
-   </td></tr><tr><td>
-
-What fraction of your research activity time do you spend in this software
-environment as opposed to any other environment that you migh have access to?
-
-.. raw:: html
-
-   </td><td class="response">
-   <select name="pers_time" size="1">
-   <option value="none" selected="selected" label="Select an option">Select an option</option>
-   <option value="notime" label="None/I don't have this environment">None/I don't have this environment</option>
-   <option value="little" label="Less then half of the time">Less then half of the time</option>
-   <option value="most" label="More than half of the time">More than half of the time</option>
-   <option value="always" label="All of the time">All of the time</option>
    </select>
    </td></tr><tr><td>
 
@@ -340,8 +340,23 @@ your particular research purposes.
 .. raw:: html
 
    <table class="questionaire">
-   <tr>
+   <tr class="oddrow">
    <td>
+
+What fraction of time do you spend in this environment during your research
+activities?
+
+.. raw:: html
+
+   </td><td class="response">
+   <select name="man_time" size="1">
+   <option value="none" selected="selected" label="Select an option">Select an option</option>
+   <option value="notime" label="None/I don't use this">None/I don't use this</option>
+   <option value="little" label="Less then half of the time">Less then half of the time</option>
+   <option value="most" label="More than half of the time">More than half of the time</option>
+   <option value="always" label="All of the time">All of the time</option>
+   </select>
+   </td></tr><tr><td>
 
 What type of hardware is this software environment running on?
 
@@ -356,7 +371,7 @@ What type of hardware is this software environment running on?
    <option value="cluster" label="Compute cluster">Compute cluster</option>
    <option value="grid" label="Grid/Cloud-computing facility">Grid/Cloud-computing facility</option>
    </select>
-   </td></tr><tr><td>
+   </td></tr><tr class="oddrow"><td>
 
 
 What operating system is this environment running on?
@@ -371,21 +386,6 @@ What operating system is this environment running on?
 
 .. raw:: html
 
-   </select>
-   </td></tr><tr><td>
-
-What fraction of time do you spend in this environment during your research
-activities?
-
-.. raw:: html
-
-   </td><td class="response">
-   <select name="man_time" size="1">
-   <option value="none" selected="selected" label="Select an option">Select an option</option>
-   <option value="notime" label="None/I don't use this">None/I don't use this</option>
-   <option value="little" label="Less then half of the time">Less then half of the time</option>
-   <option value="most" label="More than half of the time">More than half of the time</option>
-   <option value="always" label="All of the time">All of the time</option>
    </select>
    </td>
    </tr>
@@ -572,7 +572,7 @@ I have the ability to easily create snapshot of my whole analysis environment.
    </td></tr><tr class="oddrow"><td class="task">
 
 
-I can take my complete analysis environment with me and run in on different
+I can take my complete analysis environment with me and run it on different
 machines.
 
 .. raw:: html
@@ -582,7 +582,7 @@ machines.
    <div class="rating">Mostly agree<br /><input type="radio" name="virt_r3" value="yes" /></div>
    <div class="rating">Mostly disagree<br /><input type="radio" name="virt_r3" value="yes" /></div>
    <div class="rating">Definitely disagree<br /><input type="radio" name="virt_r3" value="yes" /></div>
-   </td></tr><tr class="oddrow"><td class="task">
+   </td></tr><tr><td class="task">
 
 The performance of a virtual machine is sufficient for routine application in my
 research.
@@ -764,16 +764,18 @@ Imaging
    <td class="response"><input type="checkbox" name="sw" value="loni" />LONI</td>
    <td class="response"><input type="checkbox" name="sw" value="lipsia" />Lipsia</td>
    </tr><tr>
-   <td class="response"><input type="checkbox" name="sw" value="mipav" />MIPAV/JIST</td>
-   <td class="response"><input type="checkbox" name="sw" value="mricron" />MRIcron</td>
-   <td class="response"><input type="checkbox" name="sw" value="mrtrix" />MRtrix</td>
    <td class="response"><input type="checkbox" name="sw" value="mango" />Mango</td>
+   <td class="response"><input type="checkbox" name="sw" value="mipav" />MIPAV/JIST</td>
+   <td class="response"><input type="checkbox" name="sw" value="mni" />MNI tools</td>
+   <td class="response"><input type="checkbox" name="sw" value="mricron" />MRIcron</td>
    </tr><tr class="oddrow">
+   <td class="response"><input type="checkbox" name="sw" value="mrtrix" />MRtrix</td>
+   <td class="response"><input type="checkbox" name="sw" value="mvpa" />MVPA Toolbox</td>
    <td class="response"><input type="checkbox" name="sw" value="nipy" />NiPy/NiTime/DiPy/NiPype</td>
    <td class="response"><input type="checkbox" name="sw" value="pymvpa" />PyMVPA</td>
+   </tr><tr>
    <td class="response"><input type="checkbox" name="sw" value="rest" />REST</td>
    <td class="response"><input type="checkbox" name="sw" value="spm" />SPM</td>
-   </tr><tr>
    <td class="response"><input type="checkbox" name="sw" value="v3d" />V3D</td>
    <td class="response"><input type="checkbox" name="sw" value="voxbo" />VoxBo</td>
    </tr></table>
@@ -806,24 +808,27 @@ Neural Systems Modeling
    <td class="response"><input type="checkbox" name="sw" value="topographica" />Topographica</td>
    </tr></table>
 
-Electrophysiology
-~~~~~~~~~~~~~~~~~
+Electrophysiology, MEG/EEG
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. raw:: html
 
    <table class="questionaire"><tr>
+   <td class="response"><input type="checkbox" name="sw" value="besa" />BESA</td>
    <td class="response"><input type="checkbox" name="sw" value="biosig" />BioSig</td>
    <td class="response"><input type="checkbox" name="sw" value="brainstorm" />BrainStorm</td>
    <td class="response"><input type="checkbox" name="sw" value="chronus" />Chronus</td>
    <td class="response"><input type="checkbox" name="sw" value="eeglab" />EEGLAB</td>
-   <td class="response"><input type="checkbox" name="sw" value="fieldtrip" />Fieldtrip</td>
+   <td class="response"><input type="checkbox" name="sw" value="elekta" />Elekta Neuromag</td>
    </tr><tr class="oddrow">
+   <td class="response"><input type="checkbox" name="sw" value="fieldtrip" />Fieldtrip</td>
    <td class="response"><input type="checkbox" name="sw" value="loreta" />LORETA/sLORETA</td>
+   <td class="response"><input type="checkbox" name="sw" value="mne" />MNE suite</td>
    <td class="response"><input type="checkbox" name="sw" value="neuroexplorer" />NeuroExplorer</td>
    <td class="response"><input type="checkbox" name="sw" value="openmeeg" />OpenMEEG</td>
    <td class="response"><input type="checkbox" name="sw" value="openelectrophy" />Openelectrophy</td>
-   <td class="response"><input type="checkbox" name="sw" value="rtxi" />RTXI</td>
    </tr><tr>
+   <td class="response"><input type="checkbox" name="sw" value="rtxi" />RTXI</td>
    <td class="response"><input type="checkbox" name="sw" value="relacs" />Relacs</td>
    <td class="response"><input type="checkbox" name="sw" value="trellis" />?Trellis-neuro</td>
    </tr></table>
