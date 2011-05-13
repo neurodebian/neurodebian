@@ -2,8 +2,10 @@
 Scientific software usage in neuroscience research
 ==================================================
 
-This survey should take about five minutes. After submission you will be
-immediately presented with some statistics on previous responses.
+This survey should take about five minutes. Immediately after submission you
+will be presented with some statistics on previous responses. Please try to
+answer as many questions as you can, but don't worry if you cannot answer all
+of them.
 
 .. raw:: html
 
