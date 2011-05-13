@@ -4,41 +4,52 @@ Scientific software usage in neuroscience research
 
 .. raw:: html
 
-   <script language="Javascript">
-   function xmlhttpPost(strURL) {
-       var xmlHttpReq = false;
-       var self = this;
-       // Mozilla/Safari
-       if (window.XMLHttpRequest) {
-           self.xmlHttpReq = new XMLHttpRequest();
-       }
-       // IE
-       else if (window.ActiveXObject) {
-           self.xmlHttpReq = new ActiveXObject("Microsoft.XMLHTTP");
-       }
-       self.xmlHttpReq.open('POST', strURL, true);
-       self.xmlHttpReq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-       self.xmlHttpReq.onreadystatechange = function() {
-           if (self.xmlHttpReq.readyState == 4) {
-               updatepage(self.xmlHttpReq.responseText);
-           }
-       }
-       self.xmlHttpReq.send(getquerystring());
-   }
+   <script type="text/javascript" src="_static/jquery.js"></script> 
+   <script type="text/javascript" src="_static/jquery.form.js"></script> 
 
-   function getquerystring() {
-       var form     = document.forms['f1'];
-       var word = form.word.value;
-       qstr = 'w=' + escape(word);  // NOTE: no '?' before querystring
-       return qstr;
-   }
+   <script type="text/javascript">
+   // prepare the form when the DOM is ready 
+   $(document).ready(function() { 
+       var options = { 
+           //beforeSubmit:  showRequest,  // pre-submit callback 
+           success:       showResponse,  // post-submit callback 
+           // other available options: 
+           url: "/cgi-bin/surveycollector.cgi",
+           type: "post",
+           dataType:  "json",
+           clearForm: false,
+           resetForm: false
+       }; 
 
-   function updatepage(str){
-       document.getElementById("result").innerHTML = str;
+       $('#nss_survey').submit(function() { 
+           $(this).ajaxSubmit(options); 
+
+           // !!! Important !!! 
+           // always return false to prevent standard browser submit and page navigation 
+           return false; 
+       }); 
+   }); 
+
+   // pre-submit callback 
+   function showRequest(formData, jqForm, options) { 
+       var queryString = $.param(formData); 
+       alert('About to submit: \n\n' + queryString); 
+       return true; 
+   } 
+
+   function showResponse(data, statusText, xhr, $form)  { 
+       // reset form if server reports success
+       if (data.success == true) {
+           $('#nss_survey').resetForm();
+           $('#server_response').html("All good");
+       } else {
+           alert('status: ' + statusText + '\n\nresponseText: \n' + data.message + 
+           '\n\nThe output div should have already been updated with the responseText.'); 
+       }
    }
    </script>
+   <form id="nss_survey" action="/cgi-bin/surveycollector.cgi" method="post">
 
-   <form name="nss_survey" enctype="application/x-www-form-urlencoded">
 
 Personal background
 -------------------
@@ -534,6 +545,137 @@ What **host operating system** are the virtual machines running on?
 What are your reasons for employing virtualization in you research?
 Please indicate how much you agree to the following statements.
 
+.. raw:: html
+
+   </td></tr><tr class="oddrow"><td class="task">
+
+I can run software that is otherwise incompatible with my system.
+
+.. raw:: html
+
+   </td><td class="response">
+   <div class="rating">Definitely agree<br /><input type="radio" name="inst_r1" value="yes" /></div>
+   <div class="rating">Mostly agree<br /><input type="radio" name="inst_r1" value="yes" /></div>
+   <div class="rating">Mostly disagree<br /><input type="radio" name="inst_r1" value="yes" /></div>
+   <div class="rating">Definitely disagree<br /><input type="radio" name="inst_r1" value="yes" /></div>
+   </td></tr><tr><td class="task">
+
+I have the ability to easily create snapshot of my whole analysis environment.
+
+.. raw:: html
+
+   </td><td class="response">
+   <div class="rating">Definitely agree<br /><input type="radio" name="inst_r1" value="yes" /></div>
+   <div class="rating">Mostly agree<br /><input type="radio" name="inst_r1" value="yes" /></div>
+   <div class="rating">Mostly disagree<br /><input type="radio" name="inst_r1" value="yes" /></div>
+   <div class="rating">Definitely disagree<br /><input type="radio" name="inst_r1" value="yes" /></div>
+   </td></tr><tr class="oddrow"><td class="task">
+
+
+I can take my complete analysis environment with me and run in on different
+machines.
+
+.. raw:: html
+
+   </td><td class="response">
+   <div class="rating">Definitely agree<br /><input type="radio" name="inst_r1" value="yes" /></div>
+   <div class="rating">Mostly agree<br /><input type="radio" name="inst_r1" value="yes" /></div>
+   <div class="rating">Mostly disagree<br /><input type="radio" name="inst_r1" value="yes" /></div>
+   <div class="rating">Definitely disagree<br /><input type="radio" name="inst_r1" value="yes" /></div>
+   </td>
+   </tr>
+   </table>
+
+
+Resources for scientific software
+---------------------------------
+
+Where do you obtain scientific software that you employ in your research? Please
+check all items that apply.
+
+.. raw:: html
+
+   <table class="questionaire">
+   <tr class="oddrow">
+   <td class="response"><input type="checkbox" name="software_resource" value="pet" /></td><td>
+
+Directly form vendor or project website
+
+.. raw:: html
+
+   </td></tr><tr><td class="response"><input type="checkbox" name="software_resource" value="" /></td><td>
+
+Retailer
+
+.. raw:: html
+
+   </td></tr><tr class="oddrow"><td class="response"><input type="checkbox" name="software_resource" value="" /></td><td>
+
+`Extra Packages for Enterprise Linux (EPEL) <http://fedoraproject.org/wiki/EPEL>`_
+
+.. raw:: html
+
+   </td></tr><tr><td class="response"><input type="checkbox" name="software_resource" value="" /></td><td>
+
+`Fink <http://www.finkproject.org>`_
+
+.. raw:: html
+
+   </td></tr><tr class="oddrow"><td class="response"><input type="checkbox" name="software_resource" value="" /></td><td>
+
+`FreeBSD ports <http://www.freebsd.org/ports/science.html>`_
+
+.. raw:: html
+
+   </td></tr><tr><td class="response"><input type="checkbox" name="software_resource" value="" /></td><td>
+
+`International neuroinformatics Coordinating Facility (INCF) Research Tools <http://www.incf.org/resources/research-tools>`_
+
+.. raw:: html
+
+   </td></tr><tr class="oddrow"><td class="response"><input type="checkbox" name="software_resource" value="" /></td><td>
+
+`Macports <http://www.macports.org>`_
+
+.. raw:: html
+
+   </td></tr><tr><td class="response"><input type="checkbox" name="software_resource" value="" /></td><td>
+
+`Matlab Central <http://www.mathworks.com/matlabcentral>`_
+
+.. raw:: html
+
+   </td></tr><tr class="oddrow"><td class="response"><input type="checkbox" name="software_resource" value="" /></td><td>
+
+`NeuroDebian <http://neuro.debian.net>`_
+
+.. raw:: html
+
+   </td></tr><tr><td class="response"><input type="checkbox" name="software_resource" value="" /></td><td>
+
+`Neuroimaging Informatics Tools and Resources Clearinghouse (NITRC) <http://www.nitrc.org>`_
+
+.. raw:: html
+
+   </td></tr><tr class="oddrow"><td class="response"><input type="checkbox" name="software_resource" value="" /></td><td>
+
+`Python Package Index (PyPi) <http://pypi.python.org>`_
+
+.. raw:: html
+
+   </td></tr><tr><td class="response"><input type="checkbox" name="software_resource" value="" /></td><td>
+
+`Sourceforge <http://www.sourceforge.net>`_
+
+.. raw:: html
+
+   </td></tr><tr><td class="response"><input type="checkbox" name="software_resource" value="other" /></td><td>
+   <input name="other_resource" type="text" size="40" maxlength="200">
+   </td></tr></table>
+
+Software selection
+------------------
+
 Generic computing/scripting/programming environments
 
 C/C++
@@ -664,137 +806,11 @@ VisionEgg
 Tscope
 
 
-.. raw:: html
-
-   </td></tr><tr class="oddrow"><td class="task">
-
-I can run software that is otherwise incompatible with my system.
 
 .. raw:: html
 
-   </td><td class="response">
-   <div class="rating">Definitely agree<br /><input type="radio" name="inst_r1" value="yes" /></div>
-   <div class="rating">Mostly agree<br /><input type="radio" name="inst_r1" value="yes" /></div>
-   <div class="rating">Mostly disagree<br /><input type="radio" name="inst_r1" value="yes" /></div>
-   <div class="rating">Definitely disagree<br /><input type="radio" name="inst_r1" value="yes" /></div>
-   </td></tr><tr><td class="task">
-
-I have the ability to easily create snapshot of my whole analysis environment.
-
-.. raw:: html
-
-   </td><td class="response">
-   <div class="rating">Definitely agree<br /><input type="radio" name="inst_r1" value="yes" /></div>
-   <div class="rating">Mostly agree<br /><input type="radio" name="inst_r1" value="yes" /></div>
-   <div class="rating">Mostly disagree<br /><input type="radio" name="inst_r1" value="yes" /></div>
-   <div class="rating">Definitely disagree<br /><input type="radio" name="inst_r1" value="yes" /></div>
-   </td></tr><tr class="oddrow"><td class="task">
-
-
-I can take my complete analysis environment with me and run in on different
-machines.
-
-.. raw:: html
-
-   </td><td class="response">
-   <div class="rating">Definitely agree<br /><input type="radio" name="inst_r1" value="yes" /></div>
-   <div class="rating">Mostly agree<br /><input type="radio" name="inst_r1" value="yes" /></div>
-   <div class="rating">Mostly disagree<br /><input type="radio" name="inst_r1" value="yes" /></div>
-   <div class="rating">Definitely disagree<br /><input type="radio" name="inst_r1" value="yes" /></div>
-   </td>
-   </tr>
-   </table>
-
-
-Resources for scientific software
----------------------------------
-
-Where do you obtain scientific software that you employ in your research? Please
-check all items that apply.
-
-.. raw:: html
-
-   <table class="questionaire">
-   <tr class="oddrow">
-   <td class="response"><input type="checkbox" name="software_resource" value="pet" /></td><td>
-
-Directly form vendor or project website
-
-.. raw:: html
-
-   </td></tr><tr><td class="response"><input type="checkbox" name="software_resource" value="" /></td><td>
-
-Retailer
-
-.. raw:: html
-
-   </td></tr><tr class="oddrow"><td class="response"><input type="checkbox" name="software_resource" value="" /></td><td>
-
-`Extra Packages for Enterprise Linux (EPEL) <http://fedoraproject.org/wiki/EPEL>`_
-
-.. raw:: html
-
-   </td></tr><tr><td class="response"><input type="checkbox" name="software_resource" value="" /></td><td>
-
-`Fink <http://www.finkproject.org>`_
-
-.. raw:: html
-
-   </td></tr><tr class="oddrow"><td class="response"><input type="checkbox" name="software_resource" value="" /></td><td>
-
-`FreeBSD ports <http://www.freebsd.org/ports/science.html>`_
-
-.. raw:: html
-
-   </td></tr><tr><td class="response"><input type="checkbox" name="software_resource" value="" /></td><td>
-
-`International neuroinformatics Coordinating Facility (INCF) Research Tools <http://www.incf.org/resources/research-tools>`_
-
-.. raw:: html
-
-   </td></tr><tr class="oddrow"><td><input type="checkbox" name="software_resource" value="" /></td><td>
-
-`Macports <http://www.macports.org>`_
-
-.. raw:: html
-
-   </td></tr><tr><td class="response"><input type="checkbox" name="software_resource" value="" /></td><td>
-
-`NeuroDebian <http://neuro.debian.net>`_
-
-.. raw:: html
-
-   </td></tr><tr class="oddrow"><td class="response"><input type="checkbox" name="software_resource" value="" /></td><td>
-
-`Neuroimaging Informatics Tools and Resources Clearinghouse (NITRC) <http://www.nitrc.org>`_
-
-.. raw:: html
-
-   </td></tr><tr><td class="response"><input type="checkbox" name="software_resource" value="" /></td><td>
-
-`Python Package Index (PyPi) <http://pypi.python.org>`_
-
-.. raw:: html
-
-   </td></tr><tr class="oddrow"><td class="response"><input type="checkbox" name="software_resource" value="" /></td><td>
-
-`Sourceforge <http://www.sourceforge.net>`_
-
-.. raw:: html
-
-   </td></tr><tr><td class="response"><input type="checkbox" name="software_resource" value="other" /></td><td>
-   <input name="other_resource" type="text" size="40" maxlength="200">
-   </td></tr></table>
-
-Software selection
-------------------
-
-.. raw:: html
-
-   <input value="Go" type="button"
-          onclick='JavaScript:xmlhttpPost("/cgi-bin/surveycollector.cgi")'>
-
-   <div id="result"></div>
+   <input value="Go" type="submit">
+   <div id="server_response"></div>
    </form>
 
 
