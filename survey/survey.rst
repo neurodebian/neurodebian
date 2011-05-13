@@ -9,40 +9,31 @@ of them.
 
 .. raw:: html
 
-   <script type="text/javascript" src="_static/jquery.js"></script> 
-   <script type="text/javascript" src="_static/jquery.form.js"></script> 
+   <script type="text/javascript" src="../_static/jquery.js"></script> 
+   <script type="text/javascript" src="jquery.form.js"></script> 
 
    <script type="text/javascript">
-   // prepare the form when the DOM is ready 
-   $(document).ready(function() { 
-       var options = { 
-           //beforeSubmit:  showRequest,  // pre-submit callback 
-           success:       showResponse,  // post-submit callback 
-           // other available options: 
+   // prepare the form when the DOM is ready
+   $(document).ready(function() {
+       var options = {
+           success:       showResponse,  // post-submit callback
+           // other available options:
            url: "/cgi-bin/surveycollector.cgi",
            type: "post",
            dataType:  "json",
            clearForm: false,
            resetForm: false
-       }; 
+       };
 
-       $('#nss_survey').submit(function() { 
-           $(this).ajaxSubmit(options); 
-
-           // !!! Important !!! 
-           // always return false to prevent standard browser submit and page navigation 
-           return false; 
+       $('#nss_survey').submit(function() {
+           $(this).ajaxSubmit(options);
+           // !!! Important !!!
+           // always return false to prevent standard browser submit and page navigation
+           return false;
        }); 
    }); 
 
-   // pre-submit callback 
-   function showRequest(formData, jqForm, options) { 
-       var queryString = $.param(formData); 
-       alert('About to submit: \n\n' + queryString); 
-       return true; 
-   } 
-
-   function showResponse(data, statusText, xhr, $form)  { 
+   function showResponse(data, statusText, xhr, $form)  {
        // reset form if server reports success
        if (data.success == true) {
            $('#nss_survey').resetForm();
