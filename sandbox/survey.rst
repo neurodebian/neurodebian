@@ -78,7 +78,7 @@ Where are you working?
 .. raw:: html
 
    </td><td class="response">
-   <select name="position" size="1">
+   <select name="bg_employer" size="1">
    <option value="none" selected="selected" label="Select an option"></option>
    <option value="edu_priv" label="Higher education (privately funded)"></option>
    <option value="edu_pub" label="Higher education (publicly funded)"></option>
@@ -93,7 +93,7 @@ What is your position?
 .. raw:: html
 
    </td><td class="response">
-   <select name="position" size="1">
+   <select name="bg_position" size="1">
    <option value="none" selected="selected" label="Select an option"></option>
    <option value="undergrad" label="Undergraduate student"></option>
    <option value="graduate" label="PhD student"></option>
@@ -111,15 +111,15 @@ What type of data are you working with? Please check all items that apply.
 
    </td><td class="response">
    <table><tr><td>
-   <input type="checkbox" name="datamod" value="behav" />Behavioral<br />
-   <input type="checkbox" name="datamod" value="mri" />MRI/fMRI/DTI<br />
-   <input type="checkbox" name="datamod" value="meeg" />EEG/MEG<br />
+   <input type="checkbox" name="bg_datamod" value="behav" />Behavioral<br />
+   <input type="checkbox" name="bg_datamod" value="mri" />MRI/fMRI/DTI<br />
+   <input type="checkbox" name="bg_datamod" value="meeg" />EEG/MEG<br />
    </td><td>
-   <input type="checkbox" name="datamod" value="pet" />PET/SPECT<br />
-   <input type="checkbox" name="datamod" value="ephys" />Electrophysiology<br />
-   <input type="checkbox" name="datamod" value="spectro" />Microspectroscopy<br />
-   <input type="checkbox" name="datamod" value="other" />
-   <input name="other_datamodality" type="text" size="20" maxlength="40">
+   <input type="checkbox" name="bg_datamod" value="pet" />PET/SPECT<br />
+   <input type="checkbox" name="bg_datamod" value="ephys" />Electrophysiology<br />
+   <input type="checkbox" name="bg_datamod" value="spectro" />Microspectroscopy<br />
+   <input type="checkbox" name="bg_datamod" value="other" />
+   <input name="bg_other_datamod" type="text" size="20" maxlength="40">
    </td></tr></table>
    </td></tr><tr class="oddrow"><td>
 
@@ -128,8 +128,8 @@ Are you developing software that is intended to be used by other researchers?
 .. raw:: html
 
    </td><td class="response">
-   <span><input type="radio" name="developer" value="yes" />Yes</span>
-   <span><input type="radio" name="developer" value="no" checked="checked" />No</span>
+   <span><input type="radio" name="bg_developer" value="yes" />Yes</span>
+   <span><input type="radio" name="bg_developer" value="no" checked="checked" />No</span>
    </td>
    </tr>
    </table>
@@ -158,7 +158,7 @@ What type of hardware are you using?
 .. raw:: html
 
    </td><td class="response">
-   <select name="pref_env" size="1">
+   <select name="pers_hardware" size="1">
    <option value="none" selected="selected" label="Select an option"></option>
    <option value="laptop" label="Laptop/Portable device"></option>
    <option value="desktop" label="Commodity desktop"></option>
@@ -173,7 +173,7 @@ What operating system is this environment running on?
 .. raw:: html
 
    </td><td class="response">
-   <select name="pref_env" size="1">
+   <select name="pers_os" size="1">
 
 .. raw:: html
    :file: select_os_options.inc
@@ -189,7 +189,7 @@ environment as opposed to any other environment that you migh have access to?
 .. raw:: html
 
    </td><td class="response">
-   <select name="pref_time" size="1">
+   <select name="pers_time" size="1">
    <option value="none" selected="selected" label="Select an option"></option>
    <option value="notime" label="None/I don't have this environment"></option>
    <option value="little" label="Less then half of the time"></option>
@@ -205,7 +205,7 @@ installing and updating scientific software.
 .. raw:: html
 
    </td><td class="response">
-   <input name="maint_time" type="text" size="3" maxlength="3"> hours per month
+   <input name="pers_maint_time" type="text" size="3" maxlength="3"> hours per month
    </td>
    </tr>
    </table>
@@ -231,10 +231,10 @@ Please indicate how much you agree to the following statements.
 .. raw:: html
 
    </td><td class="response">
-   <div class="rating">Definitely agree<br /><input type="radio" name="inst_r1" value="yes" /></div>
-   <div class="rating">Mostly agree<br /><input type="radio" name="inst_r1" value="yes" /></div>
-   <div class="rating">Mostly disagree<br /><input type="radio" name="inst_r1" value="yes" /></div>
-   <div class="rating">Definitely disagree<br /><input type="radio" name="inst_r1" value="yes" /></div>
+   <div class="rating">Definitely agree<br /><input type="radio" name="pers_r1" value="yes" /></div>
+   <div class="rating">Mostly agree<br /><input type="radio" name="pers_r1" value="yes" /></div>
+   <div class="rating">Mostly disagree<br /><input type="radio" name="pers_r1" value="yes" /></div>
+   <div class="rating">Definitely disagree<br /><input type="radio" name="pers_r1" value="yes" /></div>
    </td></tr><tr><td class="task">
 
 
@@ -243,10 +243,10 @@ Please indicate how much you agree to the following statements.
 .. raw:: html
 
    </td><td class="response">
-   <div class="rating">Definitely agree<br /><input type="radio" name="inst_r1" value="yes" /></div>
-   <div class="rating">Mostly agree<br /><input type="radio" name="inst_r1" value="yes" /></div>
-   <div class="rating">Mostly disagree<br /><input type="radio" name="inst_r1" value="yes" /></div>
-   <div class="rating">Definitely disagree<br /><input type="radio" name="inst_r1" value="yes" /></div>
+   <div class="rating">Definitely agree<br /><input type="radio" name="pers_r2" value="yes" /></div>
+   <div class="rating">Mostly agree<br /><input type="radio" name="pers_r2" value="yes" /></div>
+   <div class="rating">Mostly disagree<br /><input type="radio" name="pers_r2" value="yes" /></div>
+   <div class="rating">Definitely disagree<br /><input type="radio" name="pers_r2" value="yes" /></div>
    </td></tr><tr class="oddrow"><td class="task">
 
 
@@ -255,10 +255,10 @@ Please indicate how much you agree to the following statements.
 .. raw:: html
 
    </td><td class="response">
-   <div class="rating">Definitely agree<br /><input type="radio" name="inst_r1" value="yes" /></div>
-   <div class="rating">Mostly agree<br /><input type="radio" name="inst_r1" value="yes" /></div>
-   <div class="rating">Mostly disagree<br /><input type="radio" name="inst_r1" value="yes" /></div>
-   <div class="rating">Definitely disagree<br /><input type="radio" name="inst_r1" value="yes" /></div>
+   <div class="rating">Definitely agree<br /><input type="radio" name="pers_r3" value="yes" /></div>
+   <div class="rating">Mostly agree<br /><input type="radio" name="pers_r3" value="yes" /></div>
+   <div class="rating">Mostly disagree<br /><input type="radio" name="pers_r3" value="yes" /></div>
+   <div class="rating">Definitely disagree<br /><input type="radio" name="pers_r3" value="yes" /></div>
    </td></tr><tr><td class="task">
 
 
@@ -267,10 +267,10 @@ Please indicate how much you agree to the following statements.
 .. raw:: html
 
    </td><td class="response">
-   <div class="rating">Definitely agree<br /><input type="radio" name="inst_r1" value="yes" /></div>
-   <div class="rating">Mostly agree<br /><input type="radio" name="inst_r1" value="yes" /></div>
-   <div class="rating">Mostly disagree<br /><input type="radio" name="inst_r1" value="yes" /></div>
-   <div class="rating">Definitely disagree<br /><input type="radio" name="inst_r1" value="yes" /></div>
+   <div class="rating">Definitely agree<br /><input type="radio" name="pers_r4" value="yes" /></div>
+   <div class="rating">Mostly agree<br /><input type="radio" name="pers_r4" value="yes" /></div>
+   <div class="rating">Mostly disagree<br /><input type="radio" name="pers_r4" value="yes" /></div>
+   <div class="rating">Definitely disagree<br /><input type="radio" name="pers_r4" value="yes" /></div>
    </td></tr><tr class="oddrow"><td class="task">
 
 
@@ -279,10 +279,10 @@ Please indicate how much you agree to the following statements.
 .. raw:: html
 
    </td><td class="response">
-   <div class="rating">Definitely agree<br /><input type="radio" name="inst_r1" value="yes" /></div>
-   <div class="rating">Mostly agree<br /><input type="radio" name="inst_r1" value="yes" /></div>
-   <div class="rating">Mostly disagree<br /><input type="radio" name="inst_r1" value="yes" /></div>
-   <div class="rating">Definitely disagree<br /><input type="radio" name="inst_r1" value="yes" /></div>
+   <div class="rating">Definitely agree<br /><input type="radio" name="pers_r5" value="yes" /></div>
+   <div class="rating">Mostly agree<br /><input type="radio" name="pers_r5" value="yes" /></div>
+   <div class="rating">Mostly disagree<br /><input type="radio" name="pers_r5" value="yes" /></div>
+   <div class="rating">Definitely disagree<br /><input type="radio" name="pers_r5" value="yes" /></div>
    </td></tr><tr><td class="task">
 
 
@@ -291,10 +291,10 @@ Please indicate how much you agree to the following statements.
 .. raw:: html
 
    </td><td class="response">
-   <div class="rating">Definitely agree<br /><input type="radio" name="inst_r1" value="yes" /></div>
-   <div class="rating">Mostly agree<br /><input type="radio" name="inst_r1" value="yes" /></div>
-   <div class="rating">Mostly disagree<br /><input type="radio" name="inst_r1" value="yes" /></div>
-   <div class="rating">Definitely disagree<br /><input type="radio" name="inst_r1" value="yes" /></div>
+   <div class="rating">Definitely agree<br /><input type="radio" name="pers_r6" value="yes" /></div>
+   <div class="rating">Mostly agree<br /><input type="radio" name="pers_r6" value="yes" /></div>
+   <div class="rating">Mostly disagree<br /><input type="radio" name="pers_r6" value="yes" /></div>
+   <div class="rating">Definitely disagree<br /><input type="radio" name="pers_r6" value="yes" /></div>
    </td></tr><tr class="oddrow"><td class="task">
 
 
@@ -303,10 +303,10 @@ Please indicate how much you agree to the following statements.
 .. raw:: html
 
    </td><td class="response">
-   <div class="rating">Definitely agree<br /><input type="radio" name="inst_r1" value="yes" /></div>
-   <div class="rating">Mostly agree<br /><input type="radio" name="inst_r1" value="yes" /></div>
-   <div class="rating">Mostly disagree<br /><input type="radio" name="inst_r1" value="yes" /></div>
-   <div class="rating">Definitely disagree<br /><input type="radio" name="inst_r1" value="yes" /></div>
+   <div class="rating">Definitely agree<br /><input type="radio" name="pers_r7" value="yes" /></div>
+   <div class="rating">Mostly agree<br /><input type="radio" name="pers_r7" value="yes" /></div>
+   <div class="rating">Mostly disagree<br /><input type="radio" name="pers_r7" value="yes" /></div>
+   <div class="rating">Definitely disagree<br /><input type="radio" name="pers_r7" value="yes" /></div>
    </td></tr><tr><td class="task">
 
 
@@ -315,10 +315,10 @@ Please indicate how much you agree to the following statements.
 .. raw:: html
 
    </td><td class="response">
-   <div class="rating">Definitely agree<br /><input type="radio" name="inst_r1" value="yes" /></div>
-   <div class="rating">Mostly agree<br /><input type="radio" name="inst_r1" value="yes" /></div>
-   <div class="rating">Mostly disagree<br /><input type="radio" name="inst_r1" value="yes" /></div>
-   <div class="rating">Definitely disagree<br /><input type="radio" name="inst_r1" value="yes" /></div>
+   <div class="rating">Definitely agree<br /><input type="radio" name="pers_r8" value="yes" /></div>
+   <div class="rating">Mostly agree<br /><input type="radio" name="pers_r8" value="yes" /></div>
+   <div class="rating">Mostly disagree<br /><input type="radio" name="pers_r8" value="yes" /></div>
+   <div class="rating">Definitely disagree<br /><input type="radio" name="pers_r8" value="yes" /></div>
    </td>
    </tr>
    </table>
@@ -348,7 +348,7 @@ What type of hardware is this software environment running on?
 .. raw:: html
 
    </td><td class="response">
-   <select name="pref_env" size="1">
+   <select name="man_hardware" size="1">
    <option value="none" selected="selected" label="Select an option"></option>
    <option value="laptop" label="Laptop/Portable device"></option>
    <option value="desktop" label="Commodity desktop"></option>
@@ -364,7 +364,7 @@ What operating system is this environment running on?
 .. raw:: html
 
    </td><td class="response">
-   <select name="pref_env" size="1">
+   <select name="man_os" size="1">
 
 .. raw:: html
    :file: select_os_options.inc
@@ -380,7 +380,7 @@ activities?
 .. raw:: html
 
    </td><td class="response">
-   <select name="pref_time" size="1">
+   <select name="man_time" size="1">
    <option value="none" selected="selected" label="Select an option"></option>
    <option value="notime" label="None/I don't use this"></option>
    <option value="little" label="Less then half of the time"></option>
@@ -406,10 +406,10 @@ This environment provides me with the best available tools for my research.
 .. raw:: html
 
    </td><td class="response">
-   <div class="rating">Definitely agree<br /><input type="radio" name="inst_r1" value="yes" /></div>
-   <div class="rating">Mostly agree<br /><input type="radio" name="inst_r1" value="yes" /></div>
-   <div class="rating">Mostly disagree<br /><input type="radio" name="inst_r1" value="yes" /></div>
-   <div class="rating">Definitely disagree<br /><input type="radio" name="inst_r1" value="yes" /></div>
+   <div class="rating">Definitely agree<br /><input type="radio" name="man_r1" value="yes" /></div>
+   <div class="rating">Mostly agree<br /><input type="radio" name="man_r1" value="yes" /></div>
+   <div class="rating">Mostly disagree<br /><input type="radio" name="man_r1" value="yes" /></div>
+   <div class="rating">Definitely disagree<br /><input type="radio" name="man_r1" value="yes" /></div>
    </td></tr><tr><td class="task">
 
 The support staff solves all my technical problems and addresses my demands in
@@ -418,10 +418,10 @@ a timely fashion.
 .. raw:: html
 
    </td><td class="response">
-   <div class="rating">Definitely agree<br /><input type="radio" name="inst_r1" value="yes" /></div>
-   <div class="rating">Mostly agree<br /><input type="radio" name="inst_r1" value="yes" /></div>
-   <div class="rating">Mostly disagree<br /><input type="radio" name="inst_r1" value="yes" /></div>
-   <div class="rating">Definitely disagree<br /><input type="radio" name="inst_r1" value="yes" /></div>
+   <div class="rating">Definitely agree<br /><input type="radio" name="man_r2" value="yes" /></div>
+   <div class="rating">Mostly agree<br /><input type="radio" name="man_r2" value="yes" /></div>
+   <div class="rating">Mostly disagree<br /><input type="radio" name="man_r2" value="yes" /></div>
+   <div class="rating">Definitely disagree<br /><input type="radio" name="man_r2" value="yes" /></div>
    </td></tr><tr class="oddrow"><td class="task">
 
 There are always enough licenses for essential commerical software tools.
@@ -429,10 +429,10 @@ There are always enough licenses for essential commerical software tools.
 .. raw:: html
 
    </td><td class="response">
-   <div class="rating">Definitely agree<br /><input type="radio" name="inst_r1" value="yes" /></div>
-   <div class="rating">Mostly agree<br /><input type="radio" name="inst_r1" value="yes" /></div>
-   <div class="rating">Mostly disagree<br /><input type="radio" name="inst_r1" value="yes" /></div>
-   <div class="rating">Definitely disagree<br /><input type="radio" name="inst_r1" value="yes" /></div>
+   <div class="rating">Definitely agree<br /><input type="radio" name="man_r3" value="yes" /></div>
+   <div class="rating">Mostly agree<br /><input type="radio" name="man_r3" value="yes" /></div>
+   <div class="rating">Mostly disagree<br /><input type="radio" name="man_r3" value="yes" /></div>
+   <div class="rating">Definitely disagree<br /><input type="radio" name="man_r3" value="yes" /></div>
    </td></tr><tr><td class="task">
 
 I need to deploy additional software to be able to perform my research in this environment.
@@ -440,10 +440,10 @@ I need to deploy additional software to be able to perform my research in this e
 .. raw:: html
 
    </td><td class="response">
-   <div class="rating">Definitely agree<br /><input type="radio" name="inst_r1" value="yes" /></div>
-   <div class="rating">Mostly agree<br /><input type="radio" name="inst_r1" value="yes" /></div>
-   <div class="rating">Mostly disagree<br /><input type="radio" name="inst_r1" value="yes" /></div>
-   <div class="rating">Definitely disagree<br /><input type="radio" name="inst_r1" value="yes" /></div>
+   <div class="rating">Definitely agree<br /><input type="radio" name="man_r4" value="yes" /></div>
+   <div class="rating">Mostly agree<br /><input type="radio" name="man_r4" value="yes" /></div>
+   <div class="rating">Mostly disagree<br /><input type="radio" name="man_r4" value="yes" /></div>
+   <div class="rating">Definitely disagree<br /><input type="radio" name="man_r4" value="yes" /></div>
    </td></tr><tr class="oddrow"><td class="task">
 
 
@@ -453,10 +453,10 @@ environment myself.
 .. raw:: html
 
    </td><td class="response">
-   <div class="rating">Definitely agree<br /><input type="radio" name="inst_r1" value="yes" /></div>
-   <div class="rating">Mostly agree<br /><input type="radio" name="inst_r1" value="yes" /></div>
-   <div class="rating">Mostly disagree<br /><input type="radio" name="inst_r1" value="yes" /></div>
-   <div class="rating">Definitely disagree<br /><input type="radio" name="inst_r1" value="yes" /></div>
+   <div class="rating">Definitely agree<br /><input type="radio" name="man_r5" value="yes" /></div>
+   <div class="rating">Mostly agree<br /><input type="radio" name="man_r5" value="yes" /></div>
+   <div class="rating">Mostly disagree<br /><input type="radio" name="man_r5" value="yes" /></div>
+   <div class="rating">Definitely disagree<br /><input type="radio" name="man_r5" value="yes" /></div>
    </td></tr><tr><td class="task">
 
 .. raw:: html
@@ -484,7 +484,7 @@ How often do you use virtual machines for your research purposes?
 .. raw:: html
 
    </td><td class="response">
-   <select name="pref_time" size="1">
+   <select name="virt_time" size="1">
    <option value="none" selected="selected" label="Select an option"></option>
    <option value="never" label="Never"></option>
    <option value="occasionally" label="Occasionally"></option>
@@ -499,16 +499,16 @@ Which products for virtualization are you using?
 
    </td><td class="response">
    <table><tr><td>
-   <input type="checkbox" name="" value="" />VMWare<br />
-   <input type="checkbox" name="" value="" />VirtualBox<br />
-   <input type="checkbox" name="" value="" />Parallels<br />
-   <input type="checkbox" name="" value="" />QEMU<br />
+   <input type="checkbox" name="virt_prod" value="vmware" />VMWare<br />
+   <input type="checkbox" name="virt_prod" value="virtualbox" />VirtualBox<br />
+   <input type="checkbox" name="virt_prod" value="parallels" />Parallels<br />
+   <input type="checkbox" name="virt_prod" value="qemu" />QEMU<br />
    </td><td>
-   <input type="checkbox" name="" value="" />Virtual PC<br />
-   <input type="checkbox" name="" value="" />Xen<br />
-   <input type="checkbox" name="" value="" />KVM<br />
-   <input type="checkbox" name="" value="other" />
-   <input name="other_vm" type="text" size="20" maxlength="40">
+   <input type="checkbox" name="virt_prod" value="virtualpc" />Virtual PC<br />
+   <input type="checkbox" name="virt_prod" value="xen" />Xen<br />
+   <input type="checkbox" name="virt_prod" value="kvm" />KVM<br />
+   <input type="checkbox" name="virt_prod" value="other" />
+   <input name="virt_other" type="text" size="20" maxlength="40">
    </td></tr></table>
    </td></tr><tr class="oddrow"><td>
 
@@ -517,7 +517,7 @@ What **guest operating system** is running inside virtual machine?
 .. raw:: html
 
    </td><td class="response">
-   <select name="pref_env" size="1">
+   <select name="virt_guest_os" size="1">
 
 .. raw:: html
    :file: select_os_options.inc
@@ -532,7 +532,7 @@ What **host operating system** are the virtual machines running on?
 .. raw:: html
 
    </td><td class="response">
-   <select name="pref_env" size="1">
+   <select name="virt_host_os" size="1">
 
 .. raw:: html
    :file: select_os_options.inc
@@ -554,10 +554,10 @@ I can run software that is otherwise incompatible with my system.
 .. raw:: html
 
    </td><td class="response">
-   <div class="rating">Definitely agree<br /><input type="radio" name="inst_r1" value="yes" /></div>
-   <div class="rating">Mostly agree<br /><input type="radio" name="inst_r1" value="yes" /></div>
-   <div class="rating">Mostly disagree<br /><input type="radio" name="inst_r1" value="yes" /></div>
-   <div class="rating">Definitely disagree<br /><input type="radio" name="inst_r1" value="yes" /></div>
+   <div class="rating">Definitely agree<br /><input type="radio" name="virt_r1" value="yes" /></div>
+   <div class="rating">Mostly agree<br /><input type="radio" name="virt_r1" value="yes" /></div>
+   <div class="rating">Mostly disagree<br /><input type="radio" name="virt_r1" value="yes" /></div>
+   <div class="rating">Definitely disagree<br /><input type="radio" name="virt_r1" value="yes" /></div>
    </td></tr><tr><td class="task">
 
 I have the ability to easily create snapshot of my whole analysis environment.
@@ -565,10 +565,10 @@ I have the ability to easily create snapshot of my whole analysis environment.
 .. raw:: html
 
    </td><td class="response">
-   <div class="rating">Definitely agree<br /><input type="radio" name="inst_r1" value="yes" /></div>
-   <div class="rating">Mostly agree<br /><input type="radio" name="inst_r1" value="yes" /></div>
-   <div class="rating">Mostly disagree<br /><input type="radio" name="inst_r1" value="yes" /></div>
-   <div class="rating">Definitely disagree<br /><input type="radio" name="inst_r1" value="yes" /></div>
+   <div class="rating">Definitely agree<br /><input type="radio" name="virt_r2" value="yes" /></div>
+   <div class="rating">Mostly agree<br /><input type="radio" name="virt_r2" value="yes" /></div>
+   <div class="rating">Mostly disagree<br /><input type="radio" name="virt_r2" value="yes" /></div>
+   <div class="rating">Definitely disagree<br /><input type="radio" name="virt_r2" value="yes" /></div>
    </td></tr><tr class="oddrow"><td class="task">
 
 
@@ -578,10 +578,10 @@ machines.
 .. raw:: html
 
    </td><td class="response">
-   <div class="rating">Definitely agree<br /><input type="radio" name="inst_r1" value="yes" /></div>
-   <div class="rating">Mostly agree<br /><input type="radio" name="inst_r1" value="yes" /></div>
-   <div class="rating">Mostly disagree<br /><input type="radio" name="inst_r1" value="yes" /></div>
-   <div class="rating">Definitely disagree<br /><input type="radio" name="inst_r1" value="yes" /></div>
+   <div class="rating">Definitely agree<br /><input type="radio" name="virt_r3" value="yes" /></div>
+   <div class="rating">Mostly agree<br /><input type="radio" name="virt_r3" value="yes" /></div>
+   <div class="rating">Mostly disagree<br /><input type="radio" name="virt_r3" value="yes" /></div>
+   <div class="rating">Definitely disagree<br /><input type="radio" name="virt_r3" value="yes" /></div>
    </td>
    </tr>
    </table>
@@ -599,7 +599,7 @@ check all items that apply.
    <tr class="oddrow">
    <td class="response"><input type="checkbox" name="software_resource" value="pet" /></td><td>
 
-Directly form vendor or project website
+Directly from vendor or project website
 
 .. raw:: html
 

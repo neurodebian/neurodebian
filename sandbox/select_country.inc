@@ -1,4 +1,4 @@
-<select name="country" size="1">
+<select name="bg_country" size="1">
 	<optgroup label="">
 		<option value="none" selected="selected">Select a country</option> 
 	</optgroup>
