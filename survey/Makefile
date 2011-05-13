@@ -6,7 +6,7 @@ clean:
 jquery.form.js:
 	wget --no-check-certificate http://github.com/malsup/form/raw/master/jquery.form.js
 
-index.html:
+index.html: survey.rst
 	rst2html --link-stylesheet --stylesheet-path=survey.css survey.rst > $@
 
 upload: index.html jquery.form.js survey.css
