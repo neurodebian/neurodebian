@@ -60,7 +60,7 @@ Personal background
    <tr class="oddrow">
    <td>
 
-Which country are working in?
+Which country are you working in?
 
 .. raw:: html
 
@@ -79,12 +79,12 @@ Where are you working?
 
    </td><td class="response">
    <select name="bg_employer" size="1">
-   <option value="none" selected="selected" label="Select an option"></option>
-   <option value="edu_priv" label="Higher education (privately funded)"></option>
-   <option value="edu_pub" label="Higher education (publicly funded)"></option>
-   <option value="research_priv" label="Research institution (privately funded)"></option>
-   <option value="research_pub" label="Research institution (publicly funded)"></option>
-   <option value="company" label="Company"></option>
+   <option value="none" selected="selected" label="Select an option">Select an option</option>
+   <option value="edu_priv" label="Higher education (privately funded)">Higher education (privately funded)</option>
+   <option value="edu_pub" label="Higher education (publicly funded)">Higher education (publicly funded)</option>
+   <option value="research_priv" label="Research institution (privately funded)">Research institution (privately funded)</option>
+   <option value="research_pub" label="Research institution (publicly funded)">Research institution (publicly funded)</option>
+   <option value="company" label="Company">Company</option>
    </select>
    </td></tr><tr class="oddrow"><td>
 
@@ -94,14 +94,14 @@ What is your position?
 
    </td><td class="response">
    <select name="bg_position" size="1">
-   <option value="none" selected="selected" label="Select an option"></option>
-   <option value="undergrad" label="Undergraduate student"></option>
-   <option value="graduate" label="PhD student"></option>
-   <option value="postdoc" label="Postdoc"></option>
-   <option value="professor" label="Professor/Supervisor"></option>
-   <option value="ra" label="Research assistant"></option>
-   <option value="researcher" label="Other researcher"></option>
-   <option value="sysadmin" label="System administrator"></option>
+   <option value="none" selected="selected" label="Select an option">Select an option</option>
+   <option value="undergrad" label="Undergraduate student">Undergraduate student</option>
+   <option value="graduate" label="PhD student">PhD student</option>
+   <option value="postdoc" label="Postdoc">Postdoc</option>
+   <option value="professor" label="Professor/Supervisor">Professor/Supervisor</option>
+   <option value="ra" label="Research assistant">Research assistant</option>
+   <option value="researcher" label="Other researcher">Other researcher</option>
+   <option value="sysadmin" label="System administrator">System administrator</option>
    </select>
    </td></tr><tr><td>
 
@@ -159,12 +159,12 @@ What type of hardware are you using?
 
    </td><td class="response">
    <select name="pers_hardware" size="1">
-   <option value="none" selected="selected" label="Select an option"></option>
-   <option value="laptop" label="Laptop/Portable device"></option>
-   <option value="desktop" label="Commodity desktop"></option>
-   <option value="workstation" label="High-performance workstation"></option>
-   <option value="cluster" label="Compute cluster"></option>
-   <option value="grid" label="Grid/Cloud-computing facility"></option>
+   <option value="none" selected="selected" label="Select an option">Select an option</option>
+   <option value="laptop" label="Laptop/Portable device">Laptop/Portable device</option>
+   <option value="desktop" label="Commodity desktop">Commodity desktop</option>
+   <option value="workstation" label="High-performance workstation">High-performance workstation</option>
+   <option value="cluster" label="Compute cluster">Compute cluster</option>
+   <option value="grid" label="Grid/Cloud-computing facility">Grid/Cloud-computing facility</option>
    </select>
    </td></tr><tr><td>
 
@@ -190,11 +190,11 @@ environment as opposed to any other environment that you migh have access to?
 
    </td><td class="response">
    <select name="pers_time" size="1">
-   <option value="none" selected="selected" label="Select an option"></option>
-   <option value="notime" label="None/I don't have this environment"></option>
-   <option value="little" label="Less then half of the time"></option>
-   <option value="most" label="More than half of the time"></option>
-   <option value="always" label="All of the time"></option>
+   <option value="none" selected="selected" label="Select an option">Select an option</option>
+   <option value="notime" label="None/I don't have this environment">None/I don't have this environment</option>
+   <option value="little" label="Less then half of the time">Less then half of the time</option>
+   <option value="most" label="More than half of the time">More than half of the time</option>
+   <option value="always" label="All of the time">All of the time</option>
    </select>
    </td></tr><tr><td>
 
@@ -349,12 +349,12 @@ What type of hardware is this software environment running on?
 
    </td><td class="response">
    <select name="man_hardware" size="1">
-   <option value="none" selected="selected" label="Select an option"></option>
-   <option value="laptop" label="Laptop/Portable device"></option>
-   <option value="desktop" label="Commodity desktop"></option>
-   <option value="workstation" label="High-performance workstation"></option>
-   <option value="cluster" label="Compute cluster"></option>
-   <option value="grid" label="Grid/Cloud-computing facility"></option>
+   <option value="none" selected="selected" label="Select an option">Select an option</option>
+   <option value="laptop" label="Laptop/Portable device">Laptop/Portable device</option>
+   <option value="desktop" label="Commodity desktop">Commodity desktop</option>
+   <option value="workstation" label="High-performance workstation">High-performance workstation</option>
+   <option value="cluster" label="Compute cluster">Compute cluster</option>
+   <option value="grid" label="Grid/Cloud-computing facility">Grid/Cloud-computing facility</option>
    </select>
    </td></tr><tr><td>
 
@@ -381,11 +381,11 @@ activities?
 
    </td><td class="response">
    <select name="man_time" size="1">
-   <option value="none" selected="selected" label="Select an option"></option>
-   <option value="notime" label="None/I don't use this"></option>
-   <option value="little" label="Less then half of the time"></option>
-   <option value="most" label="More than half of the time"></option>
-   <option value="always" label="All of the time"></option>
+   <option value="none" selected="selected" label="Select an option">Select an option</option>
+   <option value="notime" label="None/I don't use this">None/I don't use this</option>
+   <option value="little" label="Less then half of the time">Less then half of the time</option>
+   <option value="most" label="More than half of the time">More than half of the time</option>
+   <option value="always" label="All of the time">All of the time</option>
    </select>
    </td>
    </tr>
@@ -485,11 +485,11 @@ How often do you use virtual machines for your research purposes?
 
    </td><td class="response">
    <select name="virt_time" size="1">
-   <option value="none" selected="selected" label="Select an option"></option>
-   <option value="never" label="Never"></option>
-   <option value="occasionally" label="Occasionally"></option>
-   <option value="often" label="Often"></option>
-   <option value="always" label="Exclusively"></option>
+   <option value="none" selected="selected" label="Select an option">Select an option</option>
+   <option value="never" label="Never">Never</option>
+   <option value="occasionally" label="Occasionally">Occasionally</option>
+   <option value="often" label="Often">Often</option>
+   <option value="always" label="Exclusively">Exclusively</option>
    </select><div style="font-size:60%">(skip the remaining questions of this section if "never")</div>
    </td></tr><tr><td class="task">
 
@@ -582,6 +582,18 @@ machines.
    <div class="rating">Mostly agree<br /><input type="radio" name="virt_r3" value="yes" /></div>
    <div class="rating">Mostly disagree<br /><input type="radio" name="virt_r3" value="yes" /></div>
    <div class="rating">Definitely disagree<br /><input type="radio" name="virt_r3" value="yes" /></div>
+   </td></tr><tr class="oddrow"><td class="task">
+
+The performance of a virtual machine is sufficient for routine application in my
+research.
+
+.. raw:: html
+
+   </td><td class="response">
+   <div class="rating">Definitely agree<br /><input type="radio" name="virt_r4" value="yes" /></div>
+   <div class="rating">Mostly agree<br /><input type="radio" name="virt_r4" value="yes" /></div>
+   <div class="rating">Mostly disagree<br /><input type="radio" name="virt_r4" value="yes" /></div>
+   <div class="rating">Definitely disagree<br /><input type="radio" name="virt_r4" value="yes" /></div>
    </td>
    </tr>
    </table>
@@ -677,135 +689,213 @@ Software selection
 ------------------
 
 Generic computing/scripting/programming environments
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-C/C++
-IDL
-LISREL
-Maple
-Mathcad
-Mathematica
-Matlab
-Octave
-Perl
-Python
-R
-Ruby
-Scilab
-SPSS
-SCIRun
-Shell scripting
+.. raw:: html
 
+   <table class="questionaire"><tr>
+   <td class="response"><input type="checkbox" name="sw" value="cpp" />C/C++</td>
+   <td class="response"><input type="checkbox" name="sw" value="idl" />IDL</td>
+   <td class="response"><input type="checkbox" name="sw" value="lisrel" />LISREL</td>
+   <td class="response"><input type="checkbox" name="sw" value="maple" />Maple</td>
+   <td class="response"><input type="checkbox" name="sw" value="mathcad" />Mathcad</td>
+   <td class="response"><input type="checkbox" name="sw" value="mathematica" />Mathematica</td>
+   </tr><tr class="oddrow">
+   <td class="response"><input type="checkbox" name="sw" value="matlab" />Matlab</td>
+   <td class="response"><input type="checkbox" name="sw" value="octave" />Octave</td>
+   <td class="response"><input type="checkbox" name="sw" value="perl" />Perl</td>
+   <td class="response"><input type="checkbox" name="sw" value="python" />Python</td>
+   <td class="response"><input type="checkbox" name="sw" value="r" />R</td>
+   <td class="response"><input type="checkbox" name="sw" value="ruby" />Ruby</td>
+   </tr><tr>
+   <td class="response"><input type="checkbox" name="sw" value="scilab" />Scilab</td>
+   <td class="response"><input type="checkbox" name="sw" value="spss" />SPSS</td>
+   <td class="response"><input type="checkbox" name="sw" value="scirun" />SCIRun</td>
+   <td class="response"><input type="checkbox" name="sw" value="shell" />Shell scripting</td>
+   </tr></table>
 
 Distributed Computing - frameworks and controllers
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-SGE
-Torque/OpenPBS/Maui
-Condor
-Globus
-MPI (any)
-IPython
+.. raw:: html
 
+   <table class="questionaire"><tr>
+   <td class="response"><input type="checkbox" name="sw" value="sge" />SGE</td>
+   <td class="response"><input type="checkbox" name="sw" value="torque" />Torque/OpenPBS/Maui</td>
+   <td class="response"><input type="checkbox" name="sw" value="condor" />Condor</td>
+   <td class="response"><input type="checkbox" name="sw" value="globus" />Globus</td>
+   <td class="response"><input type="checkbox" name="sw" value="mpi" />MPI (any)</td>
+   <td class="response"><input type="checkbox" name="sw" value="ipython" />IPython</td>
+   </tr></table>
 
 Imaging
+~~~~~~~
 
-3D Slicer
-AFNI
-Aeskulap
-Amide
-BIRN Tools
-BRAINS Tools
-Bioimage Suite
-BrainMap
-BrainVISA/Anatomist
-BrainVoyager
-CMTK
-Caret
-ConnectomeViewer
-DSI Studio
-DTI-TK
-Diffusion Toolkit/Trackvis
-FSL
-Fiji
-FreeSurfer
-ITK/SNAP
-ImageJ
-Invesalius
-LONI
-Lipsia
-MIPAV/JIST
-MRIcron
-MRtrix
-Mango
-NiPy/NiTime/DiPy/NiPype
-PyMVPA
-REST
-SPM
-V3D
-VoxBo
+.. raw:: html
+
+   <table class="questionaire"><tr>
+   <td class="response"><input type="checkbox" name="sw" value="3dslicer" />3D Slicer</td>
+   <td class="response"><input type="checkbox" name="sw" value="afni" />AFNI</td>
+   <td class="response"><input type="checkbox" name="sw" value="aeskulap" />Aeskulap</td>
+   <td class="response"><input type="checkbox" name="sw" value="amide" />Amide</td>
+   </tr><tr class="oddrow">
+   <td class="response"><input type="checkbox" name="sw" value="birn" />BIRN Tools</td>
+   <td class="response"><input type="checkbox" name="sw" value="brainstools" />BRAINS Tools</td>
+   <td class="response"><input type="checkbox" name="sw" value="bioimgsuite" />Bioimage Suite</td>
+   <td class="response"><input type="checkbox" name="sw" value="brainmap" />BrainMap</td>
+   </tr><tr>
+   <td class="response"><input type="checkbox" name="sw" value="brainvisa" />BrainVISA/Anatomist</td>
+   <td class="response"><input type="checkbox" name="sw" value="brainvoyager" />BrainVoyager</td>
+   <td class="response"><input type="checkbox" name="sw" value="cmtk" />CMTK</td>
+   <td class="response"><input type="checkbox" name="sw" value="caret" />Caret</td>
+   </tr><tr class="oddrow">
+   <td class="response"><input type="checkbox" name="sw" value="connectomviewer" />ConnectomeViewer</td>
+   <td class="response"><input type="checkbox" name="sw" value="dsi" />DSI Studio</td>
+   <td class="response"><input type="checkbox" name="sw" value="dtitk" />DTI-TK</td>
+   <td class="response"><input type="checkbox" name="sw" value="trackvis" />Diffusion Toolkit/Trackvis</td>
+   </tr><tr>
+   <td class="response"><input type="checkbox" name="sw" value="fsl" />FSL</td>
+   <td class="response"><input type="checkbox" name="sw" value="fiji" />Fiji</td>
+   <td class="response"><input type="checkbox" name="sw" value="freesurfer" />FreeSurfer</td>
+   <td class="response"><input type="checkbox" name="sw" value="itksnap" />ITK-SNAP</td>
+   </tr><tr class="oddrow">
+   <td class="response"><input type="checkbox" name="sw" value="imagej" />ImageJ</td>
+   <td class="response"><input type="checkbox" name="sw" value="invesalius" />Invesalius</td>
+   <td class="response"><input type="checkbox" name="sw" value="loni" />LONI</td>
+   <td class="response"><input type="checkbox" name="sw" value="lipsia" />Lipsia</td>
+   </tr><tr>
+   <td class="response"><input type="checkbox" name="sw" value="mipav" />MIPAV/JIST</td>
+   <td class="response"><input type="checkbox" name="sw" value="mricron" />MRIcron</td>
+   <td class="response"><input type="checkbox" name="sw" value="mrtrix" />MRtrix</td>
+   <td class="response"><input type="checkbox" name="sw" value="mango" />Mango</td>
+   </tr><tr class="oddrow">
+   <td class="response"><input type="checkbox" name="sw" value="nipy" />NiPy/NiTime/DiPy/NiPype</td>
+   <td class="response"><input type="checkbox" name="sw" value="pymvpa" />PyMVPA</td>
+   <td class="response"><input type="checkbox" name="sw" value="rest" />REST</td>
+   <td class="response"><input type="checkbox" name="sw" value="spm" />SPM</td>
+   </tr><tr>
+   <td class="response"><input type="checkbox" name="sw" value="v3d" />V3D</td>
+   <td class="response"><input type="checkbox" name="sw" value="voxbo" />VoxBo</td>
+   </tr></table>
 
 Data management
+~~~~~~~~~~~~~~~
 
-XNAT/PyXNAT/...
-Human Imaging Database (HID)
+.. raw:: html
+
+   <table class="questionaire"><tr>
+   <td class="response"><input type="checkbox" name="sw" value="xnat" />XNAT/PyXNAT/...</td>
+   <td class="response"><input type="checkbox" name="sw" value="hid" />Human Imaging Database (HID)</td>
+   </tr></table>
 
 Neural Systems Modeling
+~~~~~~~~~~~~~~~~~~~~~~~
 
-Brian
-iqr
-iNVT
-NEURON
-NEST
-Genesis
-Moose
-PCSIM
-PyNN
+.. raw:: html
+
+   <table class="questionaire"><tr>
+   <td class="response"><input type="checkbox" name="sw" value="brian" />Brian</td>
+   <td class="response"><input type="checkbox" name="sw" value="iqr" />iqr</td>
+   <td class="response"><input type="checkbox" name="sw" value="iNVT" />iNVT</td>
+   <td class="response"><input type="checkbox" name="sw" value="neuron" />NEURON</td>
+   <td class="response"><input type="checkbox" name="sw" value="nest" />NEST</td>
+   <td class="response"><input type="checkbox" name="sw" value="genesis" />Genesis</td>
+   <td class="response"><input type="checkbox" name="sw" value="moose" />Moose</td>
+   <td class="response"><input type="checkbox" name="sw" value="pcsim" />PCSIM</td>
+   <td class="response"><input type="checkbox" name="sw" value="pynn" />PyNN</td>
+   <td class="response"><input type="checkbox" name="sw" value="topographica" />Topographica</td>
+   </tr></table>
 
 Electrophysiology
+~~~~~~~~~~~~~~~~~
 
-BioSig
-BrainStorm
-Chronus
-EEGLAB
-Fieldtrip
-LORETA/sLORETA
-OpenMEEG
-Openelectrophy
-RTXI
-Relacs
-?Trellis-neuro
+.. raw:: html
+
+   <table class="questionaire"><tr>
+   <td class="response"><input type="checkbox" name="sw" value="biosig" />BioSig</td>
+   <td class="response"><input type="checkbox" name="sw" value="brainstorm" />BrainStorm</td>
+   <td class="response"><input type="checkbox" name="sw" value="chronus" />Chronus</td>
+   <td class="response"><input type="checkbox" name="sw" value="eeglab" />EEGLAB</td>
+   <td class="response"><input type="checkbox" name="sw" value="fieldtrip" />Fieldtrip</td>
+   </tr><tr class="oddrow">
+   <td class="response"><input type="checkbox" name="sw" value="loreta" />LORETA/sLORETA</td>
+   <td class="response"><input type="checkbox" name="sw" value="neuroexplorer" />NeuroExplorer</td>
+   <td class="response"><input type="checkbox" name="sw" value="openmeeg" />OpenMEEG</td>
+   <td class="response"><input type="checkbox" name="sw" value="openelectrophy" />Openelectrophy</td>
+   <td class="response"><input type="checkbox" name="sw" value="rtxi" />RTXI</td>
+   </tr><tr>
+   <td class="response"><input type="checkbox" name="sw" value="relacs" />Relacs</td>
+   <td class="response"><input type="checkbox" name="sw" value="trellis" />?Trellis-neuro</td>
+   </tr></table>
 
 Brain-computer interface
+~~~~~~~~~~~~~~~~~~~~~~~~
 
-BCI2000
-OpenVIBE
-Pyff
+.. raw:: html
+
+   <table class="questionaire"><tr>
+   <td class="response"><input type="checkbox" name="sw" value="bci2000" />BCI2000</td>
+   <td class="response"><input type="checkbox" name="sw" value="openvibe" />OpenVIBE</td>
+   <td class="response"><input type="checkbox" name="sw" value="pyff" />Pyff</td>
+   </tr></table>
 
 Hardware interface/Data acquisition
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Comedi
-EPICS
-MX
+.. raw:: html
+
+   <table class="questionaire"><tr>
+   <td class="response"><input type="checkbox" name="sw" value="comedi" />Comedi</td>
+   <td class="response"><input type="checkbox" name="sw" value="epics" />EPICS</td>
+   <td class="response"><input type="checkbox" name="sw" value="mx" />MX</td>
+   </tr></table>
 
 Real-time solutions
+~~~~~~~~~~~~~~~~~~~
 
-RTAI
-Xenomai
-RTLinux
-PREEMPT_RT
+.. raw:: html
+
+   <table class="questionaire"><tr>
+   <td class="response"><input type="checkbox" name="sw" value="rtai" />RTAI</td>
+   <td class="response"><input type="checkbox" name="sw" value="xenomai" />Xenomai</td>
+   <td class="response"><input type="checkbox" name="sw" value="rtlinux" />RTLinux</td>
+   <td class="response"><input type="checkbox" name="sw" value="preempt_rt" />PREEMPT_RT</td>
+   </tr></table>
 
 Psychophysics/Experimental Control
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-E-Prime
-Presentation
-PsychoPy
-PyEPL
-Psychtoolbox
-Psytoolkit
-OpenSesame
-VisionEgg
-Tscope
+.. raw:: html
 
+   <table class="questionaire"><tr>
+   <td class="response"><input type="checkbox" name="sw" value="dmdx" />DMDX</td>
+   <td class="response"><input type="checkbox" name="sw" value="eprime" />E-Prime</td>
+   <td class="response"><input type="checkbox" name="sw" value="presentation" />Presentation</td>
+   <td class="response"><input type="checkbox" name="sw" value="psychopy" />PsychoPy</td>
+   <td class="response"><input type="checkbox" name="sw" value="pyepl" />PyEPL</td>
+   <td class="response"><input type="checkbox" name="sw" value="psychtoolbox" />Psychtoolbox</td>
+   </tr><tr class="oddrow">
+   <td class="response"><input type="checkbox" name="sw" value="psytoolkit" />Psytoolkit</td>
+   <td class="response"><input type="checkbox" name="sw" value="opensesame" />OpenSesame</td>
+   <td class="response"><input type="checkbox" name="sw" value="visionegg" />VisionEgg</td>
+   <td class="response"><input type="checkbox" name="sw" value="tscope" />Tscope</td>
+   </tr></table>
 
+Other
+~~~~~
+
+.. raw:: html
+
+   <table class="questionaire"><tr>
+   <td class="response"><input type="checkbox" name="sw" value="other" />
+   <input name="other_sw" type="text" size="40" maxlength="200"></td>
+   </tr></table>
+
+---------------------------------------------------------------
+
+Thanks for filling out the questionaire. You can now submit it. Upon successful
+submission you'll get access to the result statistics of all previous
+participants.
 
 .. raw:: html
 
