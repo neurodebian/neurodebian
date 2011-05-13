@@ -2,6 +2,9 @@
 Scientific software usage in neuroscience research
 ==================================================
 
+This survey should take about five minutes. After submission you will be
+immediately presented with some statistics on previous responses.
+
 .. raw:: html
 
    <script type="text/javascript" src="_static/jquery.js"></script> 
@@ -43,8 +46,8 @@ Scientific software usage in neuroscience research
            $('#nss_survey').resetForm();
            $('#server_response').html("All good");
        } else {
-           alert('status: ' + statusText + '\n\nresponseText: \n' + data.message + 
-           '\n\nThe output div should have already been updated with the responseText.'); 
+           $('#server_response').html("");
+           alert(data.message);
        }
    }
    </script>
@@ -119,7 +122,7 @@ What type of data are you working with? Please check all items that apply.
    <input type="checkbox" name="bg_datamod" value="ephys" />Electrophysiology<br />
    <input type="checkbox" name="bg_datamod" value="spectro" />Microspectroscopy<br />
    <input type="checkbox" name="bg_datamod" value="other" />
-   <input name="bg_other_datamod" type="text" size="20" maxlength="40">
+   <input name="bg_datamod_other" type="text" size="20" maxlength="40">
    </td></tr></table>
    </td></tr><tr class="oddrow"><td>
 
@@ -231,10 +234,10 @@ Please indicate how much you agree to the following statements.
 .. raw:: html
 
    </td><td class="response">
-   <div class="rating">Definitely agree<br /><input type="radio" name="pers_r1" value="yes" /></div>
-   <div class="rating">Mostly agree<br /><input type="radio" name="pers_r1" value="yes" /></div>
-   <div class="rating">Mostly disagree<br /><input type="radio" name="pers_r1" value="yes" /></div>
-   <div class="rating">Definitely disagree<br /><input type="radio" name="pers_r1" value="yes" /></div>
+   <div class="rating">Definitely agree<br /><input type="radio" name="pers_r1" value="3" /></div>
+   <div class="rating">Mostly agree<br /><input type="radio" name="pers_r1" value="2" /></div>
+   <div class="rating">Mostly disagree<br /><input type="radio" name="pers_r1" value="1" /></div>
+   <div class="rating">Definitely disagree<br /><input type="radio" name="pers_r1" value="0" /></div>
    </td></tr><tr><td class="task">
 
 
@@ -243,10 +246,10 @@ Please indicate how much you agree to the following statements.
 .. raw:: html
 
    </td><td class="response">
-   <div class="rating">Definitely agree<br /><input type="radio" name="pers_r2" value="yes" /></div>
-   <div class="rating">Mostly agree<br /><input type="radio" name="pers_r2" value="yes" /></div>
-   <div class="rating">Mostly disagree<br /><input type="radio" name="pers_r2" value="yes" /></div>
-   <div class="rating">Definitely disagree<br /><input type="radio" name="pers_r2" value="yes" /></div>
+   <div class="rating">Definitely agree<br /><input type="radio" name="pers_r2" value="3" /></div>
+   <div class="rating">Mostly agree<br /><input type="radio" name="pers_r2" value="2" /></div>
+   <div class="rating">Mostly disagree<br /><input type="radio" name="pers_r2" value="1" /></div>
+   <div class="rating">Definitely disagree<br /><input type="radio" name="pers_r2" value="0" /></div>
    </td></tr><tr class="oddrow"><td class="task">
 
 
@@ -255,10 +258,10 @@ Please indicate how much you agree to the following statements.
 .. raw:: html
 
    </td><td class="response">
-   <div class="rating">Definitely agree<br /><input type="radio" name="pers_r3" value="yes" /></div>
-   <div class="rating">Mostly agree<br /><input type="radio" name="pers_r3" value="yes" /></div>
-   <div class="rating">Mostly disagree<br /><input type="radio" name="pers_r3" value="yes" /></div>
-   <div class="rating">Definitely disagree<br /><input type="radio" name="pers_r3" value="yes" /></div>
+   <div class="rating">Definitely agree<br /><input type="radio" name="pers_r3" value="3" /></div>
+   <div class="rating">Mostly agree<br /><input type="radio" name="pers_r3" value="2" /></div>
+   <div class="rating">Mostly disagree<br /><input type="radio" name="pers_r3" value="1" /></div>
+   <div class="rating">Definitely disagree<br /><input type="radio" name="pers_r3" value="0" /></div>
    </td></tr><tr><td class="task">
 
 
@@ -267,10 +270,10 @@ Please indicate how much you agree to the following statements.
 .. raw:: html
 
    </td><td class="response">
-   <div class="rating">Definitely agree<br /><input type="radio" name="pers_r4" value="yes" /></div>
-   <div class="rating">Mostly agree<br /><input type="radio" name="pers_r4" value="yes" /></div>
-   <div class="rating">Mostly disagree<br /><input type="radio" name="pers_r4" value="yes" /></div>
-   <div class="rating">Definitely disagree<br /><input type="radio" name="pers_r4" value="yes" /></div>
+   <div class="rating">Definitely agree<br /><input type="radio" name="pers_r4" value="3" /></div>
+   <div class="rating">Mostly agree<br /><input type="radio" name="pers_r4" value="2" /></div>
+   <div class="rating">Mostly disagree<br /><input type="radio" name="pers_r4" value="1" /></div>
+   <div class="rating">Definitely disagree<br /><input type="radio" name="pers_r4" value="0" /></div>
    </td></tr><tr class="oddrow"><td class="task">
 
 
@@ -279,22 +282,22 @@ Please indicate how much you agree to the following statements.
 .. raw:: html
 
    </td><td class="response">
-   <div class="rating">Definitely agree<br /><input type="radio" name="pers_r5" value="yes" /></div>
-   <div class="rating">Mostly agree<br /><input type="radio" name="pers_r5" value="yes" /></div>
-   <div class="rating">Mostly disagree<br /><input type="radio" name="pers_r5" value="yes" /></div>
-   <div class="rating">Definitely disagree<br /><input type="radio" name="pers_r5" value="yes" /></div>
+   <div class="rating">Definitely agree<br /><input type="radio" name="pers_r5" value="3" /></div>
+   <div class="rating">Mostly agree<br /><input type="radio" name="pers_r5" value="2" /></div>
+   <div class="rating">Mostly disagree<br /><input type="radio" name="pers_r5" value="1" /></div>
+   <div class="rating">Definitely disagree<br /><input type="radio" name="pers_r5" value="0" /></div>
    </td></tr><tr><td class="task">
 
 
-... I rely on an particular application that only runs in this environment
+... I rely on a particular application that only runs in this environment
 
 .. raw:: html
 
    </td><td class="response">
-   <div class="rating">Definitely agree<br /><input type="radio" name="pers_r6" value="yes" /></div>
-   <div class="rating">Mostly agree<br /><input type="radio" name="pers_r6" value="yes" /></div>
-   <div class="rating">Mostly disagree<br /><input type="radio" name="pers_r6" value="yes" /></div>
-   <div class="rating">Definitely disagree<br /><input type="radio" name="pers_r6" value="yes" /></div>
+   <div class="rating">Definitely agree<br /><input type="radio" name="pers_r6" value="3" /></div>
+   <div class="rating">Mostly agree<br /><input type="radio" name="pers_r6" value="2" /></div>
+   <div class="rating">Mostly disagree<br /><input type="radio" name="pers_r6" value="1" /></div>
+   <div class="rating">Definitely disagree<br /><input type="radio" name="pers_r6" value="0" /></div>
    </td></tr><tr class="oddrow"><td class="task">
 
 
@@ -303,10 +306,10 @@ Please indicate how much you agree to the following statements.
 .. raw:: html
 
    </td><td class="response">
-   <div class="rating">Definitely agree<br /><input type="radio" name="pers_r7" value="yes" /></div>
-   <div class="rating">Mostly agree<br /><input type="radio" name="pers_r7" value="yes" /></div>
-   <div class="rating">Mostly disagree<br /><input type="radio" name="pers_r7" value="yes" /></div>
-   <div class="rating">Definitely disagree<br /><input type="radio" name="pers_r7" value="yes" /></div>
+   <div class="rating">Definitely agree<br /><input type="radio" name="pers_r7" value="3" /></div>
+   <div class="rating">Mostly agree<br /><input type="radio" name="pers_r7" value="2" /></div>
+   <div class="rating">Mostly disagree<br /><input type="radio" name="pers_r7" value="1" /></div>
+   <div class="rating">Definitely disagree<br /><input type="radio" name="pers_r7" value="0" /></div>
    </td></tr><tr><td class="task">
 
 
@@ -315,10 +318,10 @@ Please indicate how much you agree to the following statements.
 .. raw:: html
 
    </td><td class="response">
-   <div class="rating">Definitely agree<br /><input type="radio" name="pers_r8" value="yes" /></div>
-   <div class="rating">Mostly agree<br /><input type="radio" name="pers_r8" value="yes" /></div>
-   <div class="rating">Mostly disagree<br /><input type="radio" name="pers_r8" value="yes" /></div>
-   <div class="rating">Definitely disagree<br /><input type="radio" name="pers_r8" value="yes" /></div>
+   <div class="rating">Definitely agree<br /><input type="radio" name="pers_r8" value="3" /></div>
+   <div class="rating">Mostly agree<br /><input type="radio" name="pers_r8" value="2" /></div>
+   <div class="rating">Mostly disagree<br /><input type="radio" name="pers_r8" value="1" /></div>
+   <div class="rating">Definitely disagree<br /><input type="radio" name="pers_r8" value="0" /></div>
    </td>
    </tr>
    </table>
@@ -328,13 +331,13 @@ Managed scientific software environment
 ---------------------------------------
 
 The following questions are about a managed environment of scientific software
-that is provided to you to carry out computing and data analysis related
-research activities. Such an environment is typically managed by **dedicated IT
-staff**, and **you don't have permissions to install arbitrary software**. This
-environment may be shared by many researchers in a lab, a whole research
-institution, or even be publicly accessible. If you have access to multiple
-environments of this kind, please describe the one that offers most support for
-your particular research purposes.
+that is provided to you to carry out computing and data analysis. Such an
+environment is typically managed by **dedicated IT staff**, and **you don't
+have permissions to install arbitrary software**. This environment may be
+shared by many researchers in a lab, a whole research institution, or even be
+publicly accessible. If you have access to multiple environments of this kind,
+please describe the one that offers most support for your particular research
+purposes.
 
 
 .. raw:: html
@@ -401,62 +404,62 @@ How much do you agree to the following statements?
    <tr class="oddrow">
    <td class="task">
 
-This environment provides me with the best available tools for my research.
+This environment provides me with the best available tools for my research
 
 .. raw:: html
 
    </td><td class="response">
-   <div class="rating">Definitely agree<br /><input type="radio" name="man_r1" value="yes" /></div>
-   <div class="rating">Mostly agree<br /><input type="radio" name="man_r1" value="yes" /></div>
-   <div class="rating">Mostly disagree<br /><input type="radio" name="man_r1" value="yes" /></div>
-   <div class="rating">Definitely disagree<br /><input type="radio" name="man_r1" value="yes" /></div>
+   <div class="rating">Definitely agree<br /><input type="radio" name="man_r1" value="3" /></div>
+   <div class="rating">Mostly agree<br /><input type="radio" name="man_r1" value="2" /></div>
+   <div class="rating">Mostly disagree<br /><input type="radio" name="man_r1" value="1" /></div>
+   <div class="rating">Definitely disagree<br /><input type="radio" name="man_r1" value="0" /></div>
    </td></tr><tr><td class="task">
 
 The support staff solves all my technical problems and addresses my demands in
-a timely fashion.
+a timely fashion
 
 .. raw:: html
 
    </td><td class="response">
-   <div class="rating">Definitely agree<br /><input type="radio" name="man_r2" value="yes" /></div>
-   <div class="rating">Mostly agree<br /><input type="radio" name="man_r2" value="yes" /></div>
-   <div class="rating">Mostly disagree<br /><input type="radio" name="man_r2" value="yes" /></div>
-   <div class="rating">Definitely disagree<br /><input type="radio" name="man_r2" value="yes" /></div>
+   <div class="rating">Definitely agree<br /><input type="radio" name="man_r2" value="3" /></div>
+   <div class="rating">Mostly agree<br /><input type="radio" name="man_r2" value="2" /></div>
+   <div class="rating">Mostly disagree<br /><input type="radio" name="man_r2" value="1" /></div>
+   <div class="rating">Definitely disagree<br /><input type="radio" name="man_r2" value="0" /></div>
    </td></tr><tr class="oddrow"><td class="task">
 
-There are always enough licenses for essential commerical software tools.
+There are always enough licenses for essential commerical software tools
 
 .. raw:: html
 
    </td><td class="response">
-   <div class="rating">Definitely agree<br /><input type="radio" name="man_r3" value="yes" /></div>
-   <div class="rating">Mostly agree<br /><input type="radio" name="man_r3" value="yes" /></div>
-   <div class="rating">Mostly disagree<br /><input type="radio" name="man_r3" value="yes" /></div>
-   <div class="rating">Definitely disagree<br /><input type="radio" name="man_r3" value="yes" /></div>
+   <div class="rating">Definitely agree<br /><input type="radio" name="man_r3" value="3" /></div>
+   <div class="rating">Mostly agree<br /><input type="radio" name="man_r3" value="2" /></div>
+   <div class="rating">Mostly disagree<br /><input type="radio" name="man_r3" value="1" /></div>
+   <div class="rating">Definitely disagree<br /><input type="radio" name="man_r3" value="0" /></div>
    </td></tr><tr><td class="task">
 
-I need to deploy additional software to be able to perform my research in this environment.
+I need to deploy additional software to be able to perform my research in this environment
 
 .. raw:: html
 
    </td><td class="response">
-   <div class="rating">Definitely agree<br /><input type="radio" name="man_r4" value="yes" /></div>
-   <div class="rating">Mostly agree<br /><input type="radio" name="man_r4" value="yes" /></div>
-   <div class="rating">Mostly disagree<br /><input type="radio" name="man_r4" value="yes" /></div>
-   <div class="rating">Definitely disagree<br /><input type="radio" name="man_r4" value="yes" /></div>
+   <div class="rating">Definitely agree<br /><input type="radio" name="man_r4" value="3" /></div>
+   <div class="rating">Mostly agree<br /><input type="radio" name="man_r4" value="2" /></div>
+   <div class="rating">Mostly disagree<br /><input type="radio" name="man_r4" value="1" /></div>
+   <div class="rating">Definitely disagree<br /><input type="radio" name="man_r4" value="0" /></div>
    </td></tr><tr class="oddrow"><td class="task">
 
 
 Using this managed environment is more cost effective than operating a suitable
-environment myself.
+environment myself
 
 .. raw:: html
 
    </td><td class="response">
-   <div class="rating">Definitely agree<br /><input type="radio" name="man_r5" value="yes" /></div>
-   <div class="rating">Mostly agree<br /><input type="radio" name="man_r5" value="yes" /></div>
-   <div class="rating">Mostly disagree<br /><input type="radio" name="man_r5" value="yes" /></div>
-   <div class="rating">Definitely disagree<br /><input type="radio" name="man_r5" value="yes" /></div>
+   <div class="rating">Definitely agree<br /><input type="radio" name="man_r5" value="3" /></div>
+   <div class="rating">Mostly agree<br /><input type="radio" name="man_r5" value="2" /></div>
+   <div class="rating">Mostly disagree<br /><input type="radio" name="man_r5" value="1" /></div>
+   <div class="rating">Definitely disagree<br /><input type="radio" name="man_r5" value="0" /></div>
    </td></tr><tr><td class="task">
 
 .. raw:: html
@@ -543,57 +546,57 @@ What **host operating system** are the virtual machines running on?
    </td></tr><tr><td colspan="2">
 
 What are your reasons for employing virtualization in you research?
-Please indicate how much you agree to the following statements.
+Please indicate how much you agree to the following statements
 
 .. raw:: html
 
    </td></tr><tr class="oddrow"><td class="task">
 
-I can run software that is otherwise incompatible with my system.
+I can run software that is otherwise incompatible with my system
 
 .. raw:: html
 
    </td><td class="response">
-   <div class="rating">Definitely agree<br /><input type="radio" name="virt_r1" value="yes" /></div>
-   <div class="rating">Mostly agree<br /><input type="radio" name="virt_r1" value="yes" /></div>
-   <div class="rating">Mostly disagree<br /><input type="radio" name="virt_r1" value="yes" /></div>
-   <div class="rating">Definitely disagree<br /><input type="radio" name="virt_r1" value="yes" /></div>
+   <div class="rating">Definitely agree<br /><input type="radio" name="virt_r1" value="3" /></div>
+   <div class="rating">Mostly agree<br /><input type="radio" name="virt_r1" value="2" /></div>
+   <div class="rating">Mostly disagree<br /><input type="radio" name="virt_r1" value="1" /></div>
+   <div class="rating">Definitely disagree<br /><input type="radio" name="virt_r1" value="0" /></div>
    </td></tr><tr><td class="task">
 
-I have the ability to easily create snapshot of my whole analysis environment.
+I have the ability to easily create a snapshot of my whole analysis environment
 
 .. raw:: html
 
    </td><td class="response">
-   <div class="rating">Definitely agree<br /><input type="radio" name="virt_r2" value="yes" /></div>
-   <div class="rating">Mostly agree<br /><input type="radio" name="virt_r2" value="yes" /></div>
-   <div class="rating">Mostly disagree<br /><input type="radio" name="virt_r2" value="yes" /></div>
-   <div class="rating">Definitely disagree<br /><input type="radio" name="virt_r2" value="yes" /></div>
+   <div class="rating">Definitely agree<br /><input type="radio" name="virt_r2" value="3" /></div>
+   <div class="rating">Mostly agree<br /><input type="radio" name="virt_r2" value="2" /></div>
+   <div class="rating">Mostly disagree<br /><input type="radio" name="virt_r2" value="1" /></div>
+   <div class="rating">Definitely disagree<br /><input type="radio" name="virt_r2" value="0" /></div>
    </td></tr><tr class="oddrow"><td class="task">
 
 
 I can take my complete analysis environment with me and run it on different
-machines.
+machines
 
 .. raw:: html
 
    </td><td class="response">
-   <div class="rating">Definitely agree<br /><input type="radio" name="virt_r3" value="yes" /></div>
-   <div class="rating">Mostly agree<br /><input type="radio" name="virt_r3" value="yes" /></div>
-   <div class="rating">Mostly disagree<br /><input type="radio" name="virt_r3" value="yes" /></div>
-   <div class="rating">Definitely disagree<br /><input type="radio" name="virt_r3" value="yes" /></div>
+   <div class="rating">Definitely agree<br /><input type="radio" name="virt_r3" value="3" /></div>
+   <div class="rating">Mostly agree<br /><input type="radio" name="virt_r3" value="2" /></div>
+   <div class="rating">Mostly disagree<br /><input type="radio" name="virt_r3" value="1" /></div>
+   <div class="rating">Definitely disagree<br /><input type="radio" name="virt_r3" value="0" /></div>
    </td></tr><tr><td class="task">
 
 The performance of a virtual machine is sufficient for routine application in my
-research.
+research
 
 .. raw:: html
 
    </td><td class="response">
-   <div class="rating">Definitely agree<br /><input type="radio" name="virt_r4" value="yes" /></div>
-   <div class="rating">Mostly agree<br /><input type="radio" name="virt_r4" value="yes" /></div>
-   <div class="rating">Mostly disagree<br /><input type="radio" name="virt_r4" value="yes" /></div>
-   <div class="rating">Definitely disagree<br /><input type="radio" name="virt_r4" value="yes" /></div>
+   <div class="rating">Definitely agree<br /><input type="radio" name="virt_r4" value="3" /></div>
+   <div class="rating">Mostly agree<br /><input type="radio" name="virt_r4" value="2" /></div>
+   <div class="rating">Mostly disagree<br /><input type="radio" name="virt_r4" value="1" /></div>
+   <div class="rating">Definitely disagree<br /><input type="radio" name="virt_r4" value="0" /></div>
    </td>
    </tr>
    </table>
@@ -603,90 +606,116 @@ Resources for scientific software
 ---------------------------------
 
 Where do you obtain scientific software that you employ in your research? Please
-check all items that apply.
+check all items that apply
 
 .. raw:: html
 
    <table class="questionaire">
    <tr class="oddrow">
-   <td class="response"><input type="checkbox" name="software_resource" value="pet" /></td><td>
+   <td class="response"><input type="checkbox" name="software_resource" value="vendor" /></td><td>
 
 Directly from vendor or project website
 
 .. raw:: html
 
-   </td></tr><tr><td class="response"><input type="checkbox" name="software_resource" value="" /></td><td>
+   </td></tr><tr><td class="response"><input type="checkbox" name="software_resource" value="retailer" /></td><td>
 
 Retailer
 
 .. raw:: html
 
-   </td></tr><tr class="oddrow"><td class="response"><input type="checkbox" name="software_resource" value="" /></td><td>
+   </td></tr><tr class="oddrow"><td class="response"><input type="checkbox" name="software_resource" value="os" /></td><td>
+
+Comes with the operating system
+
+.. raw:: html
+
+   </td></tr><tr><td class="response"><input type="checkbox" name="software_resource" value="cpan" /></td><td>
+
+`Comprehensive Perl Archive Network (CPAN) <http://www.cpan.org>`_
+
+.. raw:: html
+
+   </td></tr><tr class="oddrow"><td class="response"><input type="checkbox" name="software_resource" value="cran" /></td><td>
+
+`Comprehensive R Archive Network (CRAN) <http://cran.r-project.org>`_
+
+.. raw:: html
+
+   </td></tr><tr><td class="response"><input type="checkbox" name="software_resource" value="epel" /></td><td>
 
 `Extra Packages for Enterprise Linux (EPEL) <http://fedoraproject.org/wiki/EPEL>`_
 
 .. raw:: html
 
-   </td></tr><tr><td class="response"><input type="checkbox" name="software_resource" value="" /></td><td>
+   </td></tr><tr class="oddrow"><td class="response"><input type="checkbox" name="software_resource" value="fink" /></td><td>
 
 `Fink <http://www.finkproject.org>`_
 
 .. raw:: html
 
-   </td></tr><tr class="oddrow"><td class="response"><input type="checkbox" name="software_resource" value="" /></td><td>
+   </td></tr><tr><td class="response"><input type="checkbox" name="software_resource" value="freebsdports" /></td><td>
 
 `FreeBSD ports <http://www.freebsd.org/ports/science.html>`_
 
 .. raw:: html
 
-   </td></tr><tr><td class="response"><input type="checkbox" name="software_resource" value="" /></td><td>
+   </td></tr><tr class="oddrow"><td class="response"><input type="checkbox" name="software_resource" value="incf" /></td><td>
 
 `International neuroinformatics Coordinating Facility (INCF) Research Tools <http://www.incf.org/resources/research-tools>`_
 
 .. raw:: html
 
-   </td></tr><tr class="oddrow"><td class="response"><input type="checkbox" name="software_resource" value="" /></td><td>
+   </td></tr><tr><td class="response"><input type="checkbox" name="software_resource" value=macports"" /></td><td>
 
 `Macports <http://www.macports.org>`_
 
 .. raw:: html
 
-   </td></tr><tr><td class="response"><input type="checkbox" name="software_resource" value="" /></td><td>
+   </td></tr><tr class="oddrow"><td class="response"><input type="checkbox" name="software_resource" value="matlabcentral" /></td><td>
 
 `Matlab Central <http://www.mathworks.com/matlabcentral>`_
 
 .. raw:: html
 
-   </td></tr><tr class="oddrow"><td class="response"><input type="checkbox" name="software_resource" value="" /></td><td>
+   </td></tr><tr><td class="response"><input type="checkbox" name="software_resource" value=neurodebian"" /></td><td>
 
 `NeuroDebian <http://neuro.debian.net>`_
 
 .. raw:: html
 
-   </td></tr><tr><td class="response"><input type="checkbox" name="software_resource" value="" /></td><td>
+   </td></tr><tr class="oddrow"><td class="response"><input type="checkbox" name="software_resource" value="nitrc" /></td><td>
 
 `Neuroimaging Informatics Tools and Resources Clearinghouse (NITRC) <http://www.nitrc.org>`_
 
 .. raw:: html
 
-   </td></tr><tr class="oddrow"><td class="response"><input type="checkbox" name="software_resource" value="" /></td><td>
+   </td></tr><tr><td class="response"><input type="checkbox" name="software_resource" value="pypi" /></td><td>
 
 `Python Package Index (PyPi) <http://pypi.python.org>`_
 
 .. raw:: html
 
-   </td></tr><tr><td class="response"><input type="checkbox" name="software_resource" value="" /></td><td>
+   </td></tr><tr class="oddrow"><td class="response"><input type="checkbox" name="software_resource" value="pythonbundles" /></td><td>
+
+Python bundles: `Enthought Python <http://www.enthought.com/products/index.php>`_, `Python(x,y) <http://www.pythonxy.com/>`_
+
+.. raw:: html
+
+   </td></tr><tr><td class="response"><input type="checkbox" name="software_resource" value="sourceforge" /></td><td>
 
 `Sourceforge <http://www.sourceforge.net>`_
 
 .. raw:: html
 
-   </td></tr><tr><td class="response"><input type="checkbox" name="software_resource" value="other" /></td><td>
-   <input name="other_resource" type="text" size="40" maxlength="200">
+   </td></tr><tr class="oddrow"><td class="response"><input type="checkbox" name="software_resource" value="other" /></td><td>
+   <input name="software_resource_other" type="text" size="40" maxlength="200">
    </td></tr></table>
 
 Software selection
 ------------------
+
+Please select all software that you are using in your research.
 
 Generic computing/scripting/programming environments
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -714,7 +743,7 @@ Generic computing/scripting/programming environments
    <td class="response"><input type="checkbox" name="sw" value="shell" />Shell scripting</td>
    </tr></table>
 
-Distributed Computing - frameworks and controllers
+Distributed computing - frameworks and controllers
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. raw:: html
@@ -770,13 +799,15 @@ Imaging
    <td class="response"><input type="checkbox" name="sw" value="mricron" />MRIcron</td>
    </tr><tr class="oddrow">
    <td class="response"><input type="checkbox" name="sw" value="mrtrix" />MRtrix</td>
-   <td class="response"><input type="checkbox" name="sw" value="mvpa" />MVPA Toolbox</td>
+   <td class="response"><input type="checkbox" name="sw" value="mvpa" />Matlab MVPA toolbox</td>
+   <td class="response"><input type="checkbox" name="sw" value="nibabel" />NiBabel/PyNIfTI</td>
    <td class="response"><input type="checkbox" name="sw" value="nipy" />NiPy/NiTime/DiPy/NiPype</td>
-   <td class="response"><input type="checkbox" name="sw" value="pymvpa" />PyMVPA</td>
    </tr><tr>
+   <td class="response"><input type="checkbox" name="sw" value="pymvpa" />PyMVPA</td>
    <td class="response"><input type="checkbox" name="sw" value="rest" />REST</td>
    <td class="response"><input type="checkbox" name="sw" value="spm" />SPM</td>
    <td class="response"><input type="checkbox" name="sw" value="v3d" />V3D</td>
+   </tr><tr class="oddrow">
    <td class="response"><input type="checkbox" name="sw" value="voxbo" />VoxBo</td>
    </tr></table>
 
@@ -790,7 +821,7 @@ Data management
    <td class="response"><input type="checkbox" name="sw" value="hid" />Human Imaging Database (HID)</td>
    </tr></table>
 
-Neural Systems Modeling
+Neural systems modeling
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 .. raw:: html
@@ -822,12 +853,13 @@ Electrophysiology, MEG/EEG
    <td class="response"><input type="checkbox" name="sw" value="elekta" />Elekta Neuromag</td>
    </tr><tr class="oddrow">
    <td class="response"><input type="checkbox" name="sw" value="fieldtrip" />Fieldtrip</td>
+   <td class="response"><input type="checkbox" name="sw" value="klustakwik" />KlustaKwik</td>
    <td class="response"><input type="checkbox" name="sw" value="loreta" />LORETA/sLORETA</td>
    <td class="response"><input type="checkbox" name="sw" value="mne" />MNE suite</td>
    <td class="response"><input type="checkbox" name="sw" value="neuroexplorer" />NeuroExplorer</td>
    <td class="response"><input type="checkbox" name="sw" value="openmeeg" />OpenMEEG</td>
-   <td class="response"><input type="checkbox" name="sw" value="openelectrophy" />Openelectrophy</td>
    </tr><tr>
+   <td class="response"><input type="checkbox" name="sw" value="openelectrophy" />Openelectrophy</td>
    <td class="response"><input type="checkbox" name="sw" value="rtxi" />RTXI</td>
    <td class="response"><input type="checkbox" name="sw" value="relacs" />Relacs</td>
    <td class="response"><input type="checkbox" name="sw" value="trellis" />?Trellis-neuro</td>
@@ -867,7 +899,7 @@ Real-time solutions
    <td class="response"><input type="checkbox" name="sw" value="preempt_rt" />PREEMPT_RT</td>
    </tr></table>
 
-Psychophysics/Experimental Control
+Psychophysics/Experimental control
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. raw:: html
@@ -893,14 +925,13 @@ Other
 
    <table class="questionaire"><tr>
    <td class="response"><input type="checkbox" name="sw" value="other" />
-   <input name="other_sw" type="text" size="40" maxlength="200"></td>
+   <input name="sw_other" type="text" size="40" maxlength="200"> <span style="font-size:70%">(comma-separated list)</span></td>
    </tr></table>
 
 ---------------------------------------------------------------
 
-Thanks for filling out the questionaire. You can now submit it. Upon successful
-submission you'll get access to the result statistics of all previous
-participants.
+Thanks for filling out the questionaire. Upon successful submission you will
+be presented with some statistics computed from all previous participants.
 
 .. raw:: html
 

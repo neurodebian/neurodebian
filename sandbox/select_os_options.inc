@@ -21,3 +21,4 @@
 <option value="beos" label="BeOS">BeOS</option>
 <option value="solaris" label="Solaris">Solaris</option>
 <option value="other" label="Other operating system">Other operating system</option>
+<option value="dontknow" label="I don't know">I don't know</option>

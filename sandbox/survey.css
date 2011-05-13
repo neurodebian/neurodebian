@@ -6,6 +6,22 @@ body {
     margin: 1em;
 }
 
+h1.title {
+    color: #2C471A;
+    font-size: 150%;
+    text-align: center;
+}
+
+h1 {
+    color: #2C471A;
+    font-size: 120%;
+}
+
+h2 {
+    color: #2C471A;
+    font-size: 100%;
+}
+
 div.document {
     background-color: #fff;
     padding: 1em;
