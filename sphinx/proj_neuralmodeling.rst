@@ -15,11 +15,10 @@ Status
 ------
 
 This effort initiated with packaging of :ref:`Brian <pkg_python-brian>`
-already available from NeuroDebian repository.
+and :ref:`PyNN <pkg_python-pynn>` already available from Debian_ and NeuroDebian_ repositories.
 
 .. todo::  Neural modeling software coverage
 
-   * Complete packaging of :ref:`PyNN <pkg_python-pynn>`
    * Complete packaging of :ref:`PCSIM <pkg_python-pcsim>`
    * Complete packaging of :ref:`NEURON <pkg_neuron>`
 

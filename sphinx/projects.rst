@@ -69,12 +69,18 @@ Promotion
   - `Debian / NeuroDebian tri-fold
     <http://neuro.debian.net/_files/brochure_debian-neurodebian.pdf>`_
 
-* Conferences presence.  To promote NeuroDebian_ project we consider
-  (conditioned on funding and agreements with organizers) presenting
-  NeuroDebian_ at
+* Conferences presence of the team presenting Debian_,
+  NeuroDebian_, and related work:
 
-  - `HBM 2011 <http://www.humanbrainmapping.org/HBM2011>`_
-  - `Invite us <mailto:team@neuro.debian.net>`_
+  **May 2-6, 2011** `Paradyn/Condor Week <http://www.cs.wisc.edu/condor/ParadynCondorWeek2011>`_, Madison, Wisconsin, USA
+    Hanke, M. `Talk: Integrating Condor into the Debian operating system <http://www.cs.wisc.edu/condor/ParadynCondorWeek2011/presentations/hanke-condor-debian.pdf>`__
+  **June 26-30, 2011** `HBM 2011 <http://www.humanbrainmapping.org/HBM2011>`_, Québec City, Canada
+    Debian/NeuroDebian booth `#108 <http://www.humanbrainmapping.org/files/2011MeetingFiles/Exhibit_Floor_Plan-5_10_2011.PDF>`__
+  **August 25-30, 2011** `EuroSciPy 2011/ Python in NeuroScience <http://www.euroscipy.org/conference/euroscipy2011>`_, Paris, France
+	Talks TBA
+  **November 12-16, 2011** `SfN 2011 <http://www.sfn.org/am2011/>`_, Washington, District Columbia, USA
+    Booth TBA
+  `Invite us <mailto:team@neuro.debian.net>`_
 
 * `Inviting contributions and new members to join the NeuroDebian project
   <https://openhatch.org/+projects/NeuroDebian>`_

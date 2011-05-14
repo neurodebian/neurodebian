@@ -19,7 +19,7 @@ Debian_ distribution and working on extending support of other tools and
 libraries used in psychopysics research to interface with the stimuli delivery
 and responses collection hardware.
 
-.. todo:: Tailor Debian for psychopysics research
+.. todo:: Tailor Debian_ for psychopysics research
 
    * Complete packaging of :ref:`Psychtoolbox-3 <pkg_octave-psychtoolbox-3>`
    * Provide convenience package and guidelines for assuring robust
