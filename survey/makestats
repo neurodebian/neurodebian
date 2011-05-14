@@ -1,0 +1,100 @@
+#!/usr/bin/python
+
+from glob import glob
+import json
+import sys
+import pylab as pl
+import numpy as np
+
+class DB(dict):
+    def __init__(self, srcdir):
+        # eats the whole directory
+        datafilenames = glob('%s/*.json' % srcdir)
+        for dfn in datafilenames:
+            rawdata = json.load(open(dfn))
+            self[rawdata['timestamp']] = rawdata
+
+    def get_unique(self, key):
+        # return a set of all (unique) values for a field id
+        uniq = set()
+        for d in self.values():
+            if key in d:
+                el = d[key]
+                if isinstance(el, list):
+                    uniq = uniq.union(el)
+                else:
+                    uniq = uniq.union((el,))
+        return uniq
+
+    def get_not_none(self, key):
+        # return a list of all values of a specific field id
+        # the second return value is count of submission that did not have data
+        # for this field id
+        val = []
+        missing = 0
+        for d in self.values():
+            if key in d:
+                el = d[key]
+                if isinstance(el, list):
+                    val.extend(el)
+                else:
+                    if el == 'none':
+                        missing += 1
+                    else:
+                        val.append(el)
+            else:
+                missing += 1
+        return val, missing
+
+    def get_counts(self, key):
+        # return a dict with field values as keys and respective submission 
+        # count as value
+        vals = self.get_not_none(key)[0]
+        uniq = np.unique(vals)
+        counts = dict(zip(uniq, [vals.count(u) for u in uniq]))
+        return counts
+
+    def select_match(self, key, values):
+        # return a db with all submissions were a field id has one of the
+        # supplied values
+        match = {}
+        for k, v in self.items():
+            if not key in v:
+                continue
+            el = v[key]
+            if isinstance(el, list):
+                if len(set(values).intersection(el)):
+                    match[k] = v
+            elif el in values:
+                match[k] = v
+        return match
+
+
+
+def load_list2dict(name):
+    d = {}
+    lfile = open(name)
+    for line in lfile:
+        kv = line.split(':')
+        d[kv[0]] = kv[1].strip().strip('"')
+    return d
+
+def mkpic_submissions_per_datamod(db, destdir):
+    # simple demo
+    dmd = load_list2dict('datamodlist.txt')
+    spd = db.get_counts('bg_datamod')
+    spd = sorted(spd.items(), cmp=lambda x, y: cmp(x[1], y[1]))[::-1]
+    x = np.arange(len(spd))
+    pl.figure(figsize=(8, 6), dpi=80, facecolor='w', edgecolor='k')
+    pl.title('Data modality')
+    pl.bar(x, [s[1] for s in spd])
+    pl.xticks(x + 0.5,  [dmd[k[0]] for k in spd], rotation=-15)
+    pl.ylabel('Survey submissions per data modality\n(multiple choices per submission possible)')
+    pl.savefig('%s/submissions_per_datamod.png' % destdir, format='png')
+
+def main(srcdir, destdir):
+    db = DB(srcdir)
+    mkpic_submissions_per_datamod(db, destdir)
+
+if __name__ == '__main__':
+    main(sys.argv[1], sys.argv[2])
