@@ -1,13 +1,22 @@
 all: index.html
 
 clean:
-	-rm *.html *.js
+	-rm *.html *.js *.txt
 
 jquery.form.js:
 	wget --no-check-certificate http://github.com/malsup/form/raw/master/jquery.form.js
 
 index.html: survey.rst
 	rst2html --link-stylesheet --stylesheet-path=survey.css survey.rst > $@
+
+results.html: results.rst
+	rst2html --link-stylesheet --stylesheet-path=survey.css results.rst > $@
+
+results_snippet.html: results.html
+	head -n$$(echo "$$(grep -n '</body>' < results.html | cut -d ':' -f 1,1) - 1" \
+		| bc ) results.html \
+		| tail -n$$(echo "$$(wc -l < results.html) - $$(grep -n '<body>' \
+		< results.html | cut -d ':' -f 1,1) - 2" | bc ) > $@
 
 getdata:
 	rsync -rvzlhp --delete \
@@ -25,7 +34,7 @@ datamodlist.txt: survey.rst
 	grep '"bg_datamod"' survey.rst | sed -e 's/.*name="bg_datamod" value="//' \
 		-e 's," />,: ",' -e 's,<br />$$,",' -e 's/ "$$/ "Other"/' > $@
 
-upload: index.html jquery.form.js survey.css
+upload: index.html results.html results_snippet.html jquery.form.js survey.css
 	rsync -rvzlhp --delete  \
         --exclude=Makefile --exclude='*.inc' --exclude='*.rst' --exclude='*.txt' \
         --exclude=makestats --exclude=surveydata --exclude='*.cgi' \

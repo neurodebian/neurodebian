@@ -50,7 +50,7 @@ def extract_results(form, result):
                "sw_bci", "sw_acq", "sw_rt", "sw_psychphys"]:
         if ff in form:
             result[ff] = form.getlist(ff)
-        
+
     # special
     if "pers_maint_time" in form and form["pers_maint_time"].value:
         result["pers_maint_time"] = float(form["pers_maint_time"].value)
@@ -90,6 +90,11 @@ def main():
             except:
                 result['success'] = False
                 result['message'] = 'We are very sorry, but the server is unable to store your submission. Please contact team@neuro.debian.net.'
+            # send HTML snippet to let the submitter see the results
+            try:
+                result['results'] = open('/home/www/neuro.debian.net/www/survey/results_snippet.html').read()
+            except:
+                result['results'] = 'We are very sorry, but the statistics could not be displayed. Please contact team@neuro.debian.net to get access.'
         else:
             result['message'] = format_message(messages)
 

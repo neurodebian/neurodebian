@@ -16,6 +16,7 @@ of them.
    // prepare the form when the DOM is ready
    $(document).ready(function() {
        var options = {
+           beforeSubmit:  displayStatus,
            success:       showResponse,  // post-submit callback
            // other available options:
            url: "/cgi-bin/surveycollector.cgi",
@@ -33,11 +34,18 @@ of them.
        }); 
    }); 
 
+   // pre-submit callback 
+   function displayStatus(formData, jqForm, options) { 
+       $('#server_response').html("<emph>Sending survey data. This may take a few moments...</emph>");
+       return true; 
+   } 
+
    function showResponse(data, statusText, xhr, $form)  {
        // reset form if server reports success
        if (data.success == true) {
            $('#nss_survey').resetForm();
-           $('#server_response').html("All good");
+           $('#submit_button').hide();
+           $('#server_response').html(data.results);
        } else {
            $('#server_response').html("");
            alert(data.message);
@@ -929,7 +937,7 @@ be presented with some statistics computed from all previous participants.
 
 .. raw:: html
 
-   <input value="Go" type="submit">
+   <input id="submit_button" value="Submit survey" type="submit">
    <div id="server_response"></div>
    </form>
 
