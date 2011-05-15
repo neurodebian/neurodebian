@@ -18,7 +18,7 @@ oslist.txt: select_os_options.inc
 		-e 's/" label="/: "/' -e 's/">.*$$/"/' > $@
 
 swlist.txt: survey.rst
-	grep '"sw"' survey.rst | sed -e 's/.*name="sw" value="//' -e 's," />,: ",' \
+	grep '"sw.*" value' survey.rst | sed -e 's/.*name="sw.*" value="//' -e 's," />,: ",' \
 		-e 's,</td>$$,",' -e 's/ "$$/ "Other"/' > $@
 
 datamodlist.txt: survey.rst
@@ -27,6 +27,7 @@ datamodlist.txt: survey.rst
 
 upload: index.html jquery.form.js survey.css
 	rsync -rvzlhp --delete  \
-        --exclude=Makefile --exclude='*.inc' --exclude='*.rst' \
+        --exclude=Makefile --exclude='*.inc' --exclude='*.rst' --exclude='*.txt' \
+        --exclude=makestats --exclude=surveydata --exclude='*.cgi' \
 		--chmod=Dg+s,g+rw * neurodebian@www.pymvpa.org:/home/www/neuro.debian.net/www/survey/
 

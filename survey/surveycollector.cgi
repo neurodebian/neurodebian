@@ -35,7 +35,7 @@ def extract_results(form, result):
                "pers_time", "pers_hardware", "pers_os",
                "man_time", "man_hardware", "man_os",
                "virt_time", "virt_other", "virt_guest_os", "virt_host_os",
-               "software_resource_other", "sw_other"]:
+               "software_resource_other", "sw_other", "sw_other_name"]:
         if ff in form:
             result[ff] = form[ff].value
     # integers
@@ -45,7 +45,9 @@ def extract_results(form, result):
         if ff in form:
             result[ff] = int(form[ff].value)
     # lists
-    for ff in ["bg_datamod", "virt_prod", "software_resource", "sw"]:
+    for ff in ["bg_datamod", "virt_prod", "software_resource", "sw_general",
+               "sw_dc", "sw_img", "sw_datamanage", "sw_electro", "sw_neusys",
+               "sw_bci", "sw_acq", "sw_rt", "sw_psychphys"]:
         if ff in form:
             result[ff] = form.getlist(ff)
         

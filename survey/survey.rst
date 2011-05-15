@@ -716,25 +716,25 @@ Generic computing/scripting/programming environments
 .. raw:: html
 
    <table class="questionaire"><tr>
-   <td class="response"><input type="checkbox" name="sw" value="cpp" />C/C++</td>
-   <td class="response"><input type="checkbox" name="sw" value="idl" />IDL</td>
-   <td class="response"><input type="checkbox" name="sw" value="labview" />LabVIEW</td>
-   <td class="response"><input type="checkbox" name="sw" value="lisrel" />LISREL</td>
-   <td class="response"><input type="checkbox" name="sw" value="maple" />Maple</td>
-   <td class="response"><input type="checkbox" name="sw" value="mathcad" />Mathcad</td>
+   <td class="response"><input type="checkbox" name="sw_general" value="cpp" />C/C++</td>
+   <td class="response"><input type="checkbox" name="sw_general" value="idl" />IDL</td>
+   <td class="response"><input type="checkbox" name="sw_general" value="labview" />LabVIEW</td>
+   <td class="response"><input type="checkbox" name="sw_general" value="lisrel" />LISREL</td>
+   <td class="response"><input type="checkbox" name="sw_general" value="maple" />Maple</td>
+   <td class="response"><input type="checkbox" name="sw_general" value="mathcad" />Mathcad</td>
    </tr><tr class="oddrow">
-   <td class="response"><input type="checkbox" name="sw" value="mathematica" />Mathematica</td>
-   <td class="response"><input type="checkbox" name="sw" value="matlab" />Matlab</td>
-   <td class="response"><input type="checkbox" name="sw" value="octave" />Octave</td>
-   <td class="response"><input type="checkbox" name="sw" value="perl" />Perl</td>
-   <td class="response"><input type="checkbox" name="sw" value="python" />Python</td>
-   <td class="response"><input type="checkbox" name="sw" value="r" />R</td>
+   <td class="response"><input type="checkbox" name="sw_general" value="mathematica" />Mathematica</td>
+   <td class="response"><input type="checkbox" name="sw_general" value="matlab" />Matlab</td>
+   <td class="response"><input type="checkbox" name="sw_general" value="octave" />Octave</td>
+   <td class="response"><input type="checkbox" name="sw_general" value="perl" />Perl</td>
+   <td class="response"><input type="checkbox" name="sw_general" value="python" />Python</td>
+   <td class="response"><input type="checkbox" name="sw_general" value="r" />R</td>
    </tr><tr>
-   <td class="response"><input type="checkbox" name="sw" value="ruby" />Ruby</td>
-   <td class="response"><input type="checkbox" name="sw" value="scilab" />Scilab</td>
-   <td class="response"><input type="checkbox" name="sw" value="spss" />SPSS</td>
-   <td class="response"><input type="checkbox" name="sw" value="scirun" />SCIRun</td>
-   <td class="response"><input type="checkbox" name="sw" value="shell" />Shell scripting</td>
+   <td class="response"><input type="checkbox" name="sw_general" value="ruby" />Ruby</td>
+   <td class="response"><input type="checkbox" name="sw_general" value="scilab" />Scilab</td>
+   <td class="response"><input type="checkbox" name="sw_general" value="spss" />SPSS</td>
+   <td class="response"><input type="checkbox" name="sw_general" value="scirun" />SCIRun</td>
+   <td class="response"><input type="checkbox" name="sw_general" value="shell" />Shell scripting</td>
    </tr></table>
 
 Distributed computing - frameworks and controllers
@@ -743,12 +743,12 @@ Distributed computing - frameworks and controllers
 .. raw:: html
 
    <table class="questionaire"><tr>
-   <td class="response"><input type="checkbox" name="sw" value="sge" />SGE</td>
-   <td class="response"><input type="checkbox" name="sw" value="torque" />Torque/OpenPBS/Maui</td>
-   <td class="response"><input type="checkbox" name="sw" value="condor" />Condor</td>
-   <td class="response"><input type="checkbox" name="sw" value="globus" />Globus</td>
-   <td class="response"><input type="checkbox" name="sw" value="mpi" />MPI (any)</td>
-   <td class="response"><input type="checkbox" name="sw" value="ipython" />IPython</td>
+   <td class="response"><input type="checkbox" name="sw_dc" value="sge" />SGE</td>
+   <td class="response"><input type="checkbox" name="sw_dc" value="torque" />Torque/OpenPBS/Maui</td>
+   <td class="response"><input type="checkbox" name="sw_dc" value="condor" />Condor</td>
+   <td class="response"><input type="checkbox" name="sw_dc" value="globus" />Globus</td>
+   <td class="response"><input type="checkbox" name="sw_dc" value="mpi" />MPI (any)</td>
+   <td class="response"><input type="checkbox" name="sw_dc" value="ipython" />IPython</td>
    </tr></table>
 
 Imaging
@@ -757,52 +757,52 @@ Imaging
 .. raw:: html
 
    <table class="questionaire"><tr>
-   <td class="response"><input type="checkbox" name="sw" value="3dslicer" />3D Slicer</td>
-   <td class="response"><input type="checkbox" name="sw" value="afni" />AFNI</td>
-   <td class="response"><input type="checkbox" name="sw" value="aeskulap" />Aeskulap</td>
-   <td class="response"><input type="checkbox" name="sw" value="amide" />Amide</td>
+   <td class="response"><input type="checkbox" name="sw_img" value="3dslicer" />3D Slicer</td>
+   <td class="response"><input type="checkbox" name="sw_img" value="afni" />AFNI</td>
+   <td class="response"><input type="checkbox" name="sw_img" value="aeskulap" />Aeskulap</td>
+   <td class="response"><input type="checkbox" name="sw_img" value="amide" />Amide</td>
    </tr><tr class="oddrow">
-   <td class="response"><input type="checkbox" name="sw" value="birn" />BIRN Tools</td>
-   <td class="response"><input type="checkbox" name="sw" value="brainstools" />BRAINS Tools</td>
-   <td class="response"><input type="checkbox" name="sw" value="bioimgsuite" />Bioimage Suite</td>
-   <td class="response"><input type="checkbox" name="sw" value="brainmap" />BrainMap</td>
+   <td class="response"><input type="checkbox" name="sw_img" value="birn" />BIRN Tools</td>
+   <td class="response"><input type="checkbox" name="sw_img" value="brainstools" />BRAINS Tools</td>
+   <td class="response"><input type="checkbox" name="sw_img" value="bioimgsuite" />Bioimage Suite</td>
+   <td class="response"><input type="checkbox" name="sw_img" value="brainmap" />BrainMap</td>
    </tr><tr>
-   <td class="response"><input type="checkbox" name="sw" value="brainvisa" />BrainVISA/Anatomist</td>
-   <td class="response"><input type="checkbox" name="sw" value="brainvoyager" />BrainVoyager</td>
-   <td class="response"><input type="checkbox" name="sw" value="cmtk" />CMTK</td>
-   <td class="response"><input type="checkbox" name="sw" value="caret" />Caret</td>
+   <td class="response"><input type="checkbox" name="sw_img" value="brainvisa" />BrainVISA/Anatomist</td>
+   <td class="response"><input type="checkbox" name="sw_img" value="brainvoyager" />BrainVoyager</td>
+   <td class="response"><input type="checkbox" name="sw_img" value="cmtk" />CMTK</td>
+   <td class="response"><input type="checkbox" name="sw_img" value="caret" />Caret</td>
    </tr><tr class="oddrow">
-   <td class="response"><input type="checkbox" name="sw" value="connectomviewer" />ConnectomeViewer</td>
-   <td class="response"><input type="checkbox" name="sw" value="dsi" />DSI Studio</td>
-   <td class="response"><input type="checkbox" name="sw" value="dtitk" />DTI-TK</td>
-   <td class="response"><input type="checkbox" name="sw" value="trackvis" />Diffusion Toolkit/Trackvis</td>
+   <td class="response"><input type="checkbox" name="sw_img" value="connectomviewer" />ConnectomeViewer</td>
+   <td class="response"><input type="checkbox" name="sw_img" value="dsi" />DSI Studio</td>
+   <td class="response"><input type="checkbox" name="sw_img" value="dtitk" />DTI-TK</td>
+   <td class="response"><input type="checkbox" name="sw_img" value="trackvis" />Diffusion Toolkit/Trackvis</td>
    </tr><tr>
-   <td class="response"><input type="checkbox" name="sw" value="fsl" />FSL</td>
-   <td class="response"><input type="checkbox" name="sw" value="fiji" />Fiji</td>
-   <td class="response"><input type="checkbox" name="sw" value="freesurfer" />FreeSurfer</td>
-   <td class="response"><input type="checkbox" name="sw" value="itksnap" />ITK-SNAP</td>
+   <td class="response"><input type="checkbox" name="sw_img" value="fsl" />FSL</td>
+   <td class="response"><input type="checkbox" name="sw_img" value="fiji" />Fiji</td>
+   <td class="response"><input type="checkbox" name="sw_img" value="freesurfer" />FreeSurfer</td>
+   <td class="response"><input type="checkbox" name="sw_img" value="itksnap" />ITK-SNAP</td>
    </tr><tr class="oddrow">
-   <td class="response"><input type="checkbox" name="sw" value="imagej" />ImageJ</td>
-   <td class="response"><input type="checkbox" name="sw" value="invesalius" />Invesalius</td>
-   <td class="response"><input type="checkbox" name="sw" value="loni" />LONI</td>
-   <td class="response"><input type="checkbox" name="sw" value="lipsia" />Lipsia</td>
+   <td class="response"><input type="checkbox" name="sw_img" value="imagej" />ImageJ</td>
+   <td class="response"><input type="checkbox" name="sw_img" value="invesalius" />Invesalius</td>
+   <td class="response"><input type="checkbox" name="sw_img" value="loni" />LONI</td>
+   <td class="response"><input type="checkbox" name="sw_img" value="lipsia" />Lipsia</td>
    </tr><tr>
-   <td class="response"><input type="checkbox" name="sw" value="mango" />Mango</td>
-   <td class="response"><input type="checkbox" name="sw" value="mipav" />MIPAV/JIST</td>
-   <td class="response"><input type="checkbox" name="sw" value="mni" />MNI tools</td>
-   <td class="response"><input type="checkbox" name="sw" value="mricron" />MRIcron</td>
+   <td class="response"><input type="checkbox" name="sw_img" value="mango" />Mango</td>
+   <td class="response"><input type="checkbox" name="sw_img" value="mipav" />MIPAV/JIST</td>
+   <td class="response"><input type="checkbox" name="sw_img" value="mni" />MNI tools</td>
+   <td class="response"><input type="checkbox" name="sw_img" value="mricron" />MRIcron</td>
    </tr><tr class="oddrow">
-   <td class="response"><input type="checkbox" name="sw" value="mrtrix" />MRtrix</td>
-   <td class="response"><input type="checkbox" name="sw" value="mvpa" />Matlab MVPA toolbox</td>
-   <td class="response"><input type="checkbox" name="sw" value="nibabel" />NiBabel/PyNIfTI</td>
-   <td class="response"><input type="checkbox" name="sw" value="nipy" />NiPy/NiTime/DiPy/NiPype</td>
+   <td class="response"><input type="checkbox" name="sw_img" value="mrtrix" />MRtrix</td>
+   <td class="response"><input type="checkbox" name="sw_img" value="mvpa" />Matlab MVPA toolbox</td>
+   <td class="response"><input type="checkbox" name="sw_img" value="nibabel" />NiBabel/PyNIfTI</td>
+   <td class="response"><input type="checkbox" name="sw_img" value="nipy" />NiPy/NiTime/DiPy/NiPype</td>
    </tr><tr>
-   <td class="response"><input type="checkbox" name="sw" value="pymvpa" />PyMVPA</td>
-   <td class="response"><input type="checkbox" name="sw" value="rest" />REST</td>
-   <td class="response"><input type="checkbox" name="sw" value="spm" />SPM</td>
-   <td class="response"><input type="checkbox" name="sw" value="v3d" />V3D</td>
+   <td class="response"><input type="checkbox" name="sw_img" value="pymvpa" />PyMVPA</td>
+   <td class="response"><input type="checkbox" name="sw_img" value="rest" />REST</td>
+   <td class="response"><input type="checkbox" name="sw_img" value="spm" />SPM</td>
+   <td class="response"><input type="checkbox" name="sw_img" value="v3d" />V3D</td>
    </tr><tr class="oddrow">
-   <td class="response"><input type="checkbox" name="sw" value="voxbo" />VoxBo</td>
+   <td class="response"><input type="checkbox" name="sw_img" value="voxbo" />VoxBo</td>
    </tr></table>
 
 Data management
@@ -811,8 +811,8 @@ Data management
 .. raw:: html
 
    <table class="questionaire"><tr>
-   <td class="response"><input type="checkbox" name="sw" value="xnat" />XNAT/PyXNAT/...</td>
-   <td class="response"><input type="checkbox" name="sw" value="hid" />Human Imaging Database (HID)</td>
+   <td class="response"><input type="checkbox" name="sw_datamanage" value="xnat" />XNAT/PyXNAT/...</td>
+   <td class="response"><input type="checkbox" name="sw_datamanage" value="hid" />Human Imaging Database (HID)</td>
    </tr></table>
 
 Neural systems modeling
@@ -821,16 +821,16 @@ Neural systems modeling
 .. raw:: html
 
    <table class="questionaire"><tr>
-   <td class="response"><input type="checkbox" name="sw" value="brian" />Brian</td>
-   <td class="response"><input type="checkbox" name="sw" value="iqr" />iqr</td>
-   <td class="response"><input type="checkbox" name="sw" value="iNVT" />iNVT</td>
-   <td class="response"><input type="checkbox" name="sw" value="neuron" />NEURON</td>
-   <td class="response"><input type="checkbox" name="sw" value="nest" />NEST</td>
-   <td class="response"><input type="checkbox" name="sw" value="genesis" />Genesis</td>
-   <td class="response"><input type="checkbox" name="sw" value="moose" />Moose</td>
-   <td class="response"><input type="checkbox" name="sw" value="pcsim" />PCSIM</td>
-   <td class="response"><input type="checkbox" name="sw" value="pynn" />PyNN</td>
-   <td class="response"><input type="checkbox" name="sw" value="topographica" />Topographica</td>
+   <td class="response"><input type="checkbox" name="sw_neusys" value="brian" />Brian</td>
+   <td class="response"><input type="checkbox" name="sw_neusys" value="iqr" />iqr</td>
+   <td class="response"><input type="checkbox" name="sw_neusys" value="iNVT" />iNVT</td>
+   <td class="response"><input type="checkbox" name="sw_neusys" value="neuron" />NEURON</td>
+   <td class="response"><input type="checkbox" name="sw_neusys" value="nest" />NEST</td>
+   <td class="response"><input type="checkbox" name="sw_neusys" value="genesis" />Genesis</td>
+   <td class="response"><input type="checkbox" name="sw_neusys" value="moose" />Moose</td>
+   <td class="response"><input type="checkbox" name="sw_neusys" value="pcsim" />PCSIM</td>
+   <td class="response"><input type="checkbox" name="sw_neusys" value="pynn" />PyNN</td>
+   <td class="response"><input type="checkbox" name="sw_neusys" value="topographica" />Topographica</td>
    </tr></table>
 
 Electrophysiology, MEG/EEG
@@ -839,24 +839,24 @@ Electrophysiology, MEG/EEG
 .. raw:: html
 
    <table class="questionaire"><tr>
-   <td class="response"><input type="checkbox" name="sw" value="besa" />BESA</td>
-   <td class="response"><input type="checkbox" name="sw" value="biosig" />BioSig</td>
-   <td class="response"><input type="checkbox" name="sw" value="brainstorm" />BrainStorm</td>
-   <td class="response"><input type="checkbox" name="sw" value="chronus" />Chronus</td>
-   <td class="response"><input type="checkbox" name="sw" value="eeglab" />EEGLAB</td>
-   <td class="response"><input type="checkbox" name="sw" value="elekta" />Elekta Neuromag</td>
+   <td class="response"><input type="checkbox" name="sw_electro" value="besa" />BESA</td>
+   <td class="response"><input type="checkbox" name="sw_electro" value="biosig" />BioSig</td>
+   <td class="response"><input type="checkbox" name="sw_electro" value="brainstorm" />BrainStorm</td>
+   <td class="response"><input type="checkbox" name="sw_electro" value="chronus" />Chronus</td>
+   <td class="response"><input type="checkbox" name="sw_electro" value="eeglab" />EEGLAB</td>
+   <td class="response"><input type="checkbox" name="sw_electro" value="elekta" />Elekta Neuromag</td>
    </tr><tr class="oddrow">
-   <td class="response"><input type="checkbox" name="sw" value="fieldtrip" />Fieldtrip</td>
-   <td class="response"><input type="checkbox" name="sw" value="klustakwik" />KlustaKwik</td>
-   <td class="response"><input type="checkbox" name="sw" value="loreta" />LORETA/sLORETA</td>
-   <td class="response"><input type="checkbox" name="sw" value="mne" />MNE suite</td>
-   <td class="response"><input type="checkbox" name="sw" value="neuroexplorer" />NeuroExplorer</td>
-   <td class="response"><input type="checkbox" name="sw" value="openmeeg" />OpenMEEG</td>
+   <td class="response"><input type="checkbox" name="sw_electro" value="fieldtrip" />Fieldtrip</td>
+   <td class="response"><input type="checkbox" name="sw_electro" value="klustakwik" />KlustaKwik</td>
+   <td class="response"><input type="checkbox" name="sw_electro" value="loreta" />LORETA/sLORETA</td>
+   <td class="response"><input type="checkbox" name="sw_electro" value="mne" />MNE suite</td>
+   <td class="response"><input type="checkbox" name="sw_electro" value="neuroexplorer" />NeuroExplorer</td>
+   <td class="response"><input type="checkbox" name="sw_electro" value="openmeeg" />OpenMEEG</td>
    </tr><tr>
-   <td class="response"><input type="checkbox" name="sw" value="openelectrophy" />Openelectrophy</td>
-   <td class="response"><input type="checkbox" name="sw" value="rtxi" />RTXI</td>
-   <td class="response"><input type="checkbox" name="sw" value="relacs" />Relacs</td>
-   <td class="response"><input type="checkbox" name="sw" value="trellis" />?Trellis-neuro</td>
+   <td class="response"><input type="checkbox" name="sw_electro" value="openelectrophy" />Openelectrophy</td>
+   <td class="response"><input type="checkbox" name="sw_electro" value="rtxi" />RTXI</td>
+   <td class="response"><input type="checkbox" name="sw_electro" value="relacs" />Relacs</td>
+   <td class="response"><input type="checkbox" name="sw_electro" value="trellis" />?Trellis-neuro</td>
    </tr></table>
 
 Brain-computer interface
@@ -865,9 +865,9 @@ Brain-computer interface
 .. raw:: html
 
    <table class="questionaire"><tr>
-   <td class="response"><input type="checkbox" name="sw" value="bci2000" />BCI2000</td>
-   <td class="response"><input type="checkbox" name="sw" value="openvibe" />OpenVIBE</td>
-   <td class="response"><input type="checkbox" name="sw" value="pyff" />Pyff</td>
+   <td class="response"><input type="checkbox" name="sw_bci" value="bci2000" />BCI2000</td>
+   <td class="response"><input type="checkbox" name="sw_bci" value="openvibe" />OpenVIBE</td>
+   <td class="response"><input type="checkbox" name="sw_bci" value="pyff" />Pyff</td>
    </tr></table>
 
 Hardware interface/Data acquisition
@@ -876,9 +876,9 @@ Hardware interface/Data acquisition
 .. raw:: html
 
    <table class="questionaire"><tr>
-   <td class="response"><input type="checkbox" name="sw" value="comedi" />Comedi</td>
-   <td class="response"><input type="checkbox" name="sw" value="epics" />EPICS</td>
-   <td class="response"><input type="checkbox" name="sw" value="mx" />MX</td>
+   <td class="response"><input type="checkbox" name="sw_acq" value="comedi" />Comedi</td>
+   <td class="response"><input type="checkbox" name="sw_acq" value="epics" />EPICS</td>
+   <td class="response"><input type="checkbox" name="sw_acq" value="mx" />MX</td>
    </tr></table>
 
 Real-time solutions
@@ -887,10 +887,10 @@ Real-time solutions
 .. raw:: html
 
    <table class="questionaire"><tr>
-   <td class="response"><input type="checkbox" name="sw" value="rtai" />RTAI</td>
-   <td class="response"><input type="checkbox" name="sw" value="xenomai" />Xenomai</td>
-   <td class="response"><input type="checkbox" name="sw" value="rtlinux" />RTLinux</td>
-   <td class="response"><input type="checkbox" name="sw" value="preempt_rt" />PREEMPT_RT</td>
+   <td class="response"><input type="checkbox" name="sw_rt" value="rtai" />RTAI</td>
+   <td class="response"><input type="checkbox" name="sw_rt" value="xenomai" />Xenomai</td>
+   <td class="response"><input type="checkbox" name="sw_rt" value="rtlinux" />RTLinux</td>
+   <td class="response"><input type="checkbox" name="sw_rt" value="preempt_rt" />PREEMPT_RT</td>
    </tr></table>
 
 Psychophysics/Experimental control
@@ -899,17 +899,17 @@ Psychophysics/Experimental control
 .. raw:: html
 
    <table class="questionaire"><tr>
-   <td class="response"><input type="checkbox" name="sw" value="dmdx" />DMDX</td>
-   <td class="response"><input type="checkbox" name="sw" value="eprime" />E-Prime</td>
-   <td class="response"><input type="checkbox" name="sw" value="presentation" />Presentation</td>
-   <td class="response"><input type="checkbox" name="sw" value="psychopy" />PsychoPy</td>
-   <td class="response"><input type="checkbox" name="sw" value="pyepl" />PyEPL</td>
-   <td class="response"><input type="checkbox" name="sw" value="psychtoolbox" />Psychtoolbox</td>
+   <td class="response"><input type="checkbox" name="sw_psychphys" value="dmdx" />DMDX</td>
+   <td class="response"><input type="checkbox" name="sw_psychphys" value="eprime" />E-Prime</td>
+   <td class="response"><input type="checkbox" name="sw_psychphys" value="presentation" />Presentation</td>
+   <td class="response"><input type="checkbox" name="sw_psychphys" value="psychopy" />PsychoPy</td>
+   <td class="response"><input type="checkbox" name="sw_psychphys" value="pyepl" />PyEPL</td>
+   <td class="response"><input type="checkbox" name="sw_psychphys" value="psychtoolbox" />Psychtoolbox</td>
    </tr><tr class="oddrow">
-   <td class="response"><input type="checkbox" name="sw" value="psytoolkit" />Psytoolkit</td>
-   <td class="response"><input type="checkbox" name="sw" value="opensesame" />OpenSesame</td>
-   <td class="response"><input type="checkbox" name="sw" value="visionegg" />VisionEgg</td>
-   <td class="response"><input type="checkbox" name="sw" value="tscope" />Tscope</td>
+   <td class="response"><input type="checkbox" name="sw_psychphys" value="psytoolkit" />Psytoolkit</td>
+   <td class="response"><input type="checkbox" name="sw_psychphys" value="opensesame" />OpenSesame</td>
+   <td class="response"><input type="checkbox" name="sw_psychphys" value="visionegg" />VisionEgg</td>
+   <td class="response"><input type="checkbox" name="sw_psychphys" value="tscope" />Tscope</td>
    </tr></table>
 
 Other
@@ -918,8 +918,8 @@ Other
 .. raw:: html
 
    <table class="questionaire"><tr>
-   <td class="response"><input type="checkbox" name="sw" value="other" />
-   <input name="sw_other" type="text" size="40" maxlength="200"> <span style="font-size:70%">(comma-separated list)</span></td>
+   <td class="response"><input type="checkbox" name="sw_other" value="other" />
+   <input name="sw_other_name" type="text" size="40" maxlength="200"> <span style="font-size:70%">(comma-separated list)</span></td>
    </tr></table>
 
 ---------------------------------------------------------------
