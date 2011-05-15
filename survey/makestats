@@ -6,6 +6,33 @@ import sys
 import pylab as pl
 import numpy as np
 
+# some meaningful groups of OSes
+redhat_family = ["rhel", "centos", "fedora", "scilinux"]
+debian_family = ["debian", "ubuntu", "biolinux"]
+suse_family = ["suse", "slel"]
+other_linux_family = ["gentoo", "mandriva", "arch", "slackware", "otherlinux"]
+other_family = ["starbsd", "unix", "qnx", "beos", "solaris", "other"]
+
+os_cat_names = {
+        'win': 'Windows',
+        'mac': 'Mac OS',
+        'linux': 'GNU/Linux',
+        'otheros': 'Other OS'
+        }
+
+os_family = {
+        'win': ["windows"],
+        'mac': ["macosx"],
+        'linux': redhat_family + debian_family + suse_family + other_linux_family,
+        'otheros': other_family
+        }
+# end the reverse mapping
+os_family_rev = {}
+for ost in os_family:
+    for os in os_family[ost]:
+        os_family_rev[os] = ost
+
+
 class DB(dict):
     def __init__(self, srcdir):
         # eats the whole directory
@@ -13,6 +40,8 @@ class DB(dict):
         for dfn in datafilenames:
             rawdata = json.load(open(dfn))
             self[rawdata['timestamp']] = rawdata
+
+        self.os_dict = load_list2dict('oslist.txt')
 
     def get_unique(self, key):
         # return a set of all (unique) values for a field id
@@ -69,6 +98,13 @@ class DB(dict):
                 match[k] = v
         return match
 
+    def get_nice_name(self, id):
+        srcs = [self.os_dict, os_cat_names]
+        for src in srcs:
+            if id in src:
+                return src[id]
+        # not found, nothing nicer
+        return id
 
 
 def load_list2dict(name):
@@ -79,22 +115,55 @@ def load_list2dict(name):
         d[kv[0]] = kv[1].strip().strip('"')
     return d
 
+def mkpic_os_per_env(db, destdir):
+    envs = ['pers_os', 'man_os', 'virt_host_os', 'virt_guest_os']
+    env_names = ['Personal', 'Managed', 'Virt. Host', 'Virt. Guest']
+    env_stats = {}
+    offset = 0
+    for env in envs:
+        counts = db.get_counts(env)
+        stats = dict(zip(os_family.keys(), [0] * len(os_family)))
+        for os in counts:
+            stats[os_family_rev[os]] += counts[os]
+        total_count = np.sum(stats.values())
+        for osf in stats:
+            stats[osf] = float(stats[osf]) / total_count
+        env_stats[env] = stats
+    # make stacked barplot
+    pl.figure(figsize=(6.4, 4.8), facecolor='w', edgecolor='k')
+    x = np.arange(len(envs))
+    bottoms = np.zeros(len(envs))
+    os_order = ['linux', 'mac', 'win', 'otheros']
+    colors = ['#B63537', '#4E4DA0', '#008200', 'gray']
+    for i, os in enumerate(os_order):
+        stat = [env_stats[e][os] for e in envs]
+        pl.bar(x, stat, bottom=bottoms, color=colors[i],
+               label=db.get_nice_name(os), width=0.8)
+        bottoms += stat
+    pl.legend(loc='lower right')
+    pl.xticks(x + 0.4,  [db.get_nice_name(e) for e in env_names])
+    pl.xlim(-0.25, len(envs))
+    pl.title("Operating system preference by environment")
+    pl.ylabel("Fraction of submissions")
+    pl.savefig('%s/ospref_by_env.png' % destdir, format='png')
+
 def mkpic_submissions_per_datamod(db, destdir):
     # simple demo
     dmd = load_list2dict('datamodlist.txt')
     spd = db.get_counts('bg_datamod')
     spd = sorted(spd.items(), cmp=lambda x, y: cmp(x[1], y[1]))[::-1]
     x = np.arange(len(spd))
-    pl.figure(figsize=(8, 6), dpi=80, facecolor='w', edgecolor='k')
-    pl.title('Data modality')
+    pl.figure(figsize=(6.4, 4.8), facecolor='w', edgecolor='k')
+    pl.title('Submissions per data modality')
     pl.bar(x, [s[1] for s in spd])
-    pl.xticks(x + 0.5,  [dmd[k[0]] for k in spd], rotation=-15)
+    pl.xticks(x + 0.5,  [dmd[k[0]] for k in spd], rotation=-10)
     pl.ylabel('Survey submissions per data modality\n(multiple choices per submission possible)')
     pl.savefig('%s/submissions_per_datamod.png' % destdir, format='png')
 
 def main(srcdir, destdir):
     db = DB(srcdir)
-    mkpic_submissions_per_datamod(db, destdir)
+    for pic in [mkpic_submissions_per_datamod, mkpic_os_per_env]:
+        pic(db, destdir)
 
 if __name__ == '__main__':
     main(sys.argv[1], sys.argv[2])
