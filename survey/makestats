@@ -6,6 +6,40 @@ import sys
 import pylab as pl
 import numpy as np
 
+# resources
+resource_categories = {
+    'vendor': 'Vendor/Project website',
+    'retailer': 'Retailer',
+    'os': 'Operating system',
+    'cpan': 'CPAN',
+    'cran': 'CRAN',
+    'epel': 'EPEL',
+    'fink': 'Fink',
+    'freebsdports': 'FreeBSD ports',
+    'incf': 'INCF',
+    'macports': 'Macports',
+    'matlabcentral': 'Matlab Central',
+    'neurodebian': 'NeuroDebian',
+    'nitrc': 'NITRC',
+    'pypi': 'PyPi',
+    'pythonbundles': 'Python bundles',
+    'sourceforge': 'Sourceforge',
+    'other': 'Other resource'
+    }
+# software categories
+sw_categories = {
+        'general': 'General computing',
+        'dc': 'Distributed computing',
+        'img': 'Brain imaging',
+        'datamanage': 'Data management',
+        'neusys': 'Neural systems modeling',
+        'electro': 'Electrophysiology, MEG/EEG',
+        'bci': 'Brain-computer interface',
+        'acq': 'Hardware interface/Data acquisition',
+        'rt': 'Real-time solutions',
+        'psychphys': 'Psychophysics/Experiment control'
+        }
+
 # some meaningful groups of OSes
 redhat_family = ["rhel", "centos", "fedora", "scilinux"]
 debian_family = ["debian", "ubuntu", "biolinux"]
@@ -42,6 +76,9 @@ class DB(dict):
             self[rawdata['timestamp']] = rawdata
 
         self.os_dict = load_list2dict('oslist.txt')
+        self.datamod_dict = load_list2dict('datamodlist.txt')
+        self.sw_dict = load_list2dict('swlist.txt')
+
 
     def get_unique(self, key):
         # return a set of all (unique) values for a field id
@@ -99,7 +136,8 @@ class DB(dict):
         return match
 
     def get_nice_name(self, id):
-        srcs = [self.os_dict, os_cat_names]
+        srcs = [self.os_dict, os_cat_names, self.sw_dict, sw_categories,
+                resource_categories]
         for src in srcs:
             if id in src:
                 return src[id]
@@ -149,20 +187,63 @@ def mkpic_os_per_env(db, destdir):
 
 def mkpic_submissions_per_datamod(db, destdir):
     # simple demo
-    dmd = load_list2dict('datamodlist.txt')
     spd = db.get_counts('bg_datamod')
     spd = sorted(spd.items(), cmp=lambda x, y: cmp(x[1], y[1]))[::-1]
     x = np.arange(len(spd))
     pl.figure(figsize=(6.4, 4.8), facecolor='w', edgecolor='k')
     pl.title('Submissions per data modality')
     pl.bar(x, [s[1] for s in spd])
-    pl.xticks(x + 0.5,  [dmd[k[0]] for k in spd], rotation=-10)
+    pl.xticks(x + 0.5,  [db.datamod_dict[k[0]] for k in spd], rotation=-10)
     pl.ylabel('Survey submissions per data modality\n(multiple choices per submission possible)')
     pl.savefig('%s/submissions_per_datamod.png' % destdir, format='png')
 
+def mkpic_resources(db, destdir):
+    res = db.get_counts('software_resource')
+    res = res.items()
+    x = np.arange(len(res))
+    pl.figure(figsize=(6.4, 4.8), facecolor='w', edgecolor='k')
+    pl.title('Software resources')
+    pl.bar(x + (1./8), [s[1] for s in res], width=0.75, color = '#008200')
+    pl.xticks(x + 0.5,  ['' for s in res])
+    for i, s in enumerate(res):
+        pl.text(i+.5, 0.1, db.get_nice_name(s[0]), rotation=90,
+                horizontalalignment='center',
+                verticalalignment='bottom',
+                bbox=dict(facecolor='white', alpha=0.8, edgecolor='white',
+                          color='white'))
+    pl.ylabel('Number of submissions')
+    pl.savefig('%s/software_resources' % destdir, format='png')
+
+def mkpic_software(db, destdir):
+    for typ in sw_categories.keys():
+        counts = db.get_counts('sw_%s' % typ)
+        pl.figure(figsize=(6.4, 4.8), facecolor='w', edgecolor='k')
+        if not len(counts):
+            pl.text(.5, .5, "Insufficient data for this figure.",
+                    horizontalalignment='center')
+            pl.axis('off')
+        else:
+            # sort by name
+            stats = sorted(counts.items(), cmp=lambda x, y: cmp(x[0], y[0]))
+            x = np.arange(len(stats))
+            pl.bar(x + (1./8), [s[1] for s in stats], width=0.75, color = '#008200')
+            pl.title("Software popularity: %s" % db.get_nice_name(typ))
+            pl.xticks(x + 0.5,  ['' for s in stats])
+            for i, s in enumerate(stats):
+                pl.text(i+.5, 0.1, db.get_nice_name(s[0]), rotation=90,
+                        horizontalalignment='center',
+                        verticalalignment='bottom',
+                        bbox=dict(facecolor='white', alpha=0.8, edgecolor='white',
+                                  color='white'))
+            pl.xlim(0, len(stats))
+            pl.ylabel("Number of submissions")
+        pl.savefig('%s/sw_%s.png' % (destdir, typ), format='png')
+
+
 def main(srcdir, destdir):
     db = DB(srcdir)
-    for pic in [mkpic_submissions_per_datamod, mkpic_os_per_env]:
+    for pic in [mkpic_submissions_per_datamod, mkpic_os_per_env, mkpic_software,
+                mkpic_resources]:
         pic(db, destdir)
 
 if __name__ == '__main__':

@@ -679,7 +679,7 @@ Comes with the operating system
 
 .. raw:: html
 
-   </td></tr><tr><td class="response"><input type="checkbox" name="software_resource" value=neurodebian"" /></td><td>
+   </td></tr><tr><td class="response"><input type="checkbox" name="software_resource" value="neurodebian" /></td><td>
 
 `NeuroDebian <http://neuro.debian.net>`_
 
@@ -901,8 +901,8 @@ Real-time solutions
    <td class="response"><input type="checkbox" name="sw_rt" value="preempt_rt" />PREEMPT_RT</td>
    </tr></table>
 
-Psychophysics/Experimental control
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Psychophysics/Experiment control
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. raw:: html
 
