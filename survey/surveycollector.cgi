@@ -7,21 +7,21 @@ import os
 
 def validate_form(form):
     messages = []
-    if not 'pers_time' in form or form['pers_time'].value == 'none':
-        messages.append("Please indicate how much time you spend in your personal computing environment.")
-    if not 'man_time' in form or form['man_time'].value == 'none':
-        messages.append("Please indicate how much time you spend in a managed computing environment.")
-    if not 'virt_time' in form or form['virt_time'].value == 'none':
-        messages.append("Please indicate how often you use virtual machines.")
     if not 'bg_datamod' in form or not len(form.getlist('bg_datamod')):
         messages.append("Please indicate want kind of data you are working with.")
     if 'bg_datamod' in form and 'other' in form.getlist('bg_datamod') and not form['bg_datamod_other'].value:
         messages.append("You selected 'Other data modality' but did not specific which one.")
+    if not 'pers_time' in form or form['pers_time'].value == 'none':
+        messages.append("Please indicate how much time you spend in your personal computing environment.")
     if 'pers_maint_time' in form and form['pers_maint_time'].value:
         try:
             t = float(form['pers_maint_time'].value)
         except:
             messages.append("The value you entered as maintenance effort per month needs to be a (floating point) number. For example: 1.2 or 5")
+    if not 'man_time' in form or form['man_time'].value == 'none':
+        messages.append("Please indicate how much time you spend in a managed computing environment.")
+    if not 'virt_time' in form or form['virt_time'].value == 'none':
+        messages.append("Please indicate how often you use virtual machines.")
     return messages
 
 
