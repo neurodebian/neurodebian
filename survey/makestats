@@ -41,7 +41,7 @@ sw_categories = {
         'bci': 'Brain-computer interface',
         'acq': 'Hardware interface/Data acquisition',
         'rt': 'Real-time solutions',
-        'psychphys': 'Psychophysics/Experiment control'
+        'psychophys': 'Psychophysics/Experiment control'
         }
 
 # some meaningful groups of OSes
@@ -188,7 +188,7 @@ def mkpic_os_per_env(db, destdir):
     pl.xlim(-0.25, len(envs))
     pl.title("Operating system preference by environment")
     pl.ylabel("Fraction of submissions")
-    pl.savefig('%s/ospref_by_env.png' % destdir, format='png')
+    pl.savefig('%s/ospref_by_env.png' % destdir, format='png', dpi=80)
 
 def mkpic_submissions_per_datamod(db, destdir):
     # simple demo
@@ -200,7 +200,7 @@ def mkpic_submissions_per_datamod(db, destdir):
     pl.bar(x, [s[1] for s in spd])
     pl.xticks(x + 0.5,  [db.datamod_dict[k[0]] for k in spd], rotation=-10)
     pl.ylabel('Survey submissions per data modality\n(multiple choices per submission possible)')
-    pl.savefig('%s/submissions_per_datamod.png' % destdir, format='png')
+    pl.savefig('%s/submissions_per_datamod.png' % destdir, format='png', dpi=80)
 
 def mkpic_resources(db, destdir):
     res = db.get_counts('software_resource')
@@ -217,14 +217,15 @@ def mkpic_resources(db, destdir):
                 bbox=dict(facecolor='white', alpha=0.8, edgecolor='white',
                           color='white'))
     pl.ylabel('Number of submissions')
-    pl.savefig('%s/software_resources' % destdir, format='png')
+    pl.savefig('%s/software_resources' % destdir, format='png', dpi=80)
 
 def mkpic_software(db, destdir):
     for typ in sw_categories.keys():
         counts = db.get_counts('sw_%s' % typ)
         pl.figure(figsize=(6.4, 4.8), facecolor='w', edgecolor='k')
+        pl.title("Software popularity: %s" % db.get_nice_name(typ))
         if not len(counts):
-            pl.text(.5, .5, "Insufficient data for this figure.",
+            pl.text(.5, .5, "[Insufficient data for this figure]",
                     horizontalalignment='center')
             pl.axis('off')
         else:
@@ -232,7 +233,6 @@ def mkpic_software(db, destdir):
             stats = sorted(counts.items(), cmp=lambda x, y: cmp(x[0], y[0]))
             x = np.arange(len(stats))
             pl.bar(x + (1./8), [s[1] for s in stats], width=0.75, color = '#008200')
-            pl.title("Software popularity: %s" % db.get_nice_name(typ))
             pl.xticks(x + 0.5,  ['' for s in stats])
             for i, s in enumerate(stats):
                 pl.text(i+.5, 0.1, db.get_nice_name(s[0]), rotation=90,
@@ -242,7 +242,7 @@ def mkpic_software(db, destdir):
                                   color='white'))
             pl.xlim(0, len(stats))
             pl.ylabel("Number of submissions")
-        pl.savefig('%s/sw_%s.png' % (destdir, typ), format='png')
+        pl.savefig('%s/sw_%s.png' % (destdir, typ), format='png', dpi=80)
 
 def mkpic_rating_by_os(db, env, items, destdir, title):
     pl.figure(figsize=(6.4, 4.8), facecolor='w', edgecolor='k')
@@ -251,14 +251,14 @@ def mkpic_rating_by_os(db, env, items, destdir, title):
                         os_family[os]).get_not_none('%s' % (it,))[0]
                             for it in items]
         plot_bars(ratings, offset=((i+1)*0.2)-0.1, color=os_colors[i],
-                  title=title, ylabel="Mean rating", label=os)
+                  title=title, ylabel="Mean rating", label=db.get_nice_name(os))
     pl.ylim((0,3))
     pl.xlim((0,len(items)))
     pl.yticks((0, 3), ['Disagree', 'Agree'], rotation=90)
     pl.xticks(np.arange(len(items))+0.5, [i[-2:] for i in items],
               horizontalalignment='center')
     pl.legend(loc='lower right')
-    pl.savefig('%s/ratings_%s.png' % (destdir, env), format='png')
+    pl.savefig('%s/ratings_%s.png' % (destdir, env), format='png', dpi=80)
 
 
 def main(srcdir, destdir):
