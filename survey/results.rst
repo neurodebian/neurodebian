@@ -7,6 +7,9 @@ Submitter background
 ~~~~~~~~~~~~~~~~~~~~
 
 .. figure:: figures/submissions_per_bg_datamod.png
+.. figure:: figures/submissions_per_bg_country.png
+.. figure:: figures/submissions_per_bg_employer.png
+.. figure:: figures/submissions_per_bg_position.png
 
    Submissions caption
 
