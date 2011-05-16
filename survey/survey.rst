@@ -544,14 +544,17 @@ What **host operating system** are the virtual machines running on?
 .. raw:: html
 
    </select>
-   </td></tr><tr><td colspan="2">
+   </td></tr></table>
+
+---------------------------------------------------------------
 
 What are your reasons for employing virtualization in you research?
 Please indicate how much you agree to the following statements
 
 .. raw:: html
 
-   </td></tr><tr class="oddrow"><td class="task">
+   <table>
+   <tr class="oddrow"><td class="task">
 
 I can run software that is otherwise incompatible with my system
 

@@ -10,7 +10,7 @@ except ImportError:
     from json import read as jread
     def jsonload(f):
         return jread(f.read())
-import sys
+import sys, os
 import pylab as pl
 import numpy as np
 import time
@@ -75,8 +75,8 @@ os_family = {
 # end the reverse mapping
 os_family_rev = {}
 for ost in os_family:
-    for os in os_family[ost]:
-        os_family_rev[os] = ost
+    for os_ in os_family[ost]:
+        os_family_rev[os_] = ost
 
 
 def load_list2dict(name):
@@ -269,6 +269,8 @@ def mkpic_rating_by_os(db, env, items, destdir, title):
 
 def main(srcdir, destdir):
     db = DB(srcdir)
+    if not os.path.exists(destdir):
+        os.makedirs(destdir)
     for pic in [mkpic_submissions_per_datamod, mkpic_os_per_env, mkpic_software,
                 mkpic_resources]:
         pic(db, destdir)
