@@ -5,7 +5,7 @@ Scientific software usage in neuroscience research
 This survey should take about five minutes. Immediately after submission you
 will be presented with some statistics on previous responses. Please try to
 answer as many questions as you can, but don't worry if you cannot answer all
-of them.
+of them. For feedback email team@neuro.debian.net
 
 .. raw:: html
 
@@ -43,9 +43,9 @@ of them.
    function showResponse(data, statusText, xhr, $form)  {
        // reset form if server reports success
        if (data.success == true) {
-           $('#nss_survey').resetForm();
-           $('#submit_button').hide();
-           $('#server_response').html(data.results);
+           //$('#nss_survey').resetForm();
+           //$('#submit_button').hide();
+           $('#server_response').html("<p><em>Thanks for participating in this survey.</em></p>" + data.results)
        } else {
            $('#server_response').html("");
            alert(data.message);
@@ -931,9 +931,6 @@ Other
    </tr></table>
 
 ---------------------------------------------------------------
-
-Thanks for filling out the questionaire. Upon successful submission you will
-be presented with some statistics computed from all previous participants.
 
 .. raw:: html
 
