@@ -45,7 +45,7 @@ datamodlist.txt: survey.rst
 
 upload: index.html results.html results_snippet.html jquery.form.js survey.css surveycollector.cgi
 	rsync -rvzlhp --delete  \
-        --exclude='*.txt' --exclude=surveydata --exclude='*.cgi' --exclude=figures \
+        --exclude='*.txt' --exclude=data --exclude='*.cgi' --exclude=figures \
 		--chmod=Dg+s,g+rw * neurodebian@www.pymvpa.org:/home/neurodebian/survey/
 	scp surveycollector.cgi neurodebian@www.pymvpa.org:/srv/neuro.debian.net/cgi-bin/
 
