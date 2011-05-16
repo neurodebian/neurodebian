@@ -254,7 +254,6 @@ def mkpic_submissions_per_key(db, destdir, key, title, sortby='name',
     pl.figure(figsize=(6.4, (len(counts)-2) * 0.4 + 2))
     tmargin = .8/len(counts)
     if tmargin > 0.3: tmargin = 0.3
-    print key, tmargin
     pl.subplots_adjust(left=0.03, right=0.97, top=1-tmargin, bottom=tmargin)
     pl.title(title)
     if not len(counts):
