@@ -18,7 +18,7 @@ results_snippet.html: results.html
 		| tail -n$$(echo "$$(wc -l < results.html) - $$(grep -n '<body>' \
 		< results.html | cut -d ':' -f 1,1) - 2" | bc ) > $@
 
-statfigures: oslist.txt swlist.txt datamodlist.txt employer-dd-list.txt position-dd-list.txt ratingslist.txt
+statfigures: oslist.txt swlist.txt datamodlist.txt employer-dd-list.txt position-dd-list.txt ratingslist.txt vmlist.txt
 # create "lockfile'
 	@touch $@
 	@[ "$$(cat nsubmissions.stamp 2>/dev/null || echo)" != "$$(ls -1 data |wc -l)" ] \
@@ -45,7 +45,7 @@ vmlist.txt: survey.rst
 
 datamodlist.txt: survey.rst
 	grep '"bg_datamod"' survey.rst | sed -e 's/.*name="bg_datamod" value="//' \
-		-e 's," />,: ",' -e 's,<br />$$,,",' -e 's/ "$$/ "Other"/' > $@
+		-e 's," />,: ",' -e 's,<br />$$,",' -e 's/ "$$/ "Other"/' > $@
 
 # Generic rule to extract from drop-down selections
 %-dd-list.txt: survey.rst
