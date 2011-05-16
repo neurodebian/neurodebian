@@ -122,7 +122,7 @@ What type of data are you working with? Please check all items that apply.
    <input type="checkbox" name="bg_datamod" value="pet" />PET/SPECT<br />
    <input type="checkbox" name="bg_datamod" value="ephys" />Electrophysiology<br />
    <input type="checkbox" name="bg_datamod" value="spectro" />Microspectroscopy<br />
-   <input type="checkbox" name="bg_datamod" value="other" />
+   <input type="checkbox" name="bg_datamod" value="otherdm" />
    <input name="bg_datamod_other" type="text" size="20" maxlength="40">
    </td></tr></table>
    </td></tr><tr class="oddrow"><td>
@@ -512,7 +512,7 @@ Which products for virtualization are you using?
    <input type="checkbox" name="virt_prod" value="virtualpc" />Virtual PC<br />
    <input type="checkbox" name="virt_prod" value="xen" />Xen<br />
    <input type="checkbox" name="virt_prod" value="kvm" />KVM<br />
-   <input type="checkbox" name="virt_prod" value="other" />
+   <input type="checkbox" name="virt_prod" value="othervm" />
    <input name="virt_other" type="text" size="20" maxlength="40">
    </td></tr></table>
    </td></tr><tr class="oddrow"><td>
@@ -713,7 +713,7 @@ Python bundles: `Enthought Python <http://www.enthought.com/products/index.php>`
 
 .. raw:: html
 
-   </td></tr><tr class="oddrow"><td class="response"><input type="checkbox" name="software_resource" value="other" /></td><td>
+   </td></tr><tr class="oddrow"><td class="response"><input type="checkbox" name="software_resource" value="otherres" /></td><td>
    <input name="software_resource_other" type="text" size="40" maxlength="200">
    </td></tr></table>
 
@@ -930,7 +930,7 @@ Other
 .. raw:: html
 
    <table class="questionaire"><tr>
-   <td class="response"><input type="checkbox" name="sw_other" value="other" />
+   <td class="response"><input type="checkbox" name="sw_other" value="othersw" />
    <input name="sw_other_name" type="text" size="40" maxlength="200"> <span style="font-size:70%">(comma-separated list)</span></td>
    </tr></table>
 

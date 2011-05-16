@@ -39,9 +39,13 @@ swlist.txt: survey.rst
 	grep '"sw.*" value' survey.rst | sed -e 's/.*name="sw.*" value="//' -e 's," />,: ",' \
 		-e 's,</td>$$,",' -e 's/ "$$/ "Other"/' > $@
 
+vmlist.txt: survey.rst
+	grep virt_prod survey.rst | sed -e 's/.*<input.*value="//' \
+		-e 's," />,: ",' -e 's,<br />.*$$,,' -e 's/ "$$/ "Other VM"/' > $@
+
 datamodlist.txt: survey.rst
 	grep '"bg_datamod"' survey.rst | sed -e 's/.*name="bg_datamod" value="//' \
-		-e 's," />,: ",' -e 's,<br />$$,",' -e 's/ "$$/ "Other"/' > $@
+		-e 's," />,: ",' -e 's,<br />$$,,",' -e 's/ "$$/ "Other"/' > $@
 
 # Generic rule to extract from drop-down selections
 %-dd-list.txt: survey.rst

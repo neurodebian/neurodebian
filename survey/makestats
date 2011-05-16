@@ -110,6 +110,7 @@ class DB(dict):
     position_dict = load_list2dict('position-dd-list.txt')
     employer_dict = load_list2dict('employer-dd-list.txt')
     ratings_dict = load_list2dict('ratingslist.txt')
+    vm_dict = load_list2dict('vmlist.txt')
 
     def __init__(self, srcdir):
         # eats the whole directory
@@ -178,7 +179,8 @@ class DB(dict):
     def get_nice_name(self, id):
         srcs = [DB.os_dict, os_cat_names, DB.sw_dict, sw_categories,
                 resource_categories, time_categories,
-                DB.datamod_dict, DB.position_dict, DB.employer_dict]
+                DB.datamod_dict, DB.position_dict, DB.employer_dict,
+                DB.vm_dict]
         for src in srcs:
             if id in src:
                 return src[id]
@@ -269,10 +271,10 @@ def mkpic_submissions_per_key(db, destdir, key, title, sortby='name',
         else:
             raise ValueError("Specify either name or count for sortby")
         x = np.arange(len(stats))
-        pl.barh(x + (1./8), [s[1] for s in stats], height=0.75, color = '#008200')
+        pl.barh(x + (1./8), [s[1] for s in stats[::-1]], height=0.75, color = '#008200')
         pl.yticks(x + 0.5,  ['' for s in stats])
         text_offset = pl.gca().get_xlim()[1] / 30.
-        for i, s in enumerate(stats):
+        for i, s in enumerate(stats[::-1]):
             pl.text(text_offset, i+.5, db.get_nice_name(s[0]),
                     horizontalalignment='left',
                     verticalalignment='center',
@@ -329,6 +331,10 @@ def main(srcdir, destdir):
     db = DB(srcdir)
     if not os.path.exists(destdir):
         os.makedirs(destdir)
+
+    mkpic_submissions_per_key(
+        db, destdir, 'virt_prod', sortby='name',
+        title='Virtualization product popularity\n(multiple choices per submission possible)')
 
     mkpic_submissions_per_key(
         db, destdir, 'bg_datamod', sortby='count',
