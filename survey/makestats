@@ -177,7 +177,7 @@ class DB(dict):
 
 
 def mkpic_os_per_env(db, destdir):
-    envs = ['pers', 'man', 'virt', 'virt']
+    envs = ['pers_os', 'man_os', 'virt_host_os', 'virt_guest_os']
     env_names = ['Personal', 'Managed', 'Virt. Host', 'Virt. Guest']
     env_stats = {}
     for env in envs:
