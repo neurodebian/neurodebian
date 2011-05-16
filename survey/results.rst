@@ -17,6 +17,7 @@ Environment preferences
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 .. figure:: figures/ospref_by_env.png
+.. figure:: figures/time_by_env.png
 
 Environment ratings
 ~~~~~~~~~~~~~~~~~~~

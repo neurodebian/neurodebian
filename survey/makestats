@@ -16,10 +16,10 @@ import numpy as np
 import time
 
 # uniform colors for OS results
-os_colors = ['#B63537', '#4E4DA0', '#008200', 'gray']
+os_colors = ['#AA2029', '#D1942B', '#7FB142', '#69A7CE']
 os_order = ['linux', 'mac', 'win', 'otheros']
 time_order = ['notime', 'little', 'most', 'always']
-time_colors = ['#AA2029', '#D1942B', '#7FB142', '#69A7CE']
+time_colors = ['#FF0000', '#FF5500', '#FFAC00', '#FFFD08']
 time_categories = {
         'notime': "don't use it",
         'little': "less than 50%",
