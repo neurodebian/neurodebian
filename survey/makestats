@@ -311,6 +311,35 @@ def mkpic_rating_by_os(db, env, items, destdir, title):
     pl.legend(loc='lower right')
     pl.savefig('%s/ratings_%s.png' % (destdir, env), format='png', dpi=80)
 
+def mkpic_rating_by_os_hor(db, env, items, destdir, title):
+    envs = ['pers_time', 'man_time', 'virt_time']
+    env_names = ['Personal', 'Managed', 'Virtual']
+    env_stats = {}
+    for env in envs:
+        counts = dict(zip(time_order, [0] * len(time_order)))
+        counts.update(db.get_counts(env))
+        total_count = np.sum(counts.values())
+        for c in counts:
+            counts[c] = float(counts[c]) / total_count
+        env_stats[env] = counts
+    # make stacked barplot
+    pl.figure(figsize=(7.5, 4))
+    x = np.arange(len(envs))
+    bottoms = np.zeros(len(envs))
+    for i, t in enumerate(time_order):
+        stat = [env_stats[e][t] for e in envs]
+        #import pydb; pydb.debugger()
+        pl.barh(x, stat, left=bottoms, color=time_colors[i],
+               label=db.get_nice_name(t), height=.6, alpha=0.25 + i/4.0)
+        bottoms += stat
+    pl.legend(loc='center left')
+    pl.yticks(x + 0.2,  env_names)
+    pl.ylim(-0.4, len(envs))
+    pl.title("Research activity time by environment")
+    pl.xlabel("Fraction of submissions")
+    pl.subplots_adjust(right=0.97)
+    pl.savefig('%s/time_by_env.png' % destdir, format='png', dpi=80)
+
 
 def main(srcdir, destdir):
     db = DB(srcdir)
