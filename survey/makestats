@@ -18,6 +18,14 @@ import time
 # uniform colors for OS results
 os_colors = ['#B63537', '#4E4DA0', '#008200', 'gray']
 os_order = ['linux', 'mac', 'win', 'otheros']
+time_order = ['notime', 'little', 'most', 'always']
+time_colors = ['#AA2029', '#D1942B', '#7FB142', '#69A7CE']
+time_categories = {
+        'notime': "don't use it",
+        'little': "less than 50%",
+        'most': "more than 50%",
+        'always': "always"
+        }
 # resources
 resource_categories = {
     'vendor': 'Vendor/Project website',
@@ -162,8 +170,8 @@ class DB(dict):
 
     def get_nice_name(self, id):
         srcs = [DB.os_dict, os_cat_names, DB.sw_dict, sw_categories,
-                resource_categories, DB.datamod_dict, DB.position_dict,
-                DB.employer_dict]
+                resource_categories, time_categories,
+                DB.datamod_dict, DB.position_dict, DB.employer_dict]
         for src in srcs:
             if id in src:
                 return src[id]
@@ -172,10 +180,9 @@ class DB(dict):
 
 
 def mkpic_os_per_env(db, destdir):
-    envs = ['pers_os', 'man_os', 'virt_host_os', 'virt_guest_os']
+    envs = ['pers', 'man', 'virt', 'virt']
     env_names = ['Personal', 'Managed', 'Virt. Host', 'Virt. Guest']
     env_stats = {}
-    offset = 0
     for env in envs:
         counts = db.get_counts(env)
         stats = dict(zip(os_family.keys(), [0] * len(os_family)))
@@ -183,7 +190,10 @@ def mkpic_os_per_env(db, destdir):
             stats[os_family_rev[os]] += counts[os]
         total_count = np.sum(stats.values())
         for osf in stats:
-            stats[osf] = float(stats[osf]) / total_count
+            if not total_count:
+                stats[osf] = 0
+            else:
+                stats[osf] = float(stats[osf]) / total_count
         env_stats[env] = stats
     # make stacked barplot
     pl.figure(figsize=(6.4, 4.8))
@@ -199,6 +209,34 @@ def mkpic_os_per_env(db, destdir):
     pl.xlim(-0.25, len(envs))
     pl.title("Operating system preference by environment")
     pl.ylabel("Fraction of submissions")
+    pl.savefig('%s/ospref_by_env.png' % destdir, format='png', dpi=80)
+
+
+def mkpic_time_per_env(db, destdir):
+    envs = ['pers_time', 'man_time', 'virt_time']
+    env_names = ['Personal', 'Managed', 'Virtual']
+    env_stats = {}
+    for env in envs:
+        counts = dict(zip(time_order, [0] * len(time_order)))
+        counts.update(db.get_counts(env))
+        total_count = np.sum(counts.values())
+        for c in counts:
+            counts[c] = float(counts[c]) / total_count
+        env_stats[env] = counts
+    # make stacked barplot
+    pl.figure(figsize=(7.5, 4))
+    x = np.arange(len(envs))
+    bottoms = np.zeros(len(envs))
+    for i, t in enumerate(time_order):
+        stat = [env_stats[e][t] for e in envs]
+        pl.barh(x, stat, left=bottoms, color=time_colors[i],
+               label=db.get_nice_name(t), height=.6)
+        bottoms += stat
+    pl.legend(loc='center left')
+    pl.yticks(x + 0.2,  env_names)
+    pl.ylim(-0.4, len(envs))
+    pl.title("Research activity time by environment")
+    pl.xlabel("Fraction of submissions")
     pl.savefig('%s/ospref_by_env.png' % destdir, format='png', dpi=80)
 
 
@@ -294,7 +332,7 @@ def main(srcdir, destdir):
         db, destdir, 'bg_employer', title='Submissions per venue', sortby='count')
 
     for pic in [mkpic_os_per_env, mkpic_software,
-                mkpic_resources]:
+                mkpic_resources, mkpic_time_per_env]:
         pic(db, destdir)
     mkpic_rating_by_os(db, 'pers_os', ['pers_r%i' % i for i in range(1, 9)], destdir,
                        "Ratings: Personal environment")
