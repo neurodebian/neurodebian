@@ -83,7 +83,7 @@ def main():
             result['success'] = True
             result = extract_results(form, result)
             try:
-                logfile = open('/home/neurodebian/surveydata/%s.json' % result['timestamp'], 'w+')
+                logfile = open('/home/neurodebian/survey/data/%s.json' % result['timestamp'], 'w+')
                 logfile.write(json.write(result))
                 logfile.write('\n')
                 logfile.close()
@@ -92,7 +92,7 @@ def main():
                 result['message'] = 'We are very sorry, but the server is unable to store your submission. Please contact team@neuro.debian.net.'
             # send HTML snippet to let the submitter see the results
             try:
-                result['results'] = open('/home/www/neuro.debian.net/www/survey/results_snippet.html').read()
+                result['results'] = open('/home/neurodebian/survey/results_snippet.html').read()
             except:
                 result['results'] = 'We are very sorry, but the statistics could not be displayed. Please contact team@neuro.debian.net to get access.'
         else:

@@ -18,7 +18,14 @@ results_snippet.html: results.html
 		| tail -n$$(echo "$$(wc -l < results.html) - $$(grep -n '<body>' \
 		< results.html | cut -d ':' -f 1,1) - 2" | bc ) > $@
 
-stats: *.txt
+statfigures: oslist.txt swlist.txt datamodlist.txt
+# create "lockfile'
+	@touch $@
+	@[ "$$(cat nsubmissions.stamp || true)" != "$$(ls -1 data |wc -l)" ] \
+		&& ls -1 data |wc -l > nsubmissions.stamp \
+		&& MVPA_MATPLOTLIB_BACKEND=agg ./makestats data figures || true
+# remove lockfile
+	@-rm $@
 
 getdata:
 	rsync -rvzlhp --delete \
@@ -36,9 +43,9 @@ datamodlist.txt: survey.rst
 	grep '"bg_datamod"' survey.rst | sed -e 's/.*name="bg_datamod" value="//' \
 		-e 's," />,: ",' -e 's,<br />$$,",' -e 's/ "$$/ "Other"/' > $@
 
-upload: index.html results.html results_snippet.html jquery.form.js survey.css
+upload: index.html results.html results_snippet.html jquery.form.js survey.css surveycollector.cgi
 	rsync -rvzlhp --delete  \
-        --exclude=Makefile --exclude='*.inc' --exclude='*.rst' --exclude='*.txt' \
-        --exclude=makestats --exclude=surveydata --exclude='*.cgi' \
-		--chmod=Dg+s,g+rw * neurodebian@www.pymvpa.org:/home/www/neuro.debian.net/www/survey/
+        --exclude='*.txt' --exclude=surveydata --exclude='*.cgi' --exclude=figures \
+		--chmod=Dg+s,g+rw * neurodebian@www.pymvpa.org:/home/neurodebian/survey/
+	scp surveycollector.cgi neurodebian@www.pymvpa.org:/srv/neuro.debian.net/cgi-bin/
 
