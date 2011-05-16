@@ -93,6 +93,8 @@ class DB(dict):
     os_dict = load_list2dict('oslist.txt')
     datamod_dict = load_list2dict('datamodlist.txt')
     sw_dict = load_list2dict('swlist.txt')
+    position_dict = load_list2dict('position-dd-list.txt')
+    employer_dict = load_list2dict('employer-dd-list.txt')
 
     def __init__(self, srcdir):
         # eats the whole directory
@@ -160,7 +162,8 @@ class DB(dict):
 
     def get_nice_name(self, id):
         srcs = [DB.os_dict, os_cat_names, DB.sw_dict, sw_categories,
-                resource_categories, DB.datamod_dict]
+                resource_categories, DB.datamod_dict, DB.position_dict,
+                DB.employer_dict]
         for src in srcs:
             if id in src:
                 return src[id]
