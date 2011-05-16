@@ -234,7 +234,7 @@ def mkpic_time_per_env(db, destdir):
     pl.ylim(-0.4, len(envs))
     pl.title("Research activity time by environment")
     pl.xlabel("Fraction of submissions")
-    pl.savefig('%s/ospref_by_env.png' % destdir, format='png', dpi=80)
+    pl.savefig('%s/time_by_env.png' % destdir, format='png', dpi=80)
 
 
 def mkpic_submissions_per_key(db, destdir, key, title, sortby='name',
