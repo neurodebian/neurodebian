@@ -43,8 +43,8 @@ of them. For feedback email team@neuro.debian.net
    function showResponse(data, statusText, xhr, $form)  {
        // reset form if server reports success
        if (data.success == true) {
-           //$('#nss_survey').resetForm();
-           //$('#submit_button').hide();
+           $('#nss_survey').resetForm();
+           $('#submit_button').hide();
            $('#server_response').html("<p><em>Thanks for participating in this survey.</em></p>" + data.results)
        } else {
            $('#server_response').html("");
