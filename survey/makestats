@@ -237,13 +237,18 @@ def mkpic_time_per_env(db, destdir):
     pl.ylim(-0.4, len(envs))
     pl.title("Research activity time by environment")
     pl.xlabel("Fraction of submissions")
+    pl.subplots_adjust(right=0.97)
     pl.savefig('%s/time_by_env.png' % destdir, format='png', dpi=80)
 
 
 def mkpic_submissions_per_key(db, destdir, key, title, sortby='name',
                             multiple=False):
     counts = db.get_counts(key)
-    pl.figure(figsize=(6.4, 4.8))
+    pl.figure(figsize=(6.4, (len(counts)-2) * 0.4 + 2))
+    tmargin = .8/len(counts)
+    if tmargin > 0.3: tmargin = 0.3
+    print key, tmargin
+    pl.subplots_adjust(left=0.03, right=0.97, top=1-tmargin, bottom=tmargin)
     pl.title(title)
     if not len(counts):
         pl.text(.5, .5, "[Insufficient data for this figure]",
@@ -258,18 +263,18 @@ def mkpic_submissions_per_key(db, destdir, key, title, sortby='name',
         else:
             raise ValueError("Specify either name or count for sortby")
         x = np.arange(len(stats))
-        pl.bar(x + (1./8), [s[1] for s in stats], width=0.75, color = '#008200')
-        pl.xticks(x + 0.5,  ['' for s in stats])
+        pl.barh(x + (1./8), [s[1] for s in stats], height=0.75, color = '#008200')
+        pl.yticks(x + 0.5,  ['' for s in stats])
         for i, s in enumerate(stats):
-            pl.text(i+.5, 0.1, db.get_nice_name(s[0]), rotation=90,
-                    horizontalalignment='center',
-                    verticalalignment='bottom',
+            pl.text(0.1, i+.5, db.get_nice_name(s[0]),
+                    horizontalalignment='left',
+                    verticalalignment='center',
                     bbox=dict(facecolor='white', alpha=0.8, edgecolor='white'))
-        pl.xlim(0, len(stats))
+        pl.ylim(0, len(stats))
         yl = "Number of submissions"
         if multiple:
             yl += "\n(multiple choices per submission possible)"
-        pl.ylabel(yl)
+        pl.xlabel(yl)
     pl.savefig('%s/submissions_per_%s.png' % (destdir, key), format='png', dpi=80)
 
 
