@@ -6,7 +6,7 @@ Current survey results
 Submitter background
 ~~~~~~~~~~~~~~~~~~~~
 
-.. figure:: figures/submissions_per_datamod.png
+.. figure:: figures/submissions_per_bg_datamod.png
 
    Submissions caption
 
@@ -30,14 +30,14 @@ Software resources
 Software popularity
 ~~~~~~~~~~~~~~~~~~~
 
-.. figure:: figures/sw_general.png
-.. figure:: figures/sw_dc.png
-.. figure:: figures/sw_img.png
-.. figure:: figures/sw_datamanage.png
-.. figure:: figures/sw_neusys.png
-.. figure:: figures/sw_electro.png
-.. figure:: figures/sw_bci.png
-.. figure:: figures/sw_acq.png
-.. figure:: figures/sw_rt.png
-.. figure:: figures/sw_psychophys.png
+.. figure:: figures/submissions_per_sw_general.png
+.. figure:: figures/submissions_per_sw_dc.png
+.. figure:: figures/submissions_per_sw_img.png
+.. figure:: figures/submissions_per_sw_datamanage.png
+.. figure:: figures/submissions_per_sw_neusys.png
+.. figure:: figures/submissions_per_sw_electro.png
+.. figure:: figures/submissions_per_sw_bci.png
+.. figure:: figures/submissions_per_sw_acq.png
+.. figure:: figures/submissions_per_sw_rt.png
+.. figure:: figures/submissions_per_sw_psychophys.png
 

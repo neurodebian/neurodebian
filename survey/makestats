@@ -160,7 +160,7 @@ class DB(dict):
 
     def get_nice_name(self, id):
         srcs = [DB.os_dict, os_cat_names, DB.sw_dict, sw_categories,
-                resource_categories]
+                resource_categories, DB.datamod_dict]
         for src in srcs:
             if id in src:
                 return src[id]
@@ -198,17 +198,39 @@ def mkpic_os_per_env(db, destdir):
     pl.ylabel("Fraction of submissions")
     pl.savefig('%s/ospref_by_env.png' % destdir, format='png', dpi=80)
 
-def mkpic_submissions_per_datamod(db, destdir):
-    # simple demo
-    spd = db.get_counts('bg_datamod')
-    spd = sorted(spd.items(), cmp=lambda x, y: cmp(x[1], y[1]))[::-1]
-    x = np.arange(len(spd))
+
+def mkpic_submissions_per_key(db, destdir, key, title, sortby='name',
+                            multiple=False):
+    counts = db.get_counts(key)
     pl.figure(figsize=(6.4, 4.8))
-    pl.title('Submissions per data modality')
-    pl.bar(x, [s[1] for s in spd])
-    pl.xticks(x + 0.5,  [db.datamod_dict[k[0]] for k in spd], rotation=-10)
-    pl.ylabel('Survey submissions per data modality\n(multiple choices per submission possible)')
-    pl.savefig('%s/submissions_per_datamod.png' % destdir, format='png', dpi=80)
+    pl.title(title)
+    if not len(counts):
+        pl.text(.5, .5, "[Insufficient data for this figure]",
+                horizontalalignment='center')
+        pl.axis('off')
+    else:
+        # sort by name
+        if sortby == 'name':
+            stats = sorted(counts.items(), cmp=lambda x, y: cmp(x[0], y[0]))
+        elif sortby == 'count':
+            stats = sorted(counts.items(), cmp=lambda x, y: cmp(x[1], y[1]))[::-1]
+        else:
+            raise ValueError("Specify either name or count for sortby")
+        x = np.arange(len(stats))
+        pl.bar(x + (1./8), [s[1] for s in stats], width=0.75, color = '#008200')
+        pl.xticks(x + 0.5,  ['' for s in stats])
+        for i, s in enumerate(stats):
+            pl.text(i+.5, 0.1, db.get_nice_name(s[0]), rotation=90,
+                    horizontalalignment='center',
+                    verticalalignment='bottom',
+                    bbox=dict(facecolor='white', alpha=0.8, edgecolor='white'))
+        pl.xlim(0, len(stats))
+        yl = "Number of submissions"
+        if multiple:
+            yl += "\n(multiple choices per submission possible)"
+        pl.ylabel(yl)
+    pl.savefig('%s/submissions_per_%s.png' % (destdir, key), format='png', dpi=80)
+
 
 def mkpic_resources(db, destdir):
     res = db.get_counts('software_resource')
@@ -228,27 +250,10 @@ def mkpic_resources(db, destdir):
 
 def mkpic_software(db, destdir):
     for typ in sw_categories.keys():
-        counts = db.get_counts('sw_%s' % typ)
-        pl.figure(figsize=(6.4, 4.8))
-        pl.title("Software popularity: %s" % db.get_nice_name(typ))
-        if not len(counts):
-            pl.text(.5, .5, "[Insufficient data for this figure]",
-                    horizontalalignment='center')
-            pl.axis('off')
-        else:
-            # sort by name
-            stats = sorted(counts.items(), cmp=lambda x, y: cmp(x[0], y[0]))
-            x = np.arange(len(stats))
-            pl.bar(x + (1./8), [s[1] for s in stats], width=0.75, color = '#008200')
-            pl.xticks(x + 0.5,  ['' for s in stats])
-            for i, s in enumerate(stats):
-                pl.text(i+.5, 0.1, db.get_nice_name(s[0]), rotation=90,
-                        horizontalalignment='center',
-                        verticalalignment='bottom',
-                        bbox=dict(facecolor='white', alpha=0.8, edgecolor='white'))
-            pl.xlim(0, len(stats))
-            pl.ylabel("Number of submissions")
-        pl.savefig('%s/sw_%s.png' % (destdir, typ), format='png', dpi=80)
+        mkpic_submissions_per_key(
+            db, destdir, 'sw_%s' % typ,
+            title="Software popularity: %s" % db.get_nice_name(typ),
+            sortby='name')
 
 def mkpic_rating_by_os(db, env, items, destdir, title):
     pl.figure(figsize=(6.4, 4.8))
@@ -271,7 +276,21 @@ def main(srcdir, destdir):
     db = DB(srcdir)
     if not os.path.exists(destdir):
         os.makedirs(destdir)
-    for pic in [mkpic_submissions_per_datamod, mkpic_os_per_env, mkpic_software,
+
+    mkpic_submissions_per_key(
+        db, destdir, 'bg_datamod', sortby='count',
+        title='Submissions per data modality\n(multiple choices per submission possible)')
+
+    mkpic_submissions_per_key(
+        db, destdir, 'bg_position', title='Submissions per position', sortby='count')
+
+    mkpic_submissions_per_key(
+        db, destdir, 'bg_country', title='Submissions per country', sortby='count')
+
+    mkpic_submissions_per_key(
+        db, destdir, 'bg_employer', title='Submissions per venue', sortby='count')
+
+    for pic in [mkpic_os_per_env, mkpic_software,
                 mkpic_resources]:
         pic(db, destdir)
     mkpic_rating_by_os(db, 'pers_os', ['pers_r%i' % i for i in range(1, 9)], destdir,
