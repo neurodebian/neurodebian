@@ -5,7 +5,11 @@ import json
 import sys
 import pylab as pl
 import numpy as np
+from mvpa.misc.plot.base import plot_bars
 
+# uniform colors for OS results
+os_colors = ['#B63537', '#4E4DA0', '#008200', 'gray']
+os_order = ['linux', 'mac', 'win', 'otheros']
 # resources
 resource_categories = {
     'vendor': 'Vendor/Project website',
@@ -67,18 +71,29 @@ for ost in os_family:
         os_family_rev[os] = ost
 
 
+def load_list2dict(name):
+    d = {}
+    lfile = open(name)
+    for line in lfile:
+        kv = line.split(':')
+        d[kv[0]] = kv[1].strip().strip('"')
+    return d
+
+
+
 class DB(dict):
+    os_dict = load_list2dict('oslist.txt')
+    datamod_dict = load_list2dict('datamodlist.txt')
+    sw_dict = load_list2dict('swlist.txt')
+
     def __init__(self, srcdir):
         # eats the whole directory
+        if srcdir is None:
+            return
         datafilenames = glob('%s/*.json' % srcdir)
         for dfn in datafilenames:
             rawdata = json.load(open(dfn))
             self[rawdata['timestamp']] = rawdata
-
-        self.os_dict = load_list2dict('oslist.txt')
-        self.datamod_dict = load_list2dict('datamodlist.txt')
-        self.sw_dict = load_list2dict('swlist.txt')
-
 
     def get_unique(self, key):
         # return a set of all (unique) values for a field id
@@ -123,7 +138,7 @@ class DB(dict):
     def select_match(self, key, values):
         # return a db with all submissions were a field id has one of the
         # supplied values
-        match = {}
+        match = DB(None)
         for k, v in self.items():
             if not key in v:
                 continue
@@ -136,7 +151,7 @@ class DB(dict):
         return match
 
     def get_nice_name(self, id):
-        srcs = [self.os_dict, os_cat_names, self.sw_dict, sw_categories,
+        srcs = [DB.os_dict, os_cat_names, DB.sw_dict, sw_categories,
                 resource_categories]
         for src in srcs:
             if id in src:
@@ -144,14 +159,6 @@ class DB(dict):
         # not found, nothing nicer
         return id
 
-
-def load_list2dict(name):
-    d = {}
-    lfile = open(name)
-    for line in lfile:
-        kv = line.split(':')
-        d[kv[0]] = kv[1].strip().strip('"')
-    return d
 
 def mkpic_os_per_env(db, destdir):
     envs = ['pers_os', 'man_os', 'virt_host_os', 'virt_guest_os']
@@ -171,11 +178,9 @@ def mkpic_os_per_env(db, destdir):
     pl.figure(figsize=(6.4, 4.8), facecolor='w', edgecolor='k')
     x = np.arange(len(envs))
     bottoms = np.zeros(len(envs))
-    os_order = ['linux', 'mac', 'win', 'otheros']
-    colors = ['#B63537', '#4E4DA0', '#008200', 'gray']
     for i, os in enumerate(os_order):
         stat = [env_stats[e][os] for e in envs]
-        pl.bar(x, stat, bottom=bottoms, color=colors[i],
+        pl.bar(x, stat, bottom=bottoms, color=os_colors[i],
                label=db.get_nice_name(os), width=0.8)
         bottoms += stat
     pl.legend(loc='lower right')
@@ -239,12 +244,34 @@ def mkpic_software(db, destdir):
             pl.ylabel("Number of submissions")
         pl.savefig('%s/sw_%s.png' % (destdir, typ), format='png')
 
+def mkpic_rating_by_os(db, env, items, destdir, title):
+    pl.figure(figsize=(6.4, 4.8), facecolor='w', edgecolor='k')
+    for i, os in enumerate(os_order):
+        ratings = [db.select_match(env,
+                        os_family[os]).get_not_none('%s' % (it,))[0]
+                            for it in items]
+        plot_bars(ratings, offset=((i+1)*0.2)-0.1, color=os_colors[i],
+                  title=title, ylabel="Mean rating", label=os)
+    pl.ylim((0,3))
+    pl.xlim((0,len(items)))
+    pl.yticks((0, 3), ['Disagree', 'Agree'], rotation=90)
+    pl.xticks(np.arange(len(items))+0.5, [i[-2:] for i in items],
+              horizontalalignment='center')
+    pl.legend(loc='lower right')
+    pl.savefig('%s/ratings_%s.png' % (destdir, env), format='png')
+
 
 def main(srcdir, destdir):
     db = DB(srcdir)
     for pic in [mkpic_submissions_per_datamod, mkpic_os_per_env, mkpic_software,
                 mkpic_resources]:
         pic(db, destdir)
+    mkpic_rating_by_os(db, 'pers_os', ['pers_r%i' % i for i in range(1, 9)], destdir,
+                       "Ratings: Personal environment")
+    mkpic_rating_by_os(db, 'man_os', ['man_r%i' % i for i in range(1, 5)], destdir,
+                       "Ratings: Managed environment")
+    mkpic_rating_by_os(db, 'virt_host_os', ['virt_r%i' % i for i in range(1, 4)], destdir,
+                       "Ratings: Virtual environment (by host OS)")
 
 if __name__ == '__main__':
     main(sys.argv[1], sys.argv[2])

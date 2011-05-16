@@ -18,6 +18,8 @@ results_snippet.html: results.html
 		| tail -n$$(echo "$$(wc -l < results.html) - $$(grep -n '<body>' \
 		< results.html | cut -d ':' -f 1,1) - 2" | bc ) > $@
 
+stats: *.txt
+
 getdata:
 	rsync -rvzlhp --delete \
 		neurodebian@www.pymvpa.org:/home/neurodebian/surveydata .
