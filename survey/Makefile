@@ -21,7 +21,7 @@ results_snippet.html: results.html
 statfigures: oslist.txt swlist.txt datamodlist.txt
 # create "lockfile'
 	@touch $@
-	@[ "$$(cat nsubmissions.stamp || true)" != "$$(ls -1 data |wc -l)" ] \
+	@[ "$$(cat nsubmissions.stamp 2>/dev/null || echo)" != "$$(ls -1 data |wc -l)" ] \
 		&& ls -1 data |wc -l > nsubmissions.stamp \
 		&& MVPA_MATPLOTLIB_BACKEND=agg ./makestats data figures || true
 # remove lockfile
@@ -29,7 +29,7 @@ statfigures: oslist.txt swlist.txt datamodlist.txt
 
 getdata:
 	rsync -rvzlhp --delete \
-		neurodebian@www.pymvpa.org:/home/neurodebian/surveydata .
+		neurodebian@www.pymvpa.org:/home/neurodebian/survey/data .
 
 oslist.txt: select_os_options.inc
 	grep -v selected select_os_options.inc | sed -e 's/<option value="//' \
