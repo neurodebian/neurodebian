@@ -1,6 +1,8 @@
 Current survey results
 ----------------------
 
+.. include:: figures/stats.txt
+
 Submitter background
 ~~~~~~~~~~~~~~~~~~~~
 
@@ -19,6 +21,11 @@ Environment ratings
 .. figure:: figures/ratings_pers_os.png
 .. figure:: figures/ratings_man_os.png
 .. figure:: figures/ratings_virt_host_os.png
+
+Software resources
+~~~~~~~~~~~~~~~~~~
+
+.. figure:: figures/software_resources.png
 
 Software popularity
 ~~~~~~~~~~~~~~~~~~~

@@ -5,6 +5,7 @@ import json
 import sys
 import pylab as pl
 import numpy as np
+import time
 from mvpa.misc.plot.base import plot_bars
 
 # uniform colors for OS results
@@ -217,7 +218,7 @@ def mkpic_resources(db, destdir):
                 bbox=dict(facecolor='white', alpha=0.8, edgecolor='white',
                           color='white'))
     pl.ylabel('Number of submissions')
-    pl.savefig('%s/software_resources' % destdir, format='png', dpi=80)
+    pl.savefig('%s/software_resources.png' % destdir, format='png', dpi=80)
 
 def mkpic_software(db, destdir):
     for typ in sw_categories.keys():
@@ -272,6 +273,12 @@ def main(srcdir, destdir):
                        "Ratings: Managed environment")
     mkpic_rating_by_os(db, 'virt_host_os', ['virt_r%i' % i for i in range(1, 4)], destdir,
                        "Ratings: Virtual environment (by host OS)")
+    # submission stats: this is RST
+    statsfile = open('%s/stats.txt' % destdir, 'w')
+    statsfile.write('::\n\n  Number of submissions: %i\n' % len(db))
+    statsfile.write('  Statistics last updated: %s\n\n' \
+            % time.strftime('%A, %B %d %Y, %H:%M:%S UTC', time.gmtime()))
+    statsfile.close()
 
 if __name__ == '__main__':
     main(sys.argv[1], sys.argv[2])
