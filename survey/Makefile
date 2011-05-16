@@ -9,7 +9,7 @@ jquery.form.js:
 index.html: survey.rst
 	rst2html --link-stylesheet --stylesheet-path=survey.css survey.rst > $@
 
-results.html: results.rst
+results.html: results.rst figures/stats.txt
 	rst2html --link-stylesheet --stylesheet-path=survey.css results.rst > $@
 
 results_snippet.html: results.html
