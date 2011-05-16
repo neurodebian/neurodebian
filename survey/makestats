@@ -287,22 +287,6 @@ def mkpic_submissions_per_key(db, destdir, key, title, sortby='name',
     pl.savefig('%s/submissions_per_%s.png' % (destdir, key), format='png', dpi=80)
 
 
-def mkpic_resources(db, destdir):
-    res = db.get_counts('software_resource')
-    res = res.items()
-    x = np.arange(len(res))
-    pl.figure(figsize=(6.4, 4.8))
-    pl.title('Software resources')
-    pl.bar(x + (1./8), [s[1] for s in res], width=0.75, color = '#008200')
-    pl.xticks(x + 0.5,  ['' for s in res])
-    for i, s in enumerate(res):
-        pl.text(i+.5, 0.1, db.get_nice_name(s[0]), rotation=90,
-                horizontalalignment='center',
-                verticalalignment='bottom',
-                bbox=dict(facecolor='white', alpha=0.8, edgecolor='white'))
-    pl.ylabel('Number of submissions')
-    pl.savefig('%s/software_resources.png' % destdir, format='png', dpi=80)
-
 def mkpic_software(db, destdir):
     for typ in sw_categories.keys():
         mkpic_submissions_per_key(
@@ -349,8 +333,10 @@ def main(srcdir, destdir):
     mkpic_submissions_per_key(
         db, destdir, 'bg_employer', title='Submissions per venue', sortby='count')
 
-    for pic in [mkpic_os_per_env, mkpic_software,
-                mkpic_resources, mkpic_time_per_env]:
+    mkpic_submissions_per_key(
+        db, destdir, 'software_resource', title='Software resource popularity', sortby='count')
+
+    for pic in [mkpic_os_per_env, mkpic_software, mkpic_time_per_env]:
         pic(db, destdir)
     mkpic_rating_by_os(db, 'pers_os', ['pers_r%i' % i for i in range(1, 9)], destdir,
                        "Ratings: Personal environment")

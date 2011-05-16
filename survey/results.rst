@@ -29,7 +29,7 @@ Environment ratings
 Software resources
 ~~~~~~~~~~~~~~~~~~
 
-.. figure:: figures/software_resources.png
+.. figure:: figures/submissions_per_software_resource.png
 
 Software popularity
 ~~~~~~~~~~~~~~~~~~~
