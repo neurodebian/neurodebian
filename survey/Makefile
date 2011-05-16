@@ -18,7 +18,7 @@ results_snippet.html: results.html
 		| tail -n$$(echo "$$(wc -l < results.html) - $$(grep -n '<body>' \
 		< results.html | cut -d ':' -f 1,1) - 2" | bc ) > $@
 
-statfigures: oslist.txt swlist.txt datamodlist.txt employer-dd-list.txt position-dd-list.txt
+statfigures: oslist.txt swlist.txt datamodlist.txt employer-dd-list.txt position-dd-list.txt ratingslist.txt
 # create "lockfile'
 	@touch $@
 	@[ "$$(cat nsubmissions.stamp 2>/dev/null || echo)" != "$$(ls -1 data |wc -l)" ] \
@@ -48,6 +48,15 @@ datamodlist.txt: survey.rst
 	@echo "I: Extracting fields for $* into $@"
 	@sed -n -e '/bg_$*/,/\/tr/p' survey.rst \
 	| sed -ne '/option/s,.*value="\([^"]*\)" *label=\("[^"]*"\)>.*,\1: \2,gp' >| $@
+
+ratingslist.txt: survey.rst
+	@echo "I: Extracting fields for ratings into $@"
+	@grep -B 6 -e 'radio.*_r.*value="3"' survey.rst \
+	| grep -v -e '^\.\. raw' -e '^[ -]*$$' -e '<td' \
+	| sed -e 's,.*name="\([^"]*\)" value.*,|\1#,g' \
+	| tr '\n' ' ' \
+	| sed -e 's,#,#\n,g' \
+	| sed -e 's,\(.*\)|\(.*\)#,\2: "\1",g' >| $@
 
 upload: index.html results.html results_snippet.html jquery.form.js survey.css surveycollector.cgi
 	rsync -rvzlhp --delete  \
