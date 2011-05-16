@@ -271,8 +271,9 @@ def mkpic_submissions_per_key(db, destdir, key, title, sortby='name',
         x = np.arange(len(stats))
         pl.barh(x + (1./8), [s[1] for s in stats], height=0.75, color = '#008200')
         pl.yticks(x + 0.5,  ['' for s in stats])
+        text_offset = pl.gca().get_xlim()[1] / 30.
         for i, s in enumerate(stats):
-            pl.text(0.1, i+.5, db.get_nice_name(s[0]),
+            pl.text(text_offset, i+.5, db.get_nice_name(s[0]),
                     horizontalalignment='left',
                     verticalalignment='center',
                     bbox=dict(facecolor='white', alpha=0.8, edgecolor='white'))
