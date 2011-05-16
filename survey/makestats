@@ -187,7 +187,10 @@ def mkpic_os_per_env(db, destdir):
             stats[os_family_rev[os]] += counts[os]
         total_count = np.sum(stats.values())
         for osf in stats:
-            stats[osf] = float(stats[osf]) / total_count
+            if not total_count:
+                stats[osf] = 0
+            else:
+                stats[osf] = float(stats[osf]) / total_count
         env_stats[env] = stats
     # make stacked barplot
     pl.figure(figsize=(6.4, 4.8))
