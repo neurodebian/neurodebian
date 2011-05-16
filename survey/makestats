@@ -269,7 +269,8 @@ def mkpic_rating_by_os(db, env, items, destdir, title):
 
 def main(srcdir, destdir):
     db = DB(srcdir)
-    os.makedirs(destdir)
+    if not os.path.exists(destdir):
+        os.makedirs(destdir)
     for pic in [mkpic_submissions_per_datamod, mkpic_os_per_env, mkpic_software,
                 mkpic_resources]:
         pic(db, destdir)
