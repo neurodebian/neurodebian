@@ -5,7 +5,7 @@ Scientific software usage in neuroscience research
 This survey should take about five minutes. Immediately after submission you
 will be presented with some statistics on previous responses. Please try to
 answer as many questions as you can, but don't worry if you cannot answer all
-of them.
+of them. For feedback email team@neuro.debian.net
 
 .. raw:: html
 
@@ -43,9 +43,9 @@ of them.
    function showResponse(data, statusText, xhr, $form)  {
        // reset form if server reports success
        if (data.success == true) {
-           $('#nss_survey').resetForm();
-           $('#submit_button').hide();
-           $('#server_response').html(data.results);
+           //$('#nss_survey').resetForm();
+           //$('#submit_button').hide();
+           $('#server_response').html("<p><em>Thanks for participating in this survey.</em></p>" + data.results)
        } else {
            $('#server_response').html("");
            alert(data.message);
@@ -483,18 +483,19 @@ systems on one machine at the same time.
    <tr class="oddrow">
    <td class="task">
 
-How often do you use virtual machines for your research purposes?
+What fraction of your research activity time do you spend in a virtual
+environment as opposed to any other environment?
 
 .. raw:: html
 
    </td><td class="response">
    <select name="virt_time" size="1">
    <option value="none" selected="selected" label="Select an option">Select an option</option>
-   <option value="never" label="Never">Never</option>
-   <option value="occasionally" label="Occasionally">Occasionally</option>
-   <option value="often" label="Often">Often</option>
-   <option value="always" label="Exclusively">Exclusively</option>
-   </select><div style="font-size:60%">(skip the remaining questions of this section if "never")</div>
+   <option value="notime" label="None/I don't use this">None/I don't use this</option>
+   <option value="little" label="Less then half of the time">Less then half of the time</option>
+   <option value="most" label="More than half of the time">More than half of the time</option>
+   <option value="always" label="All of the time">All of the time</option>
+   </select>
    </td></tr><tr><td class="task">
 
 Which products for virtualization are you using?
@@ -934,9 +935,6 @@ Other
    </tr></table>
 
 ---------------------------------------------------------------
-
-Thanks for filling out the questionaire. Upon successful submission you will
-be presented with some statistics computed from all previous participants.
 
 .. raw:: html
 
