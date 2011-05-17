@@ -430,7 +430,7 @@ def main(srcdir, destdir):
                        "Personal environment", "I prefer this particular scientific software environment because ...")
     mkpic_rating_by_os_hor_joined(db, 'man_os', ['man_r%i' % i for i in range(1, 5)], destdir,
                        "Managed environment")
-    mkpic_rating_by_os_hor_joined(db, 'virt_host_os', ['man_r%i' % i for i in range(1, 4)], destdir,
+    mkpic_rating_by_os_hor_joined(db, 'virt_host_os', ['virt_r%i' % i for i in range(1, 4)], destdir,
                        "Virtual environment (by host OS)")
 
     # submission stats: this is RST

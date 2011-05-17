@@ -855,7 +855,7 @@ Electrophysiology, MEG/EEG
    <td class="response"><input type="checkbox" name="sw_electro" value="besa" />BESA</td>
    <td class="response"><input type="checkbox" name="sw_electro" value="biosig" />BioSig</td>
    <td class="response"><input type="checkbox" name="sw_electro" value="brainstorm" />BrainStorm</td>
-   <td class="response"><input type="checkbox" name="sw_electro" value="chronus" />Chronus</td>
+   <td class="response"><input type="checkbox" name="sw_electro" value="chronus" />Chronux</td>
    <td class="response"><input type="checkbox" name="sw_electro" value="eeglab" />EEGLAB</td>
    <td class="response"><input type="checkbox" name="sw_electro" value="elekta" />Elekta Neuromag</td>
    </tr><tr class="oddrow">
@@ -863,10 +863,12 @@ Electrophysiology, MEG/EEG
    <td class="response"><input type="checkbox" name="sw_electro" value="klustakwik" />KlustaKwik</td>
    <td class="response"><input type="checkbox" name="sw_electro" value="loreta" />LORETA/sLORETA</td>
    <td class="response"><input type="checkbox" name="sw_electro" value="mne" />MNE suite</td>
+   <td class="response"><input type="checkbox" name="sw_electro" value="mclust" />MClust</td>
    <td class="response"><input type="checkbox" name="sw_electro" value="neuroexplorer" />NeuroExplorer</td>
-   <td class="response"><input type="checkbox" name="sw_electro" value="openmeeg" />OpenMEEG</td>
    </tr><tr>
+   <td class="response"><input type="checkbox" name="sw_electro" value="openmeeg" />OpenMEEG</td>
    <td class="response"><input type="checkbox" name="sw_electro" value="openelectrophy" />Openelectrophy</td>
+   <td class="response"><input type="checkbox" name="sw_electro" value="plexon" />Plexon</td>
    <td class="response"><input type="checkbox" name="sw_electro" value="rtxi" />RTXI</td>
    <td class="response"><input type="checkbox" name="sw_electro" value="relacs" />Relacs</td>
    <td class="response"><input type="checkbox" name="sw_electro" value="trellis" />Trellis-neuro</td>

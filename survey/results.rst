@@ -15,12 +15,14 @@ Submitter background
 Scientific computing environment preferences
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. figure:: figures/ospref_by_env.png
 .. figure:: figures/time_by_env.png
+.. figure:: figures/ospref_by_env.png
 
-
-Environment ratings
-~~~~~~~~~~~~~~~~~~~
+The following figures show rating statistics grouped by the
+respective operating system and use the same system color code
+as in the figure above. The segments in each bar indicate the
+frequency of individual rating options (from *definitely disagree* to
+*definitely agree*) in up to four levels of color saturation.
 
 .. include:: figures/ratings_pers_os.rst
 .. include:: figures/ratings_man_os.rst
