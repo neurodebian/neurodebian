@@ -1,0 +1,14 @@
+Source: mclust
+Tasks: debian-science/electrophysiology
+Homepage: http://redishlab.neuroscience.umn.edu/MClust/MClust.html
+Author: A David Redish <redish AT umn.edu>
+Language: C/C++, Matlab
+License: non-DFSG (restrictions: modifications, attribution)
+Version: 3.B.03
+Pkg-Description: Matlab toolbox for clustering of electrophysiologic recordings
+  MClust is a toolbox which enables a user to perform automated and
+  manual clustering on single-electrode, stereotrode, and tetrode
+  recordings. It allows manual corrections to automated clustering
+  results. It outputs t-files, which contain (after a header) a list
+  of timestamps in binary format. Timestamps are 32-bit longs at a
+  resolution of 10 timestamps/ms.
