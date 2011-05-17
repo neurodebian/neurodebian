@@ -869,7 +869,7 @@ Electrophysiology, MEG/EEG
    <td class="response"><input type="checkbox" name="sw_electro" value="openelectrophy" />Openelectrophy</td>
    <td class="response"><input type="checkbox" name="sw_electro" value="rtxi" />RTXI</td>
    <td class="response"><input type="checkbox" name="sw_electro" value="relacs" />Relacs</td>
-   <td class="response"><input type="checkbox" name="sw_electro" value="trellis" />?Trellis-neuro</td>
+   <td class="response"><input type="checkbox" name="sw_electro" value="trellis" />Trellis-neuro</td>
    </tr></table>
 
 Brain-computer interface
