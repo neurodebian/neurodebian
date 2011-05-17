@@ -11,16 +11,12 @@ Submitter background
 .. figure:: figures/submissions_per_bg_employer.png
 .. figure:: figures/submissions_per_bg_position.png
 
-   Submissions caption
 
-Environment preferences
-~~~~~~~~~~~~~~~~~~~~~~~
+Scientific computing environment preferences
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. figure:: figures/ospref_by_env.png
 .. figure:: figures/time_by_env.png
-
-Environment ratings
-~~~~~~~~~~~~~~~~~~~
 
 .. figure:: figures/ratings_pers_os.png
 .. figure:: figures/ratings_man_os.png
@@ -35,6 +31,7 @@ Software popularity
 ~~~~~~~~~~~~~~~~~~~
 
 .. figure:: figures/submissions_per_sw_general.png
+.. figure:: figures/submissions_per_virt_prod.png
 .. figure:: figures/submissions_per_sw_dc.png
 .. figure:: figures/submissions_per_sw_img.png
 .. figure:: figures/submissions_per_sw_datamanage.png

@@ -205,19 +205,20 @@ def mkpic_os_per_env(db, destdir):
                 stats[osf] = float(stats[osf]) / total_count
         env_stats[env] = stats
     # make stacked barplot
-    pl.figure(figsize=(6.4, 4.8))
+    pl.figure(figsize=(7.5, 4))
     x = np.arange(len(envs))
     bottoms = np.zeros(len(envs))
     for i, os in enumerate(os_order):
-        stat = [env_stats[e][os] for e in envs]
-        pl.bar(x, stat, bottom=bottoms, color=os_colors[i],
-               label=db.get_nice_name(os), width=0.8)
+        stat = [env_stats[e][os] for e in envs[::-1]]
+        pl.barh(x, stat, left=bottoms, color=os_colors[i],
+               label=db.get_nice_name(os), height=0.8)
         bottoms += stat
-    pl.legend(loc='lower right')
-    pl.xticks(x + 0.4,  [db.get_nice_name(e) for e in env_names])
-    pl.xlim(-0.25, len(envs))
+    pl.legend(loc='lower left')
+    pl.yticks(x + 0.4,  env_names[::-1])
+    pl.ylim(-0.25, len(envs))
     pl.title("Operating system preference by environment")
-    pl.ylabel("Fraction of submissions")
+    pl.xlabel("Fraction of submissions")
+    pl.subplots_adjust(left=0.15, right=0.97)
     pl.savefig('%s/ospref_by_env.png' % destdir, format='png', dpi=80)
 
 
