@@ -65,7 +65,7 @@ redhat_family = ["rhel", "centos", "fedora", "scilinux"]
 debian_family = ["debian", "ubuntu", "biolinux"]
 suse_family = ["suse", "slel"]
 other_linux_family = ["gentoo", "mandriva", "arch", "slackware", "otherlinux"]
-other_family = ["starbsd", "unix", "qnx", "beos", "solaris", "other"]
+other_family = ["starbsd", "unix", "qnx", "beos", "solaris", "other", "dontknow"]
 
 os_cat_names = {
         'win': 'Windows',
