@@ -61,6 +61,8 @@ def extract_results(form, result):
     # IP
     if 'REMOTE_ADDR' in os.environ:
         result['remote_addr'] = os.environ['REMOTE_ADDR']
+    if 'HTTP_USER_AGENT' in os.environ:
+        result['user_agent'] = os.environ['HTTP_USER_AGENT']
 
     return result
 
