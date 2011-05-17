@@ -5,7 +5,8 @@ Scientific software usage in neuroscience research
 This survey should take about five minutes. Immediately after submission you
 will be presented with some statistics on previous responses. Please try to
 answer as many questions as you can, but don't worry if you cannot answer all
-of them. For feedback email team@neuro.debian.net
+of them. *You need to have javascript enabled in your browser for this survey.*
+For feedback email team@neuro.debian.net
 
 .. raw:: html
 
