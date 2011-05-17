@@ -330,7 +330,10 @@ def mkpic_rating_by_os_hor_joined(db, env, items, destdir, title,
    <table>
     """ % (title, '=' * len(title), intro_sentence))
     for k, it in enumerate(items):
-        pl.figure(figsize=(3.2, 0.5))
+        if k == 0:
+            pl.figure(figsize=(3.2, 0.75))
+        else:
+            pl.figure(figsize=(3.2, 0.5))
         it_nice = db.get_nice_name(it)#.lstrip('.').lstrip(' ')
         it_nice = it_nice[0].upper() + it_nice[1:]
         for i, os in enumerate(os_order):
@@ -339,40 +342,44 @@ def mkpic_rating_by_os_hor_joined(db, env, items, destdir, title,
             # assume that we have 4 grades from 0 to 3
             if len(ratings):
                 assert(max(ratings) < max_rating)
-            total = len(ratings)
-            bottom = 0
-            for r in range(max_rating)[::-1]: # so we go from agree to don't
-                stat = np.sum(ratings == r) * per_os_width / float(total)
-                #print r, it, os, stat, total
-                #if it == "pers_r8" and os == "linux" and r == 3:
-                #    import pydb; pydb.debugger()
-                kwargs = dict(label=None)
-                if stat:
-                    pl.barh(1.0/nos * (nos - 1 - i), stat, left=bottom, color=os_colors[i],
-                            height=.25, alpha=0.25 + r/float(max_rating),
-                            label=None,
-                            edgecolor=os_colors[i])
-                bottom += stat
             # Complement with errorbar
             if len(ratings):
                 meanstat = np.mean(ratings)
-                errstat = len(ratings) > 1 and np.std(ratings) or 0
-                pl.errorbar([per_os_width * (max_rating-1 - float(meanstat))/(max_rating-1)],
+                meanstat_point = per_os_width * (float(meanstat))/(max_rating-1)
+                # standard error of estimate
+                errstat = len(ratings) > 1 and np.std(ratings)/np.sqrt(len(ratings)-1) or 0
+
+                if True:
+                    # Beautiful piece not yet appreciated by the audience
+                    total = len(ratings)
+                    bottom = 0
+                    for r in range(max_rating):
+                        stat = np.sum(ratings == r) * meanstat_point / float(total)
+                        #print r, it, os, stat, total
+                        #if it == "pers_r8" and os == "linux" and r == 3:
+                        #    import pydb; pydb.debugger()
+                        kwargs = dict(label=None)
+                        if stat:
+                            pl.barh(1.0/nos * (nos - 1 - i), stat, left=bottom, color=os_colors[i],
+                                    height=.25, alpha=0.25 + r/float(max_rating),
+                                    label=None,
+                                    edgecolor=os_colors[i])
+                        bottom += stat
+                else:
+                    pl.barh(1.0/nos * (nos - 1 - i), meanstat_point, left=0,
+                            color=os_colors[i], height=.25, alpha=1.0, label=None)
+                pl.errorbar([meanstat_point],
                             [1.0/nos * (nos - 0.5 - i)],
                             xerr=[errstat], fmt='o', color=os_colors[i], ecolor='k')
-        #plot_bars(ratings, offset=((i+1)*0.2)-0.1, color=os_colors[i],
-        #          title=title, ylabel="Mean rating", label=db.get_nice_name(os))
-        #import pydb; pydb.debugger()
-        #pl.xlim((0, per_os_width * len(os_order)))
-        #pl.ylim((0, 1)) # len(items)))
-        #pl.yticks((0, 3), ['Disagree', 'Agree'], rotation=90)
-        #pl.xticks(np.arange(len(items))+0.5, [i[-2:] for i in items],
-        #          horizontalalignment='center')
-        #pl.legend(loc='lower right')
         pl.xlim((0, per_os_width))
-        pl.ylim((0, 1))
+        if k == 0:
+            pl.text(0, 1.1, "Disagree", horizontalalignment='left')
+            pl.text(per_os_width, 1.1, "Agree", horizontalalignment='right')
+            pl.ylim((0, 1.5))
+        else:
+            pl.ylim((0, 1))
         pl.axis('off')
-        pl.subplots_adjust(left=0.01, right=0.99, bottom=0.0, top=1,
+        pl.subplots_adjust(left=0.00, right=1., bottom=0.0, top=1,
                        wspace=0.05, hspace=0.05)
         fname = '%s/ratings_%s_%s.png' % (destdir, env, it)
         pl.savefig(fname, format='png', dpi=80)
@@ -380,18 +387,10 @@ def mkpic_rating_by_os_hor_joined(db, env, items, destdir, title,
         oddrow_s = k % 2 == 0 and ' class="oddrow"' or ''
         rst.write("""
         <tr%(oddrow_s)s>
-        <td class="task">%(it_nice)s</td>
-        <td class="response"> <div class="figure"><img border=0 alt="%(fname)s" src="%(fname)s" /> </div> </td> </tr>"""
+        <td>%(it_nice)s</td>
+        <td><img border="0" alt="%(fname)s" src="%(fname)s" /></td> </tr>"""
                   % (locals()))
 
-    #pl.yticks(range(len(items)),  [db.get_nice_name(it) for it in items])
-    #pl.xlim((0, per_os_width))# * len(os_order)))
-    #pl.ylim((0, len(items)))
-    #pl.axis('off')
-    #pl.subplots_adjust(left=0, right=1, bottom=0, top=1,
-    #                   wspace=0.05, hspace=0.05)
-    #pl.savefig('%s/ratings_%s.png' % (destdir, env), format='png', dpi=80)
-    #pl.close()
     rst.write("""
     </table>
 
@@ -434,12 +433,6 @@ def main(srcdir, destdir):
     mkpic_rating_by_os_hor_joined(db, 'virt_host_os', ['man_r%i' % i for i in range(1, 4)], destdir,
                        "Virtual environment (by host OS)")
 
-    ## mkpic_rating_by_os(db, 'pers_os', ['pers_r%i' % i for i in range(1, 9)], destdir,
-    ##                    "Ratings: Personal environment")
-    ## mkpic_rating_by_os(db, 'man_os', ['man_r%i' % i for i in range(1, 5)], destdir,
-    ##                    "Ratings: Managed environment")
-    ## mkpic_rating_by_os(db, 'virt_host_os', ['virt_r%i' % i for i in range(1, 4)], destdir,
-    ##                    "Ratings: Virtual environment (by host OS)")
     # submission stats: this is RST
     statsfile = open('%s/stats.txt' % destdir, 'w')
     statsfile.write('::\n\n  Number of submissions: %i\n' % len(db))
