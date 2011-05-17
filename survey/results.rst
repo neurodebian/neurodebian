@@ -18,9 +18,14 @@ Scientific computing environment preferences
 .. figure:: figures/ospref_by_env.png
 .. figure:: figures/time_by_env.png
 
-.. figure:: figures/ratings_pers_os.png
-.. figure:: figures/ratings_man_os.png
-.. figure:: figures/ratings_virt_host_os.png
+
+Environment ratings
+~~~~~~~~~~~~~~~~~~~
+
+.. include:: figures/ratings_pers_os.rst
+.. include:: figures/ratings_man_os.rst
+.. include:: figures/ratings_virt_host_os.rst
+
 
 Software resources
 ~~~~~~~~~~~~~~~~~~
