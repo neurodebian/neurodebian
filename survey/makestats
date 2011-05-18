@@ -242,7 +242,7 @@ def mkpic_time_per_env(db, destdir):
         pl.barh(x, stat, left=bottoms, color=time_colors[i],
                label=db.get_nice_name(t), height=.6)
         bottoms += stat
-    pl.legend(loc='center left')
+    pl.legend(loc='top left')
     pl.yticks(x + 0.2,  env_names)
     pl.ylim(-0.4, len(envs))
     pl.title("Research activity time by environment")
