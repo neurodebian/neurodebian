@@ -732,19 +732,20 @@ Generic computing/scripting/programming environments
 
    <table class="questionaire"><tr>
    <td class="response"><input type="checkbox" name="sw_general" value="cpp" />C/C++</td>
+   <td class="response"><input type="checkbox" name="sw_general" value="fortran" />Fortran</td>
    <td class="response"><input type="checkbox" name="sw_general" value="idl" />IDL</td>
    <td class="response"><input type="checkbox" name="sw_general" value="labview" />LabVIEW</td>
    <td class="response"><input type="checkbox" name="sw_general" value="lisrel" />LISREL</td>
    <td class="response"><input type="checkbox" name="sw_general" value="maple" />Maple</td>
-   <td class="response"><input type="checkbox" name="sw_general" value="mathcad" />Mathcad</td>
    </tr><tr class="oddrow">
+   <td class="response"><input type="checkbox" name="sw_general" value="mathcad" />Mathcad</td>
    <td class="response"><input type="checkbox" name="sw_general" value="mathematica" />Mathematica</td>
    <td class="response"><input type="checkbox" name="sw_general" value="matlab" />Matlab</td>
    <td class="response"><input type="checkbox" name="sw_general" value="octave" />Octave</td>
    <td class="response"><input type="checkbox" name="sw_general" value="perl" />Perl</td>
    <td class="response"><input type="checkbox" name="sw_general" value="python" />Python</td>
-   <td class="response"><input type="checkbox" name="sw_general" value="r" />R</td>
    </tr><tr>
+   <td class="response"><input type="checkbox" name="sw_general" value="r" />R</td>
    <td class="response"><input type="checkbox" name="sw_general" value="ruby" />Ruby</td>
    <td class="response"><input type="checkbox" name="sw_general" value="scilab" />Scilab</td>
    <td class="response"><input type="checkbox" name="sw_general" value="spss" />SPSS</td>
