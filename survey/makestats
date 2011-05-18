@@ -216,6 +216,7 @@ def mkpic_os_per_env(db, destdir):
     pl.legend(loc='center left')
     pl.yticks(x + 0.4,  env_names[::-1])
     pl.ylim(-0.25, len(envs))
+    pl.xlim(0,1)
     pl.title("Operating system preference by environment")
     pl.xlabel("Fraction of submissions")
     pl.subplots_adjust(left=0.15, right=0.97)
@@ -242,7 +243,7 @@ def mkpic_time_per_env(db, destdir):
         pl.barh(x, stat, left=bottoms, color=time_colors[i],
                label=db.get_nice_name(t), height=.6)
         bottoms += stat
-    pl.legend(loc='top left')
+    pl.legend(loc='upper left')
     pl.yticks(x + 0.2,  env_names)
     pl.ylim(-0.4, len(envs))
     pl.title("Research activity time by environment")
