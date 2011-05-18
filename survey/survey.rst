@@ -117,6 +117,7 @@ What type of data are you working with? Please check all items that apply.
    </td><td class="response">
    <table><tr><td>
    <input type="checkbox" name="bg_datamod" value="behav" />Behavioral<br />
+   <input type="checkbox" name="bg_datamod" value="genetic" />Genetic<br />
    <input type="checkbox" name="bg_datamod" value="mri" />MRI/fMRI/DTI<br />
    <input type="checkbox" name="bg_datamod" value="meeg" />EEG/MEG<br />
    <input type="checkbox" name="bg_datamod" value="pet" />PET/SPECT<br />

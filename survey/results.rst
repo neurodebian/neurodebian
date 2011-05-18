@@ -47,5 +47,5 @@ Software popularity
 .. figure:: figures/submissions_per_sw_bci.png
 .. figure:: figures/submissions_per_sw_acq.png
 .. figure:: figures/submissions_per_sw_rt.png
-.. figure:: figures/submissions_per_sw_psychophys.png
+.. figure:: figures/submissions_per_sw_psychphys.png
 

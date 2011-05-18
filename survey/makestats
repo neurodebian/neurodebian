@@ -57,7 +57,7 @@ sw_categories = {
         'bci': 'Brain-computer interface',
         'acq': 'Hardware interface/Data acquisition',
         'rt': 'Real-time solutions',
-        'psychophys': 'Psychophysics/Experiment control'
+        'psychphys': 'Psychophysics/Experiment control'
         }
 
 # some meaningful groups of OSes
@@ -407,11 +407,11 @@ def main(srcdir, destdir):
 
     mkpic_submissions_per_key(
         db, destdir, 'virt_prod', sortby='count',
-        title='Virtualization product popularity\n(multiple choices per submission possible)')
+        title='Virtualization product popularity')
 
     mkpic_submissions_per_key(
         db, destdir, 'bg_datamod', sortby='count',
-        title='Submissions per data modality\n(multiple choices per submission possible)')
+        title='Submissions per data modality')
 
     mkpic_submissions_per_key(
         db, destdir, 'bg_position', title='Submissions per position', sortby='count')
