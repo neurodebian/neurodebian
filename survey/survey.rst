@@ -835,15 +835,23 @@ Neural systems modeling
 
    <table class="questionaire"><tr>
    <td class="response"><input type="checkbox" name="sw_neusys" value="brian" />Brian</td>
-   <td class="response"><input type="checkbox" name="sw_neusys" value="iqr" />iqr</td>
-   <td class="response"><input type="checkbox" name="sw_neusys" value="iNVT" />iNVT</td>
-   <td class="response"><input type="checkbox" name="sw_neusys" value="neuron" />NEURON</td>
-   <td class="response"><input type="checkbox" name="sw_neusys" value="nest" />NEST</td>
+   <td class="response"><input type="checkbox" name="sw_neusys" value="ecanse" />Siemens ECANSE</td>
+   <td class="response"><input type="checkbox" name="sw_neusys" value="emergent" />Emergent NNSS</td>
    <td class="response"><input type="checkbox" name="sw_neusys" value="genesis" />Genesis</td>
+   <td class="response"><input type="checkbox" name="sw_neusys" value="iNVT" />iNVT</td>
+   <td class="response"><input type="checkbox" name="sw_neusys" value="iqr" />iqr</td>
    <td class="response"><input type="checkbox" name="sw_neusys" value="moose" />Moose</td>
+   <td class="response"><input type="checkbox" name="sw_neusys" value="nest" />NEST</td>
+   <td class="response"><input type="checkbox" name="sw_neusys" value="neuron" />NEURON</td>
+   <td class="response"><input type="checkbox" name="sw_neusys" value="neurosolutions" />NeuroSolutions</td>
    <td class="response"><input type="checkbox" name="sw_neusys" value="pcsim" />PCSIM</td>
+   <td class="response"><input type="checkbox" name="sw_neusys" value="peltarion" />Peltarion</td>
+   <td class="response"><input type="checkbox" name="sw_neusys" value="psics" />PSICS</td>
    <td class="response"><input type="checkbox" name="sw_neusys" value="pynn" />PyNN</td>
+   <td class="response"><input type="checkbox" name="sw_neusys" value="snnap" />SNNAP</td>
+   <td class="response"><input type="checkbox" name="sw_neusys" value="stuttgart" />Stuttgart (SNNS)</td>
    <td class="response"><input type="checkbox" name="sw_neusys" value="topographica" />Topographica</td>
+   <td class="response"><input type="checkbox" name="sw_neusys" value="xnbc" />XNBC</td>
    </tr></table>
 
 Electrophysiology, MEG/EEG
