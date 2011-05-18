@@ -46,7 +46,7 @@ For feedback email team@neuro.debian.net
        if (data.success == true) {
            $('#nss_survey').resetForm();
            $('#submit_button').hide();
-           $('#server_response').html("<p><em>Thanks for participating in this survey.</em></p>" + data.results)
+           $('#server_response').html("<p><em>Thanks for participating in this survey. Scroll down to see the statistics.</em></p>" + data.results)
        } else {
            $('#server_response').html("");
            alert(data.message);
