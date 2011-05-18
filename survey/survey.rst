@@ -119,10 +119,11 @@ What type of data are you working with? Please check all items that apply.
    <input type="checkbox" name="bg_datamod" value="behav" />Behavioral<br />
    <input type="checkbox" name="bg_datamod" value="mri" />MRI/fMRI/DTI<br />
    <input type="checkbox" name="bg_datamod" value="meeg" />EEG/MEG<br />
-   </td><td>
    <input type="checkbox" name="bg_datamod" value="pet" />PET/SPECT<br />
+   </td><td>
    <input type="checkbox" name="bg_datamod" value="ephys" />Electrophysiology<br />
    <input type="checkbox" name="bg_datamod" value="spectro" />Microspectroscopy<br />
+   <input type="checkbox" name="bg_datamod" value="simulation" />Computational modeling/Simulations<br />
    <input type="checkbox" name="bg_datamod" value="otherdm" />
    <input name="bg_datamod_other" type="text" size="20" maxlength="40">
    </td></tr></table>
@@ -672,7 +673,7 @@ Comes with the operating system
 
 .. raw:: html
 
-   </td></tr><tr><td class="response"><input type="checkbox" name="software_resource" value=macports"" /></td><td>
+   </td></tr><tr><td class="response"><input type="checkbox" name="software_resource" value="macports" /></td><td>
 
 `Macports <http://www.macports.org>`_
 
@@ -783,38 +784,39 @@ Imaging
    <td class="response"><input type="checkbox" name="sw_img" value="brainvisa" />BrainVISA/Anatomist</td>
    <td class="response"><input type="checkbox" name="sw_img" value="brainvoyager" />BrainVoyager</td>
    <td class="response"><input type="checkbox" name="sw_img" value="cmtk" />CMTK</td>
-   <td class="response"><input type="checkbox" name="sw_img" value="caret" />Caret</td>
+   <td class="response"><input type="checkbox" name="sw_img" value="camino" />Camino</td>
    </tr><tr class="oddrow">
+   <td class="response"><input type="checkbox" name="sw_img" value="caret" />Caret</td>
    <td class="response"><input type="checkbox" name="sw_img" value="connectomviewer" />ConnectomeViewer</td>
    <td class="response"><input type="checkbox" name="sw_img" value="dsi" />DSI Studio</td>
    <td class="response"><input type="checkbox" name="sw_img" value="dtitk" />DTI-TK</td>
-   <td class="response"><input type="checkbox" name="sw_img" value="trackvis" />Diffusion Toolkit/Trackvis</td>
    </tr><tr>
+   <td class="response"><input type="checkbox" name="sw_img" value="trackvis" />Diffusion Toolkit/Trackvis</td>
    <td class="response"><input type="checkbox" name="sw_img" value="fsl" />FSL</td>
    <td class="response"><input type="checkbox" name="sw_img" value="fiji" />Fiji</td>
    <td class="response"><input type="checkbox" name="sw_img" value="freesurfer" />FreeSurfer</td>
-   <td class="response"><input type="checkbox" name="sw_img" value="itksnap" />ITK-SNAP</td>
    </tr><tr class="oddrow">
+   <td class="response"><input type="checkbox" name="sw_img" value="itksnap" />ITK-SNAP</td>
    <td class="response"><input type="checkbox" name="sw_img" value="imagej" />ImageJ</td>
    <td class="response"><input type="checkbox" name="sw_img" value="invesalius" />Invesalius</td>
    <td class="response"><input type="checkbox" name="sw_img" value="loni" />LONI</td>
-   <td class="response"><input type="checkbox" name="sw_img" value="lipsia" />Lipsia</td>
    </tr><tr>
+   <td class="response"><input type="checkbox" name="sw_img" value="lipsia" />Lipsia</td>
    <td class="response"><input type="checkbox" name="sw_img" value="mango" />Mango</td>
    <td class="response"><input type="checkbox" name="sw_img" value="mipav" />MIPAV/JIST</td>
    <td class="response"><input type="checkbox" name="sw_img" value="mni" />MNI tools</td>
-   <td class="response"><input type="checkbox" name="sw_img" value="mricron" />MRIcron</td>
    </tr><tr class="oddrow">
+   <td class="response"><input type="checkbox" name="sw_img" value="mricron" />MRIcron</td>
    <td class="response"><input type="checkbox" name="sw_img" value="mrtrix" />MRtrix</td>
    <td class="response"><input type="checkbox" name="sw_img" value="mvpa" />Matlab MVPA toolbox</td>
    <td class="response"><input type="checkbox" name="sw_img" value="nibabel" />NiBabel/PyNIfTI</td>
-   <td class="response"><input type="checkbox" name="sw_img" value="nipy" />NiPy/NiTime/DiPy/NiPype</td>
    </tr><tr>
+   <td class="response"><input type="checkbox" name="sw_img" value="nipy" />NiPy/NiTime/DiPy/NiPype</td>
    <td class="response"><input type="checkbox" name="sw_img" value="pymvpa" />PyMVPA</td>
    <td class="response"><input type="checkbox" name="sw_img" value="rest" />REST</td>
    <td class="response"><input type="checkbox" name="sw_img" value="spm" />SPM</td>
-   <td class="response"><input type="checkbox" name="sw_img" value="v3d" />V3D</td>
    </tr><tr class="oddrow">
+   <td class="response"><input type="checkbox" name="sw_img" value="v3d" />V3D</td>
    <td class="response"><input type="checkbox" name="sw_img" value="voxbo" />VoxBo</td>
    </tr></table>
 
@@ -843,16 +845,18 @@ Neural systems modeling
    </tr><tr class="oddrow">
    <td class="response"><input type="checkbox" name="sw_neusys" value="moose" />Moose</td>
    <td class="response"><input type="checkbox" name="sw_neusys" value="nest" />NEST</td>
+   <td class="response"><input type="checkbox" name="sw_neusys" value="neuroml" />NeuroML</td>
    <td class="response"><input type="checkbox" name="sw_neusys" value="neuron" />NEURON</td>
    <td class="response"><input type="checkbox" name="sw_neusys" value="neurosolutions" />NeuroSolutions</td>
    <td class="response"><input type="checkbox" name="sw_neusys" value="pcsim" />PCSIM</td>
-   <td class="response"><input type="checkbox" name="sw_neusys" value="peltarion" />Peltarion</td>
    </tr><tr>
+   <td class="response"><input type="checkbox" name="sw_neusys" value="peltarion" />Peltarion</td>
    <td class="response"><input type="checkbox" name="sw_neusys" value="psics" />PSICS</td>
    <td class="response"><input type="checkbox" name="sw_neusys" value="pynn" />PyNN</td>
    <td class="response"><input type="checkbox" name="sw_neusys" value="snnap" />SNNAP</td>
    <td class="response"><input type="checkbox" name="sw_neusys" value="snns" />SNNS</td>
    <td class="response"><input type="checkbox" name="sw_neusys" value="topographica" />Topographica</td>
+   </tr><tr class="oddrow">
    <td class="response"><input type="checkbox" name="sw_neusys" value="xnbc" />XNBC</td>
    </tr></table>
 

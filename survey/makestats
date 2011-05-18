@@ -44,7 +44,7 @@ resource_categories = {
     'pypi': 'PyPi',
     'pythonbundles': 'Python bundles',
     'sourceforge': 'Sourceforge',
-    'other': 'Other resource'
+    'otherres': 'Other resource'
     }
 # software categories
 sw_categories = {
@@ -213,7 +213,7 @@ def mkpic_os_per_env(db, destdir):
         pl.barh(x, stat, left=bottoms, color=os_colors[i],
                label=db.get_nice_name(os), height=0.8)
         bottoms += stat
-    pl.legend(loc='lower left')
+    pl.legend(loc='center left')
     pl.yticks(x + 0.4,  env_names[::-1])
     pl.ylim(-0.25, len(envs))
     pl.title("Operating system preference by environment")
@@ -293,7 +293,7 @@ def mkpic_software(db, destdir):
         mkpic_submissions_per_key(
             db, destdir, 'sw_%s' % typ,
             title="Software popularity: %s" % db.get_nice_name(typ),
-            sortby='name')
+            sortby='count')
 
 def mkpic_rating_by_os(db, env, items, destdir, title):
     pl.figure(figsize=(6.4, 4.8))
@@ -405,7 +405,7 @@ def main(srcdir, destdir):
         os.makedirs(destdir)
 
     mkpic_submissions_per_key(
-        db, destdir, 'virt_prod', sortby='name',
+        db, destdir, 'virt_prod', sortby='count',
         title='Virtualization product popularity\n(multiple choices per submission possible)')
 
     mkpic_submissions_per_key(
