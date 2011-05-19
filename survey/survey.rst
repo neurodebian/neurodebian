@@ -873,23 +873,24 @@ Electrophysiology, MEG/EEG
    <td class="response"><input type="checkbox" name="sw_electro" value="besa" />BESA</td>
    <td class="response"><input type="checkbox" name="sw_electro" value="biosig" />BioSig</td>
    <td class="response"><input type="checkbox" name="sw_electro" value="brainstorm" />BrainStorm</td>
+   <td class="response"><input type="checkbox" name="sw_electro" value="brainsuite" />BrainSuite</td>
    <td class="response"><input type="checkbox" name="sw_electro" value="brainvisionanalyzer" />Brainvision Analyzer</td>
-   <td class="response"><input type="checkbox" name="sw_electro" value="chronus" />Chronux</td>
    </tr><tr class="oddrow">
+   <td class="response"><input type="checkbox" name="sw_electro" value="chronus" />Chronux</td>
    <td class="response"><input type="checkbox" name="sw_electro" value="eeglab" />EEGLAB</td>
    <td class="response"><input type="checkbox" name="sw_electro" value="elekta" />Elekta Neuromag</td>
    <td class="response"><input type="checkbox" name="sw_electro" value="emse" />EMSE</td>
    <td class="response"><input type="checkbox" name="sw_electro" value="fieldtrip" />Fieldtrip</td>
    <td class="response"><input type="checkbox" name="sw_electro" value="klustakwik" />KlustaKwik</td>
-   <td class="response"><input type="checkbox" name="sw_electro" value="loreta" />LORETA/sLORETA</td>
    </tr><tr>
+   <td class="response"><input type="checkbox" name="sw_electro" value="loreta" />LORETA/sLORETA</td>
    <td class="response"><input type="checkbox" name="sw_electro" value="mne" />MNE suite</td>
    <td class="response"><input type="checkbox" name="sw_electro" value="mclust" />MClust</td>
    <td class="response"><input type="checkbox" name="sw_electro" value="neuroexplorer" />NeuroExplorer</td>
    <td class="response"><input type="checkbox" name="sw_electro" value="neuroshare" />Neuroshare</td>
    <td class="response"><input type="checkbox" name="sw_electro" value="openmeeg" />OpenMEEG</td>
-   <td class="response"><input type="checkbox" name="sw_electro" value="openelectrophy" />Openelectrophy</td>
    </tr><tr class="oddrow">
+   <td class="response"><input type="checkbox" name="sw_electro" value="openelectrophy" />Openelectrophy</td>
    <td class="response"><input type="checkbox" name="sw_electro" value="plexon" />Plexon</td>
    <td class="response"><input type="checkbox" name="sw_electro" value="rtxi" />RTXI</td>
    <td class="response"><input type="checkbox" name="sw_electro" value="relacs" />Relacs</td>
