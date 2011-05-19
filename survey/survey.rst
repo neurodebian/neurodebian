@@ -161,7 +161,7 @@ software environment you would like to be doing your research in.
    <td>
 
 What fraction of your research activity time do you spend in this software
-environment as opposed to any other environment that you migh have access to?
+environment as opposed to any other environment that you might have access to?
 
 .. raw:: html
 
@@ -257,7 +257,7 @@ Please indicate how much you agree to the following statements.
    </td></tr><tr class="oddrow"><td class="task">
 
 
-... of the availibility of commercial support
+... of the availability of commercial support
 
 .. raw:: html
 
@@ -293,7 +293,7 @@ Please indicate how much you agree to the following statements.
    </td></tr><tr><td class="task">
 
 
-... I rely on a particular application that only runs in this environment
+... I rely on a particular application that runs in this environment only
 
 .. raw:: html
 
@@ -431,7 +431,7 @@ a timely fashion
    <div class="rating">Definitely disagree<br /><input type="radio" name="man_r2" value="0" /></div>
    </td></tr><tr class="oddrow"><td class="task">
 
-There are always enough licenses for essential commerical software tools
+There are always enough licenses for essential commercial software tools
 
 .. raw:: html
 
@@ -734,22 +734,24 @@ Generic computing/scripting/programming environments
    <td class="response"><input type="checkbox" name="sw_general" value="cpp" />C/C++</td>
    <td class="response"><input type="checkbox" name="sw_general" value="fortran" />Fortran</td>
    <td class="response"><input type="checkbox" name="sw_general" value="idl" />IDL</td>
+   <td class="response"><input type="checkbox" name="sw_general" value="java" />Java</td>
    <td class="response"><input type="checkbox" name="sw_general" value="labview" />LabVIEW</td>
    <td class="response"><input type="checkbox" name="sw_general" value="lisrel" />LISREL</td>
-   <td class="response"><input type="checkbox" name="sw_general" value="maple" />Maple</td>
    </tr><tr class="oddrow">
+   <td class="response"><input type="checkbox" name="sw_general" value="maple" />Maple</td>
    <td class="response"><input type="checkbox" name="sw_general" value="mathcad" />Mathcad</td>
    <td class="response"><input type="checkbox" name="sw_general" value="mathematica" />Mathematica</td>
    <td class="response"><input type="checkbox" name="sw_general" value="matlab" />Matlab</td>
    <td class="response"><input type="checkbox" name="sw_general" value="octave" />Octave</td>
    <td class="response"><input type="checkbox" name="sw_general" value="perl" />Perl</td>
-   <td class="response"><input type="checkbox" name="sw_general" value="python" />Python</td>
    </tr><tr>
+   <td class="response"><input type="checkbox" name="sw_general" value="python" />Python</td>
    <td class="response"><input type="checkbox" name="sw_general" value="r" />R</td>
    <td class="response"><input type="checkbox" name="sw_general" value="ruby" />Ruby</td>
    <td class="response"><input type="checkbox" name="sw_general" value="scilab" />Scilab</td>
    <td class="response"><input type="checkbox" name="sw_general" value="spss" />SPSS</td>
    <td class="response"><input type="checkbox" name="sw_general" value="scirun" />SCIRun</td>
+   </tr><tr class="oddrow">
    <td class="response"><input type="checkbox" name="sw_general" value="shell" />Shell scripting</td>
    </tr></table>
 
