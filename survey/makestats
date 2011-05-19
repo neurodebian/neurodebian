@@ -1,6 +1,5 @@
 #!/usr/bin/python
 
-from mvpa.misc.plot.base import plot_bars
 from glob import glob
 try:
     from json import load as jload
@@ -239,12 +238,12 @@ def mkpic_time_per_env(db, destdir):
     x = np.arange(len(envs))
     bottoms = np.zeros(len(envs))
     for i, t in enumerate(time_order):
-        stat = [env_stats[e][t] for e in envs]
+        stat = [env_stats[e][t] for e in envs[::-1]]
         pl.barh(x, stat, left=bottoms, color=time_colors[i],
                label=db.get_nice_name(t), height=.6)
         bottoms += stat
-    pl.legend(loc='upper left')
-    pl.yticks(x + 0.2,  env_names)
+    pl.legend(loc='lower left')
+    pl.yticks(x + 0.2,  env_names[::-1])
     pl.ylim(-0.4, len(envs))
     pl.title("Research activity time by environment")
     pl.xlabel("Fraction of submissions")
@@ -298,6 +297,8 @@ def mkpic_software(db, destdir):
             sortby='count')
 
 def mkpic_rating_by_os(db, env, items, destdir, title):
+    from mvpa.misc.plot.base import plot_bars
+
     pl.figure(figsize=(6.4, 4.8))
     for i, os in enumerate(os_order):
         ratings = [db.select_match(env,
