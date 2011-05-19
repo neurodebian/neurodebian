@@ -945,11 +945,12 @@ Psychophysics/Experiment control
    <td class="response"><input type="checkbox" name="sw_psychphys" value="opensesame" />OpenSesame</td>
    <td class="response"><input type="checkbox" name="sw_psychphys" value="presentation" />Presentation</td>
    <td class="response"><input type="checkbox" name="sw_psychphys" value="psychopy" />PsychoPy</td>
-   </tr><tr class="oddrow">
    <td class="response"><input type="checkbox" name="sw_psychphys" value="psychtoolbox" />Psychtoolbox</td>
+   </tr><tr class="oddrow">
    <td class="response"><input type="checkbox" name="sw_psychphys" value="psyscope" />PsyScope</td>
    <td class="response"><input type="checkbox" name="sw_psychphys" value="psytoolkit" />Psytoolkit</td>
    <td class="response"><input type="checkbox" name="sw_psychphys" value="pyepl" />PyEPL</td>
+   <td class="response"><input type="checkbox" name="sw_psychphys" value="superlab" />SuperLab</td>
    <td class="response"><input type="checkbox" name="sw_psychphys" value="tscope" />Tscope</td>
    <td class="response"><input type="checkbox" name="sw_psychphys" value="visionegg" />VisionEgg</td>
    </tr></table>
