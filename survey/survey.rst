@@ -863,6 +863,7 @@ Neural systems modeling
    </tr><tr class="oddrow">
    <td class="response"><input type="checkbox" name="sw_neusys" value="topographica" />Topographica</td>
    <td class="response"><input type="checkbox" name="sw_neusys" value="xnbc" />XNBC</td>
+   <td class="response"><input type="checkbox" name="sw_neusys" value="xpp" />XPP/XPPAUT</td>
    </tr></table>
 
 Electrophysiology, MEG/EEG
