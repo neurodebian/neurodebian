@@ -941,14 +941,15 @@ Psychophysics/Experiment control
    <table class="questionaire"><tr>
    <td class="response"><input type="checkbox" name="sw_psychphys" value="dmdx" />DMDX</td>
    <td class="response"><input type="checkbox" name="sw_psychphys" value="eprime" />E-Prime</td>
+   <td class="response"><input type="checkbox" name="sw_psychphys" value="opensesame" />OpenSesame</td>
    <td class="response"><input type="checkbox" name="sw_psychphys" value="presentation" />Presentation</td>
    <td class="response"><input type="checkbox" name="sw_psychphys" value="psychopy" />PsychoPy</td>
    <td class="response"><input type="checkbox" name="sw_psychphys" value="pyepl" />PyEPL</td>
-   <td class="response"><input type="checkbox" name="sw_psychphys" value="psychtoolbox" />Psychtoolbox</td>
    </tr><tr class="oddrow">
+   <td class="response"><input type="checkbox" name="sw_psychphys" value="psychtoolbox" />Psychtoolbox</td>
    <td class="response"><input type="checkbox" name="sw_psychphys" value="psytoolkit" />Psytoolkit</td>
-   <td class="response"><input type="checkbox" name="sw_psychphys" value="opensesame" />OpenSesame</td>
    <td class="response"><input type="checkbox" name="sw_psychphys" value="psyscope" />PsyScope</td>
+   <td class="response"><input type="checkbox" name="sw_psychphys" value="superlab" />SuperLab</td>
    <td class="response"><input type="checkbox" name="sw_psychphys" value="visionegg" />VisionEgg</td>
    <td class="response"><input type="checkbox" name="sw_psychphys" value="tscope" />Tscope</td>
    </tr></table>
