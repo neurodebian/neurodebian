@@ -18,10 +18,13 @@ results_snippet.html: results.html
 		| tail -n$$(echo "$$(wc -l < results.html) - $$(grep -n '<body>' \
 		< results.html | cut -d ':' -f 1,1) - 2" | bc ) > $@
 
+figures/stats.txt: statfigures
+
 statfigures: oslist.txt swlist.txt datamodlist.txt employer-dd-list.txt position-dd-list.txt ratingslist.txt vmlist.txt
 # create "lockfile'
 	@touch $@
 	@[ "$$(cat nsubmissions.stamp 2>/dev/null || echo)" != "$$(ls -1 data |wc -l)" ] \
+		&& echo "I: Re-generating stats figures" \
 		&& ls -1 data |wc -l > nsubmissions.stamp \
 		&& MVPA_MATPLOTLIB_BACKEND=agg ./makestats data figures || true
 # remove lockfile
@@ -68,3 +71,4 @@ upload: index.html results.html results_snippet.html jquery.form.js survey.css s
 		--chmod=Dg+s,g+rw * neurodebian@www.pymvpa.org:/home/neurodebian/survey/
 	scp surveycollector.cgi neurodebian@www.pymvpa.org:/srv/neuro.debian.net/cgi-bin/
 
+.PHONY: statfigures
