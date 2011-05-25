@@ -152,13 +152,18 @@ class DB(dict):
                 missing += 1
         return val, missing
 
-    def get_counts(self, key):
+    def get_counts(self, key, predef_keys=None):
         # return a dict with field values as keys and respective submission 
         # count as value
         vals = self.get_not_none(key)[0]
         uniq = np.unique(vals)
         counts = dict(zip(uniq, [vals.count(u) for u in uniq]))
-        return counts
+        if not predef_keys is None:
+            ret = dict(zip(predef_keys, [0] * len(predef_keys)))
+        else:
+            ret = {}
+        ret.update(counts)
+        return ret
 
     def select_match(self, key, values):
         # return a db with all submissions were a field id has one of the
