@@ -175,6 +175,22 @@ class DB(dict):
                 match[k] = v
         return match
 
+    def select_match_exactly(self, key, values):
+        # return a db with all submissions were a field id has value
+        # equal to the supplied
+        match = DB(None)
+        set_values = set(values)
+        for k, v in self.items():
+            if not key in v:
+                continue
+            el = v[key]
+            if isinstance(el, list):
+                if set(el) == set_values:
+                    match[k] = v
+            elif set([el]) == set_values:
+                match[k] = v
+        return match
+
     def get_nice_name(self, id):
         srcs = [DB.os_dict, os_cat_names, DB.sw_dict, sw_categories,
                 resource_categories, time_categories,
@@ -404,6 +420,18 @@ def mkpic_rating_by_os_hor_joined(db, env, items, destdir, title,
 
 def main(srcdir, destdir):
     db = DB(srcdir)
+
+    ## db2 = db
+    # custom selection for people dealing more with hardware
+    # any electrophys
+    ## db = db2.select_match('bg_datamod', (('ephys'),))
+    # or only selected ones (so no fmri/pet etc)
+    ## db = db2.select_match_exactly('bg_datamod', (('ephys'), ('behav'),))
+    ## db.update(db2.select_match_exactly('bg_datamod', (('ephys'),)))
+    ## db.update(db2.select_match_exactly('bg_datamod', (('ephys'), ('genetic'),)))
+    ## db.update(db2.select_match_exactly('bg_datamod', (('ephys'), ('simulation'),)))
+    ## db.update(db2.select_match_exactly('bg_datamod', (('ephys'), ('meeg'),)))
+
     if not os.path.exists(destdir):
         os.makedirs(destdir)
 
@@ -429,12 +457,20 @@ def main(srcdir, destdir):
 
     for pic in [mkpic_os_per_env, mkpic_software, mkpic_time_per_env]:
         pic(db, destdir)
+
+
     mkpic_rating_by_os_hor_joined(db, 'pers_os', ['pers_r%i' % i for i in range(1, 9)], destdir,
                        "Personal environment", "I prefer this particular scientific software environment because ...")
     mkpic_rating_by_os_hor_joined(db, 'man_os', ['man_r%i' % i for i in range(1, 6)], destdir,
                        "Managed environment")
     mkpic_rating_by_os_hor_joined(db, 'virt_host_os', ['virt_r%i' % i for i in range(1, 5)], destdir,
                        "Virtual environment (by host OS)")
+    mkpic_rating_by_os_hor_joined(db, 'virt_guest_os', ['virt_r%i' % i for i in range(1, 5)], destdir,
+                       "Virtual environment (by guest OS)")
+
+    ## mkpic_rating_by_os_hor_joined(db.select_match('virt_prod', (('vmware'),)),
+    ##                               'virt_host_os', ['virt_r%i' % i for i in range(1, 5)], destdir,
+    ##                               "Virtualbox virtual environment (by host OS)")
 
     # submission stats: this is RST
     statsfile = open('%s/stats.txt' % destdir, 'w')
