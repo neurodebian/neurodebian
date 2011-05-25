@@ -33,6 +33,7 @@ statfigures: oslist.txt swlist.txt datamodlist.txt employer-dd-list.txt position
 getdata:
 	rsync -rvzlhp --delete \
 		neurodebian@www.pymvpa.org:/home/neurodebian/survey/data .
+	./postprocdata
 
 oslist.txt: select_os_options.inc
 	grep -v selected select_os_options.inc | sed -e 's/<option value="//' \
