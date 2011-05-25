@@ -45,10 +45,10 @@ __copyright__ = 'Copyright (c) 2011 Yaroslav Halchenko'
 __license__ = 'GPL'
 
 
-import os, sys, glob, json, re
+import os, sys, glob, json, re, shutil
 from copy import copy
 from mvpa.base import verbose
-verbose.level = 4
+verbose.level = 2
 datain = 'data'
 dataout = 'dataout'
 dataorig = 'dataorig'
@@ -136,6 +136,17 @@ for d in dataout, dataorig:
         shutil.rmtree(d)
     os.makedirs(d)
 
+def ndiffer(d1, d2, skip=['timestamp']):
+    n = 0
+    for key in d1.keys():
+        if key in skip:
+            continue
+        if d1[key] != d2.get(key, 'XXX'):
+            n += 1
+    return n
+
+ips = {}
+nwith_ips = 0
 unhandled = {}
 refreshed = {}
 infiles = glob.glob(os.path.join(datain, '*.json'))
@@ -147,9 +158,29 @@ for f in infiles:
         verbose(1, "Skipping %s because of blacklist" % f)
         skipped += 1
         continue
-
     verbose(5, "Loading %s" % f)
     j = json.load(open(f))
+    if [j.get(x) for x in 'man_os', 'pers_os', 'virt_host_os', 'bg_datamod'] == \
+       ['none', 'none', 'none', None]:
+        verbose(1, "Skipping %s because all systems are nones" % f)
+        skipped += 1
+        continue
+
+    if 'remote_addr' in j:
+        nwith_ips += 1
+        ip = j['remote_addr']
+        agent = j.get('user_agent', None)
+        previous_entries = ips.get((ip, agent), [])
+        # Let's see if we catch results seekers -- check for how many
+        # fields are identical
+        if len(previous_entries):
+            diffs = [ndiffer(x, j) for x in previous_entries]
+            if min(diffs) < 2:
+                verbose(1, "Skipping %s because there is a previous entry which differs only in %d fields" % (f, min(diffs),))
+                skipped += 1
+                continue
+        ips[(ip, agent)] = previous_entries + [j]
+
     json.dump(j, open(os.path.join(dataorig, fname), 'w'), indent=2)
     for ofield, osubs in all_subs.iteritems():
         if not (ofield in j and j[ofield]):
@@ -193,10 +224,12 @@ for f in infiles:
     json.dump(j, open(os.path.join(dataout, fname), 'w'), indent=2)
     #open(os.path.join(dataout, fname), 'w').write(json.write(j))
 
+bad_ips = [x for x in ips.items() if len(x[1])>1]
+
 def ppd(d):
     keys = sorted(d.keys())
     return '\n '.join(["%s: %d" % (k, d[k]) for k in keys])
 
 verbose(1, "=== Refreshed ===\n %s" % ppd(refreshed))
 verbose(1, "=== Unhandled ===\n %s" % ppd(unhandled))
-verbose(1, "=== Skipped: %d" % skipped)
+verbose(1, "=== Skipped: %d, %d out of %d unique IP/Agent" % (skipped, len(ips), nwith_ips))
