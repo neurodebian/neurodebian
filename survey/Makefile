@@ -26,8 +26,8 @@ statfigures: oslist.txt swlist.txt datamodlist.txt employer-dd-list.txt position
 	@touch $@
 	@[ "$$(cat nsubmissions.stamp 2>/dev/null || echo)" != "$$(ls -1 data |wc -l)" ] \
 		&& echo "I: Re-generating stats figures" \
-		&& ls -1 data |wc -l > nsubmissions.stamp \
-		&& MVPA_MATPLOTLIB_BACKEND=agg ./makestats data figures || true
+		&& ls -1 dataout |wc -l > nsubmissions.stamp \
+		&& MVPA_MATPLOTLIB_BACKEND=agg ./makestats dataout figures || true
 # remove lockfile
 	@-rm $@
 
