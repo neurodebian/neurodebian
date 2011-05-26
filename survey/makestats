@@ -330,13 +330,19 @@ def mkpic_rating_by_os(db, env, items, destdir, title):
     pl.legend(loc='lower right')
     pl.savefig('%s/ratings_%s.png' % (destdir, env), format='png', dpi=80)
 
-def mkpic_rating_by_os_hor_joined(db, env, items, destdir, title,
-                                  intro_sentence="I agree with the statements"):
-    per_os_width = 10
-    max_rating = 4
+def mkpic_rating_by_os_hor_joined(db, env, items, destdir='.', title=None,
+                                  intro_sentence="I agree with the statements",
+                                  suffix='', max_rating=4):
+    per_os_width = 1
     #pl.figure(figsize=(6.4, 4.8))
+    if max_rating is None:
+        assert(len(items) == 1)
+        # We need to query for it
+        field = items[0]
+        max_rating = np.max([db[k][field] for k in db if field in db[k]]) + 1
+        print "max ", max_rating
     nos = len(os_order)
-    rst = open('figures/ratings_%s.rst' % env, 'w')
+    rst = open('figures/ratings_%s%s.rst' % (env, suffix), 'w')
     rst.write("""
 
 %s
@@ -358,21 +364,22 @@ def mkpic_rating_by_os_hor_joined(db, env, items, destdir, title,
         for i, os in enumerate(os_order):
             ratings = np.array(db.select_match(env,
                                                os_family[os]).get_not_none('%s' % (it,))[0])
-            # assume that we have 4 grades from 0 to 3
-            if len(ratings):
-                assert(max(ratings) < max_rating)
+            #if len(ratings):
+            #    assert(max(ratings) < max_rating)
             # Complement with errorbar
             if len(ratings):
+                scaling = float(per_os_width)/(max_rating-1)
                 meanstat = np.mean(ratings)
-                meanstat_point = per_os_width * (float(meanstat))/(max_rating-1)
+                meanstat_point = scaling * meanstat
                 # standard error of estimate
-                errstat = len(ratings) > 1 and np.std(ratings)/np.sqrt(len(ratings)-1) or 0
-
+                errstat_point = len(ratings) > 1 and scaling*np.std(ratings)/np.sqrt(len(ratings)-1) or 0
+                #print ratings, meanstat, meanstat_point, errstat_point
                 if True:
                     # Beautiful piece not yet appreciated by the audience
                     total = len(ratings)
                     bottom = 0
-                    for r in range(max_rating):
+                    max_rating_max = max(max_rating, max(ratings)+1)
+                    for r in sorted(set(ratings)):#range(max_rating_max):
                         stat = np.sum(ratings == r) * meanstat_point / float(total)
                         #print r, it, os, stat, total
                         #if it == "pers_r8" and os == "linux" and r == 3:
@@ -380,7 +387,7 @@ def mkpic_rating_by_os_hor_joined(db, env, items, destdir, title,
                         kwargs = dict(label=None)
                         if stat:
                             pl.barh(1.0/nos * (nos - 1 - i), stat, left=bottom, color=os_colors[i],
-                                    height=.25, alpha=0.25 + r/float(max_rating),
+                                    height=.25, alpha=1./max_rating_max + r/float(max_rating_max),
                                     label=None,
                                     edgecolor=os_colors[i])
                         bottom += stat
@@ -389,9 +396,9 @@ def mkpic_rating_by_os_hor_joined(db, env, items, destdir, title,
                             color=os_colors[i], height=.25, alpha=1.0, label=None)
                 pl.errorbar([meanstat_point],
                             [1.0/nos * (nos - 0.5 - i)],
-                            xerr=[errstat], fmt='o', color=os_colors[i], ecolor='k')
+                            xerr=[errstat_point], fmt='o', color=os_colors[i], ecolor='k')
         pl.xlim((0, per_os_width))
-        if k == 0:
+        if k == 0 and max_rating == 4:  # ad-hoc: only for those disagree/agree
             pl.text(0, 1.1, "Disagree", horizontalalignment='left')
             pl.text(per_os_width, 1.1, "Agree", horizontalalignment='right')
             pl.ylim((0, 1.5))
@@ -400,7 +407,7 @@ def mkpic_rating_by_os_hor_joined(db, env, items, destdir, title,
         pl.axis('off')
         pl.subplots_adjust(left=0.00, right=1., bottom=0.0, top=1,
                        wspace=0.05, hspace=0.05)
-        fname = '%s/ratings_%s_%s.png' % (destdir, env, it)
+        fname = '%s/ratings_%s_%s%s.png' % (destdir, env, it, suffix)
         pl.savefig(fname, format='png', dpi=80)
         pl.close()
         oddrow_s = k % 2 == 0 and ' class="oddrow"' or ''
@@ -420,6 +427,17 @@ def mkpic_rating_by_os_hor_joined(db, env, items, destdir, title,
 
 def main(srcdir, destdir):
     db = DB(srcdir)
+    if False:
+        ## Plot maintenance time per each group
+        # assess what would be our range
+        pmts, _ = db.get_not_none('pers_maint_time')
+        max_rating = int(np.mean(pmts) + np.std(pmts))
+        for pos in db.get_unique('bg_position'):
+            print pos
+            mkpic_rating_by_os_hor_joined(db.select_match('bg_position', pos),
+                                          'pers_os', ['pers_maint_time'], destdir,
+                                          "Personal environment", "", suffix='_maint_time_%s' % pos,
+                                          max_rating=max_rating)
 
     ## db2 = db
     # custom selection for people dealing more with hardware
@@ -481,3 +499,4 @@ def main(srcdir, destdir):
 
 if __name__ == '__main__':
     main(sys.argv[1], sys.argv[2])
+    #main('dataout', 'figures')
