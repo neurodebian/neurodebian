@@ -2,6 +2,9 @@
 Scientific software usage in neuroscience research
 ==================================================
 
+**Survey for 2011 is already closed and no new submissions accepted.**
+
+
 This survey should take about five minutes. Immediately after submission you
 will be presented with some statistics on previous responses. Please try to
 answer as many questions as you can, but don't worry if you cannot answer all
@@ -976,8 +979,9 @@ Other
 
 .. raw:: html
 
-   <input id="submit_button" value="Submit survey" type="submit">
+   <!-- <input id="submit_button" value="Submit survey" type="submit">
    <div id="server_response"></div>
+   -->
    </form>
 
 

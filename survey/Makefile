@@ -6,8 +6,9 @@ clean:
 jquery.form.js:
 	wget --no-check-certificate http://github.com/malsup/form/raw/master/jquery.form.js
 
-index.html: survey.rst
-	rst2html --link-stylesheet --stylesheet-path=survey.css survey.rst > $@
+#index.html: survey.rst
+index.html: closed.rst
+	rst2html --link-stylesheet --stylesheet-path=survey.css $< > $@
 
 results.html: results.rst figures/stats.txt
 	rst2html --link-stylesheet --stylesheet-path=survey.css results.rst > $@
@@ -25,8 +26,8 @@ statfigures: oslist.txt swlist.txt datamodlist.txt employer-dd-list.txt position
 	@touch $@
 	@[ "$$(cat nsubmissions.stamp 2>/dev/null || echo)" != "$$(ls -1 data |wc -l)" ] \
 		&& echo "I: Re-generating stats figures" \
-		&& ls -1 data |wc -l > nsubmissions.stamp \
-		&& MVPA_MATPLOTLIB_BACKEND=agg ./makestats data figures || true
+		&& ls -1 dataout |wc -l > nsubmissions.stamp \
+		&& MVPA_MATPLOTLIB_BACKEND=agg ./makestats dataout figures || true
 # remove lockfile
 	@-rm $@
 
@@ -66,10 +67,18 @@ ratingslist.txt: survey.rst
 	| sed -e 's,#,#\n,g' \
 	| sed -e 's,\(.*\)|\(.*\)#,\2: "\1",g' >| $@
 
-upload: index.html results.html results_snippet.html jquery.form.js survey.css surveycollector.cgi
+upload: upload-closed
+
+upload-closed: index.html
+	rsync -rvzlhp --delete  \
+        --exclude='*.txt' --exclude=data --exclude=figures \
+		--chmod=Dg+s,g+rw $^ neurodebian@www.pymvpa.org:/home/neurodebian/survey/
+	ssh neurodebian@www.pymvpa.org rm /srv/neuro.debian.net/cgi-bin/surveycollector.cgi
+
+upload-survey: index.html results.html results_snippet.html jquery.form.js survey.css surveycollector.cgi
 	rsync -rvzlhp --delete  \
         --exclude='*.txt' --exclude=data --exclude='*.cgi' --exclude=figures \
-		--chmod=Dg+s,g+rw * neurodebian@www.pymvpa.org:/home/neurodebian/survey/
+		--chmod=Dg+s,g+rw $^ neurodebian@www.pymvpa.org:/home/neurodebian/survey/
 	scp surveycollector.cgi neurodebian@www.pymvpa.org:/srv/neuro.debian.net/cgi-bin/
 
 .PHONY: statfigures

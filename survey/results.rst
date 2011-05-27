@@ -27,6 +27,7 @@ frequency of individual rating options (from *definitely disagree* to
 .. include:: figures/ratings_pers_os.rst
 .. include:: figures/ratings_man_os.rst
 .. include:: figures/ratings_virt_host_os.rst
+.. include:: figures/ratings_virt_guest_os.rst
 
 
 Software resources
