@@ -28,6 +28,14 @@ Research Software Projects
 .. quotes::
    :group: Research software projects
 
+.. quote::
+   :author: Stephan Gerhard, et al.
+   :date: 2011-06-06
+   :tags:  practices, quality
+   :source: The Connectome Viewer Toolkit, Front. Neuroinform. 5:3. doi: 10.3389/fninf.2011.00003
+
+   For proper software packaging and distribution, the NeuroDebian project provides professional expertise and infrastructure.
+
 
 Individual Laboratories and Researchers
 ---------------------------------------

@@ -1,0 +1,22 @@
+Source: xnat
+Tasks: debian-science/neuroscience-cognitive,
+	   debian-med/imaging
+Homepage: http://www.xnat.org
+Author: Howard Hughes Medical Institute at Washington University in St Louis
+Language: java
+License: XNAT SLA
+Version: 1.5.1
+WNPP: 629143
+Pkg-Description: platform for data management and productivity tasks in neuroimaging
+ The primary functionality of XNAT is to provide a place to store and
+ control access to neuroimaging data. This includes sophisticated user
+ control, search and retrieval, and archiving capabilities. As
+ open-source software, XNAT also supports a wide variety of
+ research-based processing pipelines, and is able to link up with
+ supercomputer processing power to dramatically shorten image
+ processing time.
+Published-Title: The Extensible Neuroimaging Archive Toolkit (XNAT): An informatics platform for managing, exploring, and sharing neuroimaging data.
+Published-Authors: Marcus, D.S., Olsen T., Ramaratnam M., and Buckner, R.L.
+Published-In: Neuroinformatics 5(1): 11-34
+Published-Year: 2007
+Registration: http://www.xnat.org/download-xnat.html

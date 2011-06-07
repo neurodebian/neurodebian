@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# emacs: -*- coding: utf-8; mode: python; py-indent-offset: 4; indent-tabs-mode: nil -*-
 
 from glob import glob
 try:
@@ -13,6 +14,14 @@ import sys, os
 import pylab as pl
 import numpy as np
 import time
+
+from common import entries_to_refresh
+fresh_keys = [k
+              for k, (regex, b) in
+                    reduce(list.__add__,[x.items()
+                                         for x in entries_to_refresh['sw_other_name'].values()],
+                           [])
+              if b]
 
 # uniform colors for OS results
 os_colors = ['#AA2029', '#D1942B', '#7FB142', '#69A7CE']
@@ -201,11 +210,12 @@ class DB(dict):
                 resource_categories, time_categories,
                 DB.datamod_dict, DB.position_dict, DB.employer_dict,
                 DB.vm_dict, DB.ratings_dict]
+        suffix = u'$^†$' if id in fresh_keys else ''
         for src in srcs:
             if id in src:
-                return src[id]
+                return src[id] + suffix
         # not found, nothing nicer
-        return id
+        return id + suffix
 
 
 def mkpic_os_per_env(db, destdir):
