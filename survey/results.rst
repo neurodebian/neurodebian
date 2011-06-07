@@ -50,3 +50,8 @@ Software popularity
 .. figure:: figures/submissions_per_sw_rt.png
 .. figure:: figures/submissions_per_sw_psychphys.png
 
+
+.. note:: :sup:`†` Entries which were either mentioned in "Other"
+   field or were added to the survey while survey was already running.
+   Therefore their counts could be under-estimated.
+

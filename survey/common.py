@@ -125,7 +125,7 @@ entries_to_refresh = dict(
                     '|spyder'
                     # Move into survey?
                     '|.*magnetic source locator.*' # Some kind of MEG inverse solver -- publications but no public project
-                    ')', True)
+                    ')', False)
                     ),
         ),
     )

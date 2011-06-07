@@ -3,7 +3,7 @@ Scientific software usage in neuroscience research
 ==================================================
 
 **Survey for 2011 is already closed and no new submissions accepted.**
-
+Please visit `2011 survey results <results.html>`_ page.
 
 This survey should take about five minutes. Immediately after submission you
 will be presented with some statistics on previous responses. Please try to
