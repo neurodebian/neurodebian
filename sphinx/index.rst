@@ -44,7 +44,7 @@ News
 .. raw:: html
 
  <script src="_static/jquery.livetwitter.min.js"></script>
- <div id="identica_widget"></div>
+ <div id="identica_widget">[imagine news items here]</div>
  <script type="text/javascript">
  $("#identica_widget").liveTwitter('neurodebian',
                                    {service: 'identi.ca',
