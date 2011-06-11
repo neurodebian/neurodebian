@@ -53,15 +53,18 @@ references_ for more packages). Expanding the coverage is planned.
 
    * Finish packaging of fieldtrip which is necessary to complete the packaging
      of SPM.
-   * Adapt the packaging of `dynare <http://packages.debian.org/sid/dynare-matlab>`_
-     in Debian to use the new support package. Once this is done and reviewed by
-     its maintainers the support package can be submitted for inclusion into
-     Debian proper.
    * Create :ref:`matlab-psychtoolbox-3 <pkg_matlab-psychtoolbox-3>` to
      complement :ref:`octave-psychtoolbox-3 <pkg_octave-psychtoolbox-3>`.
    * Create :ref:`matlab-biosig <pkg_matlab-biosig>` to
      complement :ref:`octave-biosig <pkg_octave-biosig>`.
    * Package `EEGLAB <http://bugs.debian.org/605739>`_.
+
+.. note:: Done:
+
+   * Adapt the packaging of `dynare <http://packages.debian.org/sid/dynare-matlab>`_
+     in Debian to use the new support package. Once this is done and reviewed by
+     its maintainers the support package can be submitted for inclusion into
+     Debian proper.
    * Upload :ref:`libgdf <pkg_libgdf-dev>` (including :ref:`matlab-gdf
      <pkg_matlab-gdf>`) to Debian proper as soon as :ref:`matlab-support
      <pkg_matlab-support>` is accepted
