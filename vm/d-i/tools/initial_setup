@@ -47,7 +47,7 @@ git config --global user.email nd@localhost
 # -----------------
 
 # Add sources.list for backports and neurodebian
-wget -O /etc/apt/sources.list.d/neuro.debian.net.list http://neuro.debian.net/_static/neurodebian.squeeze.us-nh.sources.list
+wget -O /etc/apt/sources.list.d/neuro.debian.net.list http://neuro.debian.net/lists/squeeze.us-nh
 
 echo "deb http://backports.debian.org/debian-backports squeeze-backports main contrib non-free" > /etc/apt/sources.list.d/backports.debian.org.list
 cat << EOT > /etc/apt/preferences.d/backports.debian.org.pref
