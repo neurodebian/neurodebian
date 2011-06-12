@@ -68,7 +68,10 @@ apt-get update -y
 
 # to cheat the VM check
 touch /dev/vboxguest
-# to get all the stuff in recommends
+# Forcefully install guest additions from backports so we are
+# compatible with VirtualBox 4.x series
+apt-get install -y -t squeeze-backports virtualbox-ose-guest-dkms
+# to get all the rest stuff in recommends
 apt-get install -y dkms neurodebian-guest-additions
 
 apt-get install --no-install-recommends -y \

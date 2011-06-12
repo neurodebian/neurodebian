@@ -6,14 +6,14 @@ set -eu
 
 # TODO: arguments later on to become cmdline args
 #iso=debian-squeeze-di-beta1-amd64-businesscard.iso
-iso=debian-6.0.0-${ARCH:=amd64}-businesscard.iso
+iso=debian-6.0.1a-${ARCH:=amd64}-businesscard.iso
 di_cd=$(readlink -f $PWD/../../../neurodebian-images/$iso)
 di_host=hydra.dartmouth.edu               # where to look for di preseed
 
 build_dir=$PWD/build
 dist_dir=$PWD/dist
 vendor="NeuroDebian"
-vm_version="6.0.2"
+vm_version="6.0.3"
 vm_ostype=Debian
 vendor_url="http://neuro.debian.net"
 product_url="${vendor_url}/vm.html"
