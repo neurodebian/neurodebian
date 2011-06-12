@@ -60,4 +60,5 @@ umount vbdev
 sudo -u "$SUDO_USER" VBoxManage modifyhd "$vdifile" --compact
 
 # cleanup
+echo "I: Cleaning up after VDI compact operation"
 rm -rf $wdir
