@@ -24,19 +24,29 @@ just a few mouse clicks (e.g. AFNI_, Caret_, FSL_, PyMVPA_).
 Downloads
 ---------
 
-* `NeuroDebian 6.0.2 image (32bit)
-  <http://neuro.debian.net/debian/vm/neurodebian_6.0.2_i386.zip>`_ [~545MB]
+* `NeuroDebian 6.0.3 image (32bit)
+  <http://neuro.debian.net/debian/vm/NeuroDebian_6.0.3_i386.ova>`_ [~556MB]
 
   *This image should work on virtually all systems that are supported by*
   VirtualBox_ *and can be used whenever the, otherwise preferable, 64bit image
   is not compatible with a host machine.*
 
-* `NeuroDebian 6.0.2 image (64bit)
-  <http://neuro.debian.net/debian/vm/neurodebian_6.0.2_amd64.zip>`_ [~560MB]
+* `NeuroDebian 6.0.3 image (64bit)
+  <http://neuro.debian.net/debian/vm/NeuroDebian_6.0.3_amd64.ova>`_ [~571MB]
 
   *This image only works on 64bit host machines with active hardware
   virtualization support. The should include all recent Apple hardware and most
   64bit Windows systems.*
+
+Virtual appliances above carry guest additions for 4.x series of the
+VirtualBox. If you still have VirtualBox 3.x, use previous 6.0.2
+virtual appliances:
+
+* `NeuroDebian 6.0.2 image (32bit)
+  <http://neuro.debian.net/debian/vm/neurodebian_6.0.2_i386.zip>`_ [~545MB]
+
+* `NeuroDebian 6.0.2 image (64bit)
+  <http://neuro.debian.net/debian/vm/neurodebian_6.0.2_amd64.zip>`_ [~560MB]
 
 .. note::
 
@@ -55,6 +65,18 @@ Downloads
   *This webpage offers installers of the VirtualBox application, as well as the
   documentation.*
 
+Changes
+-------
+
+6.0.3 -- 12 Jun 2011
+
+	  * Updated to Squeeze 6.0.1
+	  * Updated VirtualBox guest additions to 4.0.4 from backports.debian.org
+	  * Appliance is available as a single file (.ova) ready for the import
+
+6.0.2 -- 08 Feb 2011
+
+6.0.1 -- 01 Dec 2010
 
 Documentation
 -------------
@@ -215,3 +237,19 @@ I cannot hear sounds played in the virtual machine.
   the "Master" and "PCM" channels and raise the volume as desired. You should
   now be able to hear sounds played within the virtual machines through your
   host computer's speakers.
+
+I have upgraded VirtualBox from 3.x series to 4.x, and my VM lost
+mounted host directories.
+
+  NeuroDebian VMs prior 6.0.3 were shipped with guest additions from
+  3.x series of VirtualBox and some initial versions of VirtualBox in
+  4.x series have failed to mount host directories properly.
+  VirtualBox 4.0.8 seems to work fine with guest additions from 3.x
+  series.  If you nevertheless want to upgrade guest additions within
+  NeuroDebian VM, please rebuild the version available from the
+  backports::
+
+    sudo apt-get install -y linux-headers-2.6-amd64 # or -686 for 32bit
+    sudo apt-get install -y -t squeeze-backports virtualbox-ose-guest-kdms
+
+  and reboot VM.
