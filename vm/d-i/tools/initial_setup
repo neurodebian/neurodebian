@@ -82,6 +82,7 @@ apt-get install -y linux-headers-2.6-$cdarch
 # Forcefully install guest additions from backports so we are
 # compatible with VirtualBox 4.x series
 apt-get install -y -t squeeze-backports virtualbox-ose-guest-dkms \
+	virtualbox-ose-guest-utils  virtualbox-ose-guest-x11 \
 	>| /var/log/initial_setup-dkms.log 2>&1
 
 # to get all the rest stuff in recommends
