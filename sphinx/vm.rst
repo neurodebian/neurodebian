@@ -24,15 +24,15 @@ just a few mouse clicks (e.g. AFNI_, Caret_, FSL_, PyMVPA_).
 Downloads
 ---------
 
-* `NeuroDebian 6.0.3 image (32bit)
-  <http://neuro.debian.net/debian/vm/NeuroDebian_6.0.3_i386.ova>`_ [~556MB]
+* `NeuroDebian 6.0.4 image (32bit)
+  <http://neuro.debian.net/debian/vm/NeuroDebian_6.0.4_i386.ova>`_ [~558MB]
 
   *This image should work on virtually all systems that are supported by*
   VirtualBox_ *and can be used whenever the, otherwise preferable, 64bit image
   is not compatible with a host machine.*
 
-* `NeuroDebian 6.0.3 image (64bit)
-  <http://neuro.debian.net/debian/vm/NeuroDebian_6.0.3_amd64.ova>`_ [~571MB]
+* `NeuroDebian 6.0.4 image (64bit)
+  <http://neuro.debian.net/debian/vm/NeuroDebian_6.0.4_amd64.ova>`_ [~573MB]
 
   *This image only works on 64bit host machines with active hardware
   virtualization support. The should include all recent Apple hardware and most
@@ -68,11 +68,15 @@ virtual appliances:
 Changes
 -------
 
-6.0.3 -- 12 Jun 2011
+6.0.4 -- 13 Jun 2011
 
-	  * Updated to Squeeze 6.0.1
-	  * Updated VirtualBox guest additions to 4.0.4 from backports.debian.org
-	  * Appliance is available as a single file (.ova) ready for the import
+      * Updated shipped virtualbox-ose guest-utils and guest-x11 to 4.0.4
+
+6.0.3 -- 12 Jun 2011 [Superseded in the archive by 6.0.4]
+
+      * Updated to Squeeze 6.0.1
+      * Updated VirtualBox guest additions to 4.0.4 from backports.debian.org
+      * Appliance is available as a single file (.ova) ready for the import
 
 6.0.2 -- 08 Feb 2011
 
@@ -250,6 +254,7 @@ mounted host directories.
   backports::
 
     sudo apt-get install -y linux-headers-2.6-amd64 # or -686 for 32bit
-    sudo apt-get install -y -t squeeze-backports virtualbox-ose-guest-kdms
+    sudo apt-get install -y -t squeeze-backports virtualbox-ose-guest-kdms \
+         virtualbox-ose-guest-utils  virtualbox-ose-guest-x11
 
   and reboot VM.
