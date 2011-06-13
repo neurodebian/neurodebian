@@ -149,6 +149,8 @@ for f in infiles:
             for v in values:
                 unhandled[v] = unhandled.get(v, 0) + 1
     verbose(3, "Storing file %s" % fname)
+    # shorten IP
+    j['remote_addr'] = '.'.join(j['remote_addr'].split('.')[:2]) + '.x.x'
     json.dump(j, open(os.path.join(dataout, fname), 'w'), indent=2)
     #open(os.path.join(dataout, fname), 'w').write(json.write(j))
 
