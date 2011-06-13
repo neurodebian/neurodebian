@@ -739,3 +739,44 @@ p.attribution span.affiliation, span.source {
         display: none;
     }
 }
+
+/* survey */
+
+
+div.rating {
+    text-align: center;
+    font-size: 80%;
+    float: left;
+    padding: 0.5em;
+}
+
+
+table.questionaire {
+    padding: 0px;
+}
+
+tr.oddrow {
+    background-color: #ddd;
+}
+
+table.questionaire td {
+    padding: 0px;
+    margin: 0px;
+}
+
+td.response {
+    text-align: left;
+    white-space: nowrap;
+    background-color: #eeffcc;
+}
+
+tr.oddrow td.response {
+    background-color: #ccd9af;
+}
+
+td.task {
+    text-align: left;
+}
+
+
+
