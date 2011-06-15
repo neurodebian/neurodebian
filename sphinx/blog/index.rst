@@ -7,3 +7,4 @@
    :glob:
 
    2010/index
+   2011/index
