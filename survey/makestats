@@ -278,7 +278,7 @@ def mkpic_time_per_env(db, destdir):
 
 
 def mkpic_submissions_per_key(db, destdir, key, title, sortby='name',
-                            multiple=False):
+                            multiple=False, peros=False):
     counts = db.get_counts(key)
     pl.figure(figsize=(6.4, (len(counts)-2) * 0.4 + 2))
     if not len(counts): tmargin = 0.4
@@ -299,7 +299,12 @@ def mkpic_submissions_per_key(db, destdir, key, title, sortby='name',
         else:
             raise ValueError("Specify either name or count for sortby")
         x = np.arange(len(stats))
-        pl.barh(x + (1./8), [s[1] for s in stats[::-1]], height=0.75, color = '#008200')
+        if peros:
+            import pydb; pydb.debugger()
+            pass
+        else:
+            # just a total plot, without per OS
+            pl.barh(x + (1./8), [s[1] for s in stats[::-1]], height=0.75, color = '#008200')
         pl.yticks(x + 0.5,  ['' for s in stats])
         text_offset = pl.gca().get_xlim()[1] / 30.
         for i, s in enumerate(stats[::-1]):
