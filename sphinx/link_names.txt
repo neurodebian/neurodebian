@@ -158,6 +158,8 @@
 .. Some common terms as links outside and abbreviations
 .. _FOSS: http://en.wikipedia.org/wiki/Free_and_Open_Source_Software
 .. |FOSS| replace:: :abbr:`FOSS (Free and Open Source Software)`
+.. _DFSG: http://www.debian.org/social_contract#guidelines
+.. |DFSG| replace:: :abbr:`DFSG (Debian Free Software Guidelines)`
 
 .. Homepages
 .. _yoh: http://www.onerussian.com
