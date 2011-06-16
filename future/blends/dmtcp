@@ -1,0 +1,6 @@
+Depends: dmtcp
+Tasks: debian-science/distributedcomputing
+Published-Title: DMTCP: Transparent Checkpointing for Cluster Computations and the Desktop
+Published-Authors: Jason Ansel, Kapil Arya, and Gene Cooperman
+Published-In: 23rd IEEE International Parallel and Distributed Processing Symposium (IPDPS'09).
+Published-Year: 2009
