@@ -31,7 +31,7 @@ you want to get involved. If you appreciate this service, please |spread|.
  <a href="vm.html"><img border="0" src="_static/machine.png" title="Get NeuroDebian for your non-Debian computer" /></a>
  <a href="debian/pool"><img border="0" src="_static/pool.png" title="Go to the package pool (deep and cold, only for experts)" /></a>
  <a href="projects.html"><img border="0" src="_static/workarea.png" title="Current and planned projects: Get involved!" /></a>
- <a href="feeds/blog.xml"><img border="0" src="_static/rssfeeds.png" title="NeuroDebian Insider feed" /></a>
+ <a href="blog/index.html"><img border="0" src="_static/rssfeeds.png" title="NeuroDebian Insider Blog" /></a>
  </p>
 
 .. _Ubuntu: http://www.ubuntu.com
@@ -44,7 +44,7 @@ News
 .. raw:: html
 
  <script src="_static/jquery.livetwitter.min.js"></script>
- <div id="identica_widget">[imagine news items here]</div>
+ <div id="identica_widget"></div>
  <script type="text/javascript">
  $("#identica_widget").liveTwitter('neurodebian',
                                    {service: 'identi.ca',
@@ -53,8 +53,9 @@ News
                                     rate: 300000});
  </script>
 
-Older news items are available on identi.ca_. Follow us on identi.ca_
-(preferred) or twitter_ to subscribe to the NeuroDebian news.
+For more news and information see our :ref:`blog <blog>`. Older news items are
+available on identi.ca_. Follow us on identi.ca_ (preferred) or twitter_ to
+subscribe to the NeuroDebian news.
 
 .. _identi.ca: http://identi.ca/neurodebian
 .. _twitter: http://twitter.com/NeuroDebian

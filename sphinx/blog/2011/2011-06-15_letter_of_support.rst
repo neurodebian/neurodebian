@@ -124,7 +124,7 @@ with a large number of neuroscience software developers, as well as
 the Debian community. In particular we aim to achieve:
 
 Aim 1: Ongoing maintenance of neuroscientific software in (Neuro)Debian
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 NeuroDebian currently maintains over 30 software projects, from
 single-purpose tools to complex analysis suites. All integrated
@@ -133,7 +133,7 @@ updates. We aim to continue to offer reliable and prompt service in
 providing an efficient research environment.
 
 Aim 2: Increased coverage of neuroscientific research tools
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To enhance the utility of NeuroDebian for a wide range of research
 applications we will
