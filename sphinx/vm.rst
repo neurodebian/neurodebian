@@ -50,6 +50,12 @@ virtual appliances:
 
 .. note::
 
+  This older virtual appliances are distributed as a `zip` file. Please
+  extract all files from the `.zip` file, using appropriate software
+  for your operating system.
+
+.. note::
+
   You can verify that you have downloaded archives correctly using
   `md5sums -c MD5SUMS
   <http://neuro.debian.net/debian/vm/MD5SUMS>`_ . You can also verify
@@ -127,17 +133,16 @@ potential questions regarding installation and maintenance.
 .. _VirtualBox: http://www.virtualbox.org
 
 Next, download the most recent version of the NeuroDebian virtual machine from
-the Downloads_ section. The machine is distributed as a zip file. Please
-extract this file, using appropriate software for your operating system.
-Once extracted, start VirtualBox and select "Import Appliance" from the file
+the Downloads_ section.  Start VirtualBox and select "Import Appliance" from the file
 menu.
 
 .. image:: pics/vm_import_app.jpg
 
 The next dialog will ask you to choose a virtual machine. Please navigate to the
-extracted NeuroDebian download and select the `.ovf` file.
+extracted NeuroDebian download and select the `.ova` (or extracted
+`.ovf` for older appliances shipped as `.zip`) file.
 
-.. image:: pics/vm_import_wizard.jpg
+.. image:: pics/vm_import_wizard.png
 
 You can finish importing of NeuroDebian by clicking on *next* a couple of
 times.  There is no need to change anything, as we will get through the
@@ -149,9 +154,7 @@ but select NeuroDebian and hit the *Settings* button. In the following dialog
 you'll have a chance to configure the machine. You can assign the amount of RAM
 that should be made available to it (for serious fMRI data processing, please
 allow at least 2 GB). If you have a recent computer with multiple CPU cores,
-you can also decide how many cores should be used by the virtual machine. If
-you have a large screen you should increase the display memory to 32 MB in the
-*Display* settings.
+you can also decide how many cores should be used by the virtual machine.
 
 .. image:: pics/vm_add_host_folder.jpg
 
@@ -161,10 +164,16 @@ easy way to access data on the computer without duplicating it or using the
 network to access it. The virtual machine is preconfigured to access a shared
 folder named labeled "host".  Click on the *add* button to select a folder that
 shall be accessible by the machine (e.g. your home directory) and put "host" as
-the folder name. Note, the folder name is simply a label. Your directory will
+the folder name and mark it to be auto-mounted. Note, the folder name is simply a label. Your directory will
 not be renamed.
 
-.. image:: pics/vm_host_folder.jpg
+.. image:: pics/vm_host_folder.png
+
+If you have a large screen you should increase the display memory to
+32 MB in the *Display* settings.  Also you might like to enable the
+support for 3D Acceleration
+
+.. image:: pics/vm_settings_display.png
 
 Finally, close the settings dialog. You have now completed the setup, and you
 can start the virtual machine by hitting the *Start* button. A new window will
@@ -174,7 +183,7 @@ configuration. You can now explore the system. The virtual machine is connected
 with your host computer, and shares its Internet connection. Via this
 connection you can update the contained software packages at any time.
 
-.. image:: pics/vm_settings.jpg
+.. image:: pics/vm_settings.png
 
 The virtual machine logs yourself in automatically. The name of the virtual
 machine user is `brain` and the password is `neurodebian`. The *root* password
