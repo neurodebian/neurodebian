@@ -299,3 +299,46 @@ Quotes from NIH R01 grant proposal letters of recommendation
 
    Our research would be considerably more difficult without necessary software solutions transparently provided and supported by the NeuroDebian project.  
 
+.. quote::
+   :author: Patrik Andersson
+   :affiliation: Image Sciences Institute, University Medical Center Utrecht, the Netherlands
+   :date: 2011-06-15
+   :tags: lofs, vm
+   :group: Individual laboratories and researchers
+
+   I have been using NeuroDebian for my work on multivariate classification of fMRI data [...] It is of great value, because I have access to both Windows and Debian OS on my laptop, where I do all my analysis.
+
+.. quote::
+   :author: Dr. Felipe Picon
+   :affiliation: Child and Adolescent Psychiatrist, Department of Psychiatry of Federal University of Rio Grande do Su, Porto Alegre, RS, Brazil
+   :date: 2011-06-15
+   :tags: lofs, ease
+   :group: Individual laboratories and researchers
+
+   We have been relying on NeuroDebian [...] for our work on Adult ADHD neuroimaging and find it to be very useful.
+
+.. quote::
+   :author: Dr. Bhavani Shankara Bagepally
+   :affiliation: Department of Psychiatry, National Institute of Mental Health And Neruosciences (NIMHANS), Bangalore, India
+   :tags: lofs, ease
+   :group: Individual laboratories and researchers
+
+   Neuroscience software [...] easily available at a single point with hastle free installation and easy updating.
+
+.. quote::
+   :author: Dr. C. J. Werner
+   :affiliation: Clinical and Cognitive Neuroscience, Dept. of Neurology, University Hospital RWTH Aachen, Germany
+   :date: 2011-06-15
+   :tags: lofs, vm, teaching
+   :group: Individual laboratories and researchers
+
+   [NeuroDebian] makes my lectures on neuroimaging much more convenient and ``hands-on'' by deploying virtual machines on student's laptops [...] a quick, elegant and cost-free solution, enabling students to work on real fMRI data in no time.
+
+.. quote::
+   :author: Dr. Peter U. Tse
+   :affiliation: Associate Professor, Psychology and Brain Sciences Department, Dartmouth College, Hanover, USA
+   :date: 2011-06-16
+   :tags: lofs, team
+   :group: Individual laboratories and researchers
+
+   [...] vibrant NeuroDebian team [...]  has been a great asset [...] showing their knowledge of methodological developments in the neuroscience field and making us aware of recent technological advances we could benefit from in our research.
