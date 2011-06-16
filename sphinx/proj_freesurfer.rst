@@ -45,6 +45,9 @@ on packaging.  Following has been done
 References
 ----------
 
+* `Debian ITP bug report <http://bugs.debian.org/628183>`_ with additional
+  information on the packaging progress.
+* `FreeSurfer GitHub`_ with the full source code and the Debian packaging
 * http://surfer.nmr.mgh.harvard.edu/fswiki/NextGenCode
 
 .. include:: link_names.txt
