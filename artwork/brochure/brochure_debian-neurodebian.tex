@@ -144,7 +144,7 @@ Very (Special|Stable) Operating Platform
   requiring the most recent versions of software.
 
 %\item[Testing] \emph{Constantly changing future release candidate}\\
-\item[``Always-ready-to-release'']\hfill\emph{Testing} (now \emph{squeeze})\\
+\item[``Always-ready-to-release'']\hfill\emph{Testing} (now \emph{wheezy})\\
 %  What to become a next \emph{Stable} release candidate.\\
   Software versions known to be secure and of good quality.
 %  Software migrated from \emph{Unstable} which is known to be of good
@@ -154,7 +154,7 @@ Very (Special|Stable) Operating Platform
   of software.
 
 %\item[Stable] \emph{Official release}\\
-\item[Official release]\hfill\emph{Stable} (now \emph{lenny})\\
+\item[Official release]\hfill\emph{Stable} (now \emph{squeeze})\\
   % Software verified to be well tested and secure,
   % Very stable (hence the name) and secure
   % but might be lacking the most recent versions.\\% of the software.\\
@@ -229,11 +229,10 @@ teams, such as Debian-Science or Debian-Med.
 
 %\subsubsection*{Stable}
 \begin{description}[nolistsep,leftmargin=1pc,style=nextline]
-\item[Install on a hard-drive] \url{http://get.debian.net/}
-\item[Boot from CD/USB] \url{http://get.debian.net/live/}
+\item[Install on a hard-drive] \url{http://www.debian.org/distrib/}
+\item[Live CD/DVD] \url{http://www.debian.org/CD/live/}
 \item[Run in a Virtual Machine] \url{http://neuro.debian.net/vm.html}
-\item[More options (e.g. buy pre-installed machine)] \url{http://debian.org/distrib}
-\item[Testing/Unstable version] \url{http://www.debian.org/devel/debian-installer}
+\item[Development version] \url{http://www.debian.org/devel/debian-installer}
 \end{description}
 
 % \ndsubsection{Get \emph{Testing/Unstable} Debian}
@@ -262,9 +261,10 @@ Command line:
 
 \ndsubsection{How to get support}
 
+\begin{description}[nolistsep,leftmargin=1pc,style=nextline]
+\item[Overview]
 \url{http://www.debian.org/support}
 
-\begin{description}[nolistsep,leftmargin=1pc,style=nextline]
 %\item[GUI]
 %  Use \emph{Synaptic Package Manager}
 \item[Software bug]
@@ -274,7 +274,8 @@ Command line:
   %\item[Mailing lists] 
   \url{http://www.debian.org/MailingLists}\\
   \url{http://forums.debian.net}\\
-  \url{http://ask.debian.net}
+  \url{http://ask.debian.net}\\
+  \url{irc://irc.debian.org/debian}
   %\end{description}
 \item[Commercial support]
   \url{http://www.debian.org/consultants}
@@ -419,10 +420,10 @@ efforts of thousands of Debian contributors.
 \vspace{-0.5em}
 \url{http://neuro.debian.net/pkgs.html}
 \end{flushright}
-\textit{Electrophysiology:} BioSig, Sigviewer, Brian, \ldots\\
+\textit{Electrophysiology:} BioSig, Sigviewer, Brian, PyNN, \ldots\\
 \textit{Machine Learning:} PyMVPA, scikits.learn, \ldots\\
-\textit{Imaging:} AFNI, FSL, Mricron, NiPy, Voxbo, \ldots\\
-\textit{Psychophysics:} PsychoPy, PyEPL, PyOptical, \ldots\\
+\textit{Imaging:} AFNI, CV, FSL, Lipsia, Mricron, NiPy, \ldots\\
+\textit{Psychophysics:} PsychoPy, Psychtoolbox, \ldots\\
 \vspace{-0.5em}
 
 \ndsubsection{Benefits from Debian integration}
@@ -496,10 +497,10 @@ buga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dug
 \ndsubsection{Work-in-progress}
 \begin{description}[nolistsep,leftmargin=1pc,style=nextline]
 \item[Increased coverage]
-\textit{Electrophysiology:} NEURON, OpenElectrophy, \ldots \\
+\textit{Electrophysiology:} NEURON, Fieldtrip, \ldots \\
 \textit{Matlab/Octave toolboxes:} SPM, EEGLAB, \ldots \\
 \textit{Distributed computing:} Condor \\
-\textit{Imaging:} Connectomeviewer, Freesurfer, MIPAV \\
+\textit{Imaging:} Freesurfer, MIPAV \\
 
 \epigraph{Having FreeSurfer integrated into the Debian operating system by the NeuroDebian team would have enormous benefits for us, and for the thousands of users of FreeSurfer across the world.}{Prof. Bruce Fischl}{Director, Computational Core at Martinos Center at Massachusetts General Hospital, Charlestown, Massachusetts, USA}
 \item[Improved quality assurance]
