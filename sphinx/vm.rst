@@ -142,7 +142,7 @@ The next dialog will ask you to choose a virtual machine. Please navigate to the
 extracted NeuroDebian download and select the `.ova` (or extracted
 `.ovf` for older appliances shipped as `.zip`) file.
 
-.. image:: pics/vm_import_wizard.png
+.. image:: pics/vm_import_wizard.jpg
 
 You can finish importing of NeuroDebian by clicking on *next* a couple of
 times.  There is no need to change anything, as we will get through the
@@ -167,13 +167,13 @@ shall be accessible by the machine (e.g. your home directory) and put "host" as
 the folder name and mark it to be auto-mounted. Note, the folder name is simply a label. Your directory will
 not be renamed.
 
-.. image:: pics/vm_host_folder.png
+.. image:: pics/vm_host_folder.jpg
 
 If you have a large screen you should increase the display memory to
 32 MB in the *Display* settings.  Also you might like to enable the
 support for 3D Acceleration
 
-.. image:: pics/vm_settings_display.png
+.. image:: pics/vm_settings_display.jpg
 
 Finally, close the settings dialog. You have now completed the setup, and you
 can start the virtual machine by hitting the *Start* button. A new window will
@@ -183,7 +183,7 @@ configuration. You can now explore the system. The virtual machine is connected
 with your host computer, and shares its Internet connection. Via this
 connection you can update the contained software packages at any time.
 
-.. image:: pics/vm_settings.png
+.. image:: pics/vm_settings.jpg
 
 The virtual machine logs yourself in automatically. The name of the virtual
 machine user is `brain` and the password is `neurodebian`. The *root* password
