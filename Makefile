@@ -16,6 +16,7 @@ html: pics source
 	cd build/src && $(MAKE) html BUILDDIR=$(CURDIR)/build 2>&1
 	mv $(WWW_DIR)/_static/robots.txt $(WWW_DIR)/
 	cp -r build/src/lists $(WWW_DIR)/
+	cp -r sphinx/survey/2011/figures/* $(WWW_DIR)/_images/
 
 
 clean:
