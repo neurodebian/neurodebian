@@ -194,6 +194,9 @@ If your are interested in mirroring the repository, please see the :ref:`faq`.
 Publications
 ============
 
+Hanke, M. & Halchenko, Y. O. (Accepted). Neuroscience runs on GNU/Linux.
+*Frontiers in Neuroinformatics*.
+
 Hanke, M. (2011). `Integrating Condor into the Debian operating system
 <_files/Hanke_CondorDebianIntegration_CondorWeek2011.pdf>`_.
 *Talk given at* `CondorWeek 2011
