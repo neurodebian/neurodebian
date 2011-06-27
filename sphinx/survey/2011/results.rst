@@ -7,7 +7,7 @@
    The primary analyses have been published in:
 
      Hanke, M. & Halchenko, Y. O. (2011). `Neuroscience runs on GNU/Linux
-     <_files/HankeHalchenko_FrontiersInNeuroinformatics2011.pdf>`_.
+     </_files/HankeHalchenko_FrontiersInNeuroinformatics2011.pdf>`_.
      *Frontiers in Neuroinformatics, 5:8*.
 
 .. include:: figures/stats.txt
