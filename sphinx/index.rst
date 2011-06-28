@@ -237,6 +237,7 @@ efficient, more open, and more fun
 .. toctree::
    :hidden:
 
+   blog/index
    faq
    pkgs
    spread
