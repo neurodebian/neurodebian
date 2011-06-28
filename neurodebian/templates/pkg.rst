@@ -56,7 +56,7 @@ Citable reference:
 {% if db.main.registration -%}
 .. note::
   The software authors ask users to
-  `register <{{ db.main.registration }}>`_. Available user statistics might be 
+  `register <{{ db.main.registration }}>`_. Available user statistics might be
   helpful to acquire funding for this project and therefore foster continued
   development in the future.
 
@@ -76,10 +76,10 @@ Package Details
 Package popularity
 ------------------
 {% if db.main.debian_popcon -%}
-- Debian [1]_: {{ db.main.debian_popcon.insts }} (`more info <http://qa.debian.org/popcon.php?package={{ db.main.sv.split()[0] }}>`_)
+- Debian [1]_: {{ db.main.debian_popcon.insts }} (`more info <http://qa.debian.org/popcon.php?package={{ db.main.sv.split()[0] }}>`__)
 {% endif -%}
 {% if db.main.ubuntu_popcon -%}
-- Ubuntu [1]_: {{ db.main.ubuntu_popcon.insts }} (`more info <http://popcon2.net/package/{{ db.main.sv.split()[0] }}.html#graph-1>`_)
+- Ubuntu [1]_: {{ db.main.ubuntu_popcon.insts }} (`more info <http://popcon2.net/package/{{ db.main.sv.split()[0] }}.html#graph-1>`__)
 {% endif %}
 {% if db.nitrc and db.nitrc.downloads -%}
 - NITRC [2]_: {{ db.nitrc.downloads }}
@@ -168,7 +168,7 @@ Debian
 .. seealso::
 
   - Maintainer: {{ distpkg.maintainer }}
-  - Bug reports: `Debian bugtracking system <http://bugs.debian.org/src:{{ distpkg.source }}>`_
+  - Bug reports: `Debian bugtracking system <http://bugs.debian.org/src:{{ distpkg.source }}>`__
 {% endif %}
 {% else %}
 *There are no official Debian packages available.*
@@ -176,7 +176,7 @@ Debian
 {% if db.main.debian_itp %}
 However, a Debian packaging effort has been officially announced.
 Please see the corresponding
-`intent-to-package bug report <http://bugs.debian.org/{{ db.main.debian_itp }}>`_
+`intent-to-package bug report <http://bugs.debian.org/{{ db.main.debian_itp }}>`__
 for more information about its current status.
 {% endif %}
 {% endfor %}
@@ -195,7 +195,7 @@ Ubuntu
 .. seealso::
 
   - Maintainer: {{ distpkg.maintainer }}
-  - Bug reports: `Ubuntu Launchpad <https://bugs.launchpad.net/ubuntu/+source/{{ distpkg.source }}>`_
+  - Bug reports: `Ubuntu Launchpad <https://bugs.launchpad.net/ubuntu/+source/{{ distpkg.source }}>`__
 {% endif %}
 {% else %}
 *There are no official Ubuntu packages available.*
