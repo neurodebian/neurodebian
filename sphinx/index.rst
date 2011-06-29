@@ -199,7 +199,7 @@ Hanke, M. & Halchenko, Y. O. (2011). `Neuroscience runs on GNU/Linux
 *Frontiers in Neuroinformatics, 5:8*.
 
 Hanke, M., Halchenko, Y. O. & Haxby, J. V. (2011). `NeuroDebian -- versatile
-platform for brain-imaging research <_files/NeuroDebian_HBM2010.png>`_
+platform for brain-imaging research <_files/NeuroDebian_HBM2011.png>`_
 *Poster presented at the annual meeting of the Organisation for Human Brain
 Mapping*, Quebec City, Canada.
 
