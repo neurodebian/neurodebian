@@ -198,6 +198,11 @@ Hanke, M. & Halchenko, Y. O. (2011). `Neuroscience runs on GNU/Linux
 <_files/HankeHalchenko_FrontiersInNeuroinformatics2011.pdf>`_.
 *Frontiers in Neuroinformatics, 5:8*.
 
+Hanke, M., Halchenko, Y. O. & Haxby, J. V. (2011). `NeuroDebian -- versatile
+platform for brain-imaging research <_files/NeuroDebian_HBM2010.png>`_
+*Poster presented at the annual meeting of the Organisation for Human Brain
+Mapping*, Quebec City, Canada.
+
 Hanke, M. (2011). `Integrating Condor into the Debian operating system
 <_files/Hanke_CondorDebianIntegration_CondorWeek2011.pdf>`_.
 *Talk given at* `CondorWeek 2011
@@ -210,7 +215,7 @@ Neuroscience*, San Diego, USA.
 
 Halchenko, Y. O., Hanke, M., Haxby, J. V., Pollmann, S. & Raizada, R. D.
 (2010). `Having trouble getting your Nature paper? Maybe you are not using the
-right tools? <_files/NeuroDebian_SfN2010.png>`_ *Poster to be presented at the
+right tools? <_files/NeuroDebian_SfN2010.png>`_ *Poster presented at the
 annual meeting of the Society for Neuroscience*, San Diego, USA.
 
 Hanke, M., Halchenko, Y. O. (2010). `Debian: The ultimate platform for
