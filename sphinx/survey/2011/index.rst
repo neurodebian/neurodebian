@@ -16,7 +16,7 @@ survey. The main results of this survey have been published in the journal
 `Frontiers in Neuroinformatics`:
 
   Hanke, M. & Halchenko, Y. O. (2011). `Neuroscience runs on GNU/Linux
-  </_files/HankeHalchenko_FrontiersInNeuroinformatics2011.pdf>`_.
+  <http://www.frontiersin.org/Neuroinformatics/10.3389/fninf.2011.00008/full>`_.
   *Frontiers in Neuroinformatics, 5:8*.
 
 .. toctree::

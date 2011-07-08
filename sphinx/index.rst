@@ -195,7 +195,7 @@ Publications
 ============
 
 Hanke, M. & Halchenko, Y. O. (2011). `Neuroscience runs on GNU/Linux
-<_files/HankeHalchenko_FrontiersInNeuroinformatics2011.pdf>`_.
+<http://www.frontiersin.org/Neuroinformatics/10.3389/fninf.2011.00008/full>`_.
 *Frontiers in Neuroinformatics, 5:8*.
 
 Hanke, M., Halchenko, Y. O. & Haxby, J. V. (2011). `NeuroDebian -- versatile
