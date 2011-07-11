@@ -1,6 +1,8 @@
 :date: 2011-06-20 20:00:00
 :tags: debian, neuroscience, download stats
 
+.. _chap_neurodebian_package_swarm:
+
 Package swarm
 =============
 

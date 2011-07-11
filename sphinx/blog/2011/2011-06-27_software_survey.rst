@@ -1,6 +1,8 @@
 :date: 2011-06-27 23:00:00
 :tags: debian, neuroscience, survey
 
+.. _chap_neuroscience_linux_paper:
+
 Neuroscience runs on GNU/Linux
 ==============================
 
