@@ -6,15 +6,22 @@
 NeuroDebian@HBM2011.ca
 ======================
 
-From June 26-30 the annual meeting of the Organization for Human Brain Mapping
-(HBM2011_) took place in Quebec City, Canada, and we ran another booth
-encouraged by our :ref:`positive experience at last year's SfN in San Diego
-<chap_debian_booth_sfn2010>`. The setup was pretty much the same as last year:
-Some chairs and tables, lots of people, our `tri-fold flyers`_, a Debian mirror
-and some virtual machine images to show Debian in action. We had many curious
-people have their first exposure to Debian, and long-time users expressing
-their gratitude to Debian. But that is nothing new, so let's talk about the
-differences to last year's booth.
+On June 26-30 the annual meeting of the Organization for Human Brain Mapping
+(HBM2011_) took place in Quebec City, Canada.
+Encouraged by our :ref:`positive experience at last year's SfN in San Diego
+<chap_debian_booth_sfn2010>` and enthusiasm of our scientific adviser,
+`James V. Haxby`_, we hosted the NeuroDebian booth. The setup was pretty much the same as last year:
+Some chairs and tables (but no carpet), lots of people, our `tri-fold flyers`_, a Debian mirror
+and some virtual machine images to show Debian in action. This time we also had
+an LCD display attracting visitors with the :ref:`package swarm <chap_neurodebian_package_swarm>`, some demos,
+and the title page of our `recent paper`_.  We had many curious
+people having their first exposure to Debian, long-time users expressing
+their gratitude to Debian, and our upstream developers gathering together
+to discuss technical and real-life issues.  Because this time we registered booth as
+NeuroDebian, we had additional pleasure to enlighten visitors on the nature of NeuroDebian
+as a project within Debian instead of being a derived distribution. But that
+is nothing new really, so let's talk about the
+differences from last year's booth.
 
 First of all, we had more people at the booth. Dominique Belhachemi volunteered
 to help us out -- and that was very much appreciated. Although HBM has only
@@ -26,14 +33,15 @@ or so, some came back and asked for recommendations on particular software --
 after having been exposed to the wealth of the Debian archive.
 
 .. _HBM2011: http://www.humanbrainmapping.org/hbm2011/
+.. _recent paper: http://www.frontiersin.org/neuroinformatics/10.3389/fninf.2011.00008/full
 
 What also had increased was the number of developers, or rather research labs
 developing neuroimaging software that came to the booth to discuss how to get
-their software into Debian and how to arange ongoing maintenance of these
-future Debian packages. As we have our plates already quite full, we spend time
+their software into Debian and how to arrange ongoing maintenance of these
+future Debian packages. As we have our plates already quite full, we have been spending some time
 on mentoring interested developers to learn the art of Debian packaging and
 making them familiar with Debian's procedures and standards (e.g. working on
-`#609820`_).
+`#609820`_ with Yannick Schwartz, upstream, at the booth).
 
 .. _#609820: http://bugs.debian.org/609820
 
@@ -46,8 +54,10 @@ that offers free software solutions that an increasing amount of their
 customers demands (e.g. PsychoPy_). Apparently, the movement towards open
 research software has finally made it into the business plans of companies, as
 they seem to start perceiving compatibility with free software systems as a
-competitive advantage. We explained how software gets into Debian and how its
-release cycle is managed.  Let's see whether we see more "Debian-certified"
+competitive advantage.  We explained how software gets into Debian, how its
+release cycle is managed.  To foster their motivation we also pointed them
+to the existing open-source products other companies (often competitors)
+have already made available or even present in Debian.  Let's see whether we see more "Debian-certified"
 research products in the future.
 
 .. _PsychoPy: http://packages.debian.org/psychopy
@@ -67,19 +77,20 @@ this discussion during a workshop in September. A report will follow...
 .. figure:: pics/hbm2011/DDs.jpg
 
    Debian people at the booth (f.l.t.r): `Michael Hanke`_, `Yaroslav Halchenko`_,
-   `Stephan Gerhard`_, `Dominique Belhachemi`_. Not shown: Swaroop Guntupalli.
+   `Stephan Gerhard`_, `Dominique Belhachemi`_. Not shown: `Swaroop Guntupalli`_.
 
 .. _Stephan Gerhard: http://qa.debian.org/developer.php?login=debian@unidesign.ch
 .. _Michael Hanke: http://qa.debian.org/developer.php?login=mih@debian.org
 .. _Yaroslav Halchenko: http://qa.debian.org/developer.php?login=debian@onerussian.com
 .. _Dominique Belhachemi: http://qa.debian.org/developer.php?login=domibel@debian.org
+.. _Swaroop Guntupalli: http://haxbylab.dartmouth.edu/ppl/swaroop.html
+.. _James V. Haxby: http://haxbylab.dartmouth.edu/ppl/jim.html
 
-
-Acknowledgements
+Acknowledgments
 ----------------
 
-This booth has been made possible by the generous support of Prof. James V.
-Haxby (Dartmouth College, New Hampshire, USA).
+This booth has been made possible by the generous support of Prof. 
+`James V. Haxby`_ (Dartmouth College, New Hampshire, USA).
 
 .. _Debian: http://www.debian.org
 .. _Ubuntu: http://www.ubuntu.com
