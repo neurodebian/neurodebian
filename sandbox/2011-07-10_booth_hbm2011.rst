@@ -1,0 +1,86 @@
+:date: 2011-07-10 20:00:00
+:tags: debian, neuroscience, conference
+
+.. _chap_debian_booth_hbm2011:
+
+NeuroDebian@HBM2011.ca
+======================
+
+From June 26-30 the annual meeting of the Organization for Human Brain Mapping
+(HBM2011_) took place in Quebec City, Canada, and we ran another booth
+encouraged by our :ref:`positive experience at last year's SfN in San Diego
+<chap_debian_booth_sfn2010>`. The setup was pretty much the same as last year:
+Some chairs and tables, lots of people, our `tri-fold flyers`_, a Debian mirror
+and some virtual machine images to show Debian in action. We had many curious
+people have their first exposure to Debian, and long-time users expressing
+their gratitude to Debian. But that is nothing new, so let's talk about the
+differences to last year's booth.
+
+First of all, we had more people at the booth. Dominique Belhachemi volunteered
+to help us out -- and that was very much appreciated. Although HBM has only
+about a tenth of the attendees that SfN has, we had significantly more traffic.
+While last year people were primarily interested in knowing about the project,
+this time many of them wanted to give it a try immediately. People came with
+their laptops, got the VM images and started playing with Debian. After a day
+or so, some came back and asked for recommendations on particular software --
+after having been exposed to the wealth of the Debian archive.
+
+.. _HBM2011: http://www.humanbrainmapping.org/hbm2011/
+
+What also had increased was the number of developers, or rather research labs
+developing neuroimaging software that came to the booth to discuss how to get
+their software into Debian and how to arange ongoing maintenance of these
+future Debian packages. As we have our plates already quite full, we spend time
+on mentoring interested developers to learn the art of Debian packaging and
+making them familiar with Debian's procedures and standards (e.g. working on
+`#609820`_).
+
+.. _#609820: http://bugs.debian.org/609820
+
+.. image:: pics/hbm2011/BusyBooth.jpg
+
+Two promising new developments need to be mentioned. First, we were approached
+by companies that develop hardware for brain-imaging and psychophysics
+research. They were curious to learn about Debian as an integrated platform
+that offers free software solutions that an increasing amount of their
+customers demands (e.g. PsychoPy_). Apparently, the movement towards open
+research software has finally made it into the business plans of companies, as
+they seem to start perceiving compatibility with free software systems as a
+competitive advantage. We explained how software gets into Debian and how its
+release cycle is managed.  Let's see whether we see more "Debian-certified"
+research products in the future.
+
+.. _PsychoPy: http://packages.debian.org/psychopy
+
+Lastly, we started talking with folks from the INCF_ to explore possibilities of
+collaborating on INCF projects using Debian as the integration and development
+platform. The INCF is an `OECD-funded`_ organization that develops collaborative
+neuroinformatics infrastructure and promotes the sharing of data and computing
+resources to the international research community. At least one INCF project is
+already relying on the efforts of the NeuroDebian project. We are going to continue
+this discussion during a workshop in September. A report will follow...
+
+.. _INCF: http://incf.org
+.. _OECD-funded: http://www.oecd.org/document/38/0,3746,en_2649_34319_35217721_1_1_1_1,00.html
+
+
+.. figure:: pics/hbm2011/DDs.jpg
+
+   Debian people at the booth (f.l.t.r): `Michael Hanke`_, `Yaroslav Halchenko`_,
+   `Stephan Gerhard`_, `Dominique Belhachemi`_. Not shown: Swaroop Guntupalli.
+
+.. _Stephan Gerhard: http://qa.debian.org/developer.php?login=debian@unidesign.ch
+.. _Michael Hanke: http://qa.debian.org/developer.php?login=mih@debian.org
+.. _Yaroslav Halchenko: http://qa.debian.org/developer.php?login=debian@onerussian.com
+.. _Dominique Belhachemi: http://qa.debian.org/developer.php?login=domibel@debian.org
+
+
+Acknowledgements
+----------------
+
+This booth has been made possible by the generous support of Prof. James V.
+Haxby (Dartmouth College, New Hampshire, USA).
+
+.. _Debian: http://www.debian.org
+.. _Ubuntu: http://www.ubuntu.com
+.. _tri-fold flyers: http://neuro.debian.net/_files/brochure_debian-neurodebian.pdf
