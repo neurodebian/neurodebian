@@ -3,9 +3,9 @@
 
 .. _project_psychophysics:
 
-************
-Psychopysics
-************
+*************
+Psychophysics
+*************
 
 Our goal is to equip Debian systems with FOSS solutions to carry out any
 experiment relating physical stimuli and their psychological effects.
@@ -16,10 +16,10 @@ Status
 We have already made some popular tools, such as :ref:`PyEPL
 <pkg_python-pyepl>` and :ref:`Psychopy <pkg_psychopy>`, a part of the official
 Debian_ distribution and working on extending support of other tools and
-libraries used in psychopysics research to interface with the stimuli delivery
+libraries used in psychophysics research to interface with the stimuli delivery
 and responses collection hardware.
 
-.. todo:: Tailor Debian_ for psychopysics research
+.. todo:: Tailor Debian_ for psychophysics research
 
    * Complete packaging of :ref:`Psychtoolbox-3 <pkg_octave-psychtoolbox-3>`
    * Provide convenience package and guidelines for assuring robust
