@@ -56,7 +56,7 @@ discussion of the desired properties of a more comprehensive testing framework.
 Furthermore, we started looking for existing (free) software solutions that
 might be used to implement such a framework.
 
-We have already started packaging :ref:`versatile datasets <full_dataset_list>`
+We have already started packaging :ref:`versatile datasets <pkgs-by_purpose-neuroscience_datasets>`
 that can be used to develop test suites.
 
 
@@ -73,7 +73,7 @@ that can be used to develop test suites.
 References
 ----------
 
-* :ref:`full_dataset_list`
+* :ref:`pkgs-by_purpose-neuroscience_datasets`
 * `DebTest discussions on debian-devel <http://lists.debian.org/debian-devel/2011/01/msg00704.html>`_
 
 .. include:: link_names.txt
