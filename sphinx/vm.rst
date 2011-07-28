@@ -263,7 +263,7 @@ mounted host directories.
   backports::
 
     sudo apt-get install -y linux-headers-2.6-amd64 # or -686 for 32bit
-    sudo apt-get install -y -t squeeze-backports virtualbox-ose-guest-kdms \
+    sudo apt-get install -y -t squeeze-backports virtualbox-ose-guest-dkms \
          virtualbox-ose-guest-utils  virtualbox-ose-guest-x11
 
   and reboot VM.
