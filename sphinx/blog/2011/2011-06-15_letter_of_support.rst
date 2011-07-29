@@ -1,6 +1,18 @@
 :date: 2011-06-15 10:00:00
 :tags: neuroscience, grant
 
+.. note::
+
+   We would like to thank everyone who sent us a letter of support --
+   altogether with previous submission we have received 64
+   letters. *Thank you very much*.
+
+   We have (re-)submitted the grant proposal on July 1st before the
+   deadline and hope to hear from the NIH late Fall 2011.  If you
+   still want to express your support or just share your positive (or
+   negative) experience, please comment on the
+   :ref:`testimonials` page.
+
 NeuroDebian needs your support
 ==============================
 
