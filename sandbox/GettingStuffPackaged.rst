@@ -46,6 +46,11 @@ only after weeks, months, or years of tedious work. These are:
 * Clear separation of 3rd-party code
 * An open ear
 
+.. instead of saying that "packaging is only for us, Debian gurus",
+.. here would be a good point to say that "having those requirements
+.. fullfilled packaging becomes and easy task, which could be tackled
+.. having read the tutorial and then seeking the
+.. mentorship/sponsorship".
 
 Have a deterministic version!
 -----------------------------
@@ -60,17 +65,30 @@ but the actual source code changes without a corresponding change in the
 version. This is **wrong**. If you want to have your software packaged, have
 a reliable version scheme:
 
-* *Increment* the version whenever you change the code (even for tiny
-  changes).
-* Put the version into the filename of your source code download.
+.. altogether a bit of a mix -- we don't increment any version while
+.. working on the code -- we increment whenever making it publicly
+.. available outside of VCS
+
+.. also, strictly speaking, "sources" contain not only the 'code' which
+.. we need to version -- docs/images/data/etc; thus I have replaced 'code'
+.. on some occurrences
+
+* *Increment* the version whenever you change publicly available
+  release or tarball of your project (even for tiny changes).
+* Put the version into the filename of your source or binary download.
 * And/or use a `version control system`_ (VCS) that does that versioning for
   you.
 
+.. VCS doesn't do versioning per se -- it does changes tracking
+.. possibly with unique identified which could be treated as a version
+
 .. _version control system: http://en.wikipedia.org/wiki/Comparison_of_revision_control_software
 
-If you don't have a version the package maintainer needs to invent one.
-This could be based on the time-stamp of a download, or the last
-modification time of any file in the source code. But whatever the
+If you don't have a deterministic version, the package maintainer
+needs to come up with one, possibly complementing to the original
+version which remains stale while released material changes.
+Such custom version could be based on the time-stamp of a download, or the last
+modification time of any file in the source distribution.  But whatever the
 maintainer will come up with, it will take time, and it will be different
 from what you do. This will make packaging more complex, and it will
 confuse users.
@@ -92,7 +110,7 @@ to use", but depends on, or includes source code that "may not be
 redistributed".  This is probably **wrong**. Moreover, we encountered quite a
 few projects that hadn't picked any license at all. If you intend other people
 to use your tools this is **wrong** too, as no license typically means no
-permissions at all -- not even download and use.
+permissions at all -- not even to download or to use.
 
 The package maintainer needs to sort all these things out, needs to
 make sure that redistribution doesn't impose a legal threat to anyone
@@ -101,14 +119,21 @@ expecting free and open-source software only get free and open-source
 software.
 
 If you want to facilitate the packaging process: Make sure that you are
-aware of all licenses covering the source code of your software. Make sure
-to document them properly in the source code.  Make sure that the licenses
+aware of all licenses covering the source code and other materials
+(such as documentation and images) in your software. Make sure
+to document them properly.  Make sure that the licenses
 covering the source code are compatible to each other (e.g. you cannot
 release under the GPL_ if the license of some other part of your code says
 "must not be used on Thursdays"). The easiest way to avoid unnecessary
 complications is to use a `standard license`_ (such as BSD, or GPL) that
 are known and have been evaluated by legal experts regarding their
-implications and their compatibility with each other. Check if your legal
+implications and their compatibility with each other.  Beware that
+standard licenses created to cover programs source code are not always
+appropriate for content (e.g. images and documentation) or data (which
+might not even be copyrightable in some jurisdictions such as USA).  You
+can find some of popular licenses for content and data on
+`Open Knowledge Definition (OKD)
+<http://www.opendefinition.org/licenses>`_ website.  For any license, check if your legal
 terms comply with the `open-source definition`_ or the `Debian free software
 guidelines`_ (that are the basis of this definition).
 
