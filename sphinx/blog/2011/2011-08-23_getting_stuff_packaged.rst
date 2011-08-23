@@ -3,8 +3,8 @@
 
 .. _chap_faciliate_neurosoftware_packaging:
 
-What does it take to get some software packaged?
-================================================
+What does it take to make packaging easier?
+===========================================
 
 We often get contacted by people who wrote some scientific software and
 would like to see it being available from the NeuroDebian repository.
@@ -41,6 +41,9 @@ few key aspects about packaging that any upstream developer should know, as
 they will make the difference between getting a package done in a few
 hours, or only after weeks, months, or years of tedious work. These are:
 
+.. _packaging tutorial: http://www.lucas-nussbaum.net/blog/?p=640
+.. _Debian policy: http://www.debian.org/doc/debian-policy/
+
 * A reliable versioning scheme
 * Exhaustive documentation of involved licenses
 * Clear separation of 3rd-party code
@@ -58,7 +61,7 @@ of a software they are running.  Surprisingly, there is a lot of scientific
 software out there that doesn't have a version, or pretends to have one,
 but the actual source code changes without a corresponding change in the
 version. This is **wrong**. If you want to have your software packaged, have
-a reliable version scheme:
+a reliable versioning scheme:
 
 * *Increment* the version whenever you make a release of your project, and
   make a *new* release whenever you want to push out some changes to an
@@ -92,7 +95,7 @@ Be aware that the collection of *all* licenses in your source code form the
 legal terms of your software. We often see "open-source" software that is "free"
 (to use), but depends on, or includes source code that "may not be
 redistributed".  This is most likely **wrong**. Moreover, we encountered quite a
-few projects that hadn't picked any license at all. If you intend other people
+few projects that didn't pick any license at all. If you intend other people
 to use your tools this is **wrong** too, as no license typically means no
 permissions at all -- not even to download or to use.
 
@@ -118,6 +121,7 @@ guidelines`_ (that are the basis of this definition).
 .. keep to details for a dedicated "what license?" post
 
 .. _GPL: http://www.gnu.org/copyleft/gpl.html
+.. _standard license: http://www.opensource.org/licenses
 .. _open-source definition: http://www.opensource.org/docs/osd
 .. _Debian free software guidelines: http://www.debian.org/social_contract#guidelines
 
@@ -144,7 +148,7 @@ should not ship their own copy. This has the advantage that bugs in a
 software can be fixed in a single place and all dependent software
 automatically benefits from this fix, without further human intervention.
 Only a modular design like this makes it possible to successfully maintain
-an integrated system of tens of thousands software packages with a
+an integrated system of tens of thousands of software packages with a
 reasonable amount of manpower.
 
 So if your source distribution contains 3rd-party software, clearly
@@ -183,27 +187,27 @@ Be prepared for feedback!
 
 The package maintainer might send you a few patches during the initial
 packaging that either fix bugs on the Debian platform or that were added to
-gain compliance with the Debian policy. Be prepared to evaluate these
-patches and merge them into your code base or discuss necessary
-modifications. The package maintainer needs to keep track of all
-modifications done to your software and needs to refresh them for every new
-release that is made. If you make it easy for the maintainer to do this
-work, for example quickly merging modifications, exposing a version
-control system to track modifications, or at least a reliable communication
-channel that informs the maintainer about the fate of the patches, you will
-help to streamline long-term package maintenance and contribute to a
-reliable package. All this will help disseminating your software in an
-extremely convenient form to a very large audience.
+gain compliance with the Debian policy. Be prepared to evaluate these patches
+and merge them into your code base or discuss necessary modifications. The
+package maintainer needs to keep track of all modifications done to your
+software and needs to refresh them for every new release that is made. If you
+make it easy for the maintainer to do this work, for example quickly merging
+modifications, exposing a version control system to track modifications, or at
+least offering a reliable communication channel that informs the maintainer
+about the fate of the patches, you will help to streamline long-term package
+maintenance and contribute to a reliable package. All this will help
+disseminating your software in an extremely convenient form to a very large
+audience.
 
 
-On a final note: If you keep these things in mind you won't only make it
-easier for a packager. You will also have removed most hurdles for a smooth
-packaging in general. Now you could actually think about doing the
-packaging yourself.  Take a look at a `packaging tutorial`_ to get a sense
-of what it would involve. If you decide to venture down this road, you are
-very welcome to contact `us@NeuroDebian`_ -- we would be glad to guide you
-through an efficient packaging process and upload fully packaged software
-for psychological and neuroscience research into the main Debian archive
-and the NeuroDebian repository.
+On a final note: If you keep these things in mind you won't only make a
+packager's life easier. You will also have removed most hurdles for a smooth
+packaging in general. Now you could actually think about doing the packaging
+yourself.  Take a look at a `packaging tutorial`_ to get a sense of what it
+would involve. If you decide to venture down this road, you are very welcome to
+contact `us@NeuroDebian`_ -- we would be glad to guide you through an efficient
+packaging process and upload fully packaged software for psychological and
+neuroscience research into the main Debian archive and the NeuroDebian
+repository.
 
 .. _us@NeuroDebian: http://neuro.debian.net/#contacts
