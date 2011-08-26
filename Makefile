@@ -30,7 +30,7 @@ distclean: clean
 
 source: source-stamp
 source-stamp: build/db.db
-	PYTHONPATH=. python neurodebian/dde.py \
+	PYTHONPATH=.:$(PYTHONPATH) python neurodebian/dde.py \
 		--cfg neurodebian.cfg \
 		--db build/db.db \
 		--outdir build/src \
@@ -53,7 +53,7 @@ updatedb: removedb removecache build/db.db
 
 build/db.db:
 	mkdir -p build
-	PYTHONPATH=. python neurodebian/dde.py \
+	PYTHONPATH=.:$(PYTHONPATH) python neurodebian/dde.py \
 		--cfg neurodebian.cfg \
 		--db build/db.db \
 		updatedb
