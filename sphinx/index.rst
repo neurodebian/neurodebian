@@ -194,7 +194,7 @@ If your are interested in mirroring the repository, please see the :ref:`faq`.
 Publications
 ============
 
-Halchenko, Y.O. (2011). `π's in Debian or Scientific Debian: NumPy, SciPy and beyond
+Halchenko, Y. O. (2011). `π's in Debian or Scientific Debian: NumPy, SciPy and beyond
 <_files/Halchenko_EuroScipy11_3_14s_in_Debian.pdf>`_.
 *Talk given at* `EuroScipy 2011 <http://www.euroscipy.org/talk/4379>`_,
 Paris, France.
