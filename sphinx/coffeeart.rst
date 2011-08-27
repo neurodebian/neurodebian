@@ -14,7 +14,7 @@ Coffee Art
 
 .. figure:: /pics/coffeeart/2011-08-2X.jpg
 
-2011-03-23 13.44.26
+2011-03-23 13:44:26
 -------------------
 
 .. figure:: /pics/coffeeart/2011-03-23_13.44.26.jpg
