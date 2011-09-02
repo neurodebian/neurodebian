@@ -194,6 +194,11 @@ If your are interested in mirroring the repository, please see the :ref:`faq`.
 Publications
 ============
 
+Hanke, M. (2011). `More than batteries included: NeuroDebian
+<_files/Hanke_NeuroDebian_EuroSciPy2011.pdf>`_.
+*Talk given at the Python in Neuroscience satellite of EuroScipy 2011*,
+Paris, France.
+
 Halchenko, Y. O. (2011). `π's in Debian or Scientific Debian: NumPy, SciPy and beyond
 <_files/Halchenko_EuroScipy11_3_14s_in_Debian.pdf>`_.
 *Talk given at* `EuroScipy 2011 <http://www.euroscipy.org/talk/4379>`_,
