@@ -1,0 +1,13 @@
+Source: isis
+Tasks: debian-med/imaging
+Homepage: http://isis-group.github.com/isis/
+Author: Lydia Hellrung (hellrung@cbs.mpg.de) et al.
+Language: C++
+License: GPL-2+
+Version: 0.3.3
+Responsible: NeuroDebian Team <team@neuro.debian.net>
+Pkg-Description: I/O framework for neuroimaging data
+ This framework aids access of and conversion between various established
+ neuro-imaging data formats, like  Nifti, Analyze, DICOM and VISTA. ISIS
+ is extensible with plugins to add support for additional data formats.
+Why: IO layer for Lipsia and maybe soon Odin.
