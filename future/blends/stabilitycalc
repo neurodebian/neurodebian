@@ -10,5 +10,5 @@ Responsible: NeuroDebian Team <team@neuro.debian.net>
 Vcs-Git: https://github.com/bbfrederick/stabilitycalc.git
 Pkg-Description: evaluate fMRI scanner stability
  Command-line tools to calculate numerous fMRI scanner stability metrics, based
- on the FBIRN quality assurance test protocal. Any 4D volumetric timeseries
- image in NIfTI format is support input. Output is a rich HTML report.
+ on the FBIRN quality assurance test protocol. Any 4D volumetric timeseries
+ image in NIfTI format is supported input. Output is a rich HTML report.
