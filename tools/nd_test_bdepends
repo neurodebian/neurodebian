@@ -1,0 +1,35 @@
+#!/bin/bash
+
+# no undefined
+set -u
+
+CMD=
+#echo
+
+family=$1
+dist=$2
+arch=$3      # limit to 1 for now
+
+dscfile=$4
+
+pkg=${dscfile%_*}
+
+#? TODO -- should be a parameter as well?
+
+testdir=$PWD/$pkg-$arch.test-bdepends
+bindir=$testdir/bin
+debdir=$testdir/debs
+srcdir=$testdir/srcs
+
+echo "I: Building the new package for $pkg"
+
+mkdir -p $debdir $srcdir $bindir
+$CMD nd_build $family $dist $arch $dscfile --buildresult=$debdir
+
+
+echo "I: Fetching all bdepends for $pkg in $family $dist under $arch"
+# need first to provide the necessary scripts out there
+cp -p `which nd_fetch_bdepends` $bindir
+$CMD nd_execute $family $dist $arch --bindmounts $testdir $bindir/nd_fetch_bdepends $pkg $srcdir
+
+# 3 -- go through all bdepends and build them with old (from repo) and new (built) version
