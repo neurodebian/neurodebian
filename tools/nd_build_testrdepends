@@ -14,13 +14,13 @@ arch=$3      # limit to 1 for now
 
 dscfile=$4
 dscfilef=$(readlink -f $dscfile)
-dscfilebase=${dscfilef%%.dsc}
+dscfilef_base=${dscfilef%%.dsc}
 
 pkg=${dscfile%_*}
 
 #? TODO -- should be a parameter as well?
 
-testdir=$PWD/$pkg-$arch.test-bdepends
+testdir=${dscfilef_base}_$arch.testrdepends.$family-$dist
 bindir=$testdir/bin
 debdir=$testdir/debs
 srcdir=$testdir/srcs
@@ -50,7 +50,7 @@ chmod a+x $bindir/D00add_custom_repo
 
 echo "I: Going throught the packages and testing the builds"
 cd $srcdir
-summary_file=${dscfilebase}_$arch.$family-$dist.test-rdeps
+summary_file=${testdir}.summary
 echo -e "\nTesting builds against $dscfile" >> $summary_file
 for dsc in *.dsc; do
 	echo " I: Building $dsc with native versions"
@@ -64,5 +64,5 @@ for dsc in *.dsc; do
 		--hookdir=$bindir --bindmount=$testdir \
 		&& new=ok || new="FAILED $newbuildsdir/${dscbase}_$arch.build"
 	mv ${dscbase}_$arch.build $newbuildsdir
-	printf '%-20s\t%5s\t%5s\n' $dsc "$old" "$new" >> $summary_file
+	printf '%-40s\t%5s\t%5s\n' $dsc "$old" "$new" >> $summary_file
 done
