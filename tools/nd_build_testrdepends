@@ -5,7 +5,8 @@ set -u
 # no failures
 set -e
 
-CMD=echo
+CMD=
+#echo
 
 family=$1
 dist=$2
@@ -51,7 +52,7 @@ echo "I: Going throught the packages and testing the builds"
 cd $srcdir
 summary_file=${dscfilebase}_$arch.$family-$dist.test-rdeps
 echo -e "\nTesting builds against $dscfile" >> $summary_file
-for dsc in *dipy*.dsc; do
+for dsc in *.dsc; do
 	echo " I: Building $dsc with native versions"
 	src=${dsc%%_*}
 	dscbase=${dsc%%.dsc}
