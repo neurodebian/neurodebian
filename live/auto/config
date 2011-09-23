@@ -4,7 +4,7 @@ set -eu
 
 # the Debian release to use as a basis for the live-cd
 nd_basedist="squeeze"
-nd_version="6.0.1"
+nd_version="6.0.3"
 nd_arch=i386
 
 deb_mirror="http://debproxy:9999"
@@ -33,7 +33,7 @@ lb config noauto \
   --iso-application "NeuroDebian Live" \
   --iso-preparer "NeuroDebian ${nd_version}; http://neuro.debian.net" \
   --iso-publisher "NeuroDebian project; http://neuro.debian.net" \
-  --iso-volume "NeuroDebian Live ${nd_version} ($nd_arch)" \
+  --iso-volume "NeuroDebian Live ${nd_version} $nd_arch" \
   --keyring-packages "debian-archive-keyring neurodebian-keyring" \
   --memtest memtest86+ \
   --mirror-bootstrap "${deb_mirror}/debian/" \
@@ -43,7 +43,7 @@ lb config noauto \
   --repositories neuro.debian.net \
   --security true \
   --syslinux-splash neurodebian-splash.png \
-  --syslinux-timeout 10 \
+  --syslinux-timeout 4 \
   --username brain \
   --win32-loader enabled \
   ${@}
