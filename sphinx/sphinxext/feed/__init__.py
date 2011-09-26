@@ -4,7 +4,6 @@ import feedgenerator
 from urllib import quote_plus
 import os.path
 import re
-import directives
 
 #global
 feed_entries = None
@@ -28,9 +27,9 @@ def setup(app):
     """
     from sphinx.application import Sphinx
     if not isinstance(app, Sphinx): return
-    app.add_config_value('feed_title', '', 'html')
     app.add_config_value('feed_base_url', '', 'html')
     app.add_config_value('feed_description', '', 'html')
+    app.add_config_value('feed_filename', 'rss.xml', 'html')
     app.add_config_value('feed_title', '', 'html')
     app.add_config_value('feed_subtitle', '', 'html')
     app.add_config_value('feed_author_name', '', 'html')
