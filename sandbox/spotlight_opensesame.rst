@@ -1,13 +1,14 @@
-:date: 2011-xx-xx 0:00:00
-:tags: neuroscience, software, opensesame, sebastiaan mathot
+:date: 2011-09-27 08:00:00
+:tags: neuroscience, software, spotlight, guest post, opensesame, sebastiaan mathot
 :author: Sebastiaan Mathôt
+:author_email: s.mathot@vu.nl
 
-OpenSesame and back-end independence
-====================================
+In the spotlight: OpenSesame
+============================
 
 I suspect that many of you will not be familiar with me or my software, so
 let's start with a brief introduction. My name is Sebastiaan Mathôt. I'm the
-lead developer of OpenSesame, a graphical tool for creating psychological and
+lead developer of OpenSesame_, a graphical tool for creating psychological and
 neuroscientific experiments.
 
 About OpenSesame
@@ -18,8 +19,8 @@ pleasure that a geek like myself derives from developing software, was my
 dissatisfaction with the tools that were available. Not that there's a shortage
 of experiment building software, not at all. And for people with reasonable
 programming skills there are many viable options: MatLab/ Octave in combination
-with the Psychophysics Toolbox, Python in combination with VisionEgg or
-PsychoPy, to name but a few (all of these are, incidentally, available through
+with the `Psychophysics Toolbox`_, Python in combination with VisionEgg_ or
+PsychoPy_, to name but a few (most of these are, incidentally, available through
 NeuroDebian). But for people with relatively modest programming skills, such as
 most students doing a Bachelor's or Master's project, there aren't that many
 options. In my experience, people will generally end up using a proprietary
@@ -45,11 +46,10 @@ more than 10,000 downloads later, the result is OpenSesame!
 Back-end independence
 ---------------------
 
-For this post, I was asked to write about one of OpenSesame's features in
-particular: back-end independence. This may sound a bit technical and boring,
-but it's not. Well... maybe a little boring. In fact, it should be a little
-boring, because it's a feature that you're not supposed too notice, unless you
-need it.
+In this post I want to highlight one of OpenSesame's features: back-end
+independence. This may sound a bit technical and boring, but it's not. Well...
+maybe a little boring. In fact, it should be a little boring, because it's a
+feature that you're not supposed too notice, unless you need it.
 
 So what do I mean by "back-end independence"? Experiments are all about
 presenting stimuli. Most often visual stimuli on a computer display, sometimes
@@ -58,7 +58,7 @@ many ways to present such stimuli. Put differently, there are many programming
 libraries that you can use.
 
 For example, if you want to write a program that controls a computer display,
-you can use a Python library called PyGame. PyGame has been designed with
+you can use a Python library called PyGame_. PyGame has been designed with
 video-games in mind, but, experiments being conceptually so similar (although
 not typically as entertaining), it is also well suited for creating
 experiments. For this reason, I initially designed OpenSesame around PyGame.
@@ -111,8 +111,10 @@ and not simply duplicates of existing functionality.
 And ultimately, I believe that this type of interoperability is why free
 software will continue to grow.
 
-Links
-Cogsci.nl <http://www.cogsci.nl/>
-OpenSesame <http://www.cogsci.nl/opensesame>
+.. _PyGame: http://pygame.org
+.. _PsychoPy: http://psychopy.org/
+.. _VisionEgg: http://www.visionegg.org/
+.. _Psychophysics Toolbox: http://psychtoolbox.org
+.. _OpenSesame: http://www.cogsci.nl/opensesame
 
 
