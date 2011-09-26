@@ -1,4 +1,4 @@
-:date: 2011-09-27 08:00:00
+:date: 2011-09-26 16:00:00
 :tags: neuroscience, software, spotlight, guest post, opensesame, sebastiaan mathot
 :author: Sebastiaan Mathôt
 :author_email: s.mathot@vu.nl
