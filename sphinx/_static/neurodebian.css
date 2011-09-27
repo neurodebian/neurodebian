@@ -380,6 +380,8 @@ div.body p, div.body dd, div.body li {
 
 div.body p.caption {
     text-align: inherit;
+    font-size: 95%;
+    font-style: italic;
 }
 
 div.body td {
