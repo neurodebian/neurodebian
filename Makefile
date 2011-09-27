@@ -20,7 +20,7 @@ html: pics source
 
 
 clean:
-	-rm html-stamp source-stamp
+	-rm html-stamp source-stamp upload-website-stamp
 	$(MAKE) -C artwork clean
 
 
@@ -64,6 +64,12 @@ upload-website: html
 	rsync -rvzlhp --delete \
         --exclude=debian --exclude=debian-local --exclude=_files \
         --chmod=Dg+s,g+rw $(WWW_DIR) $(WWW_UPLOAD_URI)
+	: # Touch stamp here so we get it updated on every upload
+	touch $@-stamp
+
+# call upload iff .git/index was modified, i.e. new changes got pulled in
+upload-website-stamp: .git/index
+	$(MAKE) upload-website
 
 .PHONY: removedb removecache updatedb upload-website clean distclean pics html
 
