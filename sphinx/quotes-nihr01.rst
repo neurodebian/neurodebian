@@ -1,4 +1,4 @@
-.. Generated on Tue Feb  1 12:05:45 EST 2011
+.. Generated on Thu Sep 29 13:59:01 EDT 2011
 .. Do not edit directly
 
 Quotes from NIH R01 grant proposal letters of recommendation
@@ -8,6 +8,16 @@ Quotes from NIH R01 grant proposal letters of recommendation
    Only the quotes which were approved for redistribution by the original
    authors are included.
 
+
+
+.. quote::
+   :author: Prof. Alfonso Caramazza
+   :affiliation: Director, Center for Mind/Brain sciences -CIMEC-, University of Trento, Trento, Italy
+   :date: 2011-06-27
+   :tags:  lofs
+   :group: Research institutions
+
+   NeuroDebian is an effective solution to support a heterogeneous working environment. [...] NeuroDebian is useful also for education purpose.
 
 
 .. quote::
@@ -81,6 +91,36 @@ Quotes from NIH R01 grant proposal letters of recommendation
 
 
 .. quote::
+   :author: Prof. Todd F. Heatherton
+   :affiliation: Lincoln Feline Professor, Psychology and Brain Sciences Department
+   :date: 2011-06-22
+   :tags:  lofs, dartmouth, vm
+   :group: Participating institutions
+
+   We have found the NeuroDebian VM so easy to us and so simple to maintain that we're currently in the process of converting some of our workstations to full NeuroDebian installations
+
+
+.. quote::
+   :author: Prof. Peter U. Tse
+   :affiliation: Associate Professor, Psychology and Brain Sciences Department
+   :date: 2007-12-31
+   :tags:  lofs, dartmouth, team
+   :group: Participating institutions
+
+   [...] vibrant NeuroDebian team  [...] has been a great asset to the Psychology and Brain sciences department at Dartmouth. On multiple occasions they have provided support and advice beyond the scope of the NeuroDebian effort, showing their knowledge of methodological developments in the neuroscience field and making us aware of recent technological advances we could benefit from in our research.
+
+
+.. quote::
+   :author: Prof. Stefan Pollmann
+   :affiliation: 
+   :date: 2010-09-02
+   :tags:  lofs, money
+   :group: Participating institutions
+
+   My lab is using NeuroDebian for almost five years now  [...] The minimal maintenance cost allow us to operate our research and computing infrastructure  [...] even without a dedicated system administrator. Consequently, these resources could be invested into scientific personnel instead.
+
+
+.. quote::
    :author: Dr. Matthew Brett
    :affiliation: Specialist researcher, Helen Wills Neuroscience Institute, University of California, Berkeley, USA
    :date: 2010-09-02
@@ -88,6 +128,26 @@ Quotes from NIH R01 grant proposal letters of recommendation
    :group: Research software projects
 
    [...] your team are ideally placed to make this system work. I have worked with Yaroslav Halchenko and Michael Hanke.  [...] Their record on working together as a team, and individually, is easy to find, and speaks for itself.  Their demonstrated combination of seemingly inexhaustible energy, openness and skill has been of enormous benefit to our own project and community.  
+
+
+.. quote::
+   :author: Prof. Gene Cooperman
+   :affiliation: College of Computer and Information Science, Northeastern University, Boston, USA
+   :date: 2011-06-21
+   :tags:  lofs
+   :group: Research software projects
+
+   [...] we have benefited from the NeuroDebian team through their mentoring and direct efforts to improve the DMTCP software for wider distribution.
+
+
+.. quote::
+   :author: Sebastian Eichelbaum
+   :affiliation: OpenWalnut project, Image and Signal Processing Group, Institute of Computer Science, University of Leipzig, Germany
+   :date: 2011-06-30
+   :tags:  lofs, mentoring
+   :group: Research software projects
+
+   We are currently preparing our first software-release in NeuroDebian and found it to be easy and straight-forward with a great support.
 
 
 .. quote::
@@ -103,7 +163,7 @@ Quotes from NIH R01 grant proposal letters of recommendation
 .. quote::
    :author: Dr. Satrajit Ghosh
    :affiliation: Research scientist, Research Laboratory of Electronics, Massachusetts Institute of Technology, Cambridge, Massachusetts, USA
-   :date: 2010-09-06
+   :date: 2011-06-13
    :tags:  lofs, software distribution
    :group: Research software projects
 
@@ -131,6 +191,16 @@ Quotes from NIH R01 grant proposal letters of recommendation
 
 
 .. quote::
+   :author: Mario Kleiner
+   :affiliation: Dipl. Inf., Psychtoolbox lead developer, Department for Cognitive and Computational Psychophysics, Max Planck Institute for Biological Cybernetics, Tuebingen, Germany
+   :date: 2011-06-21
+   :tags:  lofs, vm, contributions, practices
+   :group: Research software projects
+
+   We find the approach taken by NeuroDebian and the progress it made so far very pleasant and promising.  [...] The NeuroDebian team helped us to improve the quality of our software and of some of our processes by review, constructive suggestions and even software patches.  The availability of the NeuroDebian Virtual Machine was instrumental for fast porting of the Psychtoolbox to a 64 bit Linux environment.
+
+
+.. quote::
    :author: Dr. Gabriele Lohmann
    :affiliation: Lipsia lead developer, Department of Neurophysics, Max Planck Institute for Human Cognitive and Brain Sciences, Leipzig, Germany
    :date: 2010-09-13
@@ -148,6 +218,16 @@ Quotes from NIH R01 grant proposal letters of recommendation
    :group: Research software projects
 
    The dinifti tool was one of the first to appear in Debian and ever since it's inclusion in the distribution, I have received invaluable feedback from the Debian community 
+
+
+.. quote::
+   :author: Sebastiaan Mathôt
+   :affiliation: OpenSesame lead developer, Vrije Universiteit, Amsterdam, The Netherlands
+   :date: 2011-07-29
+   :tags:  lofs, software distribution, mentorship, Debian
+   :group: Research software projects
+
+   The NeuroDebian team has helped me to make my software (OpenSesame) available to the wider public in a much more professional fashion than I would have been able to do for myself.
 
 
 .. quote::
@@ -181,6 +261,16 @@ Quotes from NIH R01 grant proposal letters of recommendation
 
 
 .. quote::
+   :author: Prof. Per B. Sederberg
+   :affiliation: Department of Psychology, Ohio State University, Columbus, Ohio, USA
+   :date: 2010-09-16
+   :tags:  lofs, impact, quality
+   :group: Research software projects
+
+   [...] NeuroDebian will undoubtedly have a large impact on the quality of neuroscience research, both directly and indirectly, by making almost every known software package related to neuroscience work available in a stable and secure environment and broadening the standard set of techniques researchers can employ. 
+
+
+.. quote::
    :author: Prof. Stephen M. Smith
    :affiliation: Associate Director, Centre for Functional Magnetic, Resonance Imaging of the Brain University of Oxford, Oxford, UK
    :date: 2010-09-01
@@ -188,6 +278,36 @@ Quotes from NIH R01 grant proposal letters of recommendation
    :group: Research software projects
 
    Since 2007 we completely rely on the NeuroDebian project to provide users of the Debian/Ubuntu platform with FSL software packages and corresponding technical support.  [...] we have received a continuous stream of bug fixes and improvements that have been developed by members of the Debian community.  [...] we were able to benefit from work of people that would not otherwise contribute to the development of FSL – without any additional investment of my lab, but solely due to FSL’s presence in the Debian archive.  
+
+
+.. quote::
+   :author: Dr. Gaël Varoquaux
+   :affiliation: Parietal project, INRIA, Neurospin research center, Gif sur Yvette, France
+   :date: 2010-09-01
+   :tags:  lofs, reproducibility, dissemination
+   :group: Research software projects
+
+   The availability of a common platform [NeuroDebian] for many different neuroimaging software solutions makes it much easier to compare solutions and pick the tool of choice for a given research problem.
+
+
+.. quote::
+   :author: Patrik Andersson
+   :affiliation: Image Sciences Institute, University Medical Center Utrecht, the Netherlands
+   :date: 2011-06-15
+   :tags:  lofs, vm
+   :group: Individual laboratories and researchers
+
+   I have been using NeuroDebian for my work on multivariate classification of fMRI data  [...] It is of great value, because I have access to both Windows and Debian OS on my laptop, where I do all my analysis.
+
+
+.. quote::
+   :author: Prof. Hiroyuki Akama
+   :affiliation: Associate Professor, Graduate School of Decision Science and Technology, Tokyo Institute of Technology, Tokyo, Japan begin{lofquote} I am a heavy user of NeuroDebian-Virtual Machine on Windows 64-bit platform. end{lofquote}
+   :date: 2011-06-15
+   :tags:  lofs, vm
+   :group: Individual laboratories and researchers
+
+   I am a heavy user of NeuroDebian-Virtual Machine on Windows 64-bit platform.
 
 
 .. quote::
@@ -211,6 +331,16 @@ Quotes from NIH R01 grant proposal letters of recommendation
 
 
 .. quote::
+   :author: Prof. Jodene Goldenring Fine
+   :affiliation:  Department of Counseling, Education Psychology, and Special Education, Michigan State University, USA
+   :date: 2011-06-18
+   :tags:  lofs, vm, quality, support, speed
+   :group: Individual laboratories and researchers
+
+   [...] I couldn't believe my great luck when after just an hour or so I had a complete [NeuroDebian] system running and my research was back on track.  [...] Your service and support are critical to keeping researchers effectively working on their research, rather than on maintenance issues that negatively affect our productivity. [...] I was working on versions of AFNI and FSL that were several generations behind  [...] Now I will always be up-to-date. [...] Because I am now running a virtual machine, I can keep my data files [with me].
+
+
+.. quote::
    :author: Scott Gorlin
    :affiliation: Ph.D. student, Department of Brain and Cognitive Science Massachusetts Institute of Technology, Cambridge, Massachusetts, USA
    :date: 2010-09-16
@@ -228,6 +358,16 @@ Quotes from NIH R01 grant proposal letters of recommendation
    :group: Individual laboratories and researchers
 
    [NeuroDebian is] an extremely time saving solution
+
+
+.. quote::
+   :author: Jonas Kubilius
+   :affiliation: Ph.D. student, Laboratories of Biological and Experimental Psychology, K. U. Leuven, Belgium
+   :date: 2011-06-18
+   :tags:  lofs, reproducibility, vm, impact, sharing
+   :group: Individual laboratories and researchers
+
+   [...] NeuroDebian allows both researchers and the public to easily replicate the entire experimental procedure, a feature rendered difficult or often impossible by proprietary software packages that most scientists rely on nowadays.  I have been increasingly using NeuroDebian in a Virtual Machine because Linux operating systems are not supported by the university.  [...] Moreover, powered by NeuroDebian’s openness, I see a reason to publish the full code of our experimental and analysis scripts. [NeuroDebian] makes the goal of open science finally viable.
 
 
 .. quote::
@@ -261,13 +401,23 @@ Quotes from NIH R01 grant proposal letters of recommendation
 
 
 .. quote::
-   :author: Prof. Stefan Pollmann
-   :affiliation: Lehrstuhl für Allgemeine Psychologie, Otto-von-Guericke Universität, Magdeburg, Germany
-   :date: 2010-09-02
-   :tags:  lofs, money
+   :author: Dr. Felipe Picon
+   :affiliation: Child and Adolescent Psychiatrist, Department of Psychiatry of Federal University of Rio Grande do Su, Porto Alegre, RS, Brazil
+   :date: 2011-06-14
+   :tags:  lofs, ease
    :group: Individual laboratories and researchers
 
-   My lab is using NeuroDebian for almost five years now  [...] The minimal maintenance cost allow us to operate our research and computing infrastructure  [...] even without a dedicated system administrator. Consequently, these resources could be invested into scientific personnel instead.
+   We have been relying on NeuroDebian  [...] for our work on Adult ADHD neuroimaging and find it to be very useful.
+
+
+.. quote::
+   :author: Dr. Bhavani Shankara Bagepally
+   :affiliation: Department of Psychiatry, National Institute of Mental Health And Neurosciences (NIMHANS), Bangalore, India
+   :date: 2011-06-15
+   :tags:  lofs, ease
+   :group: Individual laboratories and researchers
+
+   Neuroscience software  [...] easily available at a single point with hastle free installation and easy updating.
 
 
 .. quote::
@@ -281,16 +431,6 @@ Quotes from NIH R01 grant proposal letters of recommendation
 
 
 .. quote::
-   :author: Dr. Gaël Varoquaux
-   :affiliation: Parietal project, INRIA, Neurospin research center, Gif sur Yvette, France
-   :date: 2010-09-01
-   :tags:  lofs, reproducibility, dissemination
-   :group: Individual laboratories and researchers
-
-   The availability of a common platform [NeuroDebian] for many different neuroimaging software solutions makes it much easier to compare solutions and pick the tool of choice for a given research problem.
-
-
-.. quote::
    :author: Dr. Roberto Viviani
    :affiliation: Department of Psychiatry and Psychotherapy III, University of Ulm, Germany
    :date: 2010-09-15
@@ -299,46 +439,13 @@ Quotes from NIH R01 grant proposal letters of recommendation
 
    Our research would be considerably more difficult without necessary software solutions transparently provided and supported by the NeuroDebian project.  
 
-.. quote::
-   :author: Patrik Andersson
-   :affiliation: Image Sciences Institute, University Medical Center Utrecht, the Netherlands
-   :date: 2011-06-15
-   :tags: lofs, vm
-   :group: Individual laboratories and researchers
-
-   I have been using NeuroDebian for my work on multivariate classification of fMRI data [...] It is of great value, because I have access to both Windows and Debian OS on my laptop, where I do all my analysis.
-
-.. quote::
-   :author: Dr. Felipe Picon
-   :affiliation: Child and Adolescent Psychiatrist, Department of Psychiatry of Federal University of Rio Grande do Su, Porto Alegre, RS, Brazil
-   :date: 2011-06-15
-   :tags: lofs, ease
-   :group: Individual laboratories and researchers
-
-   We have been relying on NeuroDebian [...] for our work on Adult ADHD neuroimaging and find it to be very useful.
-
-.. quote::
-   :author: Dr. Bhavani Shankara Bagepally
-   :affiliation: Department of Psychiatry, National Institute of Mental Health And Neruosciences (NIMHANS), Bangalore, India
-   :tags: lofs, ease
-   :group: Individual laboratories and researchers
-
-   Neuroscience software [...] easily available at a single point with hastle free installation and easy updating.
 
 .. quote::
    :author: Dr. C. J. Werner
    :affiliation: Clinical and Cognitive Neuroscience, Dept. of Neurology, University Hospital RWTH Aachen, Germany
    :date: 2011-06-15
-   :tags: lofs, vm, teaching
+   :tags:  lofs, vm, teaching, dissemination
    :group: Individual laboratories and researchers
 
    [NeuroDebian] makes my lectures on neuroimaging much more convenient and ``hands-on'' by deploying virtual machines on student's laptops [...] a quick, elegant and cost-free solution, enabling students to work on real fMRI data in no time.
 
-.. quote::
-   :author: Dr. Peter U. Tse
-   :affiliation: Associate Professor, Psychology and Brain Sciences Department, Dartmouth College, Hanover, USA
-   :date: 2011-06-16
-   :tags: lofs, team
-   :group: Individual laboratories and researchers
-
-   [...] vibrant NeuroDebian team [...]  has been a great asset [...] showing their knowledge of methodological developments in the neuroscience field and making us aware of recent technological advances we could benefit from in our research.
