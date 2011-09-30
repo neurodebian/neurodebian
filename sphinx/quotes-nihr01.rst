@@ -1,4 +1,4 @@
-.. Generated on Thu Sep 29 13:59:01 EDT 2011
+.. Generated on Fri Sep 30 16:05:10 EDT 2011
 .. Do not edit directly
 
 Quotes from NIH R01 grant proposal letters of recommendation
@@ -118,6 +118,16 @@ Quotes from NIH R01 grant proposal letters of recommendation
    :group: Participating institutions
 
    My lab is using NeuroDebian for almost five years now  [...] The minimal maintenance cost allow us to operate our research and computing infrastructure  [...] even without a dedicated system administrator. Consequently, these resources could be invested into scientific personnel instead.
+
+
+.. quote::
+   :author: Prof. Brian Avants
+   :affiliation: Research Assistant Professor of Radiology, University of Pennsylvania, Philadelphia, USA
+   :date: 2010-09-16
+   :tags:  lofs, practices, standartization, mentorship, dissemination, impact
+   :group: Research software projects
+
+   The NeuroDebian team taught me a great deal about how to systematize software development for reliable dissemination [...] This speaks very highly of the deep skillset and commitment to user support represented in the NeuroDebian project, which will have high impact on the field and help standardize both the analysis and the interpretation of neuroimaging data.
 
 
 .. quote::
@@ -248,6 +258,16 @@ Quotes from NIH R01 grant proposal letters of recommendation
    :group: Research software projects
 
    Having such a group of experts [NeuroDebian developers] that search for open-source software solutions, refine them and then make them trivially easy for users to install and try out is of absolutely invaluable benefit to the research community and to the funding bodies that would, otherwise, be paying much larger sums in commercial software licensing fees.
+
+
+.. quote::
+   :author: Dr. Fernando Perez
+   :affiliation: IPython developer, Helen Wills Neuroscience Institute, University of California, Berkeley, USA
+   :date: 2010-09-08
+   :tags:  lofs, contributions, team
+   :group: Research software projects
+
+   Their [NeuroDebian developers] commitment to strongly tested, validated and documented tools for computational-based research in neuroscience is exemplary, and we owe them a great debt of gratitude for the contributions they have already made [...] 
 
 
 .. quote::
