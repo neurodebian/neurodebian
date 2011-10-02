@@ -1,4 +1,4 @@
-.. Generated on Fri Sep 30 16:05:10 EDT 2011
+.. Generated on Sun Oct  2 14:27:59 EDT 2011
 .. Do not edit directly
 
 Quotes from NIH R01 grant proposal letters of recommendation
@@ -168,6 +168,16 @@ Quotes from NIH R01 grant proposal letters of recommendation
    :group: Research software projects
 
    Having FreeSurfer integrated into the Debian operating system by the NeuroDebian team would have enormous benefits for us, and for the thousands of users of FreeSurfer across the world.
+
+
+.. quote::
+   :author: Stephan Gerhard
+   :affiliation: Ecole Polytechnique Federale de Lausanne, Lausanne, Switzerland
+   :date: 2011-06-21
+   :tags:  lofs, support, Debian, open science
+   :group: Research software projects
+
+   The Debian project provides the scientific community with a truly universal operating system. The breadth and quality of its community-driven development and technical support is superior to many other available commercial alternatives. It provides a sound basis for the open science movement.
 
 
 .. quote::
@@ -384,7 +394,7 @@ Quotes from NIH R01 grant proposal letters of recommendation
    :author: Jonas Kubilius
    :affiliation: Ph.D. student, Laboratories of Biological and Experimental Psychology, K. U. Leuven, Belgium
    :date: 2011-06-18
-   :tags:  lofs, reproducibility, vm, impact, sharing
+   :tags:  lofs, reproducibility, vm, impact, sharing, open science
    :group: Individual laboratories and researchers
 
    [...] NeuroDebian allows both researchers and the public to easily replicate the entire experimental procedure, a feature rendered difficult or often impossible by proprietary software packages that most scientists rely on nowadays.  I have been increasingly using NeuroDebian in a Virtual Machine because Linux operating systems are not supported by the university.  [...] Moreover, powered by NeuroDebian’s openness, I see a reason to publish the full code of our experimental and analysis scripts. [NeuroDebian] makes the goal of open science finally viable.
