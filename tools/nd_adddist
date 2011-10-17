@@ -21,6 +21,11 @@ fi
 # common options
 opts="--distribution $dist --debootstrap debootstrap --aptcache $aptcache"
 
+if echo $family | grep -q ubuntu; then
+	# Use ubuntu's keyring since otherwise debootstrap would fail
+	opts+=" --debootstrapopts --keyring=/usr/share/keyrings/ubuntu-archive-keyring.gpg"
+fi
+
 mkdir -p ${cowbuilderroot}/cow
 
 for a in i386 amd64; do
@@ -35,7 +40,7 @@ for a in i386 amd64; do
     cowbuilder --create --basepath ${cow} $opts \
                --components "$components" \
                --mirror "$mirror" \
-               --debootstrapopts --arch --debootstrapopts $a \
+               --debootstrapopts --arch=$a \
                --othermirror "deb http://neuro.debian.net/debian $dist main contrib non-free"
 	# deploy our key manually since archive with package is not yet
 	# available at this point
@@ -44,6 +49,6 @@ for a in i386 amd64; do
     cowbuilder --create --basepath ${cow} $opts \
                --components "$components" \
                --mirror "$mirror" \
-               --debootstrapopts --arch --debootstrapopts $a
+               --debootstrapopts --arch=$a
   fi
 done
