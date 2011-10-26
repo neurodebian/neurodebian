@@ -14,7 +14,8 @@ XS-DM-Upload-Allowed: yes
 Package: neurodebian-dev
 Architecture: all
 Depends: ${misc:Depends}, devscripts, cowbuilder, python, neurodebian-keyring
-Recommends: virtualbox-ose, virtualbox-ose-fuse, zerofree, moreutils
+Recommends: zerofree, moreutils
+Suggests: virtualbox-ose, virtualbox-ose-fuse
 Suggests:
 Description: NeuroDebian development tools
  neuro.debian.net sphinx website sources and development tools used by
