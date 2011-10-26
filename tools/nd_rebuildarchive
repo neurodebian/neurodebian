@@ -1,0 +1,73 @@
+#!/bin/bash
+
+if [ -z "$1" ]; then
+cat << EOT
+Script to re-build entire archive from one release for another.
+
+Often usecase -- rebuilding for a new Ubuntu brew every 6 months.
+
+Synopsis
+--------
+
+  nd_rebuildarchive old_release new_release
+
+e.g.
+  
+  nd_rebuildarchive natty oneiric
+
+EOT
+exit 1	
+fi
+
+set -eu
+
+old_dist=$1
+dist=$2
+
+# some NeuroDebian variables hardcoded in for now
+repo_server=neuro.debian.net
+repo_user=neurodebian
+repo_toppath=www
+repo_urlpath=debian
+repo_distspath=$repo_toppath/$repo_urlpath/dists
+
+family=nd+ubuntu
+
+list_file="$old_dist-$dist.list"
+summary_file="$old_dist-$dist.summary"
+
+[ -e "$list_file" ] || \
+    ssh -l $repo_user $repo_server cat $repo_distspath/$old_dist/*/source/Sources.gz \
+    | zgrep -e '^\(Package\|Directory\| [a-z0-9]\{32\} [0-9]* \S*.dsc$\)' \
+    | sed -e 's,.* \([^ ][^ ]*\)$,\1,g' | tr '\n' ' '| sed -e 's,\.dsc,.dsc\n,g' \
+    > "$list_file"
+   
+CMD=
+#echo
+dist_id=$(nd_querycfg "release backport ids" "$dist")
+cat $list_file \
+| while read name topdir dscfile; do
+    echo "I: Forwardporting for $dist_id $dscfile"
+
+    [ -e $dscfile ]  \
+	|| dget -d http://$repo_server/$repo_urlpath/$topdir/$dscfile || { 
+	echo -e "E: $dscfile\t\tFAILED to fetch" >> $summary_file
+	continue
+    }
+
+    
+    bpdscfile=$(/home/neurodebian/neurodebian/tools/backport-dsc \
+        --target-distribution "$dist" \
+	--no-maintainer-update \
+        --version-prefix "+" \
+        --version-suffix "$dist_id" \
+        "$dscfile" | tail -n1 | sed -e 's/^.* //g')
+
+    echo " I: Building backported dscfile: $bpdscfile"
+
+    $CMD sudo nd_build $family $dist $bpdscfile && {
+	echo -e "I: $bpdscfile\t\tOk" >> $summary_file
+    } || {
+ 	echo -e "E: $bpdscfile\t\tFAILED to build" >> $summary_file
+    }
+done
