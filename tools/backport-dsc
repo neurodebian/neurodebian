@@ -11,8 +11,9 @@ backports_dsc_version=0.1
 # Defaults #
 ############
 
-bp_distribution=${BACKPORT_DISTRIBUTION:-lenny-backports}
-bp_version_suffix=${BACKPORT_VERSION_SUFFIX:-bpo50}
+bp_distribution=${BACKPORT_DISTRIBUTION:-squeeze-backports}
+bp_version_prefix=${BACKPORT_VERSION_PREFIX:-~}
+bp_version_suffix=${BACKPORT_VERSION_SUFFIX:-bpo60}
 bp_maintainer_name=${DEBFULLNAME:-unamed}
 bp_maintainer_email=${DEBEMAIL:-unknown}
 bp_update_maintainer=1
@@ -128,9 +129,13 @@ Options:
   ideally indicating the backport target distribution. The resulting package
   version will follow this schema:
 
-  <originalversion>~<suffix>+<digit>
+  <originalversion><prefix><suffix>+<digit>
 
-  e.g.: 1.2.3-4~bpo50+1
+  e.g.: 1.2.3-4~bpo60+1 with default <prefix>=~
+
+-p <string>, --version-prefix <string>
+  Version prefix that will be prepended to the backport version.  By default it
+  is ~ but want to be changed (e.g. to +) for forward-porting to next releases.
 
 --verbose
   Enable additional status messages.
@@ -173,7 +178,10 @@ example setting) can be used to pre-configure backport-dsc:
 bp_distribution="lenny-backports"
   Backport target distribution (see --backport-distribution)
 
-bp_version_suffix="bpo50"
+bp_version_prefix="~"
+  Version suffix (see --version-prefix)
+
+bp_version_suffix="bpo60"
   Version suffix (see --version-suffix)
 
 bp_maintainer_name="Unknown fellow"
@@ -223,7 +231,7 @@ EOT
 # Note that we use `"$@"' to let each command-line parameter expand to a
 # separate word. The quotes around `$@' are essential!
 # We need CLOPTS as the `eval set --' would nuke the return value of getopt.
-CLOPTS=`getopt -o h,d:,s: --long help,verbose-help,version,target-distribution:,version-suffix:,maint-name:,maint-email:,no-color,no-backport-patches,verbose,mod-control:,no-maintainer-update, -n 'backport-dsc' -- "$@"`
+CLOPTS=`getopt -o h,d:,s:,p: --long help,verbose-help,version,target-distribution:,version-suffix:,version-prefix:,maint-name:,maint-email:,no-color,no-backport-patches,verbose,mod-control:,no-maintainer-update, -n 'backport-dsc' -- "$@"`
 
 if [ $? != 0 ] ; then
   echo "Terminating..." >&2
@@ -237,6 +245,7 @@ while true ; do
   case "$1" in
 	  -d|--target-distribution) shift; bp_distribution=$1; shift;;
 	  -s|--version-suffix) shift; bp_version_suffix=$1; shift;;
+	  -p|--version-prefix) shift; bp_version_prefix=$1; shift;;
 	  --maint-name) shift; bp_maintainer_name=$1; shift;;
 	  --maint-email) shift; bp_maintainer_email=$1; shift;;
 	  --no-maintainer-update) bp_update_maintainer=0; shift;;
@@ -295,7 +304,7 @@ src_version=${src_version%%.dsc}
 wdir=$(mktemp -d -t backport-dsc.XXXXXX)
 sdir=$wdir/${src_name}-${src_version}
 
-bp_version="~${bp_version_suffix}+"
+bp_version="${bp_version_prefix}${bp_version_suffix}+"
 
 
 # setup environment for dpkg
