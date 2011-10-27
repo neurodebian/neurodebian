@@ -1,0 +1,24 @@
+#!/bin/bash
+# Little helper to bootstrap all ND chroots as specified in
+# /etc/neurodebian/cmdsettings.sh unless a list provided in command line
+
+. /etc/neurodebian/cmdsettings.sh
+
+[ -z "$@" ] && dists="$allnddists" || dists="$@"
+
+echo "Initiating creation of chroots for $dists"
+
+set -eu
+
+CMD=
+MSGS="SUMMARY:\n"
+for dist in $dists; do
+        if [ -e "$cowbuilderroot/cow/$dist-amd64.cow" ]; then
+                status=exists
+        else
+                $CMD sudo $PWD/nd_adddist ${dist%%-*} ${dist#*-} && status=ok || status=failed
+        fi
+        MSGS+=" $(printf '%-30s\\t%s' $dist $status)\n"
+done
+echo -en $MSGS
+
