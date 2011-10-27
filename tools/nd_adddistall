@@ -16,7 +16,7 @@ for dist in $dists; do
         if [ -e "$cowbuilderroot/cow/$dist-amd64.cow" ]; then
                 status=exists
         else
-                $CMD sudo $PWD/nd_adddist ${dist%%-*} ${dist#*-} && status=ok || status=failed
+                $CMD sudo nd_adddist ${dist%%-*} ${dist#*-} && status=ok || status=failed
         fi
         MSGS+=" $(printf '%-30s\\t%s' $dist $status)\n"
 done
