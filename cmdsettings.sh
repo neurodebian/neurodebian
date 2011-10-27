@@ -22,4 +22,4 @@ if [ "${family#nd+}" = "ubuntu" ]; then
   mirror="http://ubuntu.media.mit.edu/ubuntu"
 fi
 
-if [ ! -d $aptcache ]; then mkdir $aptcache; fi
+if [ ! -d $aptcache ]; then mkdir -p $aptcache; fi
