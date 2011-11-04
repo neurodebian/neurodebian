@@ -22,5 +22,5 @@ for d in $allnddists; do
   drelease=${d##*-}
 
   bpdsc=$(nd_backport $drelease $dscfile | tail -n1 | sed -e 's/^.* //g')
-  nd_build $dfamily $drelease $bpdsc "$@"
+  nd_build $dfamily $drelease $bpdsc "$@" || :
 done

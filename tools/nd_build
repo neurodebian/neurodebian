@@ -77,6 +77,8 @@ else
   shift; shift; shift; shift
 fi
 
+# failed will be set to 1 if any build fails
+failed=
 for a in $arch; do
   # default
   options="$opts"
@@ -98,8 +100,7 @@ for a in $arch; do
              --buildresult . \
              --logfile "${buildfile}" \
              $options \
-             "$@" && status='OK' || status='FAILED'
-
+             "$@" && status='OK' || { status='FAILED'; failed=1; }
   timeinfo=$(tail -n 1 "${tsfile}")
   # Update the summary of builds
   touch summary.build                               # Assure existence
@@ -107,3 +108,5 @@ for a in $arch; do
   echo -e "${buildfile}\t$status\t$timeinfo" >> summary.build  # Add current one
   rm -f "${tsfile}"
 done
+# Exit with failure status if any built failed
+[ -z $failed ] || exit 1

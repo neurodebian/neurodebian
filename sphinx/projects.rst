@@ -77,6 +77,7 @@ Promotion
   **June 26-30, 2011** `HBM 2011 <http://www.humanbrainmapping.org/HBM2011>`_, Québec City, Canada
     Debian/NeuroDebian booth `#108 <http://www.humanbrainmapping.org/files/2011MeetingFiles/Exhibit_Floor_Plan-5_10_2011.PDF>`__
   **July 21-23, 2011** `PsychoPy Workshop and Codesprint <https://scanlab.psych.yale.edu/public/psychopy>`_, New Haven, CT, USA
+
   **August 25-30, 2011** `EuroSciPy 2011/ Python in NeuroScience <http://www.euroscipy.org/conference/euroscipy2011>`_, Paris, France
 
      2011/08/27, 16:30 -- 17:00, Scientific track

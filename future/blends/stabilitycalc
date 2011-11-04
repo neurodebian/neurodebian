@@ -1,0 +1,14 @@
+Source: stabilitycalc
+Tasks: debian-med/imaging
+Homepage: https://github.com/bbfrederick/stabilitycalc
+License: BSD
+Author: Blaise Frederick
+Language: Python
+Version: 0.1
+Pkg-URL: http://neuro.debian.net/pkgs/stabilitycalc.html
+Responsible: NeuroDebian Team <team@neuro.debian.net>
+Vcs-Git: https://github.com/bbfrederick/stabilitycalc.git
+Pkg-Description: evaluate fMRI scanner stability
+ Command-line tools to calculate numerous fMRI scanner stability metrics, based
+ on the FBIRN quality assurance test protocol. Any 4D volumetric timeseries
+ image in NIfTI format is supported input. Output is a rich HTML report.

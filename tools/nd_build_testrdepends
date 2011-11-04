@@ -1,0 +1,68 @@
+#!/bin/bash
+
+# no undefined
+set -u
+# no failures
+set -e
+
+CMD=
+#echo
+
+family=$1
+dist=$2
+arch=$3      # limit to 1 for now
+
+dscfile=$4
+dscfilef=$(readlink -f $dscfile)
+dscfilef_base=${dscfilef%%.dsc}
+
+pkg=${dscfile%_*}
+
+#? TODO -- should be a parameter as well?
+
+testdir=${dscfilef_base}_$arch.testrdepends.$family-$dist
+bindir=$testdir/bin
+debdir=$testdir/debs
+srcdir=$testdir/srcs
+oldbuildsdir=$srcdir/old
+newbuildsdir=$srcdir/new
+
+echo "I: Building the new package for $pkg"
+
+mkdir -p $debdir $srcdir $bindir
+$CMD nd_build $family $dist $arch $dscfile --buildresult=$debdir
+
+cd $debdir
+dpkg-scanpackages . >| Packages
+cd - > /dev/null
+
+echo "I: Fetching all bdepends for $pkg in $family $dist under $arch"
+# need first to provide the necessary scripts out there
+cp -p $(dirname $0)/nd_fetch_bdepends $bindir
+$CMD nd_execute $family $dist $arch --bindmounts $testdir $bindir/nd_fetch_bdepends $pkg $srcdir
+
+echo "I: preparing the hook"
+cat << EOF >| $bindir/D00add_custom_repo
+echo 'deb file://$debdir ./' >| /etc/apt/sources.list.d/custom.list
+apt-get update
+EOF
+chmod a+x $bindir/D00add_custom_repo
+
+echo "I: Going throught the packages and testing the builds"
+cd $srcdir
+summary_file=${testdir}.summary
+echo -e "\nTesting builds against $dscfile" >> $summary_file
+for dsc in *.dsc; do
+	echo " I: Building $dsc with native versions"
+	src=${dsc%%_*}
+	dscbase=${dsc%%.dsc}
+	nd_build $family $dist $arch $dsc --buildresult=$oldbuildsdir \
+		&& old=ok || old=FAILED
+	mv ${dscbase}_$arch.build $oldbuildsdir
+	echo " I: Building $dsc with new versions"
+	nd_build $family $dist $arch $dsc --buildresult=$newbuildsdir \
+		--hookdir=$bindir --bindmount=$testdir \
+		&& new=ok || new="FAILED $newbuildsdir/${dscbase}_$arch.build"
+	mv ${dscbase}_$arch.build $newbuildsdir
+	printf '%-40s\t%5s\t%5s\n' $dsc "$old" "$new" >> $summary_file
+done

@@ -21,6 +21,11 @@ fi
 # common options
 opts="--distribution $dist --debootstrap debootstrap --aptcache $aptcache"
 
+if echo $family | grep -q ubuntu; then
+	# Use ubuntu's keyring since otherwise debootstrap would fail
+	opts+=" --debootstrapopts --keyring=/usr/share/keyrings/ubuntu-archive-keyring.gpg"
+fi
+
 mkdir -p ${cowbuilderroot}/cow
 
 for a in i386 amd64; do
@@ -35,15 +40,23 @@ for a in i386 amd64; do
     cowbuilder --create --basepath ${cow} $opts \
                --components "$components" \
                --mirror "$mirror" \
-               --debootstrapopts --arch --debootstrapopts $a \
+               --debootstrapopts --arch=$a \
                --othermirror "deb http://neuro.debian.net/debian $dist main contrib non-free"
-	# deploy our key manually since archive with package is not yet
-	# available at this point
-	cp --preserve=mode {,${cow}}/etc/apt/trusted.gpg.d/neurodebian-archive-keyring.gpg
+    # deploy our key manually since archive with package is not yet
+    # available at this point
+    mkdir -p ${cow}/etc/apt/trusted.gpg.d
+    cp --preserve=mode {,${cow}}/etc/apt/trusted.gpg.d/neurodebian-archive-keyring.gpg
+    # Old ubuntus might not have capability to ready from that key yet,
+    # so we would need to manually add it
+    if [ $dist = 'karmic' ] || [ $dist = 'hardy' ]; then
+        chroot ${cow} bash -c "apt-get install -y --force-yes gnupg \
+        && /usr/bin/apt-key add /etc/apt/trusted.gpg.d/neurodebian-archive-keyring.gpg \
+        && /usr/bin/apt-get update"
+    fi
   else
     cowbuilder --create --basepath ${cow} $opts \
                --components "$components" \
                --mirror "$mirror" \
-               --debootstrapopts --arch --debootstrapopts $a
+               --debootstrapopts --arch=$a
   fi
 done

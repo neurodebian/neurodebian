@@ -1,0 +1,14 @@
+Source: psychlops
+Tasks: debian-science/psychophysics
+Homepage: http://psychlops.sourceforge.jp
+Language: C++
+License: GPL
+Version: 1.5.0
+Pkg-Description:
+ Psychlops is a free C++ library to offer the easy way to develop a
+ demonstration of various types of visual stimulus used in the Vision
+ science.
+ .
+ Binary builds are available only for OS X and Windows.  Sources
+ available from sf's SVN:
+ http://sourceforge.jp/projects/psychlops/svn/view/cpp/

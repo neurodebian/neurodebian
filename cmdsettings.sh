@@ -7,7 +7,7 @@ buildplace="${cowbuilderroot}/build"
 
 # all cuurently supported dists
 allnddists="nd+debian-lenny nd+debian-squeeze nd+debian-wheezy nd+debian-sid \
-            nd+ubuntu-natty nd+ubuntu-maverick nd+ubuntu-lucid nd+ubuntu-karmic nd+ubuntu-hardy"
+            nd+ubuntu-hardy nd+ubuntu-karmic nd+ubuntu-lucid nd+ubuntu-maverick nd+ubuntu-natty nd+ubuntu-oneiric"
 alldists="$allnddists debian-lenny debian-squeeze debian-wheezy debian-sid"
 
 # default is debian
@@ -22,4 +22,4 @@ if [ "${family#nd+}" = "ubuntu" ]; then
   mirror="http://ubuntu.media.mit.edu/ubuntu"
 fi
 
-if [ ! -d $aptcache ]; then mkdir $aptcache; fi
+if [ ! -d $aptcache ]; then mkdir -p $aptcache; fi

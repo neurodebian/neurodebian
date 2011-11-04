@@ -1,0 +1,15 @@
+Source: pymeg
+Tasks: debian-science/electrophysiology,
+	   debian-med/imaging
+Homepage: https://github.com/badbytes/pymeg/wiki
+Author: Dan Collins <quaninux@gmail.com>
+Language: Python
+License: GPL-3
+Version: unknown
+Pkg-Description: suite for analysis of magnetoencephalography (MEG) data
+  PyMEG is a project in Python to do various neuroimaging processing
+  with magnetoencephalography (MEG) data. The purpose of this project,
+  is to create a suite of functions to do MEG analysis in Python.
+Remark: Needs DFSG-ification.
+        According to the author is not yet ready for the use by
+        mortals -- wasn't released yet.
