@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: NeuroDebian Team <team@neuro.debian.net>
 Uploaders: Michael Hanke <mih@debian.org>, Yaroslav Halchenko <debian@onerussian.com>
 Build-Depends: debhelper (>= 7.0.50~), xcftools, help2man, inkscape, imagemagick, python-html5lib
-Standards-Version: 3.9.1
+Standards-Version: 3.9.2
 Homepage: http://neuro.debian.net
 Vcs-Browser: http://git.debian.org/?p=pkg-exppsy/neurodebian.git
 Vcs-Git: git://git.debian.org/git/pkg-exppsy/neurodebian.git

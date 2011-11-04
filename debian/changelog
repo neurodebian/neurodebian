@@ -14,6 +14,7 @@ neurodebian (0.26) unstable; urgency=low
       guest additions
     - NeuroDebian "Welcome Wizard" pulls scipy instead of only numpy for
       "Scientific Python"
+  * Boosted policy to 3.9.2 -- no changes
 
  -- Yaroslav Halchenko <debian@onerussian.com>  Mon, 17 Oct 2011 00:10:27 -0400
 
