@@ -1,12 +1,13 @@
-neurodebian (0.26) UNRELEASED; urgency=low
+neurodebian (0.26) unstable; urgency=low
 
   [ Michael Hanke & Yaroslav Halchenko]
   * website:
     - lots of changes: blog, artwork, survey, testimonials, etc.
   * nd_* tools:
     - added support for Ubuntu 11.04 -- Oneiric
-    - NEW: nd_build_testrdepends to test either upcoming version of a
+    - new tool nd_build_testrdepends to test either upcoming version of a
       package would break any reverse build-depends
+    - new tool nd_adddistall to generate cow chroots for all distributions
     - nd_build now returns non-0 code upon any failure to build
   * VM:
     - tuned for releasing 6.0.4 -- addressed issue with dkms build of
