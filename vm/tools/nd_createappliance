@@ -6,14 +6,14 @@ set -eu
 
 # TODO: arguments later on to become cmdline args
 #iso=debian-squeeze-di-beta1-amd64-businesscard.iso
-iso=debian-6.0.1a-${ARCH:=amd64}-businesscard.iso
+iso=debian-6.0.3-${ARCH:=amd64}-businesscard.iso
 di_cd=$(readlink -f $PWD/../../../neurodebian-images/$iso)
 di_host=head1.hydra.dartmouth.edu               # where to look for di preseed
 
 build_dir=$PWD/build
 dist_dir=$PWD/dist
 vendor="NeuroDebian"
-vm_version="6.0.4"
+vm_version="6.0.5"
 vm_ostype=Debian
 vendor_url="http://neuro.debian.net"
 product_url="${vendor_url}/vm.html"
@@ -77,7 +77,7 @@ mkdir -p $build_dir
 
 _info Create HardDisk for the VM
 VBoxManage createhd --filename $vm_disk \
-    --size 20480 --format VDI
+    --size 40960 --format VDI
   # documented but not implemented:
   #  --comment "Drive for NeuroDebian VM installer"
 
