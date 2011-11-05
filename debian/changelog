@@ -10,10 +10,13 @@ neurodebian (0.26) unstable; urgency=low
     - new tool nd_adddistall to generate cow chroots for all distributions
     - nd_build now returns non-0 code upon any failure to build
   * VM:
-    - tuned for releasing 6.0.4 -- addressed issue with dkms build of
-      guest additions
-    - NeuroDebian "Welcome Wizard" pulls scipy instead of only numpy for
-      "Scientific Python"
+    - for 6.0.4 VM: addressed issue with dkms build of guest additions
+    - for 6.0.5 VM:
+      - NeuroDebian "Welcome Wizard" pulls scipy instead of only numpy for
+       "Scientific Python"
+      - doubled the sizes of partition (40GB) and swap (2GB)
+      - fixed linking of ~/host in nd-vmsetupwizard to be in line
+        with recent VB (4.x)
   * Boosted policy to 3.9.2 -- no changes
 
  -- Yaroslav Halchenko <debian@onerussian.com>  Mon, 17 Oct 2011 00:10:27 -0400
