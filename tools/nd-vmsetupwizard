@@ -49,7 +49,7 @@ then
 
 	if [ -e "$popconf" ] ; then
 	# just reconfigure so user could get a chance to participate
-		sudo DEBIAN_FRONTEND=gnome dpkg-reconfigure popularity-contest	
+		sudo DEBIAN_FRONTEND=gnome dpkg-reconfigure popularity-contest
 	else
 	# install, but do not fail if something goes wrong
 		nd-autoinstall popularity-contest /etc/popularity-contest.conf || true
@@ -94,7 +94,7 @@ if ! grep -q '/etc/fsl/fsl.sh' $HOME/.profile && \
 
 Do you want to get those files, if available, sourced automatically for your environment?
 "; then
-   for t in fsl afni; do
+   for t in fsl afni cmtk freesurfer; do
 	cf="/etc/$t/$t.sh"
 	grep -q -e "$cf" $HOME/.profile || \
 		echo "[ -e \"$cf\" ] && . $cf" >> $HOME/.profile
@@ -102,7 +102,7 @@ Do you want to get those files, if available, sourced automatically for your env
 fi
 
 # create symlink to shared folder into homedir
-[ ! -e $HOME/host ] && ln -s /mnt/host $HOME/host
+[ ! -e $HOME/host ] && ln -s /media/sf_host $HOME/host
 
 packages=$(zenity --list $icon_opt --checklist --column="Install" --column="Description" \
 	   --column="Package Name" --print-column=3 --hide-column=3 --hide-header \
