@@ -1,3 +1,14 @@
+neurodebian (0.27) unstable; urgency=low
+
+  * nd_* tools:
+    - backport-dsc: escape "~" to prevent expansion into $HOME
+    - nd_adddist: adds apt lines for <release>-updates if available
+  * VM:
+    - "brain" user added to "vboxsf" to get access to
+      shared host directories
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Mon, 07 Nov 2011 17:59:54 -0500
+
 neurodebian (0.26) unstable; urgency=low
 
   [ Michael Hanke & Yaroslav Halchenko]
