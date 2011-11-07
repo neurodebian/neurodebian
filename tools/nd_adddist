@@ -37,16 +37,23 @@ for a in i386 amd64; do
   fi
   if [ "${family:0:3}" = "nd+" ]; then
   echo "Including NeuroDebian repository..."
+    # If it has updates -- enable them
+    if wget -q -O/dev/null $mirror/dists/$dist-updates; then
+      updates_apt="deb $mirror $dist-updates $components |"
+      updates_apt+="#deb-src $mirror $dist-updates $components |"
+    else
+      updates_apt=""
+    fi
     cowbuilder --create --basepath ${cow} $opts \
                --components "$components" \
                --mirror "$mirror" \
                --debootstrapopts --arch=$a \
-               --othermirror "deb http://neuro.debian.net/debian $dist main contrib non-free"
+               --othermirror "${updates_apt}deb http://neuro.debian.net/debian $dist main contrib non-free"
     # deploy our key manually since archive with package is not yet
     # available at this point
     mkdir -p ${cow}/etc/apt/trusted.gpg.d
     cp --preserve=mode {,${cow}}/etc/apt/trusted.gpg.d/neurodebian-archive-keyring.gpg
-    # Old ubuntus might not have capability to ready from that key yet,
+    # Old ubuntus might not have capability to read from that key yet,
     # so we would need to manually add it
     if [ $dist = 'karmic' ] || [ $dist = 'hardy' ]; then
         chroot ${cow} bash -c "apt-get install -y --force-yes gnupg \
