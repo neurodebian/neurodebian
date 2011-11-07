@@ -104,6 +104,10 @@ if [ "$darch" != "$cdarch" ] ; then
 		>| /var/log/initial_setup-dkms-686-install.log 2>&1
 fi
 
+# Add brain use into vboxsf group so he gets access to shared folders
+# by default
+adduser brain vboxsf
+
 # assure at the end that we got right modules build in the right location
 find /lib/modules/*$darch -iname vboxsf.ko | grep -q .
 
