@@ -104,6 +104,9 @@ fi
 # create symlink to shared folder into homedir
 [ ! -e $HOME/host ] && ln -s /media/sf_host $HOME/host
 
+# TODO: add PyMVPA:
+#   FALSE "PyMVPA" "python-mvpa2,python-mvpa2-doc,python-mvpa2-tutorial-data" \
+# needs -doc and -tutorial-data package
 packages=$(zenity --list $icon_opt --checklist --column="Install" --column="Description" \
 	   --column="Package Name" --print-column=3 --hide-column=3 --hide-header \
 	   --separator=' ' --text="Please select any additional component that shall be installed.
