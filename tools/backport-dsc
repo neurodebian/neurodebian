@@ -12,7 +12,7 @@ backports_dsc_version=0.1
 ############
 
 bp_distribution=${BACKPORT_DISTRIBUTION:-squeeze-backports}
-bp_version_prefix=${BACKPORT_VERSION_PREFIX:-~}
+bp_version_prefix=${BACKPORT_VERSION_PREFIX:-\~}
 bp_version_suffix=${BACKPORT_VERSION_SUFFIX:-bpo60}
 bp_maintainer_name=${DEBFULLNAME:-unamed}
 bp_maintainer_email=${DEBEMAIL:-unknown}
