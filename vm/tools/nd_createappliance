@@ -158,7 +158,11 @@ _info Compacting VDI
 sudo ./nd_compactvdi "${vm_disk}"
 
 _info Exporting the appliance
-
+if [ -e "$vm_ova" ]; then
+    vm_ova_old=$vm_ova.`date +"20%y%m%d%H%M"`
+    _info Previous OVA image exists, renaming it to $vm_ova_old
+    mv "$vm_ova" "$vm_ova_old"
+fi
 VBoxManage export "${vm_name}" -o "$vm_ova" \
 	--vsys 0 \
 	--product "${product_name}" \
