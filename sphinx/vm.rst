@@ -24,15 +24,15 @@ just a few mouse clicks (e.g. AFNI_, Caret_, FSL_, PyMVPA_).
 Downloads
 ---------
 
-* `NeuroDebian 6.0.4 image (32bit)
-  <http://neuro.debian.net/debian/vm/NeuroDebian_6.0.4_i386.ova>`_ [~558MB]
+* `NeuroDebian 6.0.5 image (32bit)
+  <http://neuro.debian.net/debian/vm/NeuroDebian_6.0.5_i386.ova>`_ [~559MB]
 
   *This image should work on virtually all systems that are supported by*
   VirtualBox_ *and can be used whenever the, otherwise preferable, 64bit image
   is not compatible with a host machine.*
 
-* `NeuroDebian 6.0.4 image (64bit)
-  <http://neuro.debian.net/debian/vm/NeuroDebian_6.0.4_amd64.ova>`_ [~573MB]
+* `NeuroDebian 6.0.5 image (64bit)
+  <http://neuro.debian.net/debian/vm/NeuroDebian_6.0.5_amd64.ova>`_ [~575MB]
 
   *This image only works on 64bit host machines with active hardware
   virtualization support. The should include all recent Apple hardware and most
@@ -73,6 +73,20 @@ virtual appliances:
 
 Changes
 -------
+
+6.0.5 -- 10 Nov 2011
+
+      * Updated core system to Debian squeeze 6.0.3
+      * Updated shipped virtualbox-ose guest-utils and guest-x11 to 4.0.10
+
+        - ``~/host`` is now symlinked to correct path ``/media/sf_host``
+        - ``brain`` user is added to ``vboxsf`` group so mounted host
+          directories should become readily available
+
+      * Root partition size and swap space got doubled in size (40GB
+        and 2GB correspondingly).  Space is allocated dynamically so
+        the actual size of the virtual drive should not grow unless
+        you use it
 
 6.0.4 -- 13 Jun 2011
 
