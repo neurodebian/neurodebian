@@ -1,9 +1,9 @@
 * For the next round target 
 ** broad-audience mailing lists
 
-  comp-neuro
-  connectionists
-  cvnet
-  visionlist
+  comp-neuro@neuroinf.org
+  connectionists@cs.cmu.edu
+  cvnet@mail.ewind.com
+  visionlist@visionscience.com   http://visionscience.com/mailman/listinfo/visionlist
   face-research-list@lists.stir.ac.uk
 
