@@ -1,0 +1,18 @@
+Source: pebl
+Tasks: debian-science/psychophysics
+Homepage: http://pebl.sourceforge.net
+Author: Shane Mueller
+Language: C++
+License: GPL
+Version: 0.11
+Pkg-Description: platform for psychology experiments
+ PEBL (Psychology Experiment Building Language) is a system designed
+ for creating psychology and neuroscience experiments and tests.  It
+ offers a simple programming language tailor-made for creating and
+ conducting many standard experiments.
+Published-Title: The PEBL Manual
+Published-Authors: Mueller, S. T.
+Published-In: Lulu press
+Published-Year: 2011
+Published-ISBN: 978-0-557-65817-6
+WNPP: 650775
