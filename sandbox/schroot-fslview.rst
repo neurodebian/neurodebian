@@ -26,7 +26,7 @@ GUI support for it.
    official support by Trolltech terminated later that year.
 
    Qt4 was first released in 2005, and current stable series 4.7
-   released appeared in September 2010).
+   released appeared in September 2010.
 
 Because of the age and discontinued upstream support, Qt3 was
 deprecated in Debian, and tools relying on it were encouraged to
@@ -58,14 +58,13 @@ are afraid in the end it might be more frustrating than useful.
 Therefore we would like to suggest another, much more straightforward
 and painless approach -- lightweight virtualization, or chroot_
 jailing.  In this exercise in **4 simple steps** we will install a
-complete (minimalistic) installation of Debian stable which has
-fslview available into a directory, and provide convenience wrapper to
-run fslview as it was installed on the "main" system.  Moreover, in
+complete (minimalistic) installation of Debian stable into a directory, and provide convenience wrapper to
+run fslview as if it was installed on the "main" system.  Moreover, in
 case of security or critical fixes to fslview, such chroot
 environment, while being Debian installation, would be upgradeable as
 easily as your main system, thus guaranteeing robust performance.
 
-Although demonstrated here on the example with fslview, such approach
+Although we demonstrate this setup with fslview in mind, such approach
 is generally useful for various use cases.  E.g. we have used it in
 the opposite situation -- on stable Debian systems we needed to run
 some software available only from Debian unstable or testing, and
@@ -86,11 +85,11 @@ For this exercise you would need
   efficiency in cut/paste operations
 
 - root access to the system while performing this setup, although
-  end-users of fslview would not need it to use it
+  end-users of fslview would not need root access after everything
+  is setup
 
-- tools to install Debian in a directory (called debootstrap_) and
-  convenience utility to "enable" such a chroot-ed environment (called
-  schroot_)
+- 2 additional tools -- debootstrap_ to install Debian in a directory
+  and a convenience utility schroot_ to "enable" such an environment
 
 .. _debootstrap: http://wiki.debian.org/Debootstrap
 .. _schroot: http://packages.debian.org/sid/schroot
@@ -103,8 +102,8 @@ Procedure
 
    sudo apt-get install debootstrap schroot
 
-- Choose a location with enough space (around 400 MB) and install a
-  complete Debian squeeze installation with fslview::
+- Choose a location with enough space (400 MB should be enough) and
+  install a complete Debian squeeze installation with fslview::
 
    sudo debootstrap --include=fslview squeeze /srv/chroots/squeeze http://ftp.us.debian.org/debian
 
@@ -128,7 +127,7 @@ Procedure
   allowed to access this chroot environment (see ``man schroot.conf``
   for more options, e.g. how to specify the groups etc.)
 
-- At this point you should already be ready to invoke any command
+- At this point you should already be able to invoke any command
   within the chroot environment, so just create a little shell script
   ``/usr/local/bin/fslview``, make it executable and be all set::
 
@@ -144,9 +143,12 @@ Optional steps
 
 Although at this point you are all set to run fslview from the
 chroot-ed environment, we would suggest a few additional steps you
-would need to perform within the chroot-ed environment, so just enter
-it with using ``schroot -c squeeze -p``, become root (via ``su``
-command, root password should be the same as on the main system):
+would need to perform within the chroot-ed environment:
+
+- enter chroot using ``schroot -c squeeze -p``
+
+- become root (via ``su`` command, root password should be the same as
+  on the main system)
 
 - `Enable NeuroDebian repository <http://neuro.debian.net/#how-to-use-this-repository>`_
 
@@ -157,9 +159,9 @@ command, root password should be the same as on the main system):
    apt-get update
    apt-get upgrade
 
-- Read ``man schroot`` on how to enable persistent sessions so that
-  chroot initiation could be done ones during boot instead of per each
-  fslview invocation
+Also you might like to read ``man schroot`` on how to enable
+persistent sessions so that chroot initiation could be done ones
+during boot instead of per each fslview invocation
 
 If you have any comments (typos, improvements, etc) -- feel welcome to
 leave a comment below, or just email `us@NeuroDebian`_ .
