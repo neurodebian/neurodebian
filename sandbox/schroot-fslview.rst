@@ -152,10 +152,10 @@ command, root password should be the same as on the main system):
 
 - Enable security and functionality updates::
 
-  	sed -e 's,squeeze,squeeze-updates,g' /etc/apt/sources.list > /etc/apt/sources.list.d/updates.list
-    echo 'deb http://security.debian.org/ stable/updates main' > /etc/apt/sources.list.d/security.list
-	apt-get update
-	apt-get upgrade
+   sed -e 's,squeeze,squeeze-updates,g' /etc/apt/sources.list > /etc/apt/sources.list.d/updates.list
+   echo 'deb http://security.debian.org/ stable/updates main' > /etc/apt/sources.list.d/security.list
+   apt-get update
+   apt-get upgrade
 
 - Read ``man schroot`` on how to enable persistent sessions so that
   chroot initiation could be done ones during boot instead of per each
