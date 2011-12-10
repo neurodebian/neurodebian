@@ -151,21 +151,54 @@ Optional steps
 
 Although at this point you are all set to run fslview from the
 chroot-ed environment, we would suggest a few additional steps you
-would need to perform within the chroot-ed environment:
+would need to perform within the chroot-ed environment. For some of
+them (marked with **chroot-root**) you would need to become root in a
+chroot using:
 
 - enter chroot using ``schroot -c squeeze -p``
 
 - become root (via ``su`` command, root password should be the same as
   on the main system)
 
-- `Enable NeuroDebian repository <http://neuro.debian.net/#how-to-use-this-repository>`_
+So here they are
 
-- Enable security and functionality updates::
+- **chroot-root**: `Enable NeuroDebian repository
+  <http://neuro.debian.net/#how-to-use-this-repository>`_. Choose
+  ``squeeze`` release and mirror of preference (remove ``sudo`` from
+  provided cmdline).
+
+- **chroot-root**: Enable security and functionality updates::
 
    sed -e 's,squeeze,squeeze-updates,g' /etc/apt/sources.list > /etc/apt/sources.list.d/updates.list
    echo 'deb http://security.debian.org/ stable/updates main' > /etc/apt/sources.list.d/security.list
    apt-get update
    apt-get upgrade
+
+- Make fsl atlases accessible within the chroot environment.  There
+  are two ways and you need to choose only **one** of them, otherwise
+  you might damage your "main" system installation.
+
+  - **chroot-root**: Install them in a chroot-ed environment::
+
+     apt-get install fsl-atlases
+
+    Although the best/correct way it would require additional 200MB of
+    space, possibly duplicating what you already have installed in the
+    main system.  Also it requires `enabling of NeuroDebian repository
+    in chroot environment
+    <http://neuro.debian.net/#how-to-use-this-repository>`_.
+
+  - Bind-mount those directories with atlases installed on the "main"
+    system within chroot.  For that edit (as root on the "main"
+    system) ``/etc/schroot/default/fstab`` and add following entries::
+
+     /usr/share/fsl/data/atlases /usr/share/fsl/data/atlases none rw,bind 0 0
+     /usr/share/data /usr/share/data none    rw,bind 0 0
+
+    .. note::
+       Similarly you can bind-mount any other directory you would like
+       to make visible in chroot.  Just be careful to not "overlap"
+       with system directories in chroot which already carry something.
 
 Also you might like to read ``man schroot`` on how to enable
 persistent sessions so that chroot initiation could be done ones
