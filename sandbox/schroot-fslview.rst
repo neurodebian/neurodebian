@@ -10,11 +10,12 @@ Preamble
 --------
 
 Sometimes research software projects start to lag behind recent
-developments in the libraries they rely upon because it might require
-considerable effort, and thus time, to adapt them.  That leads to
+developments in the libraries they rely upon because necessary changes
+to the code might require
+considerable effort, and thus time.  That leads to
 inability to build those tools using up-to-date versions of libraries
-available on the system due to the change in their API, and thus those
-tools get removed from the archive.
+available on the system due to incompatible API, and those
+tools get removed from the repository.
 
 That is the situation which happened with fslview_ tool from FSL_
 suite.  At the moment it still relies on Qt library version 3 and VTK
@@ -28,21 +29,23 @@ GUI support for it.
    Qt4 was first released in 2005, and current stable series 4.7
    released appeared in September 2010.
 
-Because of the age and discontinued upstream support, Qt3 was
-deprecated in Debian, and tools relying on it were encouraged to
+Because of the age and discontinued upstream support, `Qt3 was
+orphaned`_ in Debian, and tools relying on it were encouraged to
 migrate to use Qt4.  As a result, although Qt3 itself is still present
 in Debian (and thus Ubuntu), VTK GUI support for Qt3 (package
 `libvtk5.4-qt3`_) which fslview uses, was removed from Debian due to
 Qt3 deprecation.  Once again, it was not removed just to annoy people,
-but rather because it became unfeasible to maintain robust building
-and system functioning.  As the result, fslview_ package is currently
+but rather because it became unfeasible to maintain its robust building
+and functioning.  As the result, fslview_ package is currently
 present only in the releases of Debian and Ubuntu which carry
 libvtk5.4-qt3 library.  Those are -- Debian squeeze (stable), Ubuntu
 nutty and maverick.  If you upgraded your system from one of those
 releases, good chance is that you still have fslview (and required
-libraries) installed although not available from the archive.  They
+libraries) installed although not available from the APT repository
+you are using.  They
 might even work.  But fresh systems installations will not have them.
 
+.. _`Qt3 was orphaned`: http://lists.debian.org/debian-devel/2011/05/msg00236.html
 .. _`libvtk5.4-qt3`: http://packages.debian.org/search?keywords=libvtk5.4-qt3
 
 Workaround
@@ -56,13 +59,18 @@ bindings.  While it might be educationally valuable and exciting, we
 are afraid in the end it might be more frustrating than useful.
 
 Therefore we would like to suggest another, much more straightforward
-and painless approach -- lightweight virtualization, or chroot_
-jailing.  In this exercise in **4 simple steps** we will install a
-complete (minimalistic) installation of Debian stable into a directory, and provide convenience wrapper to
-run fslview as if it was installed on the "main" system.  Moreover, in
-case of security or critical fixes to fslview, such chroot
-environment, while being Debian installation, would be upgradeable as
-easily as your main system, thus guaranteeing robust performance.
+and hopefully painless approach -- lightweight virtualization, or chroot_
+jailing, which exists in Unix-land since 1970s.
+With this exercise in **4 simple steps** we will install a
+complete (minimalistic) installation of Debian stable into a separate
+directory.  We will provide a convenience wrapper to
+run fslview as if it was installed on the "main" system.  So your
+system will stay intact while you would enrich it with additional
+installation of stable Debian. Moreover if
+security or critical fixes to any components of that installation
+become available, this chroot
+environment, being a complete Debian installation, would be as
+easily upgradeable as your main system, thus guaranteeing robust performance.
 
 Although we demonstrate this setup with fslview in mind, such approach
 is generally useful for various use cases.  E.g. we have used it in
@@ -131,7 +139,7 @@ Procedure
   within the chroot environment, so just create a little shell script
   ``/usr/local/bin/fslview``, make it executable and be all set::
 
-   echo -e '#!/bin/sh\nschroot -p -c squeeze /usr/bin/fslview' > /usr/local/bin/fslview
+   echo -e '#!/bin/sh\nschroot -p -c squeeze /usr/bin/fslview "$@"' > /usr/local/bin/fslview
    chmod a+x /usr/local/bin/fslview
 
   .. note::
