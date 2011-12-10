@@ -127,7 +127,7 @@ Procedure
    [squeeze]
    description=Debian squeeze (6.x stable)
    type=directory
-   location=/srv/chroots/squeeze
+   directory=/srv/chroots/squeeze
    users=YOURLOGIN
    aliases=debian,default
 
