@@ -3,8 +3,8 @@
 
 .. _chap_schroot_fslview:
 
-"Install" fslview on recent systems
-===================================
+Chroot workaround for fslview (HOWTO)
+=====================================
 
 Preamble
 --------
@@ -14,12 +14,12 @@ developments in the libraries they rely upon because necessary changes
 to the code might require
 considerable effort, and thus time.  That leads to
 inability to build those tools using up-to-date versions of libraries
-available on the system due to incompatible API, and those
-tools get removed from the repository.
+available on the system due to incompatible API, and sooner or later
+because of that those tools get removed from the repository.
 
-That is the situation which happened with fslview_ tool from FSL_
-suite.  At the moment it still relies on Qt library version 3 and VTK
-GUI support for it.
+That is what happened with fslview_ tool from FSL_ suite.  Today, at
+the end of 2011, it still relies on Qt library version 3 and VTK GUI
+support for it.
 
 .. note::
 
@@ -36,8 +36,8 @@ in Debian (and thus Ubuntu), VTK GUI support for Qt3 (package
 `libvtk5.4-qt3`_) which fslview uses, was removed from Debian due to
 Qt3 deprecation.  Once again, it was not removed just to annoy people,
 but rather because it became unfeasible to maintain its robust building
-and functioning.  As the result, fslview_ package is currently
-present only in the releases of Debian and Ubuntu which carry
+and functioning.  So nowadays fslview_ package is
+present only in the previous releases of Debian and Ubuntu which carry
 libvtk5.4-qt3 library.  Those are -- Debian squeeze (stable), Ubuntu
 nutty and maverick.  If you upgraded your system from one of those
 releases, good chance is that you still have fslview (and required
@@ -51,9 +51,9 @@ might even work.  But fresh systems installations will not have them.
 Workaround
 ----------
 
-While everyone is waiting for fslview_ to become compatible with Qt4
-there are possible workarounds meanwhile to keep research going on
-bleeding edge releases.  The first, obvious choice for a FOSS
+While everyone is waiting for a new release of fslview_ compatible with Qt4
+there are possible workarounds to keep research going on
+bleeding edge Debian-based releases.  The first, obvious choice for a FOSS
 enthusiast, is to build fslview_ from source by first building VTK Qt3
 bindings.  While it might be educationally valuable and exciting, we
 are afraid in the end it might be more frustrating than useful.
@@ -69,8 +69,8 @@ system will stay intact while you would enrich it with additional
 installation of stable Debian. Moreover if
 security or critical fixes to any components of that installation
 become available, this chroot
-environment, being a complete Debian installation, would be as
-easily upgradeable as your main system, thus guaranteeing robust performance.
+environment, being a complete Debian installation, could be as
+easily upgraded as your main system, thus guaranteeing robust performance.
 
 Although we demonstrate this setup with fslview in mind, such approach
 is generally useful for various use cases.  E.g. we have used it in
@@ -110,19 +110,19 @@ Procedure
 
    sudo apt-get install debootstrap schroot
 
-- Choose a location with enough space (400 MB should be enough) and
+- Choose a location with enough space (600 MB should be enough) and
   install a complete Debian squeeze installation with fslview::
 
    sudo debootstrap --include=fslview squeeze /srv/chroots/squeeze http://ftp.us.debian.org/debian
 
   .. note::
      You might like to adjust URL to the archive to use some closer
-     closer to you `Debian mirror`_
+     to you `Debian mirror`_
 
 .. _`Debian mirror`: http://www.debian.org/mirror/list
 
 - Create schroot_ configuration file ``/etc/schroot/chroot.d/squeeze``
-  with following content::
+  with the following content::
 
    [squeeze]
    description=Debian squeeze (6.x stable)
@@ -135,7 +135,7 @@ Procedure
   allowed to access this chroot environment (see ``man schroot.conf``
   for more options, e.g. how to specify the groups etc.)
 
-- At this point you should already be able to invoke any command
+- At this point you should be able already to invoke any command
   within the chroot environment, so just create a little shell script
   ``/usr/local/bin/fslview``, make it executable and be all set::
 
@@ -143,24 +143,23 @@ Procedure
    chmod a+x /usr/local/bin/fslview
 
   .. note::
-     You might need to become root for above operations, or not
+     You might need, or not, to become root for above operations
      depending either you are a part of ``staff`` user group.
 
 Optional steps
 --------------
 
-Although at this point you are all set to run fslview from the
-chroot-ed environment, we would suggest a few additional steps you
-would need to perform within the chroot-ed environment. For some of
+Although at this point you can run fslview from the chroot-ed
+environment, we would suggest a few additional steps.  For some of
 them (marked with **chroot-root**) you would need to become root in a
-chroot using:
+chroot environment via following steps:
 
 - enter chroot using ``schroot -c squeeze -p``
 
 - become root (via ``su`` command, root password should be the same as
   on the main system)
 
-So here they are
+So here are recommended optional additions:
 
 - **chroot-root**: `Enable NeuroDebian repository
   <http://neuro.debian.net/#how-to-use-this-repository>`_. Choose
@@ -175,25 +174,25 @@ So here they are
    apt-get upgrade
 
 - Make fsl atlases accessible within the chroot environment.  There
-  are two ways and you need to choose only **one** of them, otherwise
+  are two ways and you must choose only **one** of them, otherwise
   you might damage your "main" system installation.
 
-  - **chroot-root**: Install them in a chroot-ed environment::
+  - **chroot-root**: Install atlases packages in the chroot-ed environment::
 
      apt-get install fsl-atlases
 
-    Although the best/correct way it would require additional 200MB of
+    Although this is the best/correct way it would require additional 200MB of
     space, possibly duplicating what you already have installed in the
     main system.  Also it requires `enabling of NeuroDebian repository
     in chroot environment
     <http://neuro.debian.net/#how-to-use-this-repository>`_.
 
-  - Bind-mount those directories with atlases installed on the "main"
+  - Alternatively you can bind-mount those directories with atlases installed on the "main"
     system within chroot.  For that edit (as root on the "main"
     system) ``/etc/schroot/default/fstab`` and add following entries::
 
      /usr/share/fsl/data/atlases /usr/share/fsl/data/atlases none rw,bind 0 0
-     /usr/share/data /usr/share/data none    rw,bind 0 0
+     /usr/share/data             /usr/share/data             none rw,bind 0 0
 
     .. note::
        Similarly you can bind-mount any other directory you would like
