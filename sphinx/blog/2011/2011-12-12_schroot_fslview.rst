@@ -1,4 +1,4 @@
-:date: 2011-12-09 16:08:00
+:date: 2011-12-12 12:05:00
 :tags: debian, neuroscience, software, FSL, fslview, chroot, virtualization
 
 .. _chap_schroot_fslview:
