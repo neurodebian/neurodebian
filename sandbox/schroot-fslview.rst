@@ -9,17 +9,16 @@ Chroot workaround for fslview (HOWTO)
 Preamble
 --------
 
-Sometimes research software projects start to lag behind recent
-developments in the libraries they rely upon because necessary changes
-to the code might require
-considerable effort, and thus time.  That leads to
-inability to build those tools using up-to-date versions of libraries
-available on the system due to incompatible API, and sooner or later
-because of that those tools get removed from the repository.
+Sometimes research software lags behind developments in libraries it relies
+upon, because necessary changes to the code might require considerable effort,
+and thus time.  That leads to difficulties building those tools using
+up-to-date library versions due API incompatibility.
 
-That is what happened with fslview_ tool from FSL_ suite.  Today, at
-the end of 2011, it still relies on Qt library version 3 and VTK GUI
+That is what happened with fslview_ from the FSL_ suite.  Today, at
+the end of 2011, it still relies on Qt3_ and VTK GUI
 support for it.
+
+.. _Qt3: http://doc.qt.nokia.com/3.3/
 
 .. note::
 
@@ -29,21 +28,20 @@ support for it.
    Qt4 was first released in 2005, and current stable series 4.7
    released appeared in September 2010.
 
-Because of the age and discontinued upstream support, `Qt3 was
+Because of its age and discontinued upstream support, `Qt3 was
 orphaned`_ in Debian, and tools relying on it were encouraged to
 migrate to use Qt4.  As a result, although Qt3 itself is still present
 in Debian (and thus Ubuntu), VTK GUI support for Qt3 (package
 `libvtk5.4-qt3`_) which fslview uses, was removed from Debian due to
-Qt3 deprecation.  Once again, it was not removed just to annoy people,
+Qt3 deprecation.  It should be made clear that it was not removed to annoy people,
 but rather because it became unfeasible to maintain its robust building
-and functioning.  So nowadays fslview_ package is
-present only in the previous releases of Debian and Ubuntu which carry
-libvtk5.4-qt3 library.  Those are -- Debian squeeze (stable), Ubuntu
+and functioning.  So nowadays fslview_ is
+present only in those previous releases of Debian and Ubuntu which carry
+the libvtk5.4-qt3 library.  Those are -- Debian squeeze (stable), Ubuntu
 nutty and maverick.  If you upgraded your system from one of those
-releases, good chance is that you still have fslview (and required
-libraries) installed although not available from the APT repository
-you are using.  They
-might even work.  But fresh systems installations will not have them.
+releases, chances are that you still have fslview (and required
+libraries) installed although not they are not available from the APT repository
+anymore. Therefore fresh systems installations will not have them at all.
 
 .. _`Qt3 was orphaned`: http://lists.debian.org/debian-devel/2011/05/msg00236.html
 .. _`libvtk5.4-qt3`: http://packages.debian.org/search?keywords=libvtk5.4-qt3
@@ -52,28 +50,29 @@ Workaround
 ----------
 
 While everyone is waiting for a new release of fslview_ compatible with Qt4
-there are possible workarounds to keep research going on
-bleeding edge Debian-based releases.  The first, obvious choice for a FOSS
+there are possible workarounds to keep research going on bleeding edge
+Debian-based operating systems.  The first, obvious choice for a FOSS
 enthusiast, is to build fslview_ from source by first building VTK Qt3
-bindings.  While it might be educationally valuable and exciting, we
-are afraid in the end it might be more frustrating than useful.
+bindings, possibly after building Qt3 itself.  While it might be educationally
+valuable and exciting, we are afraid in the end it might be more frustrating
+than useful.
 
 Therefore we would like to suggest another, much more straightforward
 and hopefully painless approach -- lightweight virtualization, or chroot_
 jailing, which exists in Unix-land since 1970s.
 With this exercise in **4 simple steps** we will install a
 complete (minimalistic) installation of Debian stable into a separate
-directory.  We will provide a convenience wrapper to
+directory -- without harming the original system installation.  We will provide a convenience wrapper to
 run fslview as if it was installed on the "main" system.  So your
-system will stay intact while you would enrich it with additional
-installation of stable Debian. Moreover if
+system will stay intact while you would enhance it with additional
+software in a stable Debian environment. Moreover if
 security or critical fixes to any components of that installation
 become available, this chroot
 environment, being a complete Debian installation, could be as
 easily upgraded as your main system, thus guaranteeing robust performance.
 
 Although we demonstrate this setup with fslview in mind, such approach
-is generally useful for various use cases.  E.g. we have used it in
+is generally useful for various use cases.  For example, we have used it in
 the opposite situation -- on stable Debian systems we needed to run
 some software available only from Debian unstable or testing, and
 backporting of all required dependencies was either cumbersome or just
@@ -94,7 +93,7 @@ For this exercise you would need
 
 - root access to the system while performing this setup, although
   end-users of fslview would not need root access after everything
-  is setup
+  is set up
 
 - 2 additional tools -- debootstrap_ to install Debian in a directory
   and a convenience utility schroot_ to "enable" such an environment
@@ -116,8 +115,7 @@ Procedure
    sudo debootstrap --include=fslview squeeze /srv/chroots/squeeze http://ftp.us.debian.org/debian
 
   .. note::
-     You might like to adjust URL to the archive to use some closer
-     to you `Debian mirror`_
+     You might like to adjust the URL to a `Debian mirror`_ closer to you
 
 .. _`Debian mirror`: http://www.debian.org/mirror/list
 
@@ -133,9 +131,9 @@ Procedure
 
   Replace YOURLOGIN with a comma separated list of users who should be
   allowed to access this chroot environment (see ``man schroot.conf``
-  for more options, e.g. how to specify the groups etc.)
+  for more options, e.g. how to specify whole groups with ``groups=...``, etc.)
 
-- At this point you should be able already to invoke any command
+- At this point you should already be able to invoke any command
   within the chroot environment, so just create a little shell script
   ``/usr/local/bin/fslview``, make it executable and be all set::
 
@@ -143,8 +141,7 @@ Procedure
    chmod a+x /usr/local/bin/fslview
 
   .. note::
-     You might need, or not, to become root for above operations
-     depending either you are a part of ``staff`` user group.
+     You might need to become root for the above.
 
 Optional steps
 --------------
@@ -193,6 +190,12 @@ So here are recommended optional additions:
 
      /usr/share/fsl/data/atlases /usr/share/fsl/data/atlases none rw,bind 0 0
      /usr/share/data             /usr/share/data             none rw,bind 0 0
+
+    You need to be aware of the potential consequences of this second approach:
+    Any package that installs files under /usr/share/data will modify files in
+    the same directory outside the chroot as well. If you don't want to risk
+    that don't use this method and simply install the necessary data packages
+    inside the chroot environment too, as describe before.
 
     .. note::
        Similarly you can bind-mount any other directory you would like
