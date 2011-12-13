@@ -1,20 +1,26 @@
 .. _WELCOme:
 
-***********************************************
- Welcome to the Debian Neuroscience Repository
-***********************************************
+***************************************************
+ Welcome to the Ultimate Platform for Neuroscience
+***************************************************
 
 .. quotes::
    :random: 1
 
-This repository provides mostly neuroscience-related packages to be used on
-Debian_ systems (or Debian-derivatives like Ubuntu_). It contains both unofficial
-or prospective packages which are not (yet) available from the main Debian_
-archive, as well as backported or simply rebuilt packages also available
-elsewhere. Please see the :ref:`faq` for more information about the goals of
-this project, and :ref:`read what people say about it <testimonials>`.
-Take a look at the :ref:`list of our current and planned projects <projects>` if
-you want to get involved. If you appreciate this service, please |spread|.
+The NeuroDebian project provides a turnkey platform for neuroscience
+through integrating of related software within the Debian_ operating
+system.  If you are using neuroscience-related software which
+comes with you installation of Debian_ or its derivative, such as
+Ubuntu_, good chance is that you are already *using NeuroDebian*.
+
+This website provides an additional repository with both unofficial
+or prospective packages which are not (yet) available from the main
+Debian_ archive, as well as backported or simply rebuilt newest
+versions of packages.  Please see the :ref:`faq` for more information
+about the goals of this project, and :ref:`read what people say about
+it <testimonials>`.  Take a look at the :ref:`list of our current and
+planned projects <projects>` if you want to get involved. If you
+appreciate this service, please |spread|.
 
 .. note::
 
