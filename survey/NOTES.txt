@@ -6,4 +6,9 @@
   cvnet@mail.ewind.com
   visionlist@visionscience.com   http://visionscience.com/mailman/listinfo/visionlist
   face-research-list@lists.stir.ac.uk
+** additional projects
+*** Electrophysiology
+ OpenEEG, BrainBay
+ Svarog http://signalml.org/svarog/ -- unfortunately GIT is down
+
 
