@@ -216,6 +216,8 @@ Thanks to the following institutions and individuals for hosting a mirror:
 * `Paul Ivanov`_ *[us-ca]*
 * `Medical-image Analysis and Statistical Interpretation lab at Vanderbilt`_
   *[us-tn]*
+* `Australia's research and education network (AARNET)
+  <http://www.aarnet.edu.au>`_ *[au]*
 
 If your are interested in mirroring the repository, please see the :ref:`faq`.
 
