@@ -1,0 +1,107 @@
+#!/usr/bin/python
+#
+# Create a figure with the NeuroDebian repo subscription stats from the apache logs
+# Requires out put of 
+# zgrep "GET /lists/[a-z\.]\+ HTTP" neuro.debian.net-*access*gz | sed -e 's,.*gz:\([0-9\.]\+\).*\[\(.*\):.*:.*:.*/lists/\(.*\) HTTP.*,\2;\3;\1,' -e 's,/, ,g'
+# either from a file or on stdin. Needs output filename as the only argument
+
+import fileinput
+import sys
+from datetime import datetime
+import numpy as np
+import matplotlib
+matplotlib.use('Agg')
+import pylab as pl
+from matplotlib.dates import date2num
+from matplotlib.dates import YearLocator, MonthLocator, DateFormatter
+from matplotlib.font_manager import FontProperties
+from ConfigParser import SafeConfigParser
+
+
+dt = [('ip', '|S16'),
+      ('loc', '|S3'),
+      ('suite', '|S20'),
+      ('date', float)]
+
+
+def make_figure(data):
+    fig = pl.figure(figsize=(12,3))
+    ax = fig.add_subplot(121)
+    plot_datehist(ax, data, 10, [code for code in cfg.options('release codenames') if cfg.get('release codenames', code).count('Debian')], title="Debian", ymax=10)
+    ax = fig.add_subplot(122)
+    plot_datehist(ax, data, 10, [code for code in cfg.options('release codenames') if cfg.get('release codenames', code).count('Ubuntu')], title="Ubuntu", ymax=10)
+    fig.autofmt_xdate()
+    return fig
+
+
+def plot_datehist(ax, data, bins, suites, title=None, ymax=None):
+    colors=['#ff0088', '#20435C', '#45902C', '#E08720']
+    linestyle=['-', '--']
+    global_x_max = None
+    global_x_min = None
+    global_y_max = None
+    for i, suite in enumerate(suites):
+        dates = data['date'][data['suite'] == suite]
+        # history in days
+        history_length = dates.max() - dates.min()
+        # make approx monthly bins, smaller bins yield spiky curves
+        # needs new=True to work with oldish numpy
+        (hist, bin_edges) = np.histogram(dates, np.ceil(history_length/30.), new=True)
+        width = bin_edges[1] - bin_edges[0]
+        # think lines
+        ax.plot(bin_edges[:-1]+(width/2), hist / width,
+                label=suite, color=colors[i%4], linestyle=linestyle[i//4], lw=2)
+        # transparent curve shading
+        ax.fill_between(bin_edges[:-1]+(width/2), 0, hist / width, alpha=0.2,
+                        label=suite, color=colors[i%4])
+        # figure out axis limits to avoid whitespace in plots
+        x_max = bin_edges[-2] + width/2
+        x_min = bin_edges[0] + width/2
+        if global_x_max is None or x_max > global_x_max:
+            global_x_max = x_max
+        if global_x_min is None or x_min < global_x_min:
+            global_x_min = x_min
+
+    ax.set_xlim(global_x_min, global_x_max)
+    ax.set_ylabel('New subscriptions [1/day]')
+    if title:
+        ax.set_title(title)
+    if ymax:
+        ax.set_ylim(0, ymax)
+
+    # set x-ticks in date
+    # see: http://matplotlib.sourceforge.net/examples/api/date_demo.html
+    ax.xaxis.set_major_locator(YearLocator())
+    ax.xaxis.set_major_formatter(DateFormatter('\n\n%Y'))
+    ax.xaxis.set_minor_locator(MonthLocator())
+    ax.xaxis.set_minor_formatter(DateFormatter('%b'))
+    # format the coords message box
+    ax.format_xdata = DateFormatter('%Y-%m-%d')
+    ax.grid(True)
+    # pukes with old matplotlib
+    #font = FontProperties()
+    #font.set_size = 8
+    pl.legend(loc='upper left', #prop=font,
+              labelspacing=.2, borderaxespad=.2,
+              handletextpad=.2, borderpad=.2)
+
+
+if __name__ == '__main__':
+    if not len(sys.argv) > 1:
+        print 'Need output filename.'
+        sys.exit(1)
+    cfg_path="/home/neurodebian/neurodebian.git/neurodebian.cfg"
+    cfg = SafeConfigParser()
+    cfg.read(cfg_path)
+    data = []
+    for line in fileinput.FileInput(sys.argv[2:], openhook=fileinput.hook_compressed):
+        date, list_, ip = line.split(';')
+        try:
+            suite, loc = list_.split('.')
+        except ValueError:
+            suite = list_
+            loc = ''
+        date = datetime.strptime(date, "%d %b %Y")
+        data.append((ip.strip(), loc, suite, date2num(date)))
+    data = np.array(data, dtype=dt)
+    make_figure(data).savefig(sys.argv[1], bbox_inches='tight', dpi=60)
