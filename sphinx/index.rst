@@ -94,6 +94,9 @@ the terminal you can use :command:`apt-get`::
   about which package version is available for which release and architecture,
   please have a look at the corresponding package pages.
 
+.. raw:: html
+
+ <p><img border="0" src="_static/nd_subscriptionstats.png" title="Subscription statistics" /></p>
 
 Popularity Contest
 ------------------
