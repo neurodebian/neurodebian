@@ -96,7 +96,7 @@ the terminal you can use :command:`apt-get`::
 
 .. raw:: html
 
- <p><img border="0" src="_static/nd_subscriptionstats.png" title="Statistics of new repository subscriptions for all supported releases. Note: subscription is only done once per machine." /></p>
+ <p><img border="0" src="_files/nd_subscriptionstats.png" title="Statistics of new repository subscriptions for all supported releases. Note: subscription is only done once per machine." /></p>
 
 Popularity Contest
 ------------------
