@@ -25,7 +25,7 @@ dt = [('ip', '|S16'),
 
 
 def make_figure(data):
-    fig = pl.figure(figsize=(12,3))
+    fig = pl.figure(figsize=(14,3))
     ax = fig.add_subplot(121)
     plot_datehist(ax, data, 10, [code for code in cfg.options('release codenames') if cfg.get('release codenames', code).count('Debian')], title="Debian", ymax=10)
     ax = fig.add_subplot(122)
