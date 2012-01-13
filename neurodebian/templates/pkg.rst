@@ -127,10 +127,11 @@ releases and system architectures. The corresponding source packages
 are available too.
 
 .. note::
+
   Do not download this package manually if you plan to use it
   regularly. Instead configure your package manager to use this
-  repository by following the instructions on the
-  :ref:`front page <repository_howto>`.
+  repository by following the instructions on the :ref:`front page
+  <repository_howto>`.
 {% endif %}
 {{ dist[0] }} [{{ distpkg.component}}]:
   `{{distpkg.version}} <../../debian/{{ distpkg.poolurl }}>`__ [{{ ', '.join(distpkg.architecture) }}]
