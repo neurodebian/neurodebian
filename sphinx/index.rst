@@ -21,13 +21,9 @@ about the goals of this project, and :ref:`read what people say about
 it <testimonials>`.  Take a look at the :ref:`list of our current and
 planned projects <projects>` if you want to get involved. If you
 appreciate this service, please |spread|.
-
-.. note::
-
-  This service is provided "as is". There is no guarantee that a package
-  works as expected, so use them at your own risk. If you encounter problems,
-  please `report <#contacts>`_ them.
-
+This service is provided "as is". There is no guarantee that a package
+works as expected, so use them at your own risk. If you encounter problems,
+please `report <#contacts>`_ them.
 
 .. raw:: html
 
