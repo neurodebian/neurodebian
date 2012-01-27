@@ -27,9 +27,9 @@ dt = [('ip', '|S16'),
 def make_figure(data):
     fig = pl.figure(figsize=(14,3))
     ax = fig.add_subplot(121)
-    plot_datehist(ax, data, 10, [code for code in cfg.options('release codenames') if cfg.get('release codenames', code).count('Debian')], title="Debian", ymax=10)
+    plot_datehist(ax, data, 10, [code for code in cfg.options('release codenames') if cfg.get('release codenames', code).count('Debian')], title="Debian", ymax=11)
     ax = fig.add_subplot(122)
-    plot_datehist(ax, data, 10, [code for code in cfg.options('release codenames') if cfg.get('release codenames', code).count('Ubuntu')], title="Ubuntu", ymax=10)
+    plot_datehist(ax, data, 10, [code for code in cfg.options('release codenames') if cfg.get('release codenames', code).count('Ubuntu')], title="Ubuntu", ymax=11)
     fig.autofmt_xdate()
     return fig
 
