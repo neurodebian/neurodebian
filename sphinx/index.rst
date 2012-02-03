@@ -230,6 +230,11 @@ If your are interested in mirroring the repository, please see the :ref:`faq`.
 Publications
 ============
 
+Hanke, M. (2012). `Rock solid, brand new, everyday, for free, not a joke:
+NeuroDebian <_files/Hanke_NeuroDebian_MPI2012.pdf>`_.
+*Talk given at the Max-Planck-Institute for Human Cognitive and Brain
+Sciences*, Leipzig, Germany.
+
 Hanke, M. (2011). `More than batteries included: NeuroDebian
 <_files/Hanke_NeuroDebian_EuroSciPy2011.pdf>`_.
 *Talk given at the Python in Neuroscience satellite of EuroScipy 2011*,
