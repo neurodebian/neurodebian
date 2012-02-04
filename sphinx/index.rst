@@ -97,7 +97,7 @@ the terminal you can use :command:`apt-get`::
 Popularity Contest
 ------------------
 
-We would strongly encourage you to participate in the `popularity
+We encourage you to participate in the `popularity
 contest <http://popcon.debian.org>`_ (popcon), which anonymously
 collects the list of packages you installed/use on your system.
 Collecting such statistics is of particular importance for research
