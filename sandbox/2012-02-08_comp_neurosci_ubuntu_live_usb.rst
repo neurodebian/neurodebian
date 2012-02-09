@@ -16,18 +16,24 @@ I recently prepared a Computational Neuroscience `Ubuntu 11.04`_ USB Stick image
 .. _`Live Ubuntu Linux`: http://help.ubuntu.com/community/LiveCd
 .. _`persistent storage`: http://help.ubuntu.com/community/LiveCD/Persistence
 
+*Note: You do not have to reboot your computer if you have a virtual machine* (e.g., `VirtualBox <http://www.virtualbox.org>`_, `VMware <http://www.vmware.com/>`_, etc.) *and you can point it boot from the USB stick.*
+
 ***************************************************************************
 WARNING   WARNING   WARNING   WARNING   WARNING   WARNING   WARNING   
 ***************************************************************************
-As a fully running Linux system, this USB stick is not perfect. It will `get corrupted over time`_ and special care needs to be taken to maintain its health. As a precaution backups of it should be made routinely. You can also copy your files over to your hard drive. For performance issues, it is possible to transfer the persistent storage to your hard drive. See below for details.
+In general, a USB stick is not preferable media for a day-to-day use of Linux because flash memory has a short lifetime (on the order of about several months to a year, based on usage). In addition to the chance of hardware failure over a long time frame, the Ubuntu Live CD also has a tendency to slowly `get corrupted over time`_, but with special care taken, it can be used safely. 
+
+As a precaution, it should be routinely backed up. You can also copy your files over to your hard drive. To improve performance, it is even possible to transfer the persistent storage to your hard drive. See below for details.
 
 .. _`get corrupted over time`: http://bugs.launchpad.net/ubuntu/+source/upstart/+bug/125702
 
-FOLLOW THESE RULES:
+RULES FOR KEEPING YOUR FILES SAFE:
 
 1. NEVER YANK OUT THE USB STICK WHILE UBUNTU IS RUNNING. PERFORM PROPER "SHUTDOWN" FIRST.
 
 2. REGULARLY BACKUP DATA FROM USB STICK ONTO HARD DRIVE
+
+*Disclaimer: I take no responsibility over lost data whatsoever. By using this image, you assume all responsibility of your data.*
 
 Copying files to your hard drives:
 -----------------------------------
@@ -81,7 +87,7 @@ This Live USB Stick is completely based on a Ubuntu 11.04 Live CD distribution. 
 	:align: left
 	:target: http://creativecommons.org/licenses/by/3.0/
 
- Live Comp Neurosci Ubuntu USB Stick by Cengiz Gunay is licensed under a `Creative Commons Attribution 3.0 Unported License <http://creativecommons.org/licenses/by/3.0/>`_.
+ This Live Comp Neurosci Ubuntu USB Stick contains software from Ubuntu Linux, which is distributed with its own respective license. The distribution of this image with the added computational neuroscience tools is licensed by Cengiz Gunay under a `Creative Commons Attribution 3.0 Unported License <http://creativecommons.org/licenses/by/3.0/>`_. This means you can customize and redistribute this image as long as you say that you originally took it from here.
 
 
 
