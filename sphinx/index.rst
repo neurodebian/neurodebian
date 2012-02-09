@@ -97,7 +97,7 @@ the terminal you can use :command:`apt-get`::
 Popularity Contest
 ------------------
 
-We would strongly encourage you to participate in the `popularity
+We encourage you to participate in the `popularity
 contest <http://popcon.debian.org>`_ (popcon), which anonymously
 collects the list of packages you installed/use on your system.
 Collecting such statistics is of particular importance for research
@@ -229,6 +229,12 @@ If your are interested in mirroring the repository, please see the :ref:`faq`.
 
 Publications
 ============
+
+Halchenko, Y.O. & Hanke, M. (2012). `Environments for efficient
+contemporary research in neuroimaging: PyMVPA and NeuroDebian
+<_files/HalchenkoHanke_ContemporaryNeuroimaging_PENN2012.pdf>`_.
+*Talk given at the University of Pennsylvania School of Medicine*,
+Philadelphia, PA, USA.
 
 Hanke, M. (2012). `Rock solid, brand new, everyday, for free, not a joke:
 NeuroDebian <_files/Hanke_NeuroDebian_MPI2012.pdf>`_.
