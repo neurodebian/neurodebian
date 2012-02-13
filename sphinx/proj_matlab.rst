@@ -41,13 +41,15 @@ with Octave, as well as developing patches to achieve such compatibility.
 Status
 ------
 
-A :ref:`Matlab-support package <pkg_matlab-support>` draft is ready, available
-from NeuroDebian, and has been uploaded to `Debian NEW queue
-<http://ftp-master.debian.org/new.html>`_ .
+A :ref:`Matlab-support package <pkg_matlab-support>` is available starting from
+Debian 7.0 (wheezy) and Ubunty 11.10 (oneiric). Backports for older releases can
+be obtained from NeuroDebian.
 
-Packaging of individual Matlab-based software has started. This includes
-:ref:`SPM <pkg_matlab-spm8>` and :ref:`Fieldtrip <pkg_fieldtrip>` (see
-references_ for more packages). Expanding the coverage is planned.
+Packaging of individual Matlab-based software has started. An
+:ref:`SPM <pkg_matlab-spm8>` package is ready, and a preliminary package of
+:ref:`EEGLAB <pkg_matlab-eeglab11>` is available from NeuroDebian.
+An upcoming :ref:`Fieldtrip <pkg_fieldtrip>` package is work-in-progress (see
+references_ for more packages). Further expansion of the coverage is planned.
 
 .. todo:: Integrating Matlab-based software
 
@@ -57,17 +59,6 @@ references_ for more packages). Expanding the coverage is planned.
      complement :ref:`octave-psychtoolbox-3 <pkg_octave-psychtoolbox-3>`.
    * Create :ref:`matlab-biosig <pkg_matlab-biosig>` to
      complement :ref:`octave-biosig <pkg_octave-biosig>`.
-   * Package `EEGLAB <http://bugs.debian.org/605739>`_.
-
-.. note:: Done:
-
-   * Adapt the packaging of `dynare <http://packages.debian.org/sid/dynare-matlab>`_
-     in Debian to use the new support package. Once this is done and reviewed by
-     its maintainers the support package can be submitted for inclusion into
-     Debian proper.
-   * Upload :ref:`libgdf <pkg_libgdf-dev>` (including :ref:`matlab-gdf
-     <pkg_matlab-gdf>`) to Debian proper as soon as :ref:`matlab-support
-     <pkg_matlab-support>` is accepted
 
 References
 ----------
