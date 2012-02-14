@@ -122,6 +122,7 @@
 .. _Comedi: http://www.comedi.org
 .. _RTAI: https://www.rtai.org
 .. |RTAI| replace:: :abbr:`RTAI (Real Time Application Interface)`
+.. _Lin4Neuro: http://www.nemotos.net/lin4neuro
 
 .. Functional imaging labs
 .. _`functional imaging laboratory`: http://www.fil.ion.ucl.ac.uk

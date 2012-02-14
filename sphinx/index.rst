@@ -217,6 +217,7 @@ Thanks to the following institutions and individuals for hosting a mirror:
   *[us-tn]*
 * `Australia's research and education network (AARNET)
   <http://www.aarnet.edu.au>`_ *[au]*
+* Kiyotaka Nemoto (AKA Mr. Lin4Neuro_) *[jp]*
 
 If your are interested in mirroring the repository, please see the :ref:`faq`.
 
