@@ -90,10 +90,6 @@ if __name__ == '__main__':
     if not len(sys.argv) > 1:
         print 'Need output filename.'
         sys.exit(1)
-    if len(sys.argv) > 2:
-        ymax = float(sys.argv[2])
-    else:
-        ymax = 13
     cfg_path="/home/neurodebian/neurodebian.git/neurodebian.cfg"
     cfg = SafeConfigParser()
     cfg.read(cfg_path)
@@ -108,4 +104,4 @@ if __name__ == '__main__':
         date = datetime.strptime(date, "%d %b %Y")
         data.append((ip.strip(), loc, suite, date2num(date)))
     data = np.array(data, dtype=dt)
-    make_figure(data, ymax).savefig(sys.argv[1], bbox_inches='tight', dpi=60)
+    make_figure(data, ymax=13).savefig(sys.argv[1], bbox_inches='tight', dpi=60)
