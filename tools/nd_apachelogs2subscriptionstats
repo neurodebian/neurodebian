@@ -24,12 +24,12 @@ dt = [('ip', '|S16'),
       ('date', float)]
 
 
-def make_figure(data):
+def make_figure(data, ymax):
     fig = pl.figure(figsize=(14,3))
     ax = fig.add_subplot(121)
-    plot_datehist(ax, data, 10, [code for code in cfg.options('release codenames') if cfg.get('release codenames', code).count('Debian')], title="Debian", ymax=11)
+    plot_datehist(ax, data, 10, [code for code in cfg.options('release codenames') if cfg.get('release codenames', code).count('Debian')], title="Debian", ymax=ymax)
     ax = fig.add_subplot(122)
-    plot_datehist(ax, data, 10, [code for code in cfg.options('release codenames') if cfg.get('release codenames', code).count('Ubuntu')], title="Ubuntu", ymax=11)
+    plot_datehist(ax, data, 10, [code for code in cfg.options('release codenames') if cfg.get('release codenames', code).count('Ubuntu')], title="Ubuntu", ymax=ymax)
     fig.autofmt_xdate()
     return fig
 
@@ -90,6 +90,10 @@ if __name__ == '__main__':
     if not len(sys.argv) > 1:
         print 'Need output filename.'
         sys.exit(1)
+    if len(sys.argv) > 2:
+        ymax = float(sys.argv[2])
+    else:
+        ymax = 13
     cfg_path="/home/neurodebian/neurodebian.git/neurodebian.cfg"
     cfg = SafeConfigParser()
     cfg.read(cfg_path)
@@ -104,4 +108,4 @@ if __name__ == '__main__':
         date = datetime.strptime(date, "%d %b %Y")
         data.append((ip.strip(), loc, suite, date2num(date)))
     data = np.array(data, dtype=dt)
-    make_figure(data).savefig(sys.argv[1], bbox_inches='tight', dpi=60)
+    make_figure(data, ymax).savefig(sys.argv[1], bbox_inches='tight', dpi=60)
