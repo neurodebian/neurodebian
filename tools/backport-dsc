@@ -5,7 +5,7 @@ set -e
 set -u
 
 # version of this script
-backports_dsc_version=0.1
+backports_dsc_version=0.2
 
 ############
 # Defaults #
@@ -43,7 +43,7 @@ print_version()
 cat << EOT
 backport-dsc $backports_dsc_version
 
-Copyright (C) 2010 Michael Hanke <michael.hanke@gmail.com>
+Copyright (C) 2010-2012 Michael Hanke <michael.hanke@gmail.com>
 
 Licensed under GNU Public License version 2 or later.
 This is free software; see the source for copying conditions.  There is NO
@@ -91,7 +91,7 @@ Usage:  backport-dsc [OPTIONS] <dsc-file>
 Options:
 
 -d <distname>, --target-distribution <distname>
-  Arbitrary distribution name (e.g. lenny-backports). This will be the target
+  Arbitrary distribution name (e.g. squeeze-backports). This will be the target
   distribution used for the backport changelog entry. The distribution name
   also serves as an identifier to search for backport patches in the source
   package.
@@ -175,11 +175,11 @@ backport-dsc reads configuration from two files: system-wide from
 be sourced by backport-dsc. The following variables (each shown with an
 example setting) can be used to pre-configure backport-dsc:
 
-bp_distribution="lenny-backports"
+bp_distribution="squeeze-backports"
   Backport target distribution (see --backport-distribution)
 
 bp_version_prefix="~"
-  Version suffix (see --version-prefix)
+  Version prefix (see --version-prefix)
 
 bp_version_suffix="bpo60"
   Version suffix (see --version-suffix)
