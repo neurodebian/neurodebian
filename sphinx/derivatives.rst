@@ -36,7 +36,7 @@ USB Stick for Computational Neuroscience by Cengiz Günay
 +---------------------------+-------------------------------------------------------+
 |**Author**                 | Cengiz Günay <cengique AT users.sf.net>               |
 +---------------------------+-------------------------------------------------------+
-|**Homepage**               | (Why don't we put the blog page here?)                |
+|**Homepage**               | TBA                                                   |
 +---------------------------+-------------------------------------------------------+
 |**Purpose**                | Computational neuroscience tools for course-work      |
 +---------------------------+-------------------------------------------------------+
@@ -44,13 +44,13 @@ USB Stick for Computational Neuroscience by Cengiz Günay
 |                           | - Based on Ubuntu 11.04                               |
 +---------------------------+-------------------------------------------------------+
 |**Pre-installed Software** | NeuroDebian                                           |
-|                           |   Brian (XXX?), XXX                                   |
+|                           |   TBA                                                 |
 |                           | Custom:                                               |
 |                           |   Genesis 2.3, Neuron 7.2, XPPAUT 6.10                |
 +---------------------------+-------------------------------------------------------+
-|**Download**               | http://neuro.debian.net/debian/live/3rd/XXX.iso [2GB] |
+|**Download**               | TBA                                                   |
 +---------------------------+-------------------------------------------------------+
-|**References**             | XXX point to the blog entry whenever is ready         |
+|**References**             | TBA                                                   |
 +---------------------------+-------------------------------------------------------+
 
 
