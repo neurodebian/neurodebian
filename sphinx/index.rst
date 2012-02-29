@@ -16,7 +16,10 @@ Ubuntu_, good chance is that you are already *using NeuroDebian*.
 This website provides an additional repository with both unofficial
 or prospective packages which are not (yet) available from the main
 Debian_ archive, as well as backported or simply rebuilt newest
-versions of packages.  Please see the :ref:`faq` for more information
+versions of packages.
+NeuroDebian serves as an "upstream" to some :ref:`derivative
+<chap_derivatives>` projects.
+Please see the :ref:`faq` for more information
 about the goals of this project, and :ref:`read what people say about
 it <testimonials>`.  Take a look at the :ref:`list of our current and
 planned projects <projects>` if you want to get involved. If you
