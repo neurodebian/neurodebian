@@ -41,12 +41,12 @@ USB Stick for Computational Neuroscience by Cengiz Günay
 |**Purpose**                | Computational neuroscience tools for course-work      |
 +---------------------------+-------------------------------------------------------+
 |**Features**               | - Persistent Storage                                  |
-|                           | - Based on Ubuntu 11.04                               |
+|                           | - Based on Ubuntu_ 11.04                              |
 +---------------------------+-------------------------------------------------------+
 |**Pre-installed Software** | NeuroDebian                                           |
-|                           |   TBA                                                 |
+|                           |  TBA                                                  |
 |                           | Custom:                                               |
-|                           |   Genesis 2.3, Neuron 7.2, XPPAUT 6.10                |
+|                           |  Genesis_ 2.3, Neuron_ 7.2, XPPAUT_ 6.10              |
 +---------------------------+-------------------------------------------------------+
 |**Download**               | TBA                                                   |
 +---------------------------+-------------------------------------------------------+
@@ -64,14 +64,14 @@ Lin4Neuro
 +---------------------------+-------------------------------------------------------+
 |**Purpose**                | Neuroimaging tools for course-work                    |
 +---------------------------+-------------------------------------------------------+
-|**Features**               | - Datasets and tutorials from C.Rorden (MRIcron)      |
+|**Features**               | - Datasets and tutorials from C.Rorden (mricron_)     |
 |                           | - Both 32- and 64-bit images                          |
-|                           | - Based on Ubuntu 10.04 LTS                           |
+|                           | - Based on Ubuntu_ 10.04 LTS                          |
 +---------------------------+-------------------------------------------------------+
 |**Pre-installed Software** | NeuroDebian                                           |
-|                           |   AFNI, AMIDE, Caret, FSL, LIPSIA, MRIcron, etc.      |
+|                           |  AFNI_, AMIDE, Caret_, FSL_, LIPSIA_, mricron_, etc.  |
 |                           | Custom:                                               |
-|                           |   3DSlicer, MINC, MRIConvert, Virtual MRI             |
+|                           |  3DSlicer, Ginkgo CADx, MINC, MRIConvert, Virtual MRI |
 +---------------------------+-------------------------------------------------------+
 |**Download**               | ftp://ftp.nemotos.net/ [~2GB]                         |
 +---------------------------+-------------------------------------------------------+
@@ -90,14 +90,14 @@ XNAT
 +---------------------------+-------------------------------------------------------+
 |**Homepage**               | http://datasharing.incf.org/ni/Install_XNAT           |
 +---------------------------+-------------------------------------------------------+
-|**Purpose**                | XNAT deployment                                       |
+|**Purpose**                | XNAT_ deployment                                      |
 +---------------------------+-------------------------------------------------------+
-|**Features**               | - XNAT 1.5                                            |
+|**Features**               | - XNAT_ 1.5                                            |
 |                           | - 64-bit only                                         |
 |                           | - Based on NeuroDebian VM appliance                   |
 +---------------------------+-------------------------------------------------------+
 |**Pre-installed Software** | Custom:                                               |
-|                           |   XNAT                                                |
+|                           |  XNAT_                                                |
 +---------------------------+-------------------------------------------------------+
 |**Download**               | `XNAT 1.5.0 NeuroDebian VM <xnat_vm_image>`_          |
 +---------------------------+-------------------------------------------------------+

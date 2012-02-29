@@ -16,6 +16,10 @@
 .. _nibabel: http://nipy.sourceforge.net/nibabel
 .. _dipy: http://nipy.sourceforge.net/dipy
 
+.. _Neuron: http://www.neuron.yale.edu/neuron
+.. _XPPAUT: http://www.math.pitt.edu/~bard/xpp/xpp.html
+.. _Genesis: http://www.genesis-sim.org
+
 .. Documentation tools
 .. _graphviz: http://www.graphviz.org/
 .. _Sphinx: http://sphinx.pocoo.org/
@@ -83,16 +87,19 @@
 .. _pydicom: http://code.google.com/p/pydicom/
 
 .. Not so python imaging projects
+.. _Caret: http://brainvis.wustl.edu/wiki/index.php/Caret:About
 .. _matlab: http://www.mathworks.com
 .. _spm: http://www.fil.ion.ucl.ac.uk/spm
 .. _spm8: http://www.fil.ion.ucl.ac.uk/spm/software/spm8
 .. _eeglab: http://sccn.ucsd.edu/eeglab
 .. _AFNI: http://afni.nimh.nih.gov/afni
 .. _FSL: http://www.fmrib.ox.ac.uk/fsl
+.. _LIPSIA: http://www.cbs.mpg.de/institute/software/lipsia
 .. _FreeSurfer: http://surfer.nmr.mgh.harvard.edu
 .. _voxbo: http://www.voxbo.org
 .. _mricron: http://www.cabiatl.com/mricro/mricron
 .. _slicer: http://www.slicer.org/
+.. _XNAT: http://xnat.org
 
 .. File formats
 .. _DICOM: http://medical.nema.org/
@@ -116,6 +123,7 @@
 .. _swig: http://www.swig.org
 .. _NeuroDebian: http://neuro.debian.net
 .. _Debian: http://www.debian.org
+.. _Ubuntu: http://www.ubuntu.com
 .. _exppsy: http://alioth.debian.org/projects/pkg-exppsy
 .. _`Debian Med`: http://debian-med.alioth.debian.org
 .. _`Debian Science`: http://wiki.debian.org/DebianScience
