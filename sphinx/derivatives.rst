@@ -7,22 +7,25 @@
 NeuroDebian "Derivatives"
 *************************
 
-NeuroDebian_ is not a *Linux distribution* in a traditional sense because we
-work within Debian_ project thus not providing our custom installer etc.  But
-we are a Linux-distribution providing a repository of up-to-date builds and
-maintaining a :ref:`chap_vm` deployment of Debian.  Because of the openness
-and modularity of Debian other enthusiasts develop customized derivative
-solutions based to address a particular demand.
+.. replace with icons eventually
 
-This page presents such *derivative* projects which are tuned for particular
-domains of application in neuroscience and rely on NeuroDebian_ as the origin
-for necessary tools.
+`Live CD/USB Media`_ | `Virtual Appliances`_ | `Cloud Solutions`_
+
+NeuroDebian_ is not a *Linux distribution* in a traditional sense because we
+are working within Debian_ project thus not providing our custom installer
+etc.  But we are a Linux-distribution providing a repository of up-to-date
+builds and maintaining a :ref:`chap_vm` deployment of Debian.  Because of the
+openness and modularity of Debian other enthusiasts develop customized
+derivative solutions to address their particular needs.
+
+This page presents some of such *derivative* projects which are tuned for
+particular domains of application in neuroscience and rely on NeuroDebian_ as
+the origin of necessary tools.
 
 .. note::
 
    These projects are not maintained by NeuroDebian_ team.  Please direct all
    you support inquiries to respective authors/maintainers.
-
 
 Live CD/USB Media
 =================
@@ -54,25 +57,71 @@ USB Stick for Computational Neuroscience by Cengiz Günay
 Lin4Neuro
 ---------
 
++---------------------------+-------------------------------------------------------+
+|**Author**                 | Kiyotaka Nemoto <kiyotaka@nemotos.net>                |
++---------------------------+-------------------------------------------------------+
+|**Homepage**               | http://www.nemotos.net/?page_id=504                   |
++---------------------------+-------------------------------------------------------+
+|**Purpose**                | Neuroimaging tools for course-work                    |
++---------------------------+-------------------------------------------------------+
+|**Features**               | - Datasets and tutorials from C.Rorden (MRIcron)      |
+|                           | - Both 32- and 64-bit images                          |
+|                           | - Based on Ubuntu 10.04 LTS                           |
++---------------------------+-------------------------------------------------------+
+|**Pre-installed Software** | NeuroDebian                                           |
+|                           |   AFNI, AMIDE, Caret, FSL, LIPSIA, MRIcron, etc.      |
+|                           | Custom:                                               |
+|                           |   3DSlicer, MINC, MRIConvert, Virtual MRI             |
++---------------------------+-------------------------------------------------------+
+|**Download**               | ftp://ftp.nemotos.net/ [~2GB]                         |
++---------------------------+-------------------------------------------------------+
+|**References**             | http://www.biomedcentral.com/1471-2342/11/3           |
++---------------------------+-------------------------------------------------------+
+
 
 Virtual Appliances
 ==================
 
-* XNAT
-* MIPAV
+XNAT
+----
+
++---------------------------+-------------------------------------------------------+
+|**Author**                 | Satrajit Ghosh <satra@mit.edu>                        |
++---------------------------+-------------------------------------------------------+
+|**Homepage**               | http://datasharing.incf.org/ni/Install_XNAT           |
++---------------------------+-------------------------------------------------------+
+|**Purpose**                | XNAT deployment                                       |
++---------------------------+-------------------------------------------------------+
+|**Features**               | - XNAT 1.5                                            |
+|                           | - 64-bit only                                         |
+|                           | - Based on NeuroDebian VM appliance                   |
++---------------------------+-------------------------------------------------------+
+|**Pre-installed Software** | Custom:                                               |
+|                           |   XNAT                                                |
++---------------------------+-------------------------------------------------------+
+|**Download**               | `XNAT 1.5.0 NeuroDebian VM <xnat_vm_image>`_          |
++---------------------------+-------------------------------------------------------+
+
+.. _xnat_vm_image: http://neuro.debian.net/_files/contrib/NeuroDebian_6.0.2+XNAT1.5.0-1_amd64.ova
 
 
-Cloud Environments
-==================
+JIST Development Virtual Machine
+--------------------------------
 
-* NITRC?
+http://www.nitrc.org/projects/jist
 
 
-Cloud Images
-============
+Cloud Solutions
+===============
 
-* UK Grant project
-* INCF Cloud App?
+NeuroCloud
+----------
+
+http://gow.epsrc.ac.uk/ViewGrant.aspx?GrantRef=EP/I016856/1
+
+..  * INCF Cloud App?
+
+..  * NITRC?
 
 
 .. include:: link_names.txt
