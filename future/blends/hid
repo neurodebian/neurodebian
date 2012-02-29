@@ -1,0 +1,22 @@
+Source: hid
+Tasks: debian-science/neuroscience-cognitive,
+	   debian-med/imaging,
+	   debian-med/cms
+Homepage: http://www.nitrc.org/projects/hid
+Author: BIRN http://www.birncommunity.org/
+Language: java
+License: BSD, BIRN
+Version: 2.2
+Pkg-Description: database management system for clinical imaging
+ The Human Imaging Database (HID) is an extensible database management
+ system developed to handle the increasingly large and diverse
+ datasets collected as part of the MBIRN and FBIRN collaboratories and
+ throughout clinical imaging communities at large.
+Published-Title: A National Human Neuroimaging Collaboratory Enabled
+ By The Biomedical Informatics Research Network (BIRN)
+Published-Authors: Keator, D.B.; Grethe, J.S.; Marcus, D.; Ozyurt, B.;
+ Gadde, S.; Murphy, S.; Pieper, S.; Greve, D.;Notestine, R.; Bockholt,
+ H.J.; Papadopoulos, P.
+Published-In: IEEE Transactions on Information Technology in
+ Biomedicine, 12 (2)
+Published-Year: 2008

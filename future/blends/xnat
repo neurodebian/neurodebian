@@ -1,6 +1,7 @@
 Source: xnat
 Tasks: debian-science/neuroscience-cognitive,
-	   debian-med/imaging
+	   debian-med/imaging,
+	   debian-med/cms
 Homepage: http://www.xnat.org
 Author: Howard Hughes Medical Institute at Washington University in St Louis
 Language: java
