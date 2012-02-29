@@ -34,19 +34,19 @@ USB Stick for Computational Neuroscience by Cengiz Günay
 --------------------------------------------------------
 
 +---------------------------+-------------------------------------------------------+
-|**Author**                 |Cengiz Günay <cgunay@emory.edu>                        |
+|**Author**                 | Cengiz Günay <cengique AT users.sf.net>               |
 +---------------------------+-------------------------------------------------------+
-|**Homepage**               | N/A                                                   |
+|**Homepage**               | (Why don't we put the blog page here?)                |
 +---------------------------+-------------------------------------------------------+
 |**Purpose**                | Computational neuroscience tools for course-work      |
 +---------------------------+-------------------------------------------------------+
 |**Features**               | - Persistent Storage                                  |
-|                           | - XXX                                                 |
+|                           | - Based on Ubuntu 11.04                               |
 +---------------------------+-------------------------------------------------------+
 |**Pre-installed Software** | NeuroDebian                                           |
 |                           |   Brian (XXX?), XXX                                   |
 |                           | Custom:                                               |
-|                           |   Genesis, Neuron, XPPAUT                             |
+|                           |   Genesis 2.3, Neuron 7.2, XPPAUT 6.10                |
 +---------------------------+-------------------------------------------------------+
 |**Download**               | http://neuro.debian.net/debian/live/3rd/XXX.iso [2GB] |
 +---------------------------+-------------------------------------------------------+
