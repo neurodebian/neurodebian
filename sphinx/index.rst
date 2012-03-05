@@ -36,6 +36,7 @@ please `report <#contacts>`_ them.
  <a href="vm.html"><img border="0" src="_static/machine.png" title="Get NeuroDebian for your non-Debian computer" /></a>
  <a href="debian/pool"><img border="0" src="_static/pool.png" title="Go to the package pool (deep and cold, only for experts)" /></a>
  <a href="projects.html"><img border="0" src="_static/workarea.png" title="Current and planned projects: Get involved!" /></a>
+ <a href="derivatives.html"><img border="0" src="_static/derivatives.png" title="NeuroDebian Derivatives" /></a>
  <a href="blog/index.html"><img border="0" src="_static/rssfeeds.png" title="NeuroDebian Insider Blog" /></a>
  </p>
 
