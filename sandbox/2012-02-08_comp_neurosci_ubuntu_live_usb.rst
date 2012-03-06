@@ -6,6 +6,12 @@
 A Live Ubuntu/NeuroDebian USB Stick for Computational Neuroscience
 ====================================================================
 
+ .. image:: screenshot-genesis-neuron-xpp.png
+	:width: 150px
+	:alt: View of the desktop running GENESIS, Neuron and XPPAUT
+	:align: right
+	:target: screenshot-genesis-neuron-xpp.png
+
 I prepared an `Ubuntu 11.04`_/NeuroDebian_ live image with computational neuroscience tools for mainly use in USB sticks. This live image will let you run a full `Live Ubuntu Linux`_ system **without installing anything on your hard drives**, and it includes `persistent storage`_ that **maintains new files and packages across reboots**. The system is bundled with several computational neuroscience tools like GENESIS_, NEURON_ and XPPAUT_. It is made to fit in USB sticks of size >1GB. To use it, you will have to restart your PC with the USB stick inserted. After you turn on your computer, you will possibly also need to bring up your boot menu and choose to boot from the USB stick (most likely by pressing F10 or F12). 
 
 .. _`Ubuntu 11.04`: http://help.ubuntu.com/11.04/ubuntu-help/index.html
@@ -33,6 +39,17 @@ As a first precaution, the USB stick should be routinely backed up. You can also
  2. REGULARLY BACKUP DATA FROM USB STICK ONTO HARD DRIVE
 
 *Disclaimer: I take no responsibility over lost data whatsoever. By using this image, you assume all responsibility of your data.*
+
+Installing the ISO image onto a USB flash drive:
+------------------------------------------------
+Download the ISO image from the `NeuroDebian Derivatives page`_. Use a
+utility like UNetBootin_ to install the ISO image on your USB
+drive. Keep the persistent space setting at zero, as otherwise it
+will overwrite our image. *Simply extracting the ISO would not work as
+the media needs to be set to bootable.*
+
+.. _UNetBootin: http://unetbootin.sourceforge.net/
+.. _`NeuroDebian Derivatives page`: http://neuro.debian.net/derivatives.html
 
 Copying files to your hard drives:
 -----------------------------------
@@ -77,7 +94,9 @@ Which should give you root access. And then run the disk check:
 
  # e2fsck -p /cdrom/casper-rw
 
-Press "y" and enter for the questions that it asks. Should not ask more than 10-20 of them. After this you should be able to reboot back into the Live Ubuntu.
+Press "y" and enter for the questions that it asks. Should not ask
+more than 10-20 of them. After this you should be able to reboot back
+into the Live Ubuntu.
 
 Installing Ubuntu completely on your hard drive for dual booting
 ----------------------------------------------------------------
@@ -85,11 +104,24 @@ Click on the "Install Ubuntu 11.04" link on the Desktop and follow the instructi
 
 Other troubleshooting:
 ----------------------
-This Live USB Stick is completely based on a Ubuntu 11.04 Live CD distribution. Please refer to their thorough documentation for further issues: https://help.ubuntu.com/community/LiveCD
+This Live USB Stick is completely based on a Ubuntu 11.04 Live CD
+distribution. Please refer to their thorough documentation for further
+issues: https://help.ubuntu.com/community/LiveCD
+
+.. admonition:: Revision History
+
+ *v2*, by CG on 2012-03-06
+  Included the NeuroDebian repository, and installed
+  XPPAUT and python-brian (with all python dependencies for
+  computational modeling) packages.
+
+ *v1*, by CG on 2012-01-31
+  Initial version with manual installations of GENESIS, NEURON and
+  XPPAUT onto Ubuntu 11.04 Live CD.  
 
 .. admonition:: Created by...
 
-  | *v1* created on 2012-01-31 for use at the `Emory University <http://www.emory.edu>`_ BIO450/IBS534 Computational Neuroscience Course by Cengiz Gunay <cgunay AT emory.edu>, <cengique AT users.sf.net>
+  | Created for use at the `Emory University <http://www.emory.edu>`_ BIO450/IBS534 Computational Neuroscience Course by Cengiz Gunay <cgunay AT emory.edu>, <cengique AT users.sf.net>
 
  .. image:: CC_by_3.0_88x31.png
 	:alt: Creative Commons License
