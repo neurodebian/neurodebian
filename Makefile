@@ -9,7 +9,7 @@ pics:
 	$(MAKE) -C artwork
 
 
-html: pics # source
+html: pics source
 	rsync -rvlhpt sphinx/ build/src
 	cd artwork;	cp button_w200.png logo_tuned/fmri_w200.png ../build/src/_static; cd ..
 	cp 3rd/jquery.livetwitter/jquery.livetwitter.min.js build/src/_static
