@@ -10,7 +10,7 @@ pics:
 
 
 html: pics source
-	rsync -rvlhp sphinx/ build/src
+	rsync -rvlhpt sphinx/ build/src
 	cd artwork;	cp button_w200.png logo_tuned/fmri_w200.png ../build/src/_static; cd ..
 	cp 3rd/jquery.livetwitter/jquery.livetwitter.min.js build/src/_static
 	cd build/src && $(MAKE) html BUILDDIR=$(CURDIR)/build 2>&1
