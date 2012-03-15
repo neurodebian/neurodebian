@@ -52,3 +52,15 @@ Individual Laboratories and Researchers
 
    [...] those wonderful tools in Debian Neuro [...] make my life as a
    researcher who also maintains a bunch of Debian boxes so much easier.
+
+.. quote::
+   :author: Dr. Jo Etzel
+   :affiliation: Department of Psychology, Washington University
+   :date: 2012-03-15
+   :tags: vm
+
+   I am a dedicated R user ... and have a Windows box. But this
+   afternoon I (finally) downloaded and installed NeuroDebian and the
+   VirtualBox, ran AFNI, and generated the files I needed, all within
+   about an hour and a half. [...] not bad, considering that I know
+   essentially no Linux/Unix. So here's a big "thanks!" :)
