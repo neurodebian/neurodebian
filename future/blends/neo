@@ -1,12 +1,13 @@
 Source: neo
 Tasks: debian-science/electrophysiology
 Homepage: http://neuralensemble.org/trac/neo
+Responsible: NeuroDebian Team <team@neuro.debian.net>
 License: BSD
 Author: Samuel Garcia, Pierre Yger, Luc Estabanez, Andrew Davison, Yury V. Zaytsev
 Language: Python
 Version: 0.2
 WNPP: 659691
-Vcs-SVN: https://neuralensemble.org/svn/neo/
+Vcs-Svn: https://neuralensemble.org/svn/neo/
 Pkg-Description: IO library for electrophysiological data formats in Python
  NEO stands for Neural Ensemble Objects and is a project to provide common
  class names and concepts for dealing with electro-physiological (in vivo

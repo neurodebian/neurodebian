@@ -59,7 +59,7 @@ repository mirror close to you, and run the little shell script snippet that is
 presented to you. After having updated you package lists you are ready to go.
 
 If you are not running Debian or Ubuntu on your machine, you can also install
-the `NeuroDebian virtual machine`_ which is able to utilize multiple CPU-core.
+the `NeuroDebian virtual machine`_ which is able to utilize multiple CPU-cores.
 The remaining setup steps apply to VM users as well.
 
 .. _NeuroDebian virtual machine: http://neuro.debian.net/vm.html

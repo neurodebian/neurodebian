@@ -191,7 +191,7 @@ communication channels within the NeuroDebian community
 * neurodebian-users_: Discussions and support of NeuroDebian users
 
 * neurodebian-upstream_: General discussions and knowledge sharing
-  among developers of the neuroscience software.  We will also use it
+  among developers of neuroscience software.  We also use it
   to update you with summaries of recent relevant developments in
   Debian project
 
@@ -235,6 +235,11 @@ If your are interested in mirroring the repository, please see the :ref:`faq`.
 
 Publications
 ============
+
+Hanke, M. (2012). `The why and how of getting packaged
+<_files/Hanke_GetPackaged_CodeJam5_2012.pdf>`_.
+*Talk given at BrainScaleS CodeJam 5, Convergence in Computational Neuroscience*,
+University of Edinburgh, Edinburgh, UK.
 
 Halchenko, Y.O. & Hanke, M. (2012). `Environments for efficient
 contemporary research in neuroimaging: PyMVPA and NeuroDebian

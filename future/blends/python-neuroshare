@@ -1,0 +1,23 @@
+Source: python-neuroshare
+Tasks: debian-science/electrophysiology
+Homepage: https://github.com/G-Node/python-neuroshare
+Responsible: NeuroDebian Team <team@neuro.debian.net>
+License: LGPL-2.1
+Author: Christian Kellner <gicmo@gnome.org>
+Language: Python
+Version: 0.8.4
+WNPP: 663116
+Vcs-Git: https://github.com/G-Node/python-neuroshare
+Pkg-Description: Python interface and tools for Neuroshare
+ The Neuroshare API is an interface for accessing electrophysiology data
+ from files in proprietary formats. To do so it uses vendor-provided
+ shared libraries that can be downloaded free of charge.
+ .
+ This package provides a high-level Python interface to the Neuroshare
+ API that focuses on convenience for the user and enables access to
+ all available metadata and data. The data is returned in NumPy arrays,
+ which provides a quick route to further examination and analysis.
+ .
+ In addition, this package contains the ns2hdf converter tool that
+ converts neuroshare-compatible files into the HDF5 (Hierarchical Data
+ Format, version 5) file format.
