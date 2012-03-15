@@ -236,6 +236,11 @@ If your are interested in mirroring the repository, please see the :ref:`faq`.
 Publications
 ============
 
+Hanke, M. (2012). `The why and how of getting packaged
+<_files/Hanke_GetPackaged_CodeJam5_2012.pdf>`_.
+*Talk given at BrainScaleS CodeJam 5, Convergence in Computational Neuroscience*,
+University of Edinburgh, Edinburgh, UK.
+
 Halchenko, Y.O. & Hanke, M. (2012). `Environments for efficient
 contemporary research in neuroimaging: PyMVPA and NeuroDebian
 <_files/HalchenkoHanke_ContemporaryNeuroimaging_PENN2012.pdf>`_.
