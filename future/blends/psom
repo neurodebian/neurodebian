@@ -1,0 +1,24 @@
+Source: psom
+Tasks: debian-science/distributedcomputing
+Homepage: http://code.google.com/p/psom/
+Responsible: NeuroDebian Team <team@neuro.debian.net>
+Language: Matlab/Octave
+Author: Pierre Bellec
+License: MIT/Expat
+Pkg-Description: pipeline system for Octave and Matlab
+ PSOM is a lightweight library to manage complex multi-stage data processing. A
+ pipeline is a collection of jobs, i.e. Matlab or Octave code with a well
+ identified set of options that are using files for inputs and outputs. To
+ use PSOM, the only requirement is to generate a description of a pipeline in
+ the form of a simple Matlab/Octave structure. PSOM then automatically offers
+ the following services:
+ .
+  * Run jobs in parallel using multiple CPUs or within a distributed computing
+    environment.
+  * Generate log files and keep track of the pipeline execution. These logs are
+    detailed enough to fully reproduce the analysis.
+  * Handle job failures: successful completion of jobs is checked and failed
+    jobs can be restarted.
+  * Handle updates of the pipeline: change options or add jobs and let PSOM
+    figure out what to reprocess.
+
