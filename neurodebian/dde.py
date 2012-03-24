@@ -4,18 +4,21 @@
 
 import pysvn
 import json
-from debian_bundle import deb822
 import numpy as np
-import jinja2
+
+from ConfigParser import SafeConfigParser
+from optparse import OptionParser, OptionGroup, OptionConflictError
 
 # Lets first assure no guarding (but annoying) warnings
 import warnings
 warnings.simplefilter('ignore', FutureWarning)
-warnings.filterwarnings('ignore', 'Module debian_bundle was already imported.*', UserWarning)
+warnings.filterwarnings('ignore',
+                        'Module debian_bundle was already imported.*', UserWarning)
 
-import apt
-from ConfigParser import SafeConfigParser
-from optparse import OptionParser, Option, OptionGroup, OptionConflictError
+from debian import deb822
+import apt                              # initializes the "_system" ;)
+from apt_pkg import version_compare
+
 import sys
 import os
 import copy
@@ -26,6 +29,7 @@ import codecs
 import subprocess
 import time
 import re
+
 # templating
 from jinja2 import Environment, PackageLoader
 
@@ -419,7 +423,7 @@ def dde_get(url, fail=False):
     # enforce delay to be friendly to DDE
     time.sleep(3)
     try:
-        data = json.read(urllib2.urlopen(url+"?t=json").read())['r']
+        data = json.load(urllib2.urlopen(url+"?t=json"))['r']
         print "SUCCESS:", url
         return data
     except urllib2.HTTPError, e:
@@ -436,7 +440,7 @@ def dde_get(url, fail=False):
     except (StopIteration):
         print "NOINFO:", url
         return False
-    except json.ReadException, e:
+    except Exception, e:
         print "UDD-DOWN?:", url, type(e)
         return False
 
@@ -446,7 +450,7 @@ def nitrc_get(spec, fail=False):
     try:
         # change into this from python 2.6 on
         #data = json.loads(urllib2.urlopen(nitrc_url + '?spec=%s' % spec).read())
-        data = json.read(urllib2.urlopen(nitrc_url + '?spec=%s' % spec).read())
+        data = json.load(urllib2.urlopen(nitrc_url + '?spec=%s' % spec))
         print "NITRC-SUCCESS:", spec
     except urllib2.HTTPError, e:
         print "NITRC-NOINFO:", spec, type(e)
@@ -534,8 +538,8 @@ def import_dde(cfg, db):
                 info[distkey]['architecture'] = [info[distkey]['architecture']]
             # accumulate data for multiple over archs
             else:
-                comp = apt.VersionCompare(cp['version'],
-                                          info[distkey]['version'])
+                comp = version_compare(cp['version'],
+                                                   info[distkey]['version'])
                 # found another arch for the same version
                 if comp == 0:
                     info[distkey]['architecture'].append(cp['architecture'])
