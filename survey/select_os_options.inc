@@ -7,6 +7,7 @@
 <option value="scilinux" label="Scientific Linux">Scientific Linux</option>
 <option value="debian" label="Debian">Debian</option>
 <option value="ubuntu" label="Ubuntu">Ubuntu</option>
+<option value="mint" label="Linux Mint">Linux Mint</option>
 <option value="biolinux" label="BioLinux">BioLinux</option>
 <option value="slel" label="Suse Enterprise Linux">Suse Enterprise Linux</option>
 <option value="suse" label="OpenSuse">OpenSuse</option>

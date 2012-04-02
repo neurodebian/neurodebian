@@ -2,9 +2,6 @@
 Scientific software usage in neuroscience research
 ==================================================
 
-**Survey for 2011 is already closed and no new submissions accepted.**
-Please visit `2011 survey results <results.html>`_ page.
-
 This survey should take about five minutes. Immediately after submission you
 will be presented with some statistics on previous responses. Please try to
 answer as many questions as you can, but don't worry if you cannot answer all
@@ -110,6 +107,8 @@ What is your position?
    <option value="ra" label="Research assistant">Research assistant</option>
    <option value="researcher" label="Other researcher">Other researcher</option>
    <option value="sysadmin" label="System administrator">System administrator</option>
+   <option value="developer" label="Software developer">Software developer</option>
+   <option value="technician" label="Technician/Engineer">Technician/Engineer</option>
    </select>
    </td></tr><tr><td>
 
@@ -133,7 +132,7 @@ What type of data are you working with? Please check all items that apply.
    </td></tr></table>
    </td></tr><tr class="oddrow"><td>
 
-Are you developing software that is intended to be used by other researchers?
+Are you developing software that is intended to be used by others?
 
 .. raw:: html
 
@@ -878,34 +877,38 @@ Electrophysiology, MEG/EEG
    <td class="response"><input type="checkbox" name="sw_electro" value="asa" />ASA</td>
    <td class="response"><input type="checkbox" name="sw_electro" value="besa" />BESA</td>
    <td class="response"><input type="checkbox" name="sw_electro" value="biosig" />BioSig</td>
+   <td class="response"><input type="checkbox" name="sw_electro" value="brainbay" />BrainBay</td>
    <td class="response"><input type="checkbox" name="sw_electro" value="brainstorm" />BrainStorm</td>
    <td class="response"><input type="checkbox" name="sw_electro" value="brainsuite" />BrainSuite</td>
-   <td class="response"><input type="checkbox" name="sw_electro" value="brainvisionanalyzer" />Brainvision Analyzer</td>
    </tr><tr class="oddrow">
+   <td class="response"><input type="checkbox" name="sw_electro" value="brainvisionanalyzer" />Brainvision Analyzer</td>
    <td class="response"><input type="checkbox" name="sw_electro" value="chronus" />Chronux</td>
    <td class="response"><input type="checkbox" name="sw_electro" value="eeglab" />EEGLAB</td>
    <td class="response"><input type="checkbox" name="sw_electro" value="elekta" />Elekta Neuromag</td>
    <td class="response"><input type="checkbox" name="sw_electro" value="emse" />EMSE</td>
    <td class="response"><input type="checkbox" name="sw_electro" value="fieldtrip" />Fieldtrip</td>
-   <td class="response"><input type="checkbox" name="sw_electro" value="fmatoolbox" />FMAToolbox</td>
    </tr><tr>
+   <td class="response"><input type="checkbox" name="sw_electro" value="fmatoolbox" />FMAToolbox</td>
    <td class="response"><input type="checkbox" name="sw_electro" value="klustakwik" />KlustaKwik</td>
    <td class="response"><input type="checkbox" name="sw_electro" value="klusters" />Klusters</td>
    <td class="response"><input type="checkbox" name="sw_electro" value="loreta" />LORETA/sLORETA</td>
    <td class="response"><input type="checkbox" name="sw_electro" value="mclust" />MClust</td>
    <td class="response"><input type="checkbox" name="sw_electro" value="mne" />MNE suite</td>
-   <td class="response"><input type="checkbox" name="sw_electro" value="ndmanager" />NDManager</td>
    </tr><tr class="oddrow">
+   <td class="response"><input type="checkbox" name="sw_electro" value="ndmanager" />NDManager</td>
    <td class="response"><input type="checkbox" name="sw_electro" value="neuroexplorer" />NeuroExplorer</td>
    <td class="response"><input type="checkbox" name="sw_electro" value="neuroscan" />Neuroscan</td>
    <td class="response"><input type="checkbox" name="sw_electro" value="neuroscope" />NeuroScope</td>
    <td class="response"><input type="checkbox" name="sw_electro" value="neuroshare" />Neuroshare</td>
+   <td class="response"><input type="checkbox" name="sw_electro" value="openeeg" />OpenEEG</td>
+   </tr><tr>
    <td class="response"><input type="checkbox" name="sw_electro" value="openelectrophy" />Openelectrophy</td>
    <td class="response"><input type="checkbox" name="sw_electro" value="openmeeg" />OpenMEEG</td>
-   </tr><tr>
    <td class="response"><input type="checkbox" name="sw_electro" value="plexon" />Plexon</td>
    <td class="response"><input type="checkbox" name="sw_electro" value="relacs" />Relacs</td>
+   <td class="response"><input type="checkbox" name="sw_electro" value="svarog" />Svarog</td>
    <td class="response"><input type="checkbox" name="sw_electro" value="rtxi" />RTXI</td>
+   </tr><tr>
    <td class="response"><input type="checkbox" name="sw_electro" value="trellis" />Trellis-neuro</td>
    </tr></table>
 
