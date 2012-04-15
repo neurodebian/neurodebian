@@ -1,7 +1,8 @@
-:date: 2012-04-14 22:05:00
+:date: 2012-04-14 22:16:00
 :tags: debian, neuroscience, software, development, packages, virtualization
 
 .. _chap_ndtools_build:
+
 
 NeuroDebian nd* tools
 =====================
@@ -13,12 +14,13 @@ Debian unstable (the entry point of packages into Debian) but also for
 Debian testing and stable, and Ubuntu releases.  To automate such
 procedure we prepared few rudimentary wrappers around cowbuilder_
 allowing to build packages in isolated environment.  Also we provide a
-backport-dsc_ script to ease backporting with optional application
+backport-dsc_ script to ease backporting with optional application of
 per-release patchsets.  In this blog post we would like to introduce
 you to these tools.  They will be of use for anyone working on a
-package intended to be uploaded to NeuroDebian_ repository.  With a
+package intended to be uploaded to NeuroDebian_ repository or anyone
+interested to verify if package could be easily backported.  With a
 single command you will be able to build a given Debian source package
-across distributions.  As a result it verifies that there are no
+across distributions.  As a result you will verify that there are no
 outstanding backport-ability issues or compatibility problems with
 core components (e.g. supported versions of Python) if your source
 package excercises test suites at build time.
@@ -81,7 +83,7 @@ Troubleshooting Failing Build
 -----------------------------
 
 Provide ``--hookdir`` cmdline pbuilder argument to point to a hook
-which would get kicked in by pbuilder upon failure, e.g.:
+which would get kicked in by pbuilder upon failure, e.g.::
 
    sudo apt-get install git
    git clone https://github.com/neurodebian/neurodebian
