@@ -47,6 +47,10 @@ def plot_datehist(ax, data, bins, suites, title=None, ymax=None):
         # make approx monthly bins, smaller bins yield spiky curves
         # needs new=True to work with oldish numpy
         (hist, bin_edges) = np.histogram(dates, np.ceil(history_length/30.), new=True)
+        if len(bin_edges) < 2:
+            # protect against single data point entries by ignoring them
+            # wouldn't be able to draw a line anyway ;-)
+            continue
         width = bin_edges[1] - bin_edges[0]
         # think lines
         ax.plot(bin_edges[:-1]+(width/2), hist / width,
