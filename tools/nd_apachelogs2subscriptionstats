@@ -1,8 +1,10 @@
 #!/usr/bin/python
+# emacs: -*- mode: python; py-indent-offset: 4; indent-tabs-mode: nil -*-
+# vi: set ft=python sts=4 ts=4 sw=4 et:
 #
 # Create a figure with the NeuroDebian repo subscription stats from the apache logs
-# Requires out put of 
-# zgrep "GET /lists/[a-z\.]\+ HTTP" neuro.debian.net-*access*gz | sed -e 's,.*gz:\([0-9\.]\+\).*\[\(.*\):.*:.*:.*/lists/\(.*\) HTTP.*,\2;\3;\1,' -e 's,/, ,g'
+# Requires out put of
+#  zgrep "GET /lists/[-a-z\.]\+ HTTP" neuro.debian.net-*access.log* | sed -e 's,[^:]*:\([0-9\.]\+\).*\[\(.*\):.*:.*:.*/lists/\(.*\) HTTP.*,\2;\3;\1,' -e 's,/, ,g'
 # either from a file or on stdin. Needs output filename as the only argument
 
 import fileinput
@@ -12,7 +14,7 @@ import numpy as np
 import matplotlib
 matplotlib.use('Agg')
 import pylab as pl
-from matplotlib.dates import date2num
+from matplotlib.dates import date2num, num2date
 from matplotlib.dates import YearLocator, MonthLocator, DateFormatter
 from matplotlib.font_manager import FontProperties
 from ConfigParser import SafeConfigParser
@@ -26,10 +28,25 @@ dt = [('ip', '|S16'),
 
 def make_figure(data, ymax):
     fig = pl.figure(figsize=(14,3))
-    ax = fig.add_subplot(121)
-    plot_datehist(ax, data, 10, [code for code in cfg.options('release codenames') if cfg.get('release codenames', code).count('Debian')], title="Debian", ymax=ymax)
-    ax = fig.add_subplot(122)
-    plot_datehist(ax, data, 10, [code for code in cfg.options('release codenames') if cfg.get('release codenames', code).count('Ubuntu')], title="Ubuntu", ymax=ymax)
+    distros = ('Debian', 'Ubuntu')
+    # Sorting is actually seems to be not needed on Python 2.7
+    # which probably returns release codenames in the order as
+    # in the config file which is already correct
+    # But since our server is still on previous stable release
+    # let's sort for now explicitly
+    # 9999 for 'nd' == 'sid'
+    sorting_ids = dict([(x[0], len(x[1])>2 and float(x[1][2:]) or 9999)
+                        for x in cfg.items('release backport ids')])
+    for idistro, distro in enumerate(distros):
+        ax = fig.add_subplot(1, len(distros), idistro+1)
+        suites = [code for code in cfg.options('release codenames')
+                  if cfg.get('release codenames', code).count(distro)]
+        # sort suites according to backport ids
+        # and in reverse order so the freshiest is on top
+        suites = sorted(suites,
+                        cmp=lambda x,y: cmp(sorting_ids[x], sorting_ids[y]),
+                        reverse=True)
+        plot_datehist(ax, data, 10, suites, title=distro, ymax=ymax)
     fig.autofmt_xdate()
     return fig
 
@@ -46,7 +63,12 @@ def plot_datehist(ax, data, bins, suites, title=None, ymax=None):
         history_length = dates.max() - dates.min()
         # make approx monthly bins, smaller bins yield spiky curves
         # needs new=True to work with oldish numpy
-        (hist, bin_edges) = np.histogram(dates, np.ceil(history_length/30.), new=True)
+        (hist, bin_edges) = np.histogram(dates, np.ceil(history_length/30.))
+        if False:
+            # debug output ;-)
+            print dates.min(), num2date(dates.min()), dates.max(), \
+                  num2date(dates.max()), history_length
+            print bin_edges
         if len(bin_edges) < 2:
             # protect against single data point entries by ignoring them
             # wouldn't be able to draw a line anyway ;-)
@@ -95,6 +117,7 @@ if __name__ == '__main__':
         print 'Need output filename.'
         sys.exit(1)
     cfg_path="/home/neurodebian/neurodebian.git/neurodebian.cfg"
+    #cfg_path="../neurodebian.cfg"
     cfg = SafeConfigParser()
     cfg.read(cfg_path)
     data = []
