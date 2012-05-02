@@ -108,4 +108,4 @@ if __name__ == '__main__':
         date = datetime.strptime(date, "%d %b %Y")
         data.append((ip.strip(), loc, suite, date2num(date)))
     data = np.array(data, dtype=dt)
-    make_figure(data, ymax=13).savefig(sys.argv[1], bbox_inches='tight', dpi=60)
+    make_figure(data, ymax=18).savefig(sys.argv[1], bbox_inches='tight', dpi=60)
