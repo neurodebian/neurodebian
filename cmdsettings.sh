@@ -6,9 +6,9 @@ cowbuilderroot="/home/neurodebian"
 buildplace="${cowbuilderroot}/build"
 
 # all cuurently supported dists
-allnddists="nd+debian-lenny nd+debian-squeeze nd+debian-wheezy nd+debian-sid \
+allnddists="nd+debian-squeeze nd+debian-wheezy nd+debian-sid \
             nd+ubuntu-hardy nd+ubuntu-karmic nd+ubuntu-lucid nd+ubuntu-maverick nd+ubuntu-natty nd+ubuntu-oneiric nd+ubuntu-precise"
-alldists="$allnddists debian-lenny debian-squeeze debian-wheezy debian-sid"
+alldists="$allnddists debian-squeeze debian-wheezy debian-sid"
 
 # default is debian
 aptcache="${cowbuilderroot}/debian_aptcache"
