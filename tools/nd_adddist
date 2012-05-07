@@ -22,8 +22,8 @@ fi
 opts="--distribution $dist --debootstrap debootstrap --aptcache $aptcache"
 
 if echo $family | grep -q ubuntu; then
-	# Use ubuntu's keyring since otherwise debootstrap would fail
-	opts+=" --debootstrapopts --keyring=/usr/share/keyrings/ubuntu-archive-keyring.gpg"
+    # Use ubuntu's keyring since otherwise debootstrap would fail
+    opts+=" --debootstrapopts --keyring=/usr/share/keyrings/ubuntu-archive-keyring.gpg"
 fi
 
 mkdir -p ${cowbuilderroot}/cow
