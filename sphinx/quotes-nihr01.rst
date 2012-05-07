@@ -57,7 +57,7 @@ Quotes from NIH R01 grant proposal letters of recommendation
    :tags:  lofs, software distribution, sharing, money, speed
    :group: Research institutions
 
-   Having common software stacks makes sharing much easier, potentially (and silently) saving enormous amounts of money and effort and dramatically increasing efficiently and productivity in not one, but many labs. NeuroDebian is of particular utility in these regards.  
+   Having common software stacks makes sharing much easier, potentially (and silently) saving enormous amounts of money and effort and dramatically increasing efficiently and productivity in not one, but many labs. NeuroDebian is of particular utility in these regards.
 
 
 .. quote::
@@ -67,7 +67,7 @@ Quotes from NIH R01 grant proposal letters of recommendation
    :tags:  lofs, breadth, impact
    :group: Research institutions
 
-   I think that the idea of a common platform that supports a broad range of computational needs for neuroscientists is wonderful, and I am very impressed with the work that you have done so far in the NeuroDebian project.  
+   I think that the idea of a common platform that supports a broad range of computational needs for neuroscientists is wonderful, and I am very impressed with the work that you have done so far in the NeuroDebian project.
 
 
 .. quote::
@@ -124,7 +124,7 @@ Quotes from NIH R01 grant proposal letters of recommendation
    :author: Prof. Brian Avants
    :affiliation: Research Assistant Professor of Radiology, University of Pennsylvania, Philadelphia, USA
    :date: 2010-09-16
-   :tags:  lofs, practices, standartization, mentorship, dissemination, impact
+   :tags:  lofs, practices, standardization, mentorship, dissemination, impact
    :group: Research software projects
 
    The NeuroDebian team taught me a great deal about how to systematize software development for reliable dissemination [...] This speaks very highly of the deep skillset and commitment to user support represented in the NeuroDebian project, which will have high impact on the field and help standardize both the analysis and the interpretation of neuroimaging data.
@@ -154,7 +154,7 @@ Quotes from NIH R01 grant proposal letters of recommendation
    :author: Sebastian Eichelbaum
    :affiliation: OpenWalnut project, Image and Signal Processing Group, Institute of Computer Science, University of Leipzig, Germany
    :date: 2011-06-30
-   :tags:  lofs, mentoring
+   :tags:  lofs, mentorship
    :group: Research software projects
 
    We are currently preparing our first software-release in NeuroDebian and found it to be easy and straight-forward with a great support.
@@ -254,7 +254,7 @@ Quotes from NIH R01 grant proposal letters of recommendation
    :author: Dr. Eilif Muller
    :affiliation: Post-doctoral researcher, Brain Mind Institute, EPFL, Lausanne, Switzerland
    :date: 2010-09-09
-   :tags:  lofs, reproducibility, standartization, breadth
+   :tags:  lofs, reproducibility, standardization, breadth
    :group: Research software projects
 
    I am constantly aware that software packaging and supporting user needs on diverse platforms represents a severe burden for developers. The NeuroDebian software platform addresses these problems for a good fraction of production environments in the field, while contributing to research reproducibility through software standardization.  
@@ -277,14 +277,14 @@ Quotes from NIH R01 grant proposal letters of recommendation
    :tags:  lofs, contributions, team
    :group: Research software projects
 
-   Their [NeuroDebian developers] commitment to strongly tested, validated and documented tools for computational-based research in neuroscience is exemplary, and we owe them a great debt of gratitude for the contributions they have already made [...] 
+   Their [NeuroDebian developers] commitment to strongly tested, validated and documented tools for computational-based research in neuroscience is exemplary, and we owe them a great debt of gratitude for the contributions they have already made [...]
 
 
 .. quote::
    :author: Dr. Ariel Rokem
    :affiliation: NiTime developer, Helen Wills Neuroscience Institute, University of California, Berkeley, USA
    :date: 2010-09-15
-   :tags:  lofs, frontier, contributions, speed, standartization, dissemination
+   :tags:  lofs, frontier, contributions, speed, standardization, dissemination
    :group: Research software projects
 
    NeuroDebian is playing a key role in the creation of an ``eco-system'' of open-source solutions for neuroscience  [...] The standards and practices disseminated by the NeuroDebian project allowed me to start using this tool [PsychoPy] efficiently and rapidly and to contribute back to the project within a few months.
@@ -332,7 +332,7 @@ Quotes from NIH R01 grant proposal letters of recommendation
 
 .. quote::
    :author: Prof. Hiroyuki Akama
-   :affiliation: Associate Professor, Graduate School of Decision Science and Technology, Tokyo Institute of Technology, Tokyo, Japan begin{lofquote} I am a heavy user of NeuroDebian-Virtual Machine on Windows 64-bit platform. end{lofquote}
+   :affiliation: Associate Professor, Graduate School of Decision Science and Technology, Tokyo Institute of Technology, Tokyo, Japan
    :date: 2011-06-15
    :tags:  lofs, vm
    :group: Individual laboratories and researchers
@@ -357,7 +357,7 @@ Quotes from NIH R01 grant proposal letters of recommendation
    :tags:  lofs, support
    :group: Individual laboratories and researchers
 
-   Both the software and online support forums provided by NeuroDebian have been invaluable for my machine-learning studies of fMRI data.  
+   Both the software and online support forums provided by NeuroDebian have been invaluable for my machine-learning studies of fMRI data.
 
 
 .. quote::
@@ -377,7 +377,7 @@ Quotes from NIH R01 grant proposal letters of recommendation
    :tags:  lofs, speed, quality
    :group: Individual laboratories and researchers
 
-   I am writing this letter in support of the NeuroDebian team, whose efforts at producing high-quality free, open-source software have been invaluable to my graduate research.  
+   I am writing this letter in support of the NeuroDebian team, whose efforts at producing high-quality free, open-source software have been invaluable to my graduate research.
 
 
 .. quote::
