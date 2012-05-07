@@ -26,6 +26,11 @@ if echo $family | grep -q ubuntu; then
     opts+=" --debootstrapopts --keyring=/usr/share/keyrings/ubuntu-archive-keyring.gpg"
 fi
 
+if echo $family | grep -q debian; then
+    # Use debian keyring since otherwise debootstrap would fail (on Ubuntu)
+    opts+=" --debootstrapopts --keyring=/usr/share/keyrings/debian-archive-keyring.gpg"
+fi
+
 mkdir -p ${cowbuilderroot}/cow
 
 for a in i386 amd64; do
