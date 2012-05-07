@@ -319,6 +319,7 @@ efficient, more open, and more fun
    photoalbum
    projects
    testimonials
+   testimonials-topics
 
 .. probably should be purged altogether
 .. toctree::

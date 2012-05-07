@@ -12,6 +12,14 @@ Testimonials
 ..    :group: Organizations
 
 
+By Topic
+--------
+
+* :ref:`testimonials_open_science`
+* :ref:`testimonials_standardization`
+* :ref:`testimonials_vm`
+
+
 Research Institutions
 ---------------------
 
