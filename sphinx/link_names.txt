@@ -66,6 +66,8 @@
 .. _doctest-mode: http://www.cis.upenn.edu/~edloper/projects/doctestmode/
 .. _nose: http://somethingaboutorange.com/mrl/projects/nose
 .. _`python coverage tester`: http://nedbatchelder.com/code/modules/coverage.html
+.. _screen: http://www.gnu.org/software/screen/
+.. _ccache: http://ccache.samba.org/
 
 .. Other python projects
 .. _numpy: http://www.scipy.org/NumPy
@@ -131,6 +133,7 @@
 .. _RTAI: https://www.rtai.org
 .. |RTAI| replace:: :abbr:`RTAI (Real Time Application Interface)`
 .. _Lin4Neuro: http://www.nemotos.net/lin4neuro
+.. _fail2ban: http://www.fail2ban.org
 
 .. Functional imaging labs
 .. _`functional imaging laboratory`: http://www.fil.ion.ucl.ac.uk
