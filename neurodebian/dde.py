@@ -705,11 +705,14 @@ def generate_pkgpage(pkg, cfg, db, template, addenum_dir, extracts_dir):
         ex_dir = os.path.join(extracts_dir, pkgdb['main']['sv'].split()[0])
         if not os.path.exists(ex_dir):
             ex_dir = None
+    long_description = 'Description missing'
+    if 'long_description' in pkgdb['main']:
+        long_description=convert_longdescr(
+                    assure_unicode(pkgdb['main']['long_description']))
     page = template.render(
             pkg=pkg,
             title=title,
-            long_description=convert_longdescr(
-                assure_unicode(pkgdb['main']['long_description'])),
+            long_description=long_description,
             cfg=cfg,
             db=pkgdb,
             fulldb=db,
