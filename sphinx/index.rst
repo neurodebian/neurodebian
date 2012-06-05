@@ -236,6 +236,11 @@ If your are interested in mirroring the repository, please see the :ref:`faq`.
 Publications
 ============
 
+Halchenko, Y. O. & Hanke, M. (2012). `Open is not enough. Let’s take the
+next step: An integrated, community-driven computing platform for neuroscience
+<http://dx.doi.org/10.3389/fninf.2012.00022>`_. *Frontiers in Neuroinformatics*,
+6:22.
+
 Hanke, M. (2012). `The why and how of getting packaged
 <_files/Hanke_GetPackaged_CodeJam5_2012.pdf>`_.
 *Talk given at BrainScaleS CodeJam 5, Convergence in Computational Neuroscience*,
