@@ -246,7 +246,7 @@ Hanke, M. (2012). `The why and how of getting packaged
 *Talk given at BrainScaleS CodeJam 5, Convergence in Computational Neuroscience*,
 University of Edinburgh, Edinburgh, UK.
 
-Halchenko, Y.O. & Hanke, M. (2012). `Environments for efficient
+Halchenko, Y. O. & Hanke, M. (2012). `Environments for efficient
 contemporary research in neuroimaging: PyMVPA and NeuroDebian
 <_files/HalchenkoHanke_ContemporaryNeuroimaging_PENN2012.pdf>`_.
 *Talk given at the University of Pennsylvania School of Medicine*,
