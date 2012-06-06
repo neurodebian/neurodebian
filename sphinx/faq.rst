@@ -174,5 +174,16 @@ package that is available from the NeuroDebian repository. Alternatively:
    as root or use sudo).
 
 
+How can I cite NeuroDebian?
+---------------------------
+
+Please cite the following paper:
+
+  Halchenko, Y. O. & Hanke, M. (2012). `Open is not enough. Let’s take the
+  next step: An integrated, community-driven computing platform for neuroscience
+  <http://www.frontiersin.org/Neuroinformatics/10.3389/fninf.2012.00022/full>`_.
+  *Frontiers in Neuroinformatics*, 6:22.
+
+
 .. include:: link_names.txt
 .. include:: substitutions.txt

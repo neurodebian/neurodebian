@@ -10,6 +10,19 @@ make more people aware of Debian_ and NeuroDebian_ in particular.
 Sharing your positive experience with your friends and/or colleagues
 is one possibility. Alternatively you could...
 
+Cite NeuroDebian in your publications
+-------------------------------------
+
+If you conduct your research using NeuroDebian services, for example, the
+NeuroDebian repository, the NeuroDebian Virtual machine, or software that is
+maintained by the NeuroDebian team on Debian, Ubuntu, or some other derivative,
+please cite this paper:
+
+  Halchenko, Y. O. & Hanke, M. (2012). `Open is not enough. Let’s take the
+  next step: An integrated, community-driven computing platform for neuroscience
+  <http://www.frontiersin.org/Neuroinformatics/10.3389/fninf.2012.00022/full>`_.
+  *Frontiers in Neuroinformatics*, 6:22.
+
 
 Rate or review
 --------------
@@ -23,11 +36,12 @@ Connect with us
 ---------------
 
 We are not on Facebook. But if you are a NeuroDebian user, contributor, or
-simply a fan you are more than welcome to follow us on identi.ca_ or join
-the `NeuroDebian group on LinkedIn`_.
+simply a fan you are more than welcome to follow us on identi.ca_ or join the
+`NeuroDebian group on LinkedIn`_, put NeuroDebian in your circles on `Google+`_.
 
 .. _identi.ca: http://identi.ca/neurodebian
 .. _NeuroDebian group on LinkedIn: http://www.linkedin.com/groups?gid=3694689
+.. _Google+: http://
 
 Reference from your website
 ---------------------------

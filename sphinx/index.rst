@@ -7,26 +7,27 @@
 .. quotes::
    :random: 1
 
-The NeuroDebian project provides a turnkey platform for neuroscience
-through integrating of related software within the Debian_ operating
-system.  If you are using neuroscience-related software which
-comes with you installation of Debian_ or its derivative, such as
-Ubuntu_, good chance is that you are already *using NeuroDebian*.
+NeuroDebian provides a turnkey software platform for neuroscience
+that is created by integrating research tools with the Debian_ operating
+system.  If you are using such software on Debian_ or its derivatives,
+such as Ubuntu_, chances are that you are already using NeuroDebian.
 
-This website provides an additional repository with both unofficial
-or prospective packages which are not (yet) available from the main
-Debian_ archive, as well as backported or simply rebuilt newest
-versions of packages.
-NeuroDebian serves as an "upstream" to some :ref:`derivative
-<chap_derivatives>` projects.
-Please see the :ref:`faq` for more information
-about the goals of this project, and :ref:`read what people say about
-it <testimonials>`.  Take a look at the :ref:`list of our current and
-planned projects <projects>` if you want to get involved. If you
-appreciate this service, please |spread|.
-This service is provided "as is". There is no guarantee that a package
-works as expected, so use them at your own risk. If you encounter problems,
-please `report <#contacts>`_ them.
+This website provides a :ref:`supplementary repository <repository_howto>` with
+both unofficial or prospective packages which are not (yet) available from the
+main Debian_ archive, as well as backported or simply rebuilt latest versions
+of software.  NeuroDebian serves as an "upstream" to some :ref:`derivative
+<chap_derivatives>` projects.  Please see the :ref:`faq` for more information
+about the goals of this project, and :ref:`read what people say about it
+<testimonials>`.  Take a look at the :ref:`list of our current and planned
+projects <projects>` if you want to get involved. This service is provided "as
+is". There is no guarantee that a package works as expected, so use them at
+your own risk. If you encounter problems, please `report <#contacts>`_ them.
+Please help us |spread|:
+
+  Halchenko, Y. O. & Hanke, M. (2012). `Open is not enough. Let’s take the
+  next step: An integrated, community-driven computing platform for neuroscience
+  <http://www.frontiersin.org/Neuroinformatics/10.3389/fninf.2012.00022/full>`_.
+  *Frontiers in Neuroinformatics*, 6:22.
 
 .. raw:: html
 
@@ -162,21 +163,21 @@ hardware architecture and then simply add |repos|.
 The team
 ========
 
-Our main goal is to provide neuroscience FOSS_ for Debian_. Thus the
-whole project would not be possible without the work of over 3,000
-Debian_ developers and contributors who are as enthusiastically pursuing
-a similar goal.  To add our share -- Debian_ packages of FOSS_ for
-neuroscience research -- the `Experimental Psychology Debian packaging
-project <http://alioth.debian.org/projects/pkg-exppsy>`_ was created
-to formally join the forces of
+`Michael Hanke <http://mih.voxindeserto.de>`_ and `Yaroslav Halchenko
+<http://www.onerussian.com>`_ originally started NeuroDebian (formerly the
+`Experimental Psychology Debian packaging project
+<http://alioth.debian.org/projects/pkg-exppsy>`_) and are the current project
+leaders. However, the whole project would not be possible without the work of
+over 3,000 Debian_ developers and contributors who are as enthusiastically
+building the Debian operating system.
+A number of packages that are available from the NeuroDebian repository have
+been contributed by various individuals and other teams in Debian, such as
+`Debian Med`_ and `Debian Science`_. We want to express our gratitude to all
+maintainers_ that help to make Debian_ the ultimate software platform for
+neuroscience.
 
-* `Michael Hanke <http://mih.voxindeserto.de>`_
-* `Yaroslav Halchenko <http://www.onerussian.com>`_
+.. _maintainers: pkgs.html#by-maintainer
 
-A number of packages that are now available from the NeuroDebian repository
-were not packaged by our team, but similar Debian teams.  Therefore we want to
-express particular gratitude to the `Debian Med`_ and `Debian Science`_ teams
-for all their work.
 
 .. _support:
 
