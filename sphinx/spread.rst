@@ -41,7 +41,7 @@ simply a fan you are more than welcome to follow us on identi.ca_ or join the
 
 .. _identi.ca: http://identi.ca/neurodebian
 .. _NeuroDebian group on LinkedIn: http://www.linkedin.com/groups?gid=3694689
-.. _Google+: http://
+.. _Google+: https://plus.google.com/104292290917252528951
 
 Reference from your website
 ---------------------------
