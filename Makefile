@@ -2,6 +2,8 @@
 WWW_UPLOAD_URI = ../www
 WWW_DIR = build/html/
 
+WWW_UPLOAD_URI_STATIC=$(WWW_UPLOAD_URI)/_static
+
 # Lentghy one due to updatedb
 all: updatedb upload-website mirmon
 # Quick one -- just rebuilds html if new changes and adjusts the status of the mirrors
@@ -20,7 +22,9 @@ html: pics source
 	mv $(WWW_DIR)/_static/robots.txt $(WWW_DIR)/
 	cp -r build/src/lists $(WWW_DIR)/
 	cp -r sphinx/survey/2011/figures/* $(WWW_DIR)/_images/
-
+	@echo "I: extracting header/trailer to be reused in non-sphinx pages"
+	sed -ne '1,/<!-- HEADNOTES -->/p' $(WWW_DIR)/index.html >| $(WWW_DIR)/_static/index-header.ihtml
+	sed -ne '/<h2>Comments<\/h2>/,$p' $(WWW_DIR)/index.html >| $(WWW_DIR)/_static/index-trailer.ihtml
 
 clean:
 	-rm html-stamp source-stamp upload-website-stamp
@@ -77,6 +81,10 @@ upload-website-stamp: .git/index
 mirmon:
 	# update and generate mirrors report
 	[ -x /usr/bin/mirmon ] && mirmon -q -get update -c mirmon-neurodebian.conf
+	# [ -x $(WWW_UPLOAD_URI_STATIC)/mirrors-check.ihtml ] &&
+	# everything must be in place!
+	cat $(WWW_UPLOAD_URI_STATIC)/{index-header,mirrors-status,index-trailer}.ihtml \
+	 >| $(WWW_UPLOAD_URI)/mirrors-status.html
 
 .PHONY: removedb removecache updatedb upload-website clean distclean pics html mirmon
 
