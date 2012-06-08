@@ -778,6 +778,25 @@ def write_sourceslist(jinja_env, cfg, outdir):
     sl.close()
 
 
+def write_mirmonlists(cfg, outdir):
+    """Write list of mirrors in the format suitable for mirmon
+
+    It will reuse the same 'lists' directory
+    """
+    print "I: Composing mirmon lists"
+    outdir = os.path.join(outdir, 'lists')
+    create_dir(outdir)
+
+    for sec, sep in (('mirrors', ' '),
+                         ('mirror names', ' - ')):
+        entries = ['%s%s%s' % (mirror, sep, cfg.get(sec, mirror))
+                   for mirror in cfg.options('mirrors')]
+        f = open(os.path.join(outdir, 'mirmon-%s.txt' % sec.replace(' ', '-')),
+                 'w')
+        f.write('\n'.join(entries + ['']))
+        f.close()
+
+
 def sort_by_tasks(db):
     tasks = {}
     for pkg in db.keys():
@@ -1033,6 +1052,8 @@ def main():
     write_pkgpages(jinja_env, cfg, db, opts.outdir, opts.addenum_dir, opts.extracts_dir)
 
     write_sourceslist(jinja_env, cfg, opts.outdir)
+
+    write_mirmonlists(cfg, opts.outdir)
 
 if __name__ == "__main__":
     main()
