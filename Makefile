@@ -24,7 +24,7 @@ html: pics source
 	cp -r sphinx/survey/2011/figures/* $(WWW_DIR)/_images/
 	@echo "I: extracting header/trailer to be reused in non-sphinx pages"
 	sed -ne '1,/<!-- HEADNOTES -->/p' $(WWW_DIR)/index.html >| $(WWW_DIR)/_static/index-header.ihtml
-	sed -ne '/<h2>Comments<\/h2>/,$p' $(WWW_DIR)/index.html >| $(WWW_DIR)/_static/index-trailer.ihtml
+	sed -ne '/<h2>Comments<\/h2>/,$$p' $(WWW_DIR)/index.html >| $(WWW_DIR)/_static/index-trailer.ihtml
 
 clean:
 	-rm html-stamp source-stamp upload-website-stamp
