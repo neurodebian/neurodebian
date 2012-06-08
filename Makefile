@@ -2,7 +2,10 @@
 WWW_UPLOAD_URI = ../www
 WWW_DIR = build/html/
 
-all: updatedb upload-website
+# Lentghy one due to updatedb
+all: updatedb upload-website mirmon
+# Quick one -- just rebuilds html if new changes and adjusts the status of the mirrors
+refresh: upload-website-stamp mirmon
 
 
 pics:
@@ -71,5 +74,9 @@ upload-website: html
 upload-website-stamp: .git/index
 	$(MAKE) upload-website
 
-.PHONY: removedb removecache updatedb upload-website clean distclean pics html
+mirmon:
+	# update and generate mirrors report
+	[ -x /usr/bin/mirmon ] && mirmon -q -get update -c mirmon-neurodebian.conf
+
+.PHONY: removedb removecache updatedb upload-website clean distclean pics html mirmon
 
