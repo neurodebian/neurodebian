@@ -81,7 +81,7 @@ upload-website-stamp: .git/index
 mirmon:
 	# update and generate mirrors report
 	[ -x /usr/bin/mirmon ] && mirmon -q -get update -c mirmon-neurodebian.conf 2>&1 \
-        | grep -v 'date: invalid date.*DOCTYPE'
+        | grep -v 'date: invalid date.*DOCTYPE' || :
 	# [ -x $(WWW_UPLOAD_URI_STATIC)/mirrors-check.ihtml ] &&
 	# everything must be in place!
 	cat $(WWW_UPLOAD_URI_STATIC)/{index-header,mirrors-status,index-trailer}.ihtml \
