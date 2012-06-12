@@ -197,3 +197,4 @@
 
 .. more to sort out
 .. _NeuralEnsemble: http://www.neuralensemble.org
+.. _`repository mirror`: http://neuro.debian.net/mirrors-status.html

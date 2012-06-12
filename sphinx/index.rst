@@ -75,7 +75,7 @@ How to use this repository
 ==========================
 
 To enable the NeuroDebian repository on your system, select your Debian or
-Ubuntu release and a repository mirror from the lists below. Upon selection
+Ubuntu release and a `repository mirror`_ from the lists below. Upon selection
 a short command snippet will be displayed that can be copied and pasted into
 a terminal session. These commands will configure the system package manager
 with the NeuroDebian repository key and package source information.
