@@ -1,7 +1,8 @@
 #!/bin/bash
 
-pkg=$1
-tdir=$2
+tdir=$1
+
+shift
 
 # provide deb-src by uncommenting
 sed -i -e 's,^#deb-src,deb-src,g' /etc/apt/sources.list
@@ -10,10 +11,14 @@ mkdir -p $tdir
 cd $tdir
 apt-get update
 apt-get install -y devscripts dctrl-tools
-build-rdeps $pkg >| build-rdeps.output
+rm -f build-rdeps.output
+for pkg in "$@"; do
+	build-rdeps $pkg >> build-rdeps.output
+done
 
 # Fetch all the sources
 grep -v -e '^[-A-Z]' -e '^ *$' build-rdeps.output \
+	| sort | uniq \
 	| tee build-rdeps.list \
 	| while read pkg; do
 	apt-get source --download-only $pkg

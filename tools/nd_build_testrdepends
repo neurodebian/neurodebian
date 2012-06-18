@@ -34,12 +34,14 @@ $CMD nd_build $family $dist $arch $dscfile --buildresult=$debdir
 
 cd $debdir
 dpkg-scanpackages . >| Packages
+# All binary packages produced
+pkgs=$(awk '/^Package:/{print $2;}' Packages)
 cd - > /dev/null
 
-echo "I: Fetching all bdepends for $pkg in $family $dist under $arch"
+echo "I: Fetching all bdepends for $pkgs in $family $dist under $arch"
 # need first to provide the necessary scripts out there
 cp -p $(dirname $0)/nd_fetch_bdepends $bindir
-$CMD nd_execute $family $dist $arch --bindmounts $testdir $bindir/nd_fetch_bdepends $pkg $srcdir
+$CMD nd_execute $family $dist $arch --bindmounts $testdir $bindir/nd_fetch_bdepends $srcdir $pkgs
 
 echo "I: preparing the hook"
 cat << EOF >| $bindir/D00add_custom_repo
