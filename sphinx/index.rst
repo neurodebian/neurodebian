@@ -237,6 +237,12 @@ If your are interested in mirroring the repository, please see the :ref:`faq`.
 Publications
 ============
 
+Hanke, M. (2012). `Computational and cognitive neuroscience boosted by Debian
+OR Just using Debian is not enough
+<http://neuro.debian.net/_files/Hanke_UsingDebianIsNotEnough_ESRF2012.pdf>`_.
+Talk given at the workshop "Debian for Scientific Facilities Days" at the
+European Synchrotron Radiation Facility (ESRF), Grenoble, France.
+
 Halchenko, Y. O. & Hanke, M. (2012). `Open is not enough. Let’s take the
 next step: An integrated, community-driven computing platform for neuroscience
 <http://www.frontiersin.org/Neuroinformatics/10.3389/fninf.2012.00022/full>`_. *Frontiers in Neuroinformatics*,
