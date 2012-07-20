@@ -1,5 +1,13 @@
 neurodebian (0.28) unstable; urgency=low
 
+  [ Michael Hanke & Yaroslav Halchenko]
+  * website:
+    - lots of changes
+  * nd_* tools:
+    - backport-dsc: backport to squeeze by default
+    - nd_adddist: explicitly specify debian keyring to work on Ubuntus
+    - nd_build_testrdepends: test dependees of all binary packages
+    - cmdsettings.sh: in allnddist -- deprecated lenny, added precise
   * VM:
     - neurodebian-guest-additions: in preparation for wheezy NeuroDebian
       VM appliance added option for gdm3
