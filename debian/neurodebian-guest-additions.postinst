@@ -1,11 +1,22 @@
 #!/bin/bash -e
 
-gdm_conf=/etc/gdm/gdm.conf
-if [ "$1" = "configure" -o "$1" = "abort-upgrade" ]; then
-    if [ -z "$(grep 'AutomaticLogin=brain' $gdm_conf)" ]; then
-        echo "Enabling autologin of user 'brain'."
+# GNOME2
+_set_gdm_auto_login() {
+    gdm_conf="$1"
+	gnome_ver="$2"
+    if [ ! -e $gdm_conf ]; then
+		echo "I: No config file $gdm_conf GNOME $gnome_ver found"
+    elif [ -z "$(grep 'AutomaticLogin=brain' $gdm_conf)" ]; then
+        echo "I: Enabling autologin of user 'brain' for GNOME $gnome_ver."
         sed -i -e 's/^\[daemon\]$/\[daemon\]\nAutomaticLoginEnable=true\nAutomaticLogin=brain\n/' $gdm_conf
     fi
+}
+
+gdm_conf=/etc/gdm/gdm.conf
+if [ "$1" = "configure" -o "$1" = "abort-upgrade" ]; then
+
+    _set_gdm_auto_login /etc/gdm/gdm.conf 2
+    _set_gdm_auto_login /etc/gdm3/daemon.conf 3
 
     # update gconf defaults tree
     update-gconf-defaults
