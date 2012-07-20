@@ -47,12 +47,13 @@ git config --global user.email nd@localhost
 # -----------------
 
 # Add sources.list for backports and neurodebian
-wget -O /etc/apt/sources.list.d/neuro.debian.net.list http://neuro.debian.net/lists/squeeze.us-nh
+wget -O /etc/apt/sources.list.d/neuro.debian.net.list http://neuro.debian.net/lists/wheezy.us-nh
 
-echo "deb http://backports.debian.org/debian-backports squeeze-backports main contrib non-free" > /etc/apt/sources.list.d/backports.debian.org.list
+## No backports yet
+## echo "deb http://backports.debian.org/debian-backports wheezy-backports main contrib non-free" > /etc/apt/sources.list.d/backports.debian.org.list
 cat << EOT > /etc/apt/preferences.d/backports.debian.org.pref
 Package: *
-Pin: release a=squeeze-backports
+Pin: release a=wheezy-backports
 Pin-Priority: 200
 EOT
 
@@ -79,11 +80,11 @@ cdarch=${cunamer##*-}
 [ $cdarch = '486' ] && darch='686' || darch=$cdarch
 apt-get install -y linux-headers-2.6-$cdarch
 
-# Forcefully install guest additions from backports so we are
-# compatible with VirtualBox 4.x series
-apt-get install -y -t squeeze-backports virtualbox-ose-guest-dkms \
-	virtualbox-ose-guest-utils  virtualbox-ose-guest-x11 \
-	>| /var/log/initial_setup-dkms.log 2>&1
+## # Forcefully install guest additions from backports so we are
+## # compatible with VirtualBox 4.x series
+## apt-get install -y -t wheezy-backports virtualbox-ose-guest-dkms \
+## 	virtualbox-ose-guest-utils  virtualbox-ose-guest-x11 \
+## 	>| /var/log/initial_setup-dkms.log 2>&1
 
 # to get all the rest stuff in recommends
 apt-get install -y dkms neurodebian-guest-additions
@@ -112,7 +113,7 @@ adduser brain vboxsf
 find /lib/modules/*$darch -iname vboxsf.ko | grep -q .
 
 apt-get install --no-install-recommends -y \
- gnome-core mc evince bash-completion ntpdate file-roller gnome-utils \
+ gnome-core mc evince bash-completion ntpdate file-roller \
  gnome-themes eog vim reportbug \
  software-center gdebi gedit-plugins gnome-media synaptic menu less libxp6
 
@@ -132,7 +133,7 @@ find /var/cache/apt/archives/ -name '*.deb' -delete
 
 # cleanup unwanted stuff
 # video drivers (all but vesa)
-apt-get purge -y $(apt-cache search --names-only --installed xserver-xorg-video | grep xserver-xorg-video | cut -d ' ' -f 1,1) xserver-xorg-video-vesa+
+apt-get purge -y --force-yes $(apt-cache search --names-only --installed xserver-xorg-video | grep xserver-xorg-video | cut -d ' ' -f 1,1) xserver-xorg-video-vesa+
 apt-get purge -y brasero
 
 # and whatever is obsolete
@@ -140,7 +141,7 @@ apt-get autoremove --purge -y
 
 # custom config
 # use NeuroDebian website as default homepage
-sed -i -e 's,http://www.debian.org,http://neuro.debian.net,g' /etc/chromium-browser/master_preferences
+sed -i -e 's,http://www.debian.org,http://neuro.debian.net,g' /etc/chromium*/master_preferences
 
 # reduce grub timeout to speed up boot of VM
 sed -i -e 's/GRUB_TIMEOUT=5/GRUB_TIMEOUT=1/g' /etc/default/grub
