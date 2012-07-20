@@ -113,7 +113,7 @@ find /lib/modules/*$darch -iname vboxsf.ko | grep -q .
 
 apt-get install --no-install-recommends -y \
  gnome-core mc evince bash-completion ntpdate file-roller gnome-utils \
- gnome-themes eog vim reportbug \
+ gnome-themes gnome-disk-utility network-manager-gnome eog vim reportbug \
  software-center gdebi gedit-plugins gnome-media synaptic menu less libxp6
 
 # Clean-up installed development files which got pulled in for
