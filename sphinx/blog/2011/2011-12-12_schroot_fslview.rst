@@ -137,7 +137,7 @@ Procedure
   within the chroot environment, so just create a little shell script
   ``/usr/local/bin/fslview``, make it executable and be all set::
 
-   echo -e '#!/bin/sh\nschroot -p -c squeeze /usr/bin/fslview "$@"' > /usr/local/bin/fslview
+   echo -e '#!/bin/sh\nexport FSLDIR=/usr/share/fsl\nschroot -p -c squeeze /usr/bin/fslview "$@"' > /usr/local/bin/fslview
    chmod a+x /usr/local/bin/fslview
 
   .. note::
