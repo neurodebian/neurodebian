@@ -87,7 +87,8 @@ apt-get install -y linux-headers-2.6-$cdarch
 ## 	>| /var/log/initial_setup-dkms.log 2>&1
 
 # to get all the rest stuff in recommends
-apt-get install -y dkms neurodebian-guest-additions
+apt-get install -y dkms
+# TODO: neurodebian-guest-additions
 
 if [ "$darch" != "$cdarch" ] ; then
     # Because DKMS builds for currently running kernel, which during
@@ -112,10 +113,24 @@ adduser brain vboxsf
 # assure at the end that we got right modules build in the right location
 find /lib/modules/*$darch -iname vboxsf.ko | grep -q .
 
+# That was for GNOME
+# apt-get install --no-install-recommends -y \
+#  gnome-core mc evince bash-completion ntpdate file-roller gnome-utils \
+#  gnome-themes gnome-disk-utility network-manager-gnome eog vim reportbug \
+#  software-center gdebi gedit-plugins gnome-media synaptic menu less libxp6
+
 apt-get install --no-install-recommends -y \
- gnome-core mc evince bash-completion ntpdate file-roller \
- gnome-themes eog vim reportbug \
- software-center gdebi gedit-plugins gnome-media synaptic menu less libxp6
+ mc evince bash-completion ntpdate file-roller \
+ eog vim reportbug \
+ software-center synaptic menu less libxp6 \
+ task-xfce-desktop lightdm \
+ chromium-browser \
+ sudo neurodebian-desktop update-notifier
+
+# XXX last ones are actually pulled it by neurodebian-guest-additions whenever we
+# resolve their destiny ;-)   a;though it might be pooling too much, eg exim4
+
+# TODO: autologin for lightdm (autologin-user=brain in /etc/lightdm/lightdm.conf), default panel (with chromium) for xfce
 
 # Clean-up installed development files which got pulled in for
 # VM guest additions (to build kernel modules via DKMS)
