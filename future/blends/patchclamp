@@ -1,0 +1,11 @@
+Source: patchclamp
+Tasks: debian-science/electrophysiology
+Homepage: http://sourceforge.net/projects/patchclamp
+Responsible: Vadim Alexeenko <v.a.alexeenko@gmail.com>
+Language: C/C++
+Author: Vadim Alexeenko <v.a.alexeenko@gmail.com>
+License: GPL-2+
+Pkg-Description: recorder of single-channel and whole-cell currents
+ The ultimate aim is to create an extremely user-friendly software to
+ perform the most common tasks of recording single channels and
+ whole-cell currents
