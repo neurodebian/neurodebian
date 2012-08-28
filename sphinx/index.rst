@@ -215,7 +215,7 @@ Thanks to the following institutions and individuals for hosting a mirror:
 * `Department of Psychological and Brain Sciences at Dartmouth College`_
   *[us-nh]* (primary mirror)
 * `Department of Experimental Psychology at the University of Magdeburg`_
-  *[de]*
+  *[de-md]*
 * `Neurobot at Aristotle University of Thessaloniki, Greece`_ *[gr]*
 * `Paul Ivanov`_ *[us-ca]*
 * `Medical-image Analysis and Statistical Interpretation lab at Vanderbilt`_
@@ -224,6 +224,7 @@ Thanks to the following institutions and individuals for hosting a mirror:
   <http://www.aarnet.edu.au>`_ *[au]*
 * Kiyotaka Nemoto (AKA Mr. Lin4Neuro_) *[jp]*
 * Iaroslav Iurchenko *[ua]*
+* `Nikolaus Valentin Hänel`_ *[de-v]*
 
 If your are interested in mirroring the repository, please see the :ref:`faq`.
 
@@ -232,6 +233,7 @@ If your are interested in mirroring the repository, please see the :ref:`faq`.
 .. _Neurobot at Aristotle University of Thessaloniki, Greece: http://neurobot.bio.auth.gr
 .. _Paul Ivanov: http://www.pirsquared.org
 .. _Medical-image Analysis and Statistical Interpretation lab at Vanderbilt: https://masi.vuse.vanderbilt.edu
+.. _Nikolaus Valentin Hänel: http://haenel.co
 
 
 Publications
