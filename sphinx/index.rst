@@ -224,7 +224,7 @@ Thanks to the following institutions and individuals for hosting a mirror:
   <http://www.aarnet.edu.au>`_ *[au]*
 * Kiyotaka Nemoto (AKA Mr. Lin4Neuro_) *[jp]*
 * Iaroslav Iurchenko *[ua]*
-* `Nikolaus Valentin Hänel`_ *[de-v]*
+* `Nikolaus Valentin Haenel`_ *[de-v]*
 
 If your are interested in mirroring the repository, please see the :ref:`faq`.
 
@@ -233,7 +233,7 @@ If your are interested in mirroring the repository, please see the :ref:`faq`.
 .. _Neurobot at Aristotle University of Thessaloniki, Greece: http://neurobot.bio.auth.gr
 .. _Paul Ivanov: http://www.pirsquared.org
 .. _Medical-image Analysis and Statistical Interpretation lab at Vanderbilt: https://masi.vuse.vanderbilt.edu
-.. _Nikolaus Valentin Hänel: http://haenel.co
+.. _Nikolaus Valentin Haenel: http://haenel.co
 
 
 Publications
