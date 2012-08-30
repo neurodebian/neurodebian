@@ -78,7 +78,7 @@ cunamer=`uname -r`
 cdarch=${cunamer##*-}
 # We carry 686 only
 [ $cdarch = '486' ] && darch='686' || darch=$cdarch
-apt-get install -y linux-headers-2.6-$cdarch
+apt-get install -y linux-headers-$cdarch
 
 ## # Forcefully install guest additions from backports so we are
 ## # compatible with VirtualBox 4.x series
@@ -94,7 +94,7 @@ if [ "$darch" != "$cdarch" ] ; then
     # Because DKMS builds for currently running kernel, which during
     # installation might be a more generic 486, lets force building for 686
 	# and also install necessary headers (will be purged later on anyways)
-	apt-get install -y linux-headers-2.6-$darch
+	apt-get install -y linux-headers-$darch
 
 	unamer=${cunamer//$cdarch/$darch}
 	# First collect information about installed vb additions
@@ -163,8 +163,8 @@ sed -i -e 's/GRUB_TIMEOUT=5/GRUB_TIMEOUT=1/g' /etc/default/grub
 update-grub
 
 # finally configure geomirror for APT and disable deb-src lists
-sed -i -e "s/10.0.0.1:9999/$(dpkg --print-architecture)-geomirror.debian.net/" \
-    -e "s/^deb-src/#deb-src/" /etc/apt/sources.list
+#sed -i -e "s/10.0.0.1:9999/$(dpkg --print-architecture)-geomirror.debian.net/" \
+#    -e "s/^deb-src/#deb-src/" /etc/apt/sources.list
 
 etckeeper commit "Initial VM setup done"
 
