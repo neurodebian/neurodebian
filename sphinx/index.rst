@@ -239,6 +239,12 @@ If your are interested in mirroring the repository, please see the :ref:`faq`.
 Publications
 ============
 
+Hanke, M. (2012). `Share your tools! But fear the wombat! Seriously.
+<http://neuro.debian.net/_files/Hanke_FearTheWombat_Brainhack2012.pdf>`_.  Talk
+given at `Brainhack
+<http://brainhack.org/2012/04/06/brainhack-2012-unconference>`_ 2012 at the
+Max-Planck-Institute for Human Cognitive and Brain Sciences*, Leipzig, Germany.
+
 Hanke, M. (2012). `Computational and cognitive neuroscience boosted by Debian
 OR Just using Debian is not enough
 <http://neuro.debian.net/_files/Hanke_UsingDebianIsNotEnough_ESRF2012.pdf>`_.
