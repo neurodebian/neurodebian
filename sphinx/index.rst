@@ -241,8 +241,7 @@ Publications
 
 Hanke, M. (2012). `Share your tools! But fear the wombat! Seriously.
 <http://neuro.debian.net/_files/Hanke_FearTheWombat_Brainhack2012.pdf>`_  *Talk
-given at `Brainhack
-<http://brainhack.org/2012/04/06/brainhack-2012-unconference>`_ 2012 at the
+given at* `Brainhack <http://brainhack.org/2012/04/06/brainhack-2012-unconference>`_ 2012 at the
 Max-Planck-Institute for Human Cognitive and Brain Sciences*, Leipzig, Germany.
 [`video <http://youtu.be/8t6znEOEDVo>`_]
 
