@@ -6,6 +6,12 @@
 Chroot workaround for fslview (HOWTO)
 =====================================
 
+.. note::
+
+  With the release of FSLView 4.0.0b this workaround should no longer be
+  necessary. However, the technology is stil equally useful to work around
+  similar problems with other software.
+
 Preamble
 --------
 
