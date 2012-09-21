@@ -9,8 +9,6 @@ Frequently Asked Questions
 **************************
 
 Why NeuroDebian?
-----------------
-
   In the course of our own research endeavors |we| have joined forces to
   develop `PyMVPA -- a Python framework for multivariate pattern analysis of
   neural data <http://www.pymvpa.org>`_.  To conveniently deploy PyMVPA for
@@ -23,8 +21,6 @@ Why NeuroDebian?
 
 
 Why is NeuroDebian not a Pure Blend?
-------------------------------------
-
   Because there is no need for it to become one, as the existing Debian Pure
   Blends already offer the desired functionality *within* Debian. Similar to
   Pure Blends, NeuroDebian's goal is to provide software for neuroscientists
@@ -54,8 +50,6 @@ Why is NeuroDebian not a Pure Blend?
 
 
 I want to help. How do I get involved?
---------------------------------------
-
   We always need people to help maintaining existing packages. If you need
   some additional software packaged and you want to try it on your own, we would
   be happy to mentor you. We also have a :ref:`list of ongoing and planned
@@ -66,8 +60,6 @@ I want to help. How do I get involved?
 
 
 When does a package migrate from NeuroDebian into Debian proper?
-----------------------------------------------------------------
-
   In short: When it is ready. The longer answer is that there is nothing
   special to packages in NeuroDebian in comparison to packages conducted
   elsewhere.  Packaging efforts are announced to Debian via ITPs_ and the
@@ -86,8 +78,6 @@ When does a package migrate from NeuroDebian into Debian proper?
 
 
 Debian, Debian, Debian -- What about Ubuntu?
---------------------------------------------
-
   NeuroDebian offers backported binary packages for recent Ubuntu releases
   whenever possible. However, since Ubuntu (like many other derivatives) uses
   Debian as its foundation, it is more efficient to spend time maintaining
@@ -103,32 +93,26 @@ Debian, Debian, Debian -- What about Ubuntu?
 
 
 How to create a mirror of the repository?
------------------------------------------
-
   The NeuroDebian repository can be mirrored with rsync. If you are interested
   in sponsoring storage space and bandwidth for another mirror, please
   `contact us <team@neuro.debian.net>`_.
 
 
 How do I get a new neuroscience-related FOSS into (Neuro)Debian?
-----------------------------------------------------------------
+  The goal of NeuroDebian is to package neuroscience software for Debian. Hence
+  getting software into NeuroDebian means trying to get it into Debian. There are
+  at least two possibilities to achieve that:
 
-The goal of NeuroDebian is to package neuroscience software for Debian. Hence
-getting software into NeuroDebian means trying to get it into Debian. There are
-at least two possibilities to achieve that:
+  * You can approach packaging it yourself. Start by filing an ITP_ (Intent to
+    package) bugreport) and `ask us <team@neuro.debian.net>`_ to mentor your
+    upload to Debian_, if you are not a Debian developer.
 
-* You can approach packaging it yourself. Start by filing an ITP_ (Intent to
-  package) bugreport) and `ask us <team@neuro.debian.net>`_ to mentor your
-  upload to Debian_, if you are not a Debian developer.
-
-* `Contact us <team@neuro.debian.net>`_ -- but then it might take a little
-  longer, depending on our current workload and interest in a particular
-  software.
+  * `Contact us <team@neuro.debian.net>`_ -- but then it might take a little
+    longer, depending on our current workload and interest in a particular
+    software.
 
 
 I have heard that some packages are non-free. Will you charge me for them?
---------------------------------------------------------------------------
-
   No. The term :term:`non-free` refers to an archive section. NeuroDebian uses
   exactly the same `archive sections as Debian proper
   <http://www.debian.org/doc/debian-policy/ch-archive.html>`_.  The *non-free*
@@ -142,42 +126,38 @@ I have heard that some packages are non-free. Will you charge me for them?
 .. _sec_pkg_authentication:
 
 What means "The following signatures couldn't be verified..."?
---------------------------------------------------------------
+  When you start using this repository, you probably get warning messages
+  like this::
 
-When you start using this repository, you probably get warning messages
-like this::
+    The following signatures couldn't be verified because
+    the public key is not available.
 
-  The following signatures couldn't be verified because
-  the public key is not available.
+  Or you will be asked questions like this over and over::
 
-Or you will be asked questions like this over and over::
+    WARNING: The following packages cannot be authenticated!
+    ...
+    Install these packages without verification [y/N]?
 
-  WARNING: The following packages cannot be authenticated!
-  ...
-  Install these packages without verification [y/N]?
+  This is because your APT installation initially does not know the GPG
+  key that is used to sign the release files of this repository. It is easy to
+  make APT happy again. The simplest way is to install the ``neurodebian-keyring``
+  package that is available from the NeuroDebian repository. Alternatively:
 
-This is because your APT installation initially does not know the GPG
-key that is used to sign the release files of this repository. It is easy to
-make APT happy again. The simplest way is to install the ``neurodebian-keyring``
-package that is available from the NeuroDebian repository. Alternatively:
+  1. Get the key. Either download the `repository key from here
+     <_static/neuro.debian.net.asc>`_
+     or fetch it from http://wwwkeys.pgp.net (2649A5A9).
 
-1. Get the key. Either download the `repository key from here
-   <_static/neuro.debian.net.asc>`_
-   or fetch it from http://wwwkeys.pgp.net (2649A5A9).
+  2. Now feed the key into APT by invoking::
 
-2. Now feed the key into APT by invoking::
+       apt-key add #file#
 
-     apt-key add #file#
-
-   Where `#file#` has to be replaced with the location of the key file you just
-   downloaded. You need to have superuser-privileges to do this (either do it
-   as root or use sudo).
+     Where `#file#` has to be replaced with the location of the key file you just
+     downloaded. You need to have superuser-privileges to do this (either do it
+     as root or use sudo).
 
 
 How can I cite NeuroDebian?
----------------------------
-
-Please cite the following paper:
+  Please cite the following paper:
 
   Halchenko, Y. O. & Hanke, M. (2012). `Open is not enough. Let’s take the
   next step: An integrated, community-driven computing platform for neuroscience
@@ -187,3 +167,13 @@ Please cite the following paper:
 
 .. include:: link_names.txt
 .. include:: substitutions.txt
+
+.. raw:: html
+
+  <script type="text/javascript">
+  $('dt').click(function(e){
+      $(this).nextUntil('dt').toggle();
+  });
+  $('dd').hide();
+  </script>
+

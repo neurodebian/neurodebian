@@ -1,28 +1,18 @@
 .. _WELCOme:
 
-***************************************************
- Welcome to the Ultimate Platform for Neuroscience
-***************************************************
+*************
+ NeuroDebian
+*************
 
-.. quotes::
-   :random: 1
+NeuroDebian provides a large collection of popular neuroscience research
+software for the Debian_ operating system as well as Ubuntu_ and other
+derivatives. Popular packages include FSL, Freesurfer, AFNI, PyMVPA and
+:ref:`many others <pkglists>`. While we do strive to maintain a high level of
+quality, we make no guarantee that a given package works as expected, so use
+them at your own risk. If you do encounter problems or would just like to thank
+us, simply `send us an email <#contacts>`_.
 
-NeuroDebian provides a turnkey software platform for neuroscience
-that is created by integrating research tools with the Debian_ operating
-system.  If you are using such software on Debian_ or its derivatives,
-such as Ubuntu_, chances are that you are already using NeuroDebian.
-
-This website provides a :ref:`supplementary repository <repository_howto>` with
-both unofficial or prospective packages which are not (yet) available from the
-main Debian_ archive, as well as backported or simply rebuilt latest versions
-of software.  NeuroDebian serves as an "upstream" to some :ref:`derivative
-<chap_derivatives>` projects.  Please see the :ref:`faq` for more information
-about the goals of this project, and :ref:`read what people say about it
-<testimonials>`.  Take a look at the :ref:`list of our current and planned
-projects <projects>` if you want to get involved. This service is provided "as
-is". There is no guarantee that a package works as expected, so use them at
-your own risk. If you encounter problems, please `report <#contacts>`_ them.
-Please help us |spread|:
+Learn more about NeuroDebian, the goals of this project, and help us |spread|!
 
   Halchenko, Y. O. & Hanke, M. (2012). `Open is not enough. Let’s take the
   next step: An integrated, community-driven computing platform for neuroscience
@@ -31,17 +21,80 @@ Please help us |spread|:
 
 .. raw:: html
 
- <p>
- <a href="pkgs.html"><img border="0" src="_static/package.png" title="Software package list" /></a>
- <a href="pkglists/pkgs-by_release-datasets_(data).html"><img border="0" src="_static/datasets.png" title="Dataset package list" /></a>
- <a href="vm.html"><img border="0" src="_static/machine.png" title="Get NeuroDebian for your non-Debian computer" /></a>
- <a href="debian/pool"><img border="0" src="_static/pool.png" title="Go to the package pool (deep and cold, only for experts)" /></a>
- <a href="projects.html"><img border="0" src="_static/workarea.png" title="Current and planned projects: Get involved!" /></a>
- <a href="derivatives.html"><img border="0" src="_static/derivatives.png" title="NeuroDebian Derivatives" /></a>
- <a href="blog/index.html"><img border="0" src="_static/rssfeeds.png" title="NeuroDebian Insider Blog" /></a>
- </p>
+  <!-- for dynamic quote update via javascript -->
+  <hr />
+  <div id="randomquote" title="Feedback from the community">
+
+.. quotes::
+   :random: 1
+
+.. raw:: html
+
+  </div><!-- randomquote -->
 
 .. _Ubuntu: http://www.ubuntu.com
+
+.. _repository_howto:
+.. _chap_installation:
+
+Get NeuroDebian
+===============
+
+Make your selection to enable NeuroDebian on your computer:
+
+.. include:: sources_lists
+
+.. raw:: html
+
+  <div id="reposetup" style="display:none">
+
+  <p>Copy and paste the following command into a terminal window:</p>
+  <pre id="code">
+  After selecting a release the setup code will be shown here.
+  </pre>
+
+Once this is done, you have to update the package index and you are ready to
+install packages. Use your favorite package manager, e.g. synaptic, adept. In
+the terminal you can use :command:`apt-get`::
+
+  sudo apt-get update
+  sudo apt-get install mricron
+
+.. note::
+
+  Not every package is available for all distributions/releases. For information
+  about which package version is available for which release and architecture,
+  please have a look at the corresponding package pages.
+
+.. raw:: html
+
+  </div> <!-- end reposetup -->
+
+  <div id="vmsetup" style="display:none">
+
+If you are not running Debian_ on a particular machine a :ref:`chap_vm` is
+provided as a convenient testing and evaluation environment.  After a few
+simple steps to setup the virtual machine, you will be able to use NeuroDebian_
+as an integral part of your existing working environment without any sacrifice.
+The virtual machine is also a suitable environment to temporarily deploy
+neuroscience software on machines running other operating systems, e.g. for the
+purpose of teaching a neuroimaging data analysis course in a multipurpose
+computer lab.
+
+
+Debian installation
+-------------------
+
+Having been exposed to the wonders of NeuroDebian_ you are no longer
+satisfied with your previous choice of operating system?  We would
+recommend installing Debian_ to replace or complement (dual-boot) your
+existing OS.  Please visit `"Getting Debian"
+<http://www.debian.org/distrib/>`_ to obtain the images for your
+hardware architecture and then simply add |repos|.
+
+.. raw:: html
+
+  </div> <!-- end vmsetup -->
 
 .. _news:
 
@@ -67,116 +120,7 @@ subscribe to the NeuroDebian news.
 .. _identi.ca: http://identi.ca/neurodebian
 .. _twitter: http://twitter.com/NeuroDebian
 
-.. _repository_howto:
 
-
-
-How to use this repository
-==========================
-
-To enable the NeuroDebian repository on your system, select your Debian or
-Ubuntu release and a `repository mirror`_ from the lists below. Upon selection
-a short command snippet will be displayed that can be copied and pasted into
-a terminal session. These commands will configure the system package manager
-with the NeuroDebian repository key and package source information.
-
-.. include:: sources_lists
-
-Once this is done, you have to update the package index and you are ready to
-install packages. Use your favorite package manager, e.g. synaptic, adept. In
-the terminal you can use :command:`apt-get`::
-
-  sudo apt-get update
-  sudo apt-get install mricron
-
-.. note::
-
-  Not every package is available for all distributions/releases. For information
-  about which package version is available for which release and architecture,
-  please have a look at the corresponding package pages.
-
-.. raw:: html
-
- <p><img border="0" src="_files/nd_subscriptionstats.png" title="Statistics of new repository subscriptions for all supported releases. Note: subscription is only done once per machine." /></p>
-
-Popularity Contest
-------------------
-
-We encourage you to participate in the `popularity
-contest <http://popcon.debian.org>`_ (popcon), which anonymously
-collects the list of packages you installed/use on your system.
-Collecting such statistics is of particular importance for research
-software projects as a prove of an existing user-base.  If upon
-installation of the system you rejected the invitation to participate
-you can always change your decision by running::
-
- sudo dpkg-reconfigure popularity-contest
-
-.. note::
-
-   If you are deploying multiple systems through cloning, to not have
-   all systems considered as one, it would be necessary to re-generate
-   the random MY_HOSTID.  Following commands ran as root should do it
-   (as root) without any interactive dialog::
-
-    sed -i -e 's,PARTICIPATE *= *.no.,PARTICIPATE="yes",g' -e '/^ *MY_HOSTID/d' /etc/popularity-contest.conf
-    DEBIAN_FRONTEND=noninteractive dpkg-reconfigure popularity-contest
-
-In addition to popcon pages for your "core" distribution (e.g. `Debian
-<http://popcon.debian.org/>`__ or `Ubuntu
-<http://popcon.ubuntu.com/>`__) you can see/get statistics for
-submissions to `NeuroDebian <http://neuro.debian.net/popcon/>`__ and
-know that you are already contributing back to the community.
-
-.. _chap_installation:
-
-Ways to use NeuroDebian
-=======================
-
-Virtual machine
----------------
-
-If you are not running Debian_ on a particular machine a :ref:`chap_vm` is
-provided as a convenient testing and evaluation environment.  After a few
-simple steps to setup the virtual machine, you will be able to use NeuroDebian_
-as an integral part of your existing working environment without any sacrifice.
-The virtual machine is also a suitable environment to temporarily deploy
-neuroscience software on machines running other operating systems, e.g. for the
-purpose of teaching a neuroimaging data analysis course in a multipurpose
-computer lab.
-
-
-Debian installation
--------------------
-
-Having been exposed to the wonders of NeuroDebian_ you are no longer
-satisfied with your previous choice of operating system?  We would
-recommend installing Debian_ to replace or complement (dual-boot) your
-existing OS.  Please visit `"Getting Debian"
-<http://www.debian.org/distrib/>`_ to obtain the images for your
-hardware architecture and then simply add |repos|.
-
-
-.. _chap_team:
-
-
-The team
-========
-
-`Michael Hanke <http://mih.voxindeserto.de>`_ and `Yaroslav Halchenko
-<http://www.onerussian.com>`_ originally started NeuroDebian (formerly the
-`Experimental Psychology Debian packaging project
-<http://alioth.debian.org/projects/pkg-exppsy>`_) and are the current project
-leaders. However, the whole project would not be possible without the work of
-over 3,000 Debian_ developers and contributors who are as enthusiastically
-building the Debian operating system.
-A number of packages that are available from the NeuroDebian repository have
-been contributed by various individuals and other teams in Debian, such as
-`Debian Med`_ and `Debian Science`_. We want to express our gratitude to all
-maintainers_ that help to make Debian_ the ultimate software platform for
-neuroscience.
-
-.. _maintainers: pkgs.html#by-maintainer
 
 
 .. _support:
@@ -201,6 +145,27 @@ communication channels within the NeuroDebian community
 
 You are welcome also to join #neurodebian IRC room on OFTC network if
 you have quick questions or want to join a live discussion.
+
+.. _chap_team:
+
+The team
+========
+
+`Michael Hanke <http://mih.voxindeserto.de>`_ and `Yaroslav Halchenko
+<http://www.onerussian.com>`_ originally started NeuroDebian (formerly the
+`Experimental Psychology Debian packaging project
+<http://alioth.debian.org/projects/pkg-exppsy>`_) and are the current project
+leaders. However, the whole project would not be possible without the work of
+over 3,000 Debian_ developers and contributors who are as enthusiastically
+building the Debian operating system.
+A number of packages that are available from the NeuroDebian repository have
+been contributed by various individuals and other teams in Debian, such as
+`Debian Med`_ and `Debian Science`_. We want to express our gratitude to all
+maintainers_ that help to make Debian_ the ultimate software platform for
+neuroscience.
+
+.. _maintainers: pkgs.html#by-maintainer
+
 
 Acknowledgements
 ================
@@ -255,6 +220,11 @@ Halchenko, Y. O. & Hanke, M. (2012). `Open is not enough. Let’s take the
 next step: An integrated, community-driven computing platform for neuroscience
 <http://www.frontiersin.org/Neuroinformatics/10.3389/fninf.2012.00022/full>`_. *Frontiers in Neuroinformatics*,
 6:22.
+
+.. raw:: html
+
+  <span id="morepublicationsbutton" class="button" title="Click to toogle more"></span>
+  <div id="morepublications">
 
 Hanke, M. (2012). `The why and how of getting packaged
 <_files/Hanke_GetPackaged_CodeJam5_2012.pdf>`_.
@@ -323,8 +293,48 @@ efficient, more open, and more fun
 <_files/HalchenkoHanke_FossEcosystemDC09.pdf>`_. *Talk given at*
 `Dartmouth College`_, New Hampshire, USA.
 
+.. raw:: html
+
+  </div>
+
 .. _DebConf10: http://debconf10.debconf.org/
 .. _Dartmouth College: http://www.dartmouth.edu/
+
+Popularity
+==========
+
+.. raw:: html
+
+ <p><img border="0" src="_files/nd_subscriptionstats.png" title="Statistics of new repository subscriptions for all supported releases. Note: subscription is only done once per machine." /></p>
+
+Popularity Contest
+------------------
+
+We encourage you to participate in the `popularity
+contest <http://popcon.debian.org>`_ (popcon), which anonymously
+collects the list of packages you installed/use on your system.
+Collecting such statistics is of particular importance for research
+software projects as a prove of an existing user-base.  If upon
+installation of the system you rejected the invitation to participate
+you can always change your decision by running::
+
+ sudo dpkg-reconfigure popularity-contest
+
+.. note::
+
+   If you are deploying multiple systems through cloning, to not have
+   all systems considered as one, it would be necessary to re-generate
+   the random MY_HOSTID.  Following commands ran as root should do it
+   (as root) without any interactive dialog::
+
+    sed -i -e 's,PARTICIPATE *= *.no.,PARTICIPATE="yes",g' -e '/^ *MY_HOSTID/d' /etc/popularity-contest.conf
+    DEBIAN_FRONTEND=noninteractive dpkg-reconfigure popularity-contest
+
+In addition to popcon pages for your "core" distribution (e.g. `Debian
+<http://popcon.debian.org/>`__ or `Ubuntu
+<http://popcon.ubuntu.com/>`__) you can see/get statistics for
+submissions to `NeuroDebian <http://neuro.debian.net/popcon/>`__ and
+know that you are already contributing back to the community.
 
 
 .. toctree::
@@ -355,3 +365,79 @@ efficient, more open, and more fun
 
 .. include:: link_names.txt
 .. include:: substitutions.txt
+
+.. raw:: html
+
+  <script type="text/javascript">
+  $(document).ready(function($) {
+    setInterval(function(){
+      $.get('testimonials.html', function(data) {
+          var quotes = $("blockquote", data);
+          var idx = Math.floor(quotes.length * Math.random());
+          $('#randomquote').html(quotes[idx]);
+      }); // update callback
+    }, 60000); // set interval
+  }); // doc ready
+  //$("h1").html("NeuroDebian <span style=\"font-size:14px\">&mdash; the ultimate neuroscience software platform</span>")
+
+  function foldbuttontoggle(foldname) {
+      var foldid = '#' + foldname;
+      var buttonid = foldid + 'button';
+      $(buttonid).on('click', function() {
+        $('#' + foldname).slideToggle();
+        if ($(buttonid).html() == "↓↓↓") {
+          $(buttonid).html("&uarr;&uarr;&uarr;");
+        }
+        else {
+          $(buttonid).html("&darr;&darr;&darr;");
+        }
+      });
+      $(foldid).slideUp();
+      $(buttonid).html("&darr;&darr;&darr;");
+  };
+
+  function createrepourl(rel, mir) {
+    if(rel in rel2name && mir in mirrors) {
+
+        var retrepo = "wget -O- http://neuro.debian.net/lists/" + rel2name[rel] + "."
+         + mir + " | sudo tee /etc/apt/sources.list.d/neurodebian.sources.list\n"
+         + "sudo apt-key adv --recv-keys --keyserver pgp.mit.edu 2649A5A9\n";
+        return retrepo;
+    }
+
+  };
+  function updateout(rel, mir) {
+     if (rel != '' && mir != '') {
+        $('#code').text(createrepourl(rel, mir));
+        if (rel in {'win':'', 'rel':''}) {
+            $('#vmsetup').slideDown();
+            $('#reposetup').slideUp();
+        } else {
+            $('#reposetup').slideDown();
+            $('#vmsetup').slideUp();
+        };
+     }
+     else
+     {
+        $('#reposetup').slideUp();
+        $('#vmsetup').slideUp();
+     };
+  };
+   $('#release').change(function() {
+     var singleValues = $("#release").val();
+     var mirrorVal = $("#mirror").val();
+     updateout(singleValues, mirrorVal);
+   });
+   $('#mirror').change(function() {
+     var singleValues = $("#release").val();
+     var mirrorVal = $("#mirror").val();
+     updateout(singleValues, mirrorVal);
+   });
+
+
+  foldbuttontoggle('morepublications');
+
+
+  </script>
+
+

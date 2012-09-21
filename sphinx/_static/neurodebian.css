@@ -5,7 +5,7 @@
 body {
     font-family: sans-serif;
     font-size: 100%;
-    background-color: #444;
+    background-color: #fff;
     color: #000;
     margin: 0;
     padding: 0;
@@ -14,7 +14,7 @@ body {
 /* :::: LAYOUT :::: */
 
 div.document {
-    background-color: #afafaf;
+    background-color: #fff;
 }
 
 div.documentwrapper {
@@ -28,6 +28,10 @@ div.bodywrapper {
 
 div.body {
     background-color: white;
+    background-image: url(hotbrain_bg.jpg);
+    background-repeat:no-repeat;
+    background-position:100% 100%;
+    background-attachment:fixed;
     padding: 0 20px 30px 20px;
 }
 
@@ -71,7 +75,7 @@ div.clearer {
 }
 
 div.footer {
-    color: #fff;
+    color: #000;
     width: 100%;
     padding: 9px 0 9px 0;
     text-align: center;
@@ -79,16 +83,18 @@ div.footer {
 }
 
 div.footer a {
-    color: #fff;
+    color: #aaa;
     text-decoration: underline;
 }
 
+
 div.related {
     background-color: #2c3c3d;
-    color: #fff;
+    color: #888;
     width: 100%;
     line-height: 30px;
     font-size: 90%;
+    float: right;
 }
 
 div.related h3 {
@@ -111,7 +117,7 @@ div.related li.right {
 }
 
 div.related a {
-    color: white;
+    color: #fff;
 }
 
 /* ::: TOC :::: */
@@ -335,7 +341,7 @@ div.body h4,
 div.body h5,
 div.body h6 {
     font-family: 'Trebuchet MS', sans-serif;
-    background-color: #f2f2f2;
+    background-color: rgba(242, 242, 242, 0.5);
     font-weight: normal;
     color: #20435c;
     border-bottom: 1px solid #ccc;
@@ -343,7 +349,7 @@ div.body h6 {
     padding: 3px 0 3px 10px;
 }
 
-div.body h1 { margin-top: 0; font-size: 200%; }
+div.body h1 { margin-top: 0; font-size: 180%; }
 div.body h2 { font-size: 160%; }
 div.body h3 { font-size: 140%; }
 div.body h4 { font-size: 120%; }
@@ -477,7 +483,7 @@ div.warning {
 }
 
 div.note {
-    background-color: #eaf2f9;
+    background-color: rgba(234, 242, 249, 0.6);
     border: 1px solid #3d7aa5;
     border-left: none;
     border-right: none;
@@ -569,7 +575,7 @@ th {
 
 pre {
     padding: 5px;
-    background-color: #efc;
+    background-color: rgba(238, 255, 204, 0.6);
     color: #333;
     border: 1px solid #ac9;
     border-left: none;
@@ -784,5 +790,57 @@ td.task {
     text-align: left;
 }
 
+.button {
+    background-color: transparent;
+    font-weight: normal;
+    color: #20435c;
+    border: 1px solid #ccc;
+    padding: 3px;
+    text-align: center;
+    cursor: pointer;
+}
 
+div.buttonbar {
+    background-color: #fff;
+    font-size: 70%;
+}
+
+div.buttonbar a:hover {
+    text-decoration: none;
+}
+
+div.buttonbar a:hover img {
+    background-color: #ffc7da;
+}
+
+div.buttonbar ul {
+    list-style: none;
+    padding: 0px;
+}
+
+div.buttonbar li {
+    display: inline;
+    float: left;
+    margin: 5px;
+    text-align: center;
+}
+
+div#randomquote {
+}
+
+div#randomquote blockquote.epigraph {
+    padding: 0 2em 0 2em;
+    background-color: transparent;
+    font-style: italic;
+    font-size: 80%;
+    border: 0px
+}
+
+div#frequently-asked-questions dt {
+    font-weight: bold;
+    margin-top: 1em;
+    cursor: pointer;
+}
+
+dt:after { content: "\203A\203A"; padding-left: .25em;}
 
