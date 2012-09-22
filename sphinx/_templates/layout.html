@@ -30,6 +30,7 @@
 {% block sidebarsearch %}
 {{ super() }}
 {% endblock %}
+<li class="right" style="position:relative;top:3px"><div class="g-plusone"></div></li>
 {% endblock %}
 
 {% block sidebar1 %}{% endblock %}
@@ -45,5 +46,10 @@ The source code for this portal is licensed under the
    title="Browse or clone the Git repository">
 git.debian.org</a>.
 </div>
+<!-- G+ button logic -->
+<script type="text/javascript" src="https://apis.google.com/js/plusone.js">
+  {parsetags: 'explicit'}
+</script>
+<script type="text/javascript">gapi.plusone.go();</script>
 {% endblock %}
 
