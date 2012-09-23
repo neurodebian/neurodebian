@@ -829,7 +829,7 @@ div#randomquote {
 }
 
 div#randomquote blockquote.epigraph {
-    padding: 0 2em 0 2em;
+    padding: 0 2em 2em 2em;
     background-color: transparent;
     font-style: italic;
     font-size: 80%;
@@ -844,3 +844,21 @@ div#frequently-asked-questions dt {
 
 dt:after { content: "\203A\203A"; padding-left: .25em;}
 
+div#sitemap ul {
+    float: left;
+    list-style: none;
+}
+
+.linkmore {
+    margin-top: -2em;
+    float: right;
+    font-size: 70%;
+}
+
+.linkmore:before {
+    content: "["
+}
+
+.linkmore:after {
+    content: "]"
+}
