@@ -48,7 +48,11 @@ Make your selection to enable NeuroDebian on your computer:
 
   <div id="reposetup" style="display:none">
 
-  <p>Copy and paste the following command into a terminal window:</p>
+To enable NeuroDebian on your system, simply copy and paste the following
+commands into a terminal window:
+
+.. raw:: html
+
   <pre id="code">
   After selecting a release the setup code will be shown here.
   </pre>
@@ -72,29 +76,48 @@ the terminal you can use :command:`apt-get`::
 
   <div id="vmsetup" style="display:none">
 
-If you are not running Debian_ on a particular machine a :ref:`chap_vm` is
-provided as a convenient testing and evaluation environment.  After a few
-simple steps to setup the virtual machine, you will be able to use NeuroDebian_
-as an integral part of your existing working environment without any sacrifice.
-The virtual machine is also a suitable environment to temporarily deploy
-neuroscience software on machines running other operating systems, e.g. for the
-purpose of teaching a neuroimaging data analysis course in a multipurpose
-computer lab.
+For all non-Debian operating systems the recommended way to deploy NeuroDebian
+is a `virtual appliance`_. On all modern hardware (built within the last 3-4
+years) a virtual appliance is a convenient solution to run NeuroDebian
+simultaneously with the primary operating system -- without noticable
+performance loss.
 
+1. Install NeuroDebian by first downloading this image file:
 
-Debian installation
--------------------
+.. raw:: html
 
-Having been exposed to the wonders of NeuroDebian_ you are no longer
-satisfied with your previous choice of operating system?  We would
-recommend installing Debian_ to replace or complement (dual-boot) your
-existing OS.  Please visit `"Getting Debian"
-<http://www.debian.org/distrib/>`_ to obtain the images for your
-hardware architecture and then simply add |repos|.
+  <div id="vmimagedownload">
+  <a href="http://neuro.debian.net/debian/vm/">NeuroDebian images</a>
+  </div>
+
+2. Once downloaded, import this image into your VirtualBox_ installation. If you
+   do not have VirtualBox_ installed yet, visit the `VirtualBox download page
+   <http://www.virtualbox.org/wiki/Downloads>`_ that provides installers for
+   Windows, Linux, Mac and Solaris.
+
+3. Please read :ref:`the detailed instructions on setting up the virtual
+   appliance <chap_vm>` to complete the configuration of your NeuroDebian
+   environment.
+
+.. note::
+
+  If you still running an older VirtualBox 3.x, download one of the image files
+  listed below. These older releases are distributed as a `zip` file. Please
+  extract all files from the `.zip` file, using appropriate software
+  for your operating system.
+
+  * `NeuroDebian 6.0.2 image (32bit)
+    <http://neuro.debian.net/debian/vm/neurodebian_6.0.2_i386.zip>`_ [~545MB]
+
+  * `NeuroDebian 6.0.2 image (64bit)
+    <http://neuro.debian.net/debian/vm/neurodebian_6.0.2_amd64.zip>`_ [~560MB]
 
 .. raw:: html
 
   </div> <!-- end vmsetup -->
+
+.. _virtual appliance: http://en.wikipedia.org/wiki/Virtual_appliance
+.. _VirtualBox: http://www.virtualbox.org
 
 .. _news:
 
@@ -396,6 +419,32 @@ know that you are already contributing back to the community.
       $(buttonid).html("&darr;&darr;&darr;");
   };
 
+  function createvmdownload(rel, mir) {
+        var img_version = '6.0.5';
+        var img_suffix;
+        var base_url;
+        var img_url;
+        var md5sum_url;
+        if (rel == 'win32') {
+            img_suffix = 'i386';
+        } else {
+            img_suffix = 'amd64';
+        };
+        if(mir in mirrors) {
+            base_url = mirrors[mir] + '/vm/';
+            img_url = base_url + 'NeuroDebian_' + img_version + '_' + img_suffix + '.ova';
+            md5sum_url = base_url + 'MD5SUMS';
+        } else {
+            return 'Internal error';
+        };
+        return '<blockquote><a href="' + img_url
+               + '">Virtual applicance image</a> [<a title="Verify image integrity by dowloading this file and running `md5sum -c MD5SUMS`" href="'
+               + md5sum_url
+               + '">MD5SUM</a>, <a title="Verify authenticity of the MD5SUM file by downloading this file and running `gpg –verify MD5SUMS.gpg`" href="'
+               + md5sum_url + '.gpg">MD5SUM.gpg</a>]</blockquote>' ;
+
+  };
+
   function createrepourl(rel, mir) {
     if(rel in rel2name && mir in mirrors) {
 
@@ -408,11 +457,12 @@ know that you are already contributing back to the community.
   };
   function updateout(rel, mir) {
      if (rel != '' && mir != '') {
-        $('#code').text(createrepourl(rel, mir));
-        if (rel in {'win':'', 'rel':''}) {
+        if (rel in {'win32':'', 'win64':'', 'mac':''}) {
+            $('#vmimagedownload').html(createvmdownload(rel, mir));
             $('#vmsetup').slideDown();
             $('#reposetup').slideUp();
         } else {
+            $('#code').text(createrepourl(rel, mir));
             $('#reposetup').slideDown();
             $('#vmsetup').slideUp();
         };
@@ -434,6 +484,9 @@ know that you are already contributing back to the community.
      updateout(singleValues, mirrorVal);
    });
 
+  $(document).ready(function($) {
+     updateout($("#release").val(), $("#mirror").val());
+  });
 
   foldbuttontoggle('morepublications');
 

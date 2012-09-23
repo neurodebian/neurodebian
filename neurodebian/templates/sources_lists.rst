@@ -2,7 +2,8 @@
 
  <select id="release" name="release">
    <option selected value="">Select your operating system</option>
-   <option value="win">MS Windows</option>
+   <option value="win32">MS Windows (32bit)</option>
+   <option value="win64">MS Windows (64bit)</option>
    <option value="mac">Mac OS X</option>
 {%- for id, relname in id2relname|dictsort(true, 'value') %}
    <option value="{{ id }}">{{ relname }}</option>
