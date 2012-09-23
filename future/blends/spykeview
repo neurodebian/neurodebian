@@ -1,0 +1,13 @@
+Source: spykeview
+Tasks: debian-science/electrophysiology
+Homepage: https://github.com/rproepp/spykeviewer
+License: promised MIT or BSD-3
+Author: Robert Pröpper <robert.proepper@googlamil.com>
+Language: Python
+Version: 0.1.0
+WNPP: 687703
+Pkg-Description: GUI application for navigating, analyzing and visualizing electrophysiological datasets
+ Based on the neo framework, it works with a wide variety of data
+ formats.  Plugin interfaces allow for rapid extension with custom
+ analyses.
+Remark: Upstream promises public release by SfN 2012 in October
