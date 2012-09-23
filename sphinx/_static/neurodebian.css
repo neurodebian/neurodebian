@@ -349,7 +349,7 @@ div.body h6 {
     padding: 3px 0 3px 10px;
 }
 
-div.body h1 { margin-top: 0; font-size: 180%; }
+div.body h1 { margin-top: 0em; font-size: 180%; padding-top: 1em;}
 div.body h2 { font-size: 160%; }
 div.body h3 { font-size: 140%; }
 div.body h4 { font-size: 120%; }

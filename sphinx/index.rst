@@ -1,8 +1,8 @@
 .. _WELCOme:
 
-*************
- NeuroDebian
-*************
+*********************************************
+ The Ultimate Neuroscience Software Platform
+*********************************************
 
 NeuroDebian provides a large collection of popular neuroscience research
 software for the Debian_ operating system as well as Ubuntu_ and other
@@ -181,6 +181,7 @@ News
 * **Related**
 * `Debian <http://www.debian.org>`_
 * `Debian Med <http://www.debian.org/devel/debian-med>`_
+* `INCF <http://software.incf.org/software/neurodebian>`_
 * `NITRC <http://www.nitrc.org/projects/neurodebian>`_
 
 .. raw:: html
