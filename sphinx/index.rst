@@ -131,7 +131,7 @@ News
 .. raw:: html
 
  <script src="_static/jquery.livetwitter.min.js"></script>
- <div id="identica_widget"></div>
+ <div id="identica_widget">[News widget has not been loaded yet]</div>
  <script type="text/javascript">
  $("#identica_widget").liveTwitter('neurodebian',
                                    {service: 'identi.ca',
