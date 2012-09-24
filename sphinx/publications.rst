@@ -22,11 +22,6 @@ next step: An integrated, community-driven computing platform for neuroscience
 <http://www.frontiersin.org/Neuroinformatics/10.3389/fninf.2012.00022/full>`_. *Frontiers in Neuroinformatics*,
 6:22.
 
-.. raw:: html
-
-  <span id="morepublicationsbutton" class="button" title="Click to toogle more"></span>
-  <div id="morepublications">
-
 Hanke, M. (2012). `The why and how of getting packaged
 <_files/Hanke_GetPackaged_CodeJam5_2012.pdf>`_.
 *Talk given at BrainScaleS CodeJam 5, Convergence in Computational Neuroscience*,
@@ -93,10 +88,6 @@ statistical learning, and open-source software to make research more
 efficient, more open, and more fun
 <_files/HalchenkoHanke_FossEcosystemDC09.pdf>`_. *Talk given at*
 `Dartmouth College`_, New Hampshire, USA.
-
-.. raw:: html
-
-  </div>
 
 .. _DebConf10: http://debconf10.debconf.org/
 .. _Dartmouth College: http://www.dartmouth.edu/
