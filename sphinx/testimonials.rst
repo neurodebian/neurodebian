@@ -3,6 +3,16 @@
 Testimonials
 ============
 
+Here is some feedback we got from the neuroscience community on various
+occasions. On this page it is grouped by its origin (i.e.  `research
+institutions`_, `research software projects`_, `individual laboratories and
+researchers`_). Alternatively, you can read testimonials related to specific
+topics:
+
+* :ref:`testimonials_open_science`
+* :ref:`testimonials_standardization`
+* :ref:`testimonials_vm`
+
 .. None so far replied
 ..
 .. Organizations
@@ -10,14 +20,6 @@ Testimonials
 ..
 .. .. quotes::
 ..    :group: Organizations
-
-
-By Topic
---------
-
-* :ref:`testimonials_open_science`
-* :ref:`testimonials_standardization`
-* :ref:`testimonials_vm`
 
 
 Research Institutions
