@@ -21,11 +21,13 @@ Why NeuroDebian?
 
 
 Why is NeuroDebian not a Pure Blend?
-  Because there is no need for it to become one, as the existing Debian Pure
-  Blends already offer the desired functionality *within* Debian. Similar to
-  Pure Blends, NeuroDebian's goal is to provide software for neuroscientists
-  using the Debian operating system, and therefore the ultimate goal is to get
-  all relevant software **into Debian**.
+  This is in the works, but...
+
+  There is no need for it to become one, as the existing Debian Pure Blends
+  already offer the desired functionality *within* Debian. Similar to Pure
+  Blends, NeuroDebian's goal is to provide software for neuroscientists using
+  the Debian operating system, and therefore the ultimate goal is to get all
+  relevant software **into Debian**.
 
   However, various reasons exist that prevent a particular software from
   entering Debian. Some are temporary, i.e. a package is already useable, but

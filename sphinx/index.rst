@@ -43,7 +43,7 @@ Learn more about NeuroDebian, the goals of this project, and help us |spread|!
 Get NeuroDebian
 ===============
 
-Choose on which operating system you want to run NeuroDebian, and select a
+First select what kind of operating system you are using, and then choose a
 download server close to you:
 
 .. include:: sources_lists
@@ -52,8 +52,10 @@ download server close to you:
 
   <div id="reposetup" style="display:none">
 
-To enable NeuroDebian on your system, simply copy and paste the following
-commands into a terminal window:
+You can enable NeuroDebian on your system by simply copying and pasting the
+following two commands into a terminal window. This will add the NeuroDebian
+repository to your native package management system, and you will be able to
+install neuroscience software the same way as any other package.
 
 .. raw:: html
 
@@ -61,12 +63,14 @@ commands into a terminal window:
   After selecting a release the setup code will be shown here.
   </pre>
 
-Once this is done, you have to update the package index and you are ready to
-install packages. Use your favorite package manager, e.g. synaptic, adept. In
-the terminal you can use :command:`apt-get`::
+Now you can update the package index and you are ready to install packages.
+Of course you can use your favorite package manager (e.g. synaptic, adept)
+for this. In the terminal you can use :command:`apt-get`::
 
   sudo apt-get update
   sudo apt-get install mricron
+
+You are ready to go -- enjoy NeuroDebian!
 
 .. note::
 
@@ -80,13 +84,13 @@ the terminal you can use :command:`apt-get`::
 
   <div id="vmsetup" style="display:none">
 
-For all non-Debian operating systems the recommended way to deploy NeuroDebian
-is a `virtual appliance`_. On all modern hardware (built within the last 3-4
-years) a virtual appliance is a convenient solution to run NeuroDebian
-simultaneously with the primary operating system -- without noticable
-performance loss.
+For all non-Debian operating systems we recommend to deploy NeuroDebian as a
+`virtual appliance`_ (virtual machine). On all modern hardware (built within
+the last 3-4 years) a virtual appliance is a convenient solution to run
+NeuroDebian simultaneously with the primary operating system -- without
+noticeable performance loss. To start using NeuroDebian:
 
-1. Install NeuroDebian by first downloading this image file:
+1. Download this image file:
 
 .. raw:: html
 
@@ -94,14 +98,15 @@ performance loss.
   <a href="http://neuro.debian.net/debian/vm/">NeuroDebian images</a>
   </div>
 
-2. Once downloaded, import this image into your VirtualBox_ installation. If you
-   do not have VirtualBox_ installed yet, visit the `VirtualBox download page
-   <http://www.virtualbox.org/wiki/Downloads>`_ that provides installers for
-   Windows, Linux, Mac and Solaris.
+2. Import this image into VirtualBox_. If you do not have VirtualBox_
+   installed yet, visit the `VirtualBox download page
+   <http://www.virtualbox.org/wiki/Downloads>`_ and get an installer for your
+   system (installers for Windows, Linux, Mac and Solaris are available).
 
-3. Please read :ref:`the detailed instructions on setting up the virtual
-   appliance <chap_vm>` to complete the configuration of your NeuroDebian
-   environment.
+3. Finish the configuration by following :ref:`the instructions on setting up
+   the virtual appliance <chap_vm>`.
+
+You are ready to go -- enjoy NeuroDebian!
 
 .. note::
 
