@@ -46,17 +46,8 @@ Installation
 The following video shows how to get the NeuroDebian virtual machine running
 on your machine. The installation is shown for Mac OS X. It should, however, be
 very similar on a Windows box. If you cannot watch the video, please take a
-look at the written instructions below.
-
-.. raw:: html
-
-  <iframe title="YouTube video player"
-          class="youtube-player"
-          type="text/html"
-          width="640"
-          height="375"
-          src="http://www.youtube.com/embed/eqfjKV5XaTE?hd=1"
-          frameborder="0"></iframe>
+look at the written instructions below. You can also watch a `[Virtual machine
+setup video tutorial] <http://www.youtube.com/watch?v=eqfjKV5XaTE>`_.
 
 First download and install a recent version of VirtualBox_. VirtualBox is a
 virtualization software that is freely available for Windows, MacOS X, Solaris,
@@ -135,17 +126,8 @@ Working with the virtual machine
 The next video is a demonstration of some basic desktop integration features.
 It shows how to use the virtual machine in full-screen and seamless mode, shared
 folder access, software installation, as well as suspending and resuming the
-virtual machine.
-
-.. raw:: html
-
-  <iframe title="YouTube video player"
-          class="youtube-player"
-          type="text/html"
-          width="640"
-          height="375"
-          src="http://www.youtube.com/embed/OV7fYSEoOeQ?hd=1"
-          frameborder="0"></iframe>
+virtual machine `[Virtual machine handling video tutorial]
+<http://www.youtube.com/watch?v=OV7fYSEoOeQ>`_
 
 
 .. _chap_vm_troubleshooting:

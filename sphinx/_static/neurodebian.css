@@ -886,3 +886,19 @@ div#sitemap ul {
     content: "]"
 }
 
+
+.highlighted {
+    background-color: yellow;
+}
+
+#searchbox p {
+    display: inline;
+}
+
+.inlineimage {
+    vertical-align: baseline;
+}
+
+a img.inlineimage:hover {
+    background-color: #820430;
+}

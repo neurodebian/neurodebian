@@ -2,6 +2,14 @@
 
 {% block extrahead %}
   <meta name="keywords" content="debian, neuroscience">
+  <script language="javascript" type="text/javascript"
+  src="/javascript/jquery-mousewheel/jquery.mousewheel.min.js"></script>
+  <script language="javascript" type="text/javascript"
+  src="/javascript/jquery-easing/jquery.easing.min.js"></script>
+  <script language="javascript" type="text/javascript"
+  src="/javascript/jquery-fancybox/jquery.fancybox.min.js"></script>
+  <link rel="stylesheet" href="/javascript/jquery-fancybox/jquery.fancybox.css"
+  type="text/css" media="screen" />
 {% endblock %}
 
 {% block header %}
@@ -61,6 +69,28 @@ git.debian.org</a>.
   $('dd').hide();
   $('.expandinstructions').show();
   $('.nojavascriptinstructions').hide();
+</script>
+<!-- turn all [youtube] links into buttons and open them in fancy player-->
+<script type="text/javascript">
+$(document).ready(function(){
+  $('a[href^="http://www.youtube.com/watch"]').click(function() {
+     $.fancybox({
+        'title': this.title,
+        'href': this.href.replace(new RegExp("watch\\?v=", "i"), 'v/'),
+        'type': 'swf',
+        'swf': {'wmode': 'transparent', 'allowfullscreen': 'true'}
+      });
+    return false;
+    });
+  $('a[href^="http://www.youtube.com/watch"]').each(function() {
+      var content = $(this).html();
+      if (content.charAt(0) == '[' && content.charAt(content.length-1) == ']') {
+          $(this).html('<img class="inlineimage" src="/_static/video_button.png" alt="video link button" title="' + content + '" />');
+      } else {
+          return content;
+      };
+    });
+});
 </script>
 {% endblock %}
 
