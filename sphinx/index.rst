@@ -50,7 +50,13 @@ download server close to you:
 
 .. raw:: html
 
-  <div id="reposetup" style="display:none">
+  <div class="nojavascriptinstructions">
+  This form requires javascript. If disabled, incomplete instructions are
+  displayed below</div>
+  <div id="reposetup">
+  <div class="nojavascriptinstructions">
+  Instructions for Debian-derived systems
+  </div>
 
 You can enable NeuroDebian on your system by simply copying and pasting the
 following two commands into a terminal window. This will add the NeuroDebian
@@ -82,7 +88,10 @@ You are ready to go -- enjoy NeuroDebian!
 
   </div> <!-- end reposetup -->
 
-  <div id="vmsetup" style="display:none">
+  <div id="vmsetup">
+  <div class="nojavascriptinstructions">
+  Instructions for non-Debian systems
+  </div>
 
 For all non-Debian operating systems we recommend to deploy NeuroDebian as a
 `virtual appliance`_ (virtual machine). On all modern hardware (built within
@@ -144,6 +153,9 @@ News
                                     limit: 10,
                                     rate: 300000});
  </script>
+ <div class="nojavascriptinstructions">
+ The news widget requires javascript
+ </div>
 
 .. _identi.ca: http://identi.ca/neurodebian
 .. _twitter: http://twitter.com/NeuroDebian
@@ -325,9 +337,6 @@ News
      updateout($("#release").val(), $("#mirror").val());
   });
 
-  foldbuttontoggle('morepublications');
-
-
+  $('#reposetup').hide()
+  $('#vmsetup').hide()
   </script>
-
-

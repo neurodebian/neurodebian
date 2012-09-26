@@ -21,87 +21,6 @@ just a few mouse clicks (e.g. AFNI_, Caret_, FSL_, PyMVPA_).
 .. _PyMVPA: http://www.pymvpa.org
 
 
-Downloads
----------
-
-* `NeuroDebian 6.0.5 image (32bit)
-  <http://neuro.debian.net/debian/vm/NeuroDebian_6.0.5_i386.ova>`_ [~559MB]
-
-  *This image should work on virtually all systems that are supported by*
-  VirtualBox_ *and can be used whenever the, otherwise preferable, 64bit image
-  is not compatible with a host machine.*
-
-* `NeuroDebian 6.0.5 image (64bit)
-  <http://neuro.debian.net/debian/vm/NeuroDebian_6.0.5_amd64.ova>`_ [~575MB]
-
-  *This image only works on 64bit host machines with active hardware
-  virtualization support. The should include all recent Apple hardware and most
-  64bit Windows systems.*
-
-Virtual appliances above carry guest additions for 4.x series of the
-VirtualBox. If you still have VirtualBox 3.x, use previous 6.0.2
-virtual appliances:
-
-* `NeuroDebian 6.0.2 image (32bit)
-  <http://neuro.debian.net/debian/vm/neurodebian_6.0.2_i386.zip>`_ [~545MB]
-
-* `NeuroDebian 6.0.2 image (64bit)
-  <http://neuro.debian.net/debian/vm/neurodebian_6.0.2_amd64.zip>`_ [~560MB]
-
-.. note::
-
-  This older virtual appliances are distributed as a `zip` file. Please
-  extract all files from the `.zip` file, using appropriate software
-  for your operating system.
-
-.. note::
-
-  You can verify that you have downloaded archives correctly using
-  `md5sums -c MD5SUMS
-  <http://neuro.debian.net/debian/vm/MD5SUMS>`_ . You can also verify
-  the authenticity of the `MD5SUMS
-  <http://neuro.debian.net/debian/vm/MD5SUMS>`_ itself using `gpg
-  --verify MD5SUMS.gpg
-  <http://neuro.debian.net/debian/vm/MD5SUMS.gpg>`_ signed with
-  NeuroDebian archive key.
-
-* `VirtualBox download page <http://www.virtualbox.org/wiki/Downloads>`_ (Windows, Linux, Mac,
-  Solaris)
-
-  *This webpage offers installers of the VirtualBox application, as well as the
-  documentation.*
-
-Changes
--------
-
-6.0.5 -- 10 Nov 2011
-
-      * Updated core system to Debian squeeze 6.0.3
-      * Updated shipped virtualbox-ose guest-utils and guest-x11 to 4.0.10
-
-        - ``~/host`` is now symlinked to correct path ``/media/sf_host``
-        - ``brain`` user is added to ``vboxsf`` group so mounted host
-          directories should become readily available
-
-      * Root partition size and swap space got doubled in size (40GB
-        and 2GB correspondingly).  Space is allocated dynamically so
-        the actual size of the virtual drive should not grow unless
-        you use it
-
-6.0.4 -- 13 Jun 2011
-
-      * Updated shipped virtualbox-ose guest-utils and guest-x11 to 4.0.4
-
-6.0.3 -- 12 Jun 2011 [Superseded in the archive by 6.0.4]
-
-      * Updated to Squeeze 6.0.1
-      * Updated VirtualBox guest additions to 4.0.4 from backports.debian.org
-      * Appliance is available as a single file (.ova) ready for the import
-
-6.0.2 -- 08 Feb 2011
-
-6.0.1 -- 01 Dec 2010
-
 Documentation
 -------------
 
@@ -234,8 +153,11 @@ virtual machine.
 Troubleshooting
 ~~~~~~~~~~~~~~~
 
-Updating the VM or installing new packages doesn't work.
+.. raw:: html
 
+  <div class="expandinstructions">Click on an item to expand it</div>
+
+Updating the VM or installing new packages doesn't work
   The VM uses as service that tries to figure out the best/closest package
   repository for you. In some network environments this service might not work
   well, or not at all. To check if this is a problem, you can modify the
@@ -256,8 +178,7 @@ Updating the VM or installing new packages doesn't work.
   Only modify lines that refer to ``geomirror`` (all of them), but do **not**
   modify entries for ``security.debian.org``.
 
-I cannot hear sounds played in the virtual machine.
-
+I cannot hear sounds played in the virtual machine
   By default the sound is muted. To enable playback launch the mixer applet by
   clicking on the mixer icon in the task bar. Unmute the master volume control.
   Now click on the "Volume control" to load the channel mixer dialog. Unmute
@@ -265,9 +186,7 @@ I cannot hear sounds played in the virtual machine.
   now be able to hear sounds played within the virtual machines through your
   host computer's speakers.
 
-I have upgraded VirtualBox from 3.x series to 4.x, and my VM lost
-mounted host directories.
-
+My VM lost mounted host directories after upgrading from VirtualBox from 3.x to 4.x
   NeuroDebian VMs prior 6.0.3 were shipped with guest additions from
   3.x series of VirtualBox and some initial versions of VirtualBox in
   4.x series have failed to mount host directories properly.
@@ -281,3 +200,38 @@ mounted host directories.
          virtualbox-ose-guest-utils  virtualbox-ose-guest-x11
 
   and reboot VM.
+
+
+What has changed
+----------------
+
+.. raw:: html
+
+  <div class="expandinstructions">Click on an item to expand it</div>
+
+6.0.5 -- 10 Nov 2011
+  * Updated core system to Debian squeeze 6.0.3
+  * Updated shipped virtualbox-ose guest-utils and guest-x11 to 4.0.10
+
+    - ``~/host`` is now symlinked to correct path ``/media/sf_host``
+    - ``brain`` user is added to ``vboxsf`` group so mounted host
+      directories should become readily available
+
+  * Root partition size and swap space got doubled in size (40GB
+    and 2GB correspondingly).  Space is allocated dynamically so
+    the actual size of the virtual drive should not grow unless
+    you use it
+
+6.0.4 -- 13 Jun 2011
+  * Updated shipped virtualbox-ose guest-utils and guest-x11 to 4.0.4
+
+6.0.3 -- 12 Jun 2011 [Superseded in the archive by 6.0.4]
+  * Updated to Squeeze 6.0.1
+  * Updated VirtualBox guest additions to 4.0.4 from backports.debian.org
+  * Appliance is available as a single file (.ova) ready for the import
+
+6.0.2 -- 08 Feb 2011
+  * Minor update
+
+6.0.1 -- 01 Dec 2010
+  * Minor update

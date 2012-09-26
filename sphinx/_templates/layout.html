@@ -29,7 +29,7 @@
 {{ super() }}
 {% endblock %}
 <li class="right" style="position:relative;top:3px"><div class="g-plusone"></div></li>
-<li class="right" style="position:relative;top:1px"><a href="https://twitter.com/share" class="twitter-share-button" data-size="large" data-hashtags="neurodebian" data-dnt="true">Tweet</a></li?
+<li class="right" style="position:relative;top:1px"><a href="https://twitter.com/share" class="twitter-share-button" data-size="large" data-hashtags="neurodebian" data-dnt="true"></a></li?
 {% endblock %}
 
 {% block sidebar1 %}{% endblock %}
@@ -53,5 +53,14 @@ git.debian.org</a>.
 <script type="text/javascript">gapi.plusone.go();</script>
 <!-- Twitter -->
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+<!-- trigger convenience setup with javascript enabled -->
+<script type="text/javascript">
+  $('dt').click(function(e){
+      $(this).nextUntil('dt').toggle();
+  });
+  $('dd').hide();
+  $('.expandinstructions').show();
+  $('.nojavascriptinstructions').hide();
+</script>
 {% endblock %}
 

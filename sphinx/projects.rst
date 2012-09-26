@@ -63,15 +63,18 @@ Expertise transfer
 Promotion
 ---------
 
+.. raw:: html
+
+  <div class="expandinstructions">Click on an item to expand it</div>
+
 * `Publications <http://neuro.debian.net/index.html#publications>`_ and
   promotional materials
 
-  - `Debian / NeuroDebian tri-fold
+  - `(Neuro)Debian tri-fold
     <http://neuro.debian.net/_files/brochure_debian-neurodebian.pdf>`_
 
 * Conferences presence of the team presenting Debian_,
   NeuroDebian_, and related work:
-
   **May 2-6, 2011** `Paradyn/Condor Week <http://www.cs.wisc.edu/condor/ParadynCondorWeek2011>`_, Madison, Wisconsin, USA
     Hanke, M. `Talk: Integrating Condor into the Debian operating system <http://www.cs.wisc.edu/condor/ParadynCondorWeek2011/presentations/hanke-condor-debian.pdf>`__
   **June 26-30, 2011** `HBM 2011 <http://www.humanbrainmapping.org/HBM2011>`_, Québec City, Canada
@@ -79,22 +82,21 @@ Promotion
   **July 21-23, 2011** `PsychoPy Workshop and Codesprint <https://scanlab.psych.yale.edu/public/psychopy>`_, New Haven, CT, USA
 
   **August 25-30, 2011** `EuroSciPy 2011/ Python in NeuroScience <http://www.euroscipy.org/conference/euroscipy2011>`_, Paris, France
-
      2011/08/27, 16:30 -- 17:00, Scientific track
-	     Halchenko, Yaroslav O. `Talk: π's in Debian or Scientific Debian: NumPy,
-	     SciPy and beyond <http://www.euroscipy.org/talk/4379>`__
+         Halchenko, Yaroslav O. `Talk: π's in Debian or Scientific Debian: NumPy,
+         SciPy and beyond <http://www.euroscipy.org/talk/4379>`__
      2011/08/29, 14:00 -- 14:30, Neuroimaging data processing
          Halchenko, Yaroslav O. `Talk: The virtues and sins of PyMVPA <http://pythonneuro.sciencesconf.org/899>`__
      2011/08/30, 10:30 -- 10:45, Workflows and pipelines for data processing
          Hanke, M. `Talk: More than batteries included: NeuroDebian <http://pythonneuro.sciencesconf.org/883>`__
      2011/08/30, 12:00 -- 12:15, Data management and databasing
-	     Hanke, M. `Talk: NiBabel: Conductor for a cacophony of neuro-imaging file formats <http://pythonneuro.sciencesconf.org/901>`__
+         Hanke, M. `Talk: NiBabel: Conductor for a cacophony of neuro-imaging file formats <http://pythonneuro.sciencesconf.org/901>`__
 
   **September 8, 2011** `INCF Cross-Task Force Hackathon <http://atlasing.incf.org/wiki/Sept8>`_, Boston, MA, USA
 
   **November 12-16, 2011** `SfN 2011 <http://www.sfn.org/am2011/>`_, Washington, District Columbia, USA
     Booth #3207
-  `Invite us <mailto:team@neuro.debian.net>`_
+* `Invite us <mailto:team@neuro.debian.net>`_ to talk about NeuroDebian.
 
 * `Inviting contributions and new members to join the NeuroDebian project
   <https://openhatch.org/+projects/NeuroDebian>`_

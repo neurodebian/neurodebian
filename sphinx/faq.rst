@@ -8,6 +8,10 @@
 Frequently Asked Questions
 **************************
 
+.. raw:: html
+
+  <div class="expandinstructions">Click on an item to expand it</div>
+
 Why NeuroDebian?
   In the course of our own research endeavors |we| have joined forces to
   develop `PyMVPA -- a Python framework for multivariate pattern analysis of
@@ -169,13 +173,3 @@ How can I cite NeuroDebian?
 
 .. include:: link_names.txt
 .. include:: substitutions.txt
-
-.. raw:: html
-
-  <script type="text/javascript">
-  $('dt').click(function(e){
-      $(this).nextUntil('dt').toggle();
-  });
-  $('dd').hide();
-  </script>
-

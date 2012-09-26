@@ -218,6 +218,10 @@ ul.search li div.context {
     text-align: left;
 }
 
+ul.simple {
+    margin-bottom: 1em;
+}
+
 ul.keywordmatches li.goodmatch a {
     font-weight: bold;
 }
@@ -552,6 +556,11 @@ dd {
     color: #060;
 }
 
+dt {
+    font-weight: bold;
+    margin-top: 1em;
+}
+
 dt:target,
 .highlight {
     background-color: #fbe54e;
@@ -830,13 +839,20 @@ div#randomquote blockquote.epigraph {
     border: 0px
 }
 
+#troubleshooting dt,
 div#frequently-asked-questions dt {
     font-weight: bold;
     margin-top: 1em;
+    margin-left: 1em;
     cursor: pointer;
+    display: list-item;
+    list-style-image:url(neurodebian_bullet.png);
 }
 
-dt:after { content: "\203A\203A"; padding-left: .25em;}
+div#frequently-asked-questions dt:after {
+    content: "\203A\203A";
+    padding-left: .25em;
+}
 
 div#sitemap ul {
     float: left;
@@ -849,10 +865,24 @@ div#sitemap ul {
     font-size: 70%;
 }
 
-.linkmore:before {
+.nojavascriptinstructions {
+    font-size: 70%;
+}
+
+.expandinstructions {
+    font-size: 70%;
+    display: none;
+}
+
+.linkmore:before,
+.nojavascriptinstructions:before,
+.expandinstructions:before {
     content: "["
 }
 
-.linkmore:after {
+.linkmore:after,
+.nojavascriptinstructions:after,
+.expandinstructions:after {
     content: "]"
 }
+
