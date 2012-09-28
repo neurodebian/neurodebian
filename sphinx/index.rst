@@ -94,7 +94,8 @@ You are ready to go -- enjoy NeuroDebian!
   </div>
 
 For all non-Debian operating systems we recommend to deploy NeuroDebian as a
-`virtual appliance`_ (virtual machine). On all modern hardware (built within
+`virtual appliance`_ (virtual machine) -- this will only take a few minutes.
+On all modern hardware (built within
 the last 3-4 years) a virtual appliance is a convenient solution to run
 NeuroDebian simultaneously with the primary operating system -- without
 noticeable performance loss. To start using NeuroDebian:
@@ -113,7 +114,11 @@ noticeable performance loss. To start using NeuroDebian:
    system (installers for Windows, Linux, Mac and Solaris are available).
 
 3. Finish the configuration by following :ref:`the instructions on setting up
-   the virtual appliance <chap_vm>`.
+   the virtual appliance <chap_vm>`. `[Virtual machine
+   setup video tutorial] <http://www.youtube.com/watch?v=eqfjKV5XaTE>`_
+
+
+
 
 You are ready to go -- enjoy NeuroDebian!
 

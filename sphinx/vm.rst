@@ -7,12 +7,10 @@ NeuroDebian Virtual Machine
    :random: 1
    :tags: vm
 
-For those who are not yet running a Debian-based operation system we offer a
-`virtual machine`_ that can be used with `VirtualBox`_, allowing users to benefit
-from a Debian-based research environment on other operating systems.
-This virtual machine initially comes as a compact Debian installation that can,
-once installed, be equipped with a large variety of neuroscience software with
-just a few mouse clicks (e.g. AFNI_, Caret_, FSL_, PyMVPA_).
+For all systems running a non-Debian-based operation system, such as MS Windows
+or Mac OS X, we offer a `virtual machine`_ that can be equipped with a large
+variety of neuroscience software with just a few mouse clicks (e.g. AFNI_,
+FSL_, PyMVPA_).
 
 .. _virtual machine: http://en.wikipedia.org/wiki/Virtual_machine
 .. _AFNI: http://afni.nimh.nih.gov/afni/
@@ -20,21 +18,23 @@ just a few mouse clicks (e.g. AFNI_, Caret_, FSL_, PyMVPA_).
 .. _FSL: http://www.fmrib.ox.ac.uk/fsl/
 .. _PyMVPA: http://www.pymvpa.org
 
-
-Documentation
--------------
-
 The virtual machine contains an installation of `Debian 6.0 (squeeze)`_ with a
 GNOME_ desktop environment. All installed software comes from standard Debian
-packages, or prospective Debian packages from NeuroDebian. This means that all
-contained software is readily available for any system running a Debian
-operating system (or a recent Ubuntu release). The virtual machine can be seen
-as a showcase of what Debian for neuroscience research feels like. Moreover,
-once downloaded this virtual machine can be kept up to date, just as any other
+packages, or prospective Debian packages from NeuroDebian. The virtual machine
+can be seen as a showcase of what Debian for neuroscience research feels like.
+Once downloaded this virtual machine can be kept up to date, just as any other
 Debian installation. Using convenient graphical package management tools users
 will benefit from security bug fixes provided by the Debian project for the
 whole operating system, as well as from software updates for
 neuroscience-related packages.
+
+Even on Debian-based systems this virtual machine is an excellent way to
+maintain an analysis environment that remains identical throughout the lifetime
+of a study and that can be archived alongside acquired data and publications.
+This is a much more practical way than freezing the entire software stack of a
+whole workstation, where it quickly becomes troublesome to combine the desire
+for latest research methodology for new studies and the need for stability for
+ongoing projects.
 
 .. _Debian 6.0 (squeeze): http://www.debian.org/releases/squeeze
 .. _GNOME: http://www.gnome.org/
@@ -43,22 +43,25 @@ neuroscience-related packages.
 Installation
 ~~~~~~~~~~~~
 
-The following video shows how to get the NeuroDebian virtual machine running
-on your machine. The installation is shown for Mac OS X. It should, however, be
-very similar on a Windows box. If you cannot watch the video, please take a
-look at the written instructions below. You can also watch a `[Virtual machine
-setup video tutorial] <http://www.youtube.com/watch?v=eqfjKV5XaTE>`_.
+The following instructions demonstrate how to install the NeuroDebian virtual
+machine -- here shown exemplary for Mac OS X, but the procedure is virtually
+identical on a Windows box. There is also a video tutorial at coffee break
+length. `[Virtual machine setup video tutorial]
+<http://www.youtube.com/watch?v=eqfjKV5XaTE>`_.
 
-First download and install a recent version of VirtualBox_. VirtualBox is a
-virtualization software that is freely available for Windows, MacOS X, Solaris,
-and Linux. VirtualBox comes with a comprehensive manual that should answer
-potential questions regarding installation and maintenance.
+If you don't have t already, first download and install a recent version of
+VirtualBox_. VirtualBox is a virtualization software that is freely available
+for Windows, MacOS X, Solaris, and Linux. VirtualBox comes with a comprehensive
+manual that should answer potential questions regarding installation and
+maintenance.
 
 .. _VirtualBox: http://www.virtualbox.org
 
-Next, download the most recent version of the NeuroDebian virtual machine from
-the Downloads_ section.  Start VirtualBox and select "Import Appliance" from the file
-menu.
+Obtain the most recent version of the NeuroDebian virtual machine by visiting
+http://neuro.debian.net and selecting your operating system and a download
+server on the frontpage.
+
+Start VirtualBox and select "Import Appliance" from the file menu.
 
 .. image:: pics/vm_import_app.jpg
 
@@ -109,10 +112,15 @@ connection you can update the contained software packages at any time.
 
 .. image:: pics/vm_settings.jpg
 
-The virtual machine logs yourself in automatically. The name of the virtual
-machine user is `brain` and the password is `neurodebian`. The *root* password
-is also `neurodebian`. In most cases, however, you should not be forced to type
-the password, since `sudo` is configured to work without it.
+The virtual machine logs yourself in automatically. This is the default account:
+
+:user: brain
+:password: neurodebian
+
+:root password: neurodebian
+
+In most cases you should not be forced to type the password, because ``sudo``
+is configured to work without it.
 
 .. note::
 
@@ -123,10 +131,12 @@ the password, since `sudo` is configured to work without it.
 Working with the virtual machine
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The next video is a demonstration of some basic desktop integration features.
-It shows how to use the virtual machine in full-screen and seamless mode, shared
-folder access, software installation, as well as suspending and resuming the
-virtual machine `[Virtual machine handling video tutorial]
+The NeuroDebian virtual machine has very low maintenance demands. We have
+prepared a short video demo that shows most typical procedures that you will
+probably perform while working with NeuroDebian inside a virtual machine:
+use the virtual machine in full-screen and seamless mode, shared folder access,
+software installation, as well as suspending and resuming the
+virtual machine. `[Virtual machine handling video tutorial]
 <http://www.youtube.com/watch?v=OV7fYSEoOeQ>`_
 
 
