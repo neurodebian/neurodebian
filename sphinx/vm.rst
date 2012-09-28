@@ -3,6 +3,9 @@
 NeuroDebian Virtual Machine
 ===========================
 
+`Installation`_ | `Working with the virtual machine`_ | `Troubleshooting`_ |
+`What has changed`_
+
 .. quotes::
    :random: 1
    :tags: vm
