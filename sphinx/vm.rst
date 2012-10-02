@@ -173,6 +173,17 @@ Updating the VM or installing new packages doesn't work
   Only modify lines that refer to ``geomirror`` (all of them), but do **not**
   modify entries for ``security.debian.org``.
 
+Our proxy setup at work prevents APT from downloading packages
+  APT needs to be told how to access the proxy. Talk to your local sysadmin
+  and ask for the proxy's address (maybe a username and password too), as well
+  as the ports for HTTP and FTP proxies. With this information add the following
+  lines in the file, /etc/apt/apt.conf.d/80proxy. This will ensure that after an
+  upgrade changes won't be lost::
+
+    Acquire::http::proxy "http://<username>:<password>@<proxy>:<port>/";
+    Acquire::ftp::proxy "ftp://<username>:<password>@<proxy>:<port>/";
+    Acquire::https::proxy "https://<username>:<password>@<proxy>:<port>/";
+
 I cannot hear sounds played in the virtual machine
   By default the sound is muted. To enable playback launch the mixer applet by
   clicking on the mixer icon in the task bar. Unmute the master volume control.
