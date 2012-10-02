@@ -417,14 +417,18 @@ efforts of thousands of Debian contributors.
 
 \ndsubsection{Software at your fingertips}
 \begin{flushright}
-\vspace{-0.5em}
+\vspace{-1em}
 \url{http://neuro.debian.net/pkgs.html}
 \end{flushright}
-\textit{Electrophysiology:} BioSig, Sigviewer, Brian, PyNN, \ldots\\
-\textit{Machine Learning:} PyMVPA, scikits.learn, \ldots\\
-\textit{Imaging:} AFNI, CV, FSL, Lipsia, Mricron, NiPy, \ldots\\
+\textit{Distributed computing:} Condor \\
+\textit{Electrophysiology:} BioSig, EEGLAB, Sigviewer, \ldots\\
+\textit{Machine Learning:} MDP, PyMVPA, sklearn, \ldots\\
+\textit{Neural Modeling:} Brian, PyNN, \ldots\\
+\textit{Imaging:} AFNI, FSL, Mricron, NiPy, SPM, \ldots\\
 \textit{Psychophysics:} PsychoPy, Psychtoolbox, \ldots\\
-\vspace{-0.5em}
+\vspace{-0.8em}
+
+% TODO: Environments... -- list avail cloud env using NeuroDebian
 
 \ndsubsection{Benefits from Debian integration}
 
@@ -434,8 +438,8 @@ efforts of thousands of Debian contributors.
 \item Debian standards and policies guarantee quality and robustness.
 
 \item Debian's centralized bug tracking system provides a unified
-  single-point of entry for bug reporting and troubleshooting for any
-  software in Debian.
+  single-point of entry for bug reporting and troubleshooting
+  for any software in Debian.
 
 \item Debian makes software available through a world-wide distribution
   network, thus offloading bandwidth demands.
@@ -455,9 +459,9 @@ efforts of thousands of Debian contributors.
   software for more than 60 languages.
 \end{description}
 
-\item Neuroscience software becomes a 1st-class citizen within the Debian
-  project, which guarantees its availability, longevity, smooth
-  installation and upgrades.
+\item Neuroscience software becomes a 1st-class citizen within the
+  Debian project, which guarantees its longevity, smooth installation
+  and upgrades.
 
 %\item Participation in the Debian community helps to assure Debian's
 %  aptness for the neuroscientific software demands
@@ -497,12 +501,10 @@ buga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dug
 \ndsubsection{Work-in-progress}
 \begin{description}[nolistsep,leftmargin=1pc,style=nextline]
 \item[Increased coverage]
-\textit{Electrophysiology:} NEURON, Fieldtrip, \ldots \\
-\textit{Matlab/Octave toolboxes:} SPM, EEGLAB, \ldots \\
-\textit{Distributed computing:} Condor \\
-\textit{Imaging:} CMTK, Freesurfer, \ldots \\
-
-\epigraph{Having FreeSurfer integrated into the Debian operating system by the NeuroDebian team would have enormous benefits for us, and for the thousands of users of FreeSurfer across the world.}{Prof. Bruce Fischl}{Director, Computational Core at Martinos Center at Massachusetts General Hospital, Charlestown, Massachusetts, USA}
+\textit{Electrophysiology:} Fieldtrip, \ldots \\
+\textit{Neural Modeling:} NEURON, (NEST) \\
+\textit{Imaging:} DTI-TK, Freesurfer, XNAT, \ldots
+% \epigraph{Having FreeSurfer integrated into the Debian operating system by the NeuroDebian team would have enormous benefits for us, and for the thousands of users of FreeSurfer across the world.}{Prof. Bruce Fischl}{Director, Computational Core at Martinos Center at Massachusetts General Hospital, Charlestown, Massachusetts, USA}
 \item[Improved quality assurance]
   Extended integration and regression testing
 \item[Available snapshotting service]
@@ -510,13 +512,13 @@ buga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dug
   All versions of packages readily available
 \item[Data as the 1st-class citizen]
   \url{http://neuro.debian.net/datasets.html}
-\item[Universal availability]
-  % \begin{itemize}[nolistsep,leftmargin=1pc,topsep=0em]
-  % \item Virtual Appliance enhancements
-  %\item
-  Cloud computing
-  %\end{itemize}
-
+% yoh: see TODO above -- we can say that it is available already
+%\item[Universal availability]
+%  % \begin{itemize}[nolistsep,leftmargin=1pc,topsep=0em]
+%  % \item Virtual Appliance enhancements
+%  %\item
+%  Cloud computing
+%  %\end{itemize}
 \end{description}
 
 
@@ -527,7 +529,8 @@ buga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dug
 \vspace{-0.5em}
 \end{flushright}
 
-
+% TODO  yoh: This one remains the best summary IMHO.  But may be
+% we would just kick this section out an place Testimonials into References
 \epigraph{The approach taken with NeuroDebian is plainly the most appropriate
 approach to software distribution for the dominant platform in brain
 image analysis, and I have great confidence that this project will be
@@ -541,9 +544,21 @@ Pennsylvania, Philadelphia, USA}
 \ndsubsection{Acknowledgements}
 
 NeuroDebian is grateful to all Debian developers and contributors for
-developing the Debian operating system, and to Prof. James V. Haxby (PBS Department,
-Dartmouth College) for his continued support and endless supply of
-Italian espresso (\url{http://neuro.debian.net/coffeeart.html}).
+developing the Debian operating system, to
+\href{http://www.incf.org}{INCF} for the support in community outreach
+and technical collaborations, and to
+Prof. \href{http://haxbylab.dartmouth.edu}{James V. Haxby}
+(\href{http://www.dartmouth.edu/~psych}{PBS Department, Dartmouth
+  College}) for his continued support and endless supply of Italian
+espresso (\url{http://neuro.debian.net/coffeeart.html}).
+
+
+\ndsubsection{References}
+
+Halchenko, Y. O. \& Hanke, M. (2012). \href{http://www.frontiersin.org/Neuroinformatics/10.3389/fninf.2012.00022/full}{Open is not enough. Let’s take the next step: An integrated, community-driven computing platform for neuroscience}. Frontiers in Neuroinformatics, 6:22.
+
+% TODO: adjust for the new layout
+\url{http://neuro.debian.net/#publications}
 
 %\columnbreak
 \end{multicols}
