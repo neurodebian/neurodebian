@@ -24,15 +24,15 @@ just a few mouse clicks (e.g. AFNI_, Caret_, FSL_, PyMVPA_).
 Downloads
 ---------
 
-* `NeuroDebian 6.0.5 image (32bit)
-  <http://neuro.debian.net/debian/vm/NeuroDebian_6.0.5_i386.ova>`_ [~559MB]
+* `NeuroDebian 6.0.6 image (32bit)
+  <http://neuro.debian.net/debian/vm/NeuroDebian_6.0.6_i386.ova>`_ [~559MB]
 
   *This image should work on virtually all systems that are supported by*
   VirtualBox_ *and can be used whenever the, otherwise preferable, 64bit image
   is not compatible with a host machine.*
 
-* `NeuroDebian 6.0.5 image (64bit)
-  <http://neuro.debian.net/debian/vm/NeuroDebian_6.0.5_amd64.ova>`_ [~575MB]
+* `NeuroDebian 6.0.6 image (64bit)
+  <http://neuro.debian.net/debian/vm/NeuroDebian_6.0.6_amd64.ova>`_ [~576MB]
 
   *This image only works on 64bit host machines with active hardware
   virtualization support. The should include all recent Apple hardware and most
@@ -74,6 +74,10 @@ virtual appliances:
 Changes
 -------
 
+6.0.6 -- 01 Oct 2012
+
+      * Updated core system to Debian squeeze 6.0.6
+
 6.0.5 -- 10 Nov 2011
 
       * Updated core system to Debian squeeze 6.0.3
@@ -94,7 +98,7 @@ Changes
 
 6.0.3 -- 12 Jun 2011 [Superseded in the archive by 6.0.4]
 
-      * Updated to Squeeze 6.0.1
+      * Updated to Debian squeeze 6.0.1
       * Updated VirtualBox guest additions to 4.0.4 from backports.debian.org
       * Appliance is available as a single file (.ova) ready for the import
 
