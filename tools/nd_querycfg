@@ -1,14 +1,43 @@
 #!/usr/bin/python
-#
-# Dead simple script to query the NeuroDebian dev config.
-#
-import sys
+"""
+Dead simple script to query the NeuroDebian dev config (or any other Python config file)
+"""
+
+import os, sys
+
 from ConfigParser import SafeConfigParser
+from optparse import OptionParser
 
-# XXX add check if it is there at all
-# XXX support more locations
-cfg_path="/etc/neurodebian/neurodebian.cfg"
+__prog__ = os.path.basename(sys.argv[0])
+__version__ = '0.0.2'
 
-cfg = SafeConfigParser()
-cfg.read(cfg_path)
-print cfg.get(sys.argv[1], sys.argv[2])
+if __name__ == '__main__':
+    parser = OptionParser(
+        usage="%s [OPTIONS] [section] [field]\n" % __prog__ + __doc__,
+        version="%prog " + __version__)
+
+    parser.add_option(
+        '-f', '--config-file', default="/etc/neurodebian/neurodebian.cfg",
+        help="name of the config file")
+
+    parser.add_option(
+        '-F', '--value-separator', default="=",
+        help="string to separate key from value")
+
+    opts, argv = parser.parse_args()
+
+    if not os.path.exists(opts.config_file):
+        sys.stderr.write("ERROR: File %s does not exist\n" % opts.config_file)
+        sys.exit(1)
+
+    cfg = SafeConfigParser()
+    cfg.read(opts.config_file)
+    if len(argv) == 2:
+        print cfg.get(argv[0], argv[1])
+    elif len(argv) == 1:
+        # Print values of the section, =-separate key from value
+        print '\n'.join([opts.value_separator.join(x)
+                         for x in cfg.items(argv[0])])
+    else:
+        # Print section names
+        print '\n'.join(cfg.sections())
