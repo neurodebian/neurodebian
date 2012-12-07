@@ -215,6 +215,10 @@ What has changed
 
   <div class="expandinstructions">Click on an item to expand it</div>
 
+6.0.6 -- 01 Oct 2012
+
+  * Updated core system to Debian squeeze 6.0.6
+
 6.0.5 -- 10 Nov 2011
   * Updated core system to Debian squeeze 6.0.3
   * Updated shipped virtualbox-ose guest-utils and guest-x11 to 4.0.10
