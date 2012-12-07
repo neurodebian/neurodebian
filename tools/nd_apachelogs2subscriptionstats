@@ -18,7 +18,7 @@ from matplotlib.dates import date2num, num2date
 from matplotlib.dates import YearLocator, MonthLocator, DateFormatter
 from matplotlib.font_manager import FontProperties
 from ConfigParser import SafeConfigParser
-
+from math import ceil
 
 dt = [('ip', '|S16'),
       ('loc', '|S3'),
@@ -26,7 +26,7 @@ dt = [('ip', '|S16'),
       ('date', float)]
 
 
-def make_figure(data, ymax):
+def make_figure(data, ymax=None):
     fig = pl.figure(figsize=(14,3))
     distros = ('Debian', 'Ubuntu')
     # Sorting is actually seems to be not needed on Python 2.7
@@ -75,7 +75,9 @@ def plot_datehist(ax, data, bins, suites, title=None, ymax=None):
             continue
         width = bin_edges[1] - bin_edges[0]
         # think lines
-        ax.plot(bin_edges[:-1]+(width/2), hist / width,
+        y = hist / width
+        global_y_max = max(max(y), global_y_max)
+        ax.plot(bin_edges[:-1]+(width/2), y,
                 label=suite, color=colors[i%4], linestyle=linestyle[i//4], lw=2)
         # transparent curve shading
         ax.fill_between(bin_edges[:-1]+(width/2), 0, hist / width, alpha=0.2,
@@ -83,8 +85,8 @@ def plot_datehist(ax, data, bins, suites, title=None, ymax=None):
         # figure out axis limits to avoid whitespace in plots
         x_max = bin_edges[-2] + width/2
         x_min = bin_edges[0] + width/2
-        if global_x_max is None or x_max > global_x_max:
-            global_x_max = x_max
+
+        global_x_max = max(x_max, global_x_max)
         if global_x_min is None or x_min < global_x_min:
             global_x_min = x_min
 
@@ -92,14 +94,16 @@ def plot_datehist(ax, data, bins, suites, title=None, ymax=None):
     ax.set_ylabel('New subscriptions [1/day]')
     if title:
         ax.set_title(title)
-    if ymax:
-        ax.set_ylim(0, ymax)
+    if not ymax:
+        # Always leave significant 5% for improvement ;-)
+        ymax = global_y_max * 1.05
+    ax.set_ylim(0, ymax)
 
     # set x-ticks in date
     # see: http://matplotlib.sourceforge.net/examples/api/date_demo.html
     ax.xaxis.set_major_locator(YearLocator())
     ax.xaxis.set_major_formatter(DateFormatter('\n\n%Y'))
-    ax.xaxis.set_minor_locator(MonthLocator())
+    ax.xaxis.set_minor_locator(MonthLocator(interval=2))
     ax.xaxis.set_minor_formatter(DateFormatter('%b'))
     # format the coords message box
     ax.format_xdata = DateFormatter('%Y-%m-%d')
@@ -131,4 +135,4 @@ if __name__ == '__main__':
         date = datetime.strptime(date, "%d %b %Y")
         data.append((ip.strip(), loc, suite, date2num(date)))
     data = np.array(data, dtype=dt)
-    make_figure(data, ymax=21).savefig(sys.argv[1], bbox_inches='tight', dpi=60)
+    make_figure(data).savefig(sys.argv[1], bbox_inches='tight', dpi=60)

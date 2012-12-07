@@ -21,6 +21,7 @@ pkg=${dscfile%_*}
 #? TODO -- should be a parameter as well?
 
 testdir=${dscfilef_base}_$arch.testrdepends.$family-$dist
+secdir=${dscfilef_base}_$arch.testrdepends.$family-$dist.secure
 bindir=$testdir/bin
 debdir=$testdir/debs
 srcdir=$testdir/srcs
@@ -29,11 +30,46 @@ newbuildsdir=$srcdir/new
 
 echo "I: Building the new package for $pkg"
 
-mkdir -p $debdir $srcdir $bindir
+mkdir -p $debdir $srcdir $bindir $secdir
 $CMD nd_build $family $dist $arch $dscfile --buildresult=$debdir
 
+echo "I: Initiating the repository"
 cd $debdir
 dpkg-scanpackages . >| Packages
+apt-ftparchive release . >| Release
+
+gpgargs="--no-default-keyring --secret-keyring $secdir/keyring.sec --keyring $secdir/keyring.pub"
+if [ ! -e $secdir/keyring.sec ]; then
+	# Generate a key to sign the Release file
+	cat >| $secdir/keyring.gen <<EOF
+	     %echo Generating a standard key
+	     Key-Type: DSA
+	     Key-Length: 1024
+	     Subkey-Type: ELG-E
+	     Subkey-Length: 1024
+	     Name-Real: NeuroDebian Tester
+	     Name-Comment: Temporary key
+	     Name-Email: team@neuro.debian.net
+	     Expire-Date: 0
+	     Passphrase: salty salt
+	     %pubring $secdir/keyring.pub
+	     %secring $secdir/keyring.sec
+	     # Do a commit here, so that we can later print "done" :-)
+	     %commit
+	     %echo done
+EOF
+
+	gpg --batch --gen-key $secdir/keyring.gen
+	gpg $gpgargs --list-secret-keys
+fi
+
+echo "I: signing Release file"
+gpg $gpgargs --list-secret-keys
+gpg --yes -abs -u "NeuroDebian Tester" \
+    $gpgargs --passphrase "salty salt" \
+    -o Release.gpg Release
+pubkey=$(gpg $gpgargs -a --export -u "NeuroDebian Tester")
+
 # All binary packages produced
 pkgs=$(awk '/^Package:/{print $2;}' Packages)
 cd - > /dev/null
@@ -46,7 +82,8 @@ $CMD nd_execute $family $dist $arch --bindmounts $testdir $bindir/nd_fetch_bdepe
 echo "I: preparing the hook"
 cat << EOF >| $bindir/D00add_custom_repo
 echo 'deb file://$debdir ./' >| /etc/apt/sources.list.d/custom.list
-apt-get update
+echo "$pubkey" | apt-key add -
+apt-get update || /bin/bash < /dev/tty > /dev/tty 2> /dev/tty
 EOF
 chmod a+x $bindir/D00add_custom_repo
 

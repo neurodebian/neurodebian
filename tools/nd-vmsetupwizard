@@ -106,9 +106,10 @@ fi
 #       ln -f is used for further robustness
 [ ! -L $HOME/host ] && ln -sf /media/sf_host $HOME/host
 
-# TODO:
-#   we need to package python-mvpa2-tutorial-data for PyMVPA
-packages=$(zenity --list $icon_opt --checklist --column="Install" --column="Description" \
+# TODO: add PyMVPA:
+#   FALSE "PyMVPA" "python-mvpa2,python-mvpa2-doc,python-mvpa2-tutorial-data" \
+# needs -doc and -tutorial-data package
+packages=$(zenity --height 450 --list $icon_opt --checklist --column="Install" --column="Description" \
 	   --column="Package Name" --print-column=3 --hide-column=3 --hide-header \
 	   --separator=' ' --text="Please select any additional component that shall be installed.
 
@@ -116,12 +117,14 @@ Please note that this selection will not affect packages already installed
 on the system. No installed packages will be reinstalled or removed, only
 additional components will be installed." \
 FALSE "Emacs" "emacs" \
-FALSE "GNU Image Manipulation Program (Gimp)" "gimp" \
+FALSE "Graphics (e.g. GIMP, Inscape)" "gimp,inkscape,svgtune,xzgv,vym" \
 FALSE "Octave" "octave,qtoctave" \
 FALSE "OpenOffice.org" "openoffice.org" \
-FALSE "PyMVPA" "ipython,python-mvpa2,python-mvpa2-doc,spyder" \
+FALSE "PyMVPA Tutorial" "ipython01x,python-mvpa2,python-mvpa2-doc,python-mvpa2-tutorialdata,spyder" \
+FALSE "Python: Electrophysiology & Modeling" "python-brian,python-pynn,python-pyentropy,stimfit" \
+FALSE "Python: Neuroimaging" "ipython01x,spyder,nipy-suite,python-mvpa2" \
+FALSE "Python: Scientific stack" "ipython01x,spyder,python-matplotlib,python-pandas,python-sympy" \
 FALSE "R" "r-recommended" \
-FALSE "Scientific Python" "ipython,python-scipy,python-matplotlib,spyder,python-pandas" \
 FALSE "TeX Live" "texlive" \
 FALSE "Adobe Flash browser plugin" "flashplugin-nonfree" \
 || true)

@@ -215,7 +215,7 @@ Thanks to the following institutions and individuals for hosting a mirror:
 * `Department of Psychological and Brain Sciences at Dartmouth College`_
   *[us-nh]* (primary mirror)
 * `Department of Experimental Psychology at the University of Magdeburg`_
-  *[de]*
+  *[de-md]*
 * `Neurobot at Aristotle University of Thessaloniki, Greece`_ *[gr]*
 * `Paul Ivanov`_ *[us-ca]*
 * `Medical-image Analysis and Statistical Interpretation lab at Vanderbilt`_
@@ -224,6 +224,8 @@ Thanks to the following institutions and individuals for hosting a mirror:
   <http://www.aarnet.edu.au>`_ *[au]*
 * Kiyotaka Nemoto (AKA Mr. Lin4Neuro_) *[jp]*
 * Iaroslav Iurchenko *[ua]*
+* `Nikolaus Valentin Haenel`_ *[de-v]*
+* `INCF G-Node at Ludwig-Maximilians-Universität München <http://www.g-node.org>`_ *[de-m]*
 
 If your are interested in mirroring the repository, please see the :ref:`faq`.
 
@@ -232,10 +234,17 @@ If your are interested in mirroring the repository, please see the :ref:`faq`.
 .. _Neurobot at Aristotle University of Thessaloniki, Greece: http://neurobot.bio.auth.gr
 .. _Paul Ivanov: http://www.pirsquared.org
 .. _Medical-image Analysis and Statistical Interpretation lab at Vanderbilt: https://masi.vuse.vanderbilt.edu
+.. _Nikolaus Valentin Haenel: http://haenel.co
 
 
 Publications
 ============
+
+Hanke, M. (2012). `Share your tools! But fear the wombat! Seriously.
+<http://neuro.debian.net/_files/Hanke_FearTheWombat_Brainhack2012.pdf>`_  *Talk
+given at* `Brainhack <http://brainhack.org/2012/04/06/brainhack-2012-unconference>`_ 2012 at the
+Max-Planck-Institute for Human Cognitive and Brain Sciences*, Leipzig, Germany.
+[`video <http://youtu.be/8t6znEOEDVo>`_]
 
 Hanke, M. (2012). `Computational and cognitive neuroscience boosted by Debian
 OR Just using Debian is not enough

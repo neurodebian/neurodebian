@@ -126,6 +126,7 @@
 .. _NeuroDebian: http://neuro.debian.net
 .. _Debian: http://www.debian.org
 .. _Ubuntu: http://www.ubuntu.com
+.. _Xubuntu: http://www.xubuntu.org
 .. _exppsy: http://alioth.debian.org/projects/pkg-exppsy
 .. _`Debian Med`: http://debian-med.alioth.debian.org
 .. _`Debian Science`: http://wiki.debian.org/DebianScience

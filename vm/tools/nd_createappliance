@@ -192,6 +192,10 @@ builtin cd -
 
 VBoxManage startvm "${vm_name}"
 
+# TODO: see if we could just use virtinst (virt-install tool) to run d-i
+#       with pre-seeding without this hackery.  See
+#       http://honk.sigxcpu.org/con/Preseeding_Debian_virtual_machines_with_virt_install.html
+#       for an example
 sleep 5                         # give some time to make sure we get to menu
 # Send our sequence -- cruel way
 #VBoxManage controlvm "${vm_name}" keyboardputscancode \

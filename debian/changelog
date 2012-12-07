@@ -1,3 +1,41 @@
+neurodebian (0.29) unstable; urgency=low
+
+  [ Yaroslav Halchenko & Michael Hanke ]
+  * website:
+    - new mirror ([de-md])
+    - dynamic ranges for the new distributions subscription stats plot
+  * VM (6.0.6):
+    - base on 6.0.6 Debian point release (finally version of NeuroDebian
+      VM is in sync with the Debian release)
+    - nd-vmsetupwizard:
+      - robustify check/linking of $HOME/host
+      - optional installations dialog:
+        - set height of the dialog to 450 for to fit all list items
+        - refactored "GIMP" section into "Graphics" which would install
+          also inkscape, vym and svgtune
+        - added sections for "PyMVPA tutorial", and different collections of
+          Python modules (Neuroimaging, Electrophysiology, etc)
+        - Python selections depend on ipython01x instead of older ipython
+          to provide IPython notebooks facilities out-of-the-box
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Mon, 01 Oct 2012 12:26:37 -0400
+
+neurodebian (0.28) unstable; urgency=low
+
+  [ Michael Hanke & Yaroslav Halchenko]
+  * website:
+    - lots of changes
+  * nd_* tools:
+    - backport-dsc: backport to squeeze by default
+    - nd_adddist: explicitly specify debian keyring to work on Ubuntus
+    - nd_build_testrdepends: test dependees of all binary packages
+    - cmdsettings.sh: in allnddist -- deprecated lenny, added precise
+  * VM:
+    - neurodebian-guest-additions: in preparation for wheezy NeuroDebian
+      VM appliance added option for gdm3
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Thu, 19 Jul 2012 23:46:00 -0400
+
 neurodebian (0.27) unstable; urgency=low
 
   * nd_* tools:

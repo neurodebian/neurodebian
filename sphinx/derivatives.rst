@@ -60,20 +60,20 @@ Lin4Neuro
 +---------------------------+-------------------------------------------------------+
 |**Author**                 | Kiyotaka Nemoto <kiyotaka@nemotos.net>                |
 +---------------------------+-------------------------------------------------------+
-|**Homepage**               | http://www.nemotos.net/?page_id=504                   |
+|**Homepage**               | http://www.nemotos.net/lin4neuro/                     |
 +---------------------------+-------------------------------------------------------+
 |**Purpose**                | Neuroimaging tools for course-work                    |
 +---------------------------+-------------------------------------------------------+
 |**Features**               | - Datasets and tutorials from C.Rorden (mricron_)     |
 |                           | - Both 32- and 64-bit images                          |
-|                           | - Based on Ubuntu_ 10.04 LTS                          |
+|                           | - Based on Ubuntu_ 10.04 LTS and Xubuntu_ 12.04 LTS   |
 +---------------------------+-------------------------------------------------------+
 |**Pre-installed Software** | NeuroDebian                                           |
 |                           |  AFNI_, AMIDE, Caret_, FSL_, LIPSIA_, mricron_, etc.  |
 |                           | Custom:                                               |
 |                           |  3DSlicer, Ginkgo CADx, MINC, MRIConvert, Virtual MRI |
 +---------------------------+-------------------------------------------------------+
-|**Download**               | ftp://ftp.nemotos.net/ [~2GB]                         |
+|**Download**               | http://www.nemotos.net/l4n-iso/ [~2GB]                |
 +---------------------------+-------------------------------------------------------+
 |**References**             | http://www.biomedcentral.com/1471-2342/11/3           |
 +---------------------------+-------------------------------------------------------+

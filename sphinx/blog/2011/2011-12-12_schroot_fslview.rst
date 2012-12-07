@@ -6,6 +6,12 @@
 Chroot workaround for fslview (HOWTO)
 =====================================
 
+.. note::
+
+  With the release of FSLView 4.0.0b this workaround should no longer be
+  necessary. However, the technology is stil equally useful to work around
+  similar problems with other software.
+
 Preamble
 --------
 
@@ -137,7 +143,7 @@ Procedure
   within the chroot environment, so just create a little shell script
   ``/usr/local/bin/fslview``, make it executable and be all set::
 
-   echo -e '#!/bin/sh\nschroot -p -c squeeze /usr/bin/fslview "$@"' > /usr/local/bin/fslview
+   echo -e '#!/bin/sh\nexport FSLDIR=/usr/share/fsl\nschroot -p -c squeeze /usr/bin/fslview "$@"' > /usr/local/bin/fslview
    chmod a+x /usr/local/bin/fslview
 
   .. note::
