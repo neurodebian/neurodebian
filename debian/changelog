@@ -1,3 +1,11 @@
+neurodebian (0.30~dev0) wheezy; urgency=low
+
+  * VM (6.999.b4.20121206) - development VM based on upcoming wheezy
+    release's beta4
+    - uses XFCE4 instead of Gnome(3) -- Depends on gdm | lightdm now
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Fri, 07 Dec 2012 13:07:07 -0500
+
 neurodebian (0.29) unstable; urgency=low
 
   [ Yaroslav Halchenko & Michael Hanke ]

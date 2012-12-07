@@ -9,17 +9,30 @@ _set_gdm_auto_login() {
     elif [ -z "$(grep 'AutomaticLogin=brain' $gdm_conf)" ]; then
         echo "I: Enabling autologin of user 'brain' for GNOME $gnome_ver."
         sed -i -e 's/^\[daemon\]$/\[daemon\]\nAutomaticLoginEnable=true\nAutomaticLogin=brain\n/' $gdm_conf
+        # update gconf defaults tree
+		update-gconf-defaults
     fi
+}
+
+# XFCE4
+_set_lightdm_auto_login() {
+    lightdm_conf="$1"
+    if [ ! -e $lightdm_conf ]; then
+		echo "I: No config file $lightdm_conf found"
+    elif [ ! -z "$(grep '^# *autologin-user=' $lightdm_conf)" ]; then
+        echo "I: Enabling autologin of user 'brain' for lightdm."
+        sed -i -e 's/^# *autologin-user=.*$/autologin-user=brain/' $lightdm_conf
+    fi
+
 }
 
 gdm_conf=/etc/gdm/gdm.conf
 if [ "$1" = "configure" -o "$1" = "abort-upgrade" ]; then
 
-    _set_gdm_auto_login /etc/gdm/gdm.conf 2
-    _set_gdm_auto_login /etc/gdm3/daemon.conf 3
+	[ -e /etc/gdm/gdm.conf ] && _set_gdm_auto_login /etc/gdm/gdm.conf 2
+    [ -e /etc/gdm3/daemon.conf ] && _set_gdm_auto_login /etc/gdm3/daemon.conf 3
 
-    # update gconf defaults tree
-    update-gconf-defaults
+	[ -e /etc/lightdm/lightdm.conf ] && _set_lightdm_auto_login /etc/lightdm/lightdm.conf
 fi
 
 #DEBHELPER#

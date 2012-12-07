@@ -90,8 +90,7 @@ apt-get install -y linux-headers-$cdarch
 ## 	>| /var/log/initial_setup-dkms.log 2>&1
 
 # to get all the rest stuff in recommends
-apt-get install -y dkms
-# TODO: neurodebian-guest-additions  -- pulls in gdm3 ATM
+apt-get install -y dkms neurodebian-guest-additions
 
 if [ "$darch" != "$cdarch" ] ; then
     # Because DKMS builds for currently running kernel, which during
@@ -130,10 +129,14 @@ apt-get install --no-install-recommends -y \
  chromium-browser \
  sudo neurodebian-desktop update-notifier
 
+# "Slightly" better terminal by default
+# TODO: might want to change default bg color to black there
+apt-get install rxvt-unicode
+update-alternatives --set x-terminal-emulator /usr/bin/urxvt
+
 # XXX last ones are actually pulled it by neurodebian-guest-additions whenever we
 # resolve their destiny ;-)   a;though it might be pooling too much, eg exim4
 
-# TODO: autologin for lightdm (autologin-user=brain in /etc/lightdm/lightdm.conf), default panel (with chromium) for xfce
 # TODO: pre-configure the panel "Welcome to the first start of the panel", "Use default config"?
 
 # Clean-up installed development files which got pulled in for

@@ -1,0 +1,8 @@
+URxvt.background: black
+URxvt.foreground: white
+URxvt.coursorColor: red
+URxvt.saveLines: 1000
+URxvt.perl-ext: searchable-scrollback<M-s>,tabbed,option-popup,selection
+# workaround for #546527
+URxvt.perl-ext-common: default,-option-popup,-selection-popup
+URxvt.underlineURLs: true
