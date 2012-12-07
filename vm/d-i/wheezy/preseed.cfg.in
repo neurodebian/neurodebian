@@ -78,7 +78,7 @@ d-i netcfg/invalid_hostname string neurodebian
 # If you select ftp, the mirror/country string does not need to be set.
 #d-i mirror/protocol string ftp
 d-i mirror/country string manual
-d-i mirror/http/hostname string ftp.debian.de
+d-i mirror/http/hostname string %(MIRROR_HTTP_HOSTNAME)s
 d-i mirror/http/directory string /debian
 #d-i mirror/http/proxy string
 
@@ -93,7 +93,7 @@ d-i clock-setup/utc boolean true
 
 # You may set this to any valid setting for $TZ; see the contents of
 # /usr/share/zoneinfo/ for valid values.
-d-i time/zone string Europe/Berlin
+d-i time/zone string %(TIME_ZONE)s
 
 # Controls whether to use NTP to set the clock during the install
 d-i clock-setup/ntp boolean true
@@ -331,7 +331,7 @@ d-i debian-installer/exit/poweroff boolean true
 # packages and run commands in the target system.
 #d-i preseed/late_command string apt-install zsh; in-target chsh -s /bin/zsh
 #d-i preseed/late_command string wget -O/target/tmp/initial_setup http://git.debian.org/?p=pkg-exppsy/neurodebian.git;a=blob_plain;f=vm/d-i/tools/initial_setup;hb=HEAD; \
-d-i preseed/late_command string wget -O/target/tmp/initial_setup http://10.0.2.2:10100/initial_setup ; \
+d-i preseed/late_command string wget -O/target/tmp/initial_setup http://%(DI_HTTP_HOSTNAME)s/initial_setup ; \
         in-target /bin/bash /tmp/initial_setup
 
 # XXX here get/call nd_setupguestos ?

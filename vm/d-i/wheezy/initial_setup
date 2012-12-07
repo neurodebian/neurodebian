@@ -88,7 +88,7 @@ apt-get install -y linux-headers-$cdarch
 
 # to get all the rest stuff in recommends
 apt-get install -y dkms
-# TODO: neurodebian-guest-additions
+# TODO: neurodebian-guest-additions  -- pulls in gdm3 ATM
 
 if [ "$darch" != "$cdarch" ] ; then
     # Because DKMS builds for currently running kernel, which during
@@ -131,6 +131,7 @@ apt-get install --no-install-recommends -y \
 # resolve their destiny ;-)   a;though it might be pooling too much, eg exim4
 
 # TODO: autologin for lightdm (autologin-user=brain in /etc/lightdm/lightdm.conf), default panel (with chromium) for xfce
+# TODO: pre-configure the panel "Welcome to the first start of the panel", "Use default config"?
 
 # Clean-up installed development files which got pulled in for
 # VM guest additions (to build kernel modules via DKMS)
@@ -163,8 +164,8 @@ sed -i -e 's/GRUB_TIMEOUT=5/GRUB_TIMEOUT=1/g' /etc/default/grub
 update-grub
 
 # finally configure geomirror for APT and disable deb-src lists
-#sed -i -e "s/10.0.0.1:9999/$(dpkg --print-architecture)-geomirror.debian.net/" \
-#    -e "s/^deb-src/#deb-src/" /etc/apt/sources.list
+sed -i -e "s,\(deb\(\|-src\) http://\)[^/]*/,\1$(dpkg --print-architecture)-geomirror.debian.net/,g" \
+    -e "s/^deb-src/#deb-src/" /etc/apt/sources.list
 
 etckeeper commit "Initial VM setup done"
 
