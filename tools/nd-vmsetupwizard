@@ -106,6 +106,10 @@ fi
 #       ln -f is used for further robustness
 [ ! -L $HOME/host ] && ln -sf /media/sf_host $HOME/host
 
+# Figure out which version of IPython is available
+ipython_version=$(apt-cache policy ipython 2>/dev/null | sed -ne '/Version table:/ { n;s,^[ \*]*\(.*\) .*,\1,gp}')
+dpkg --compare-versions $ipython_version lt 0.13.1 && ipython=ipython01x || ipython=ipython
+
 # TODO: add PyMVPA:
 #   FALSE "PyMVPA" "python-mvpa2,python-mvpa2-doc,python-mvpa2-tutorial-data" \
 # needs -doc and -tutorial-data package
@@ -120,10 +124,10 @@ FALSE "Emacs" "emacs" \
 FALSE "Graphics (e.g. GIMP, Inscape)" "gimp,inkscape,svgtune,xzgv,vym" \
 FALSE "Octave" "octave,qtoctave" \
 FALSE "OpenOffice.org" "openoffice.org" \
-FALSE "PyMVPA Tutorial" "ipython01x,python-mvpa2,python-mvpa2-doc,python-mvpa2-tutorialdata,spyder" \
+FALSE "PyMVPA Tutorial" "$ipython,python-mvpa2,python-mvpa2-doc,python-mvpa2-tutorialdata,spyder" \
 FALSE "Python: Electrophysiology & Modeling" "python-brian,python-pynn,python-pyentropy,stimfit" \
-FALSE "Python: Neuroimaging" "ipython01x,spyder,nipy-suite,python-mvpa2" \
-FALSE "Python: Scientific stack" "ipython01x,spyder,python-matplotlib,python-pandas,python-sympy" \
+FALSE "Python: Neuroimaging" "$ipython,spyder,nipy-suite,python-mvpa2" \
+FALSE "Python: Scientific stack" "$ipython,spyder,python-matplotlib,python-pandas,python-sympy" \
 FALSE "R" "r-recommended" \
 FALSE "TeX Live" "texlive" \
 FALSE "Adobe Flash browser plugin" "flashplugin-nonfree" \

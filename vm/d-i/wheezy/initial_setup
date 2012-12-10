@@ -80,7 +80,7 @@ touch /dev/vboxguest
 cunamer=`uname -r`
 cdarch=${cunamer##*-}
 # We carry 686 only
-[ $cdarch = '486' ] && darch='686' || darch=$cdarch
+[ $cdarch = '486' ] && darch='686-pae' || darch=$cdarch
 apt-get install -y linux-headers-$cdarch
 
 ## # Forcefully install guest additions from backports so we are
@@ -125,13 +125,13 @@ apt-get install --no-install-recommends -y \
  mc evince bash-completion ntpdate file-roller \
  eog vim reportbug \
  software-center synaptic menu less libxp6 \
- task-xfce-desktop lightdm \
+ task-xfce-desktop lightdm zenity \
  chromium-browser \
  sudo neurodebian-desktop update-notifier
 
 # "Slightly" better terminal by default
 # TODO: might want to change default bg color to black there
-apt-get install rxvt-unicode
+apt-get install -y rxvt-unicode
 update-alternatives --set x-terminal-emulator /usr/bin/urxvt
 
 # XXX last ones are actually pulled it by neurodebian-guest-additions whenever we
@@ -165,12 +165,20 @@ apt-get autoremove --purge -y
 # use NeuroDebian website as default homepage
 sed -i -e 's,http://www.debian.org,http://neuro.debian.net,g' /etc/chromium*/master_preferences
 
+# Place default XFCE4 panel config, otherwise a dialog appears
+# Thanks go to cavalier@freenode IRC for the hint
+xfdir=/home/brain/.config/xfce4/xfconf/xfce-perchannel-xml
+mkdir -p $xfdir
+cp /etc/xdg/xfce4/panel/default.xml $xfdir/xfce4-panel.xml
+chown brain.brain -R /home/brain/.config
+
 # reduce grub timeout to speed up boot of VM
 sed -i -e 's/GRUB_TIMEOUT=5/GRUB_TIMEOUT=1/g' /etc/default/grub
 update-grub
 
 # finally configure geomirror for APT and disable deb-src lists
-sed -i -e "s,\(deb\(\|-src\) http://\)[^/]*/,\1$(dpkg --print-architecture)-geomirror.debian.net/,g" \
+cp /etc/apt/sources.list /etc/apt/sources.list.orig
+sed -i -e "s,\(deb\(\|-src\) http://\)[^/]*/debian,\1$(dpkg --print-architecture)-geomirror.debian.net/debian,g" \
     -e "s/^deb-src/#deb-src/" /etc/apt/sources.list
 
 etckeeper commit "Initial VM setup done"

@@ -69,6 +69,7 @@ Depends: ${misc:Depends},
          sudo,
          neurodebian-desktop,
          gdm | lightdm,
+		 zenity,
 Recommends: chromium-browser,
             update-manager-gnome, update-notifier,
 Description: NeuroDebian guest additions (DO NOT INSTALL OUTSIDE VIRTUALBOX)
