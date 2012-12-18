@@ -48,9 +48,10 @@ git config --global user.email nd@localhost
 
 # Add sources.list for backports and neurodebian
 wget -O /etc/apt/sources.list.d/neuro.debian.net.list http://neuro.debian.net/lists/wheezy.us-nh
+
 # Development versions (TODO: comment out upon finishing)
-cat /etc/apt/sources.list.d/neuro.debian.net.list | sed -e 's,/debian ,/debian-devel ,g' \
-	>| /etc/apt/sources.list.d/neuro.debian.net-devel.list
+#cat /etc/apt/sources.list.d/neuro.debian.net.list | sed -e 's,/debian ,/debian-devel ,g' \
+#	>| /etc/apt/sources.list.d/neuro.debian.net-devel.list
 
 ## No backports yet
 ## echo "deb http://backports.debian.org/debian-backports wheezy-backports main contrib non-free" > /etc/apt/sources.list.d/backports.debian.org.list

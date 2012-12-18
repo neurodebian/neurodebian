@@ -1,4 +1,4 @@
-neurodebian (0.30~dev1) wheezy; urgency=low
+neurodebian (0.30~dev2) squeeze; urgency=low
 
   * VM (6.999.b4.20121206) - development VM based on upcoming wheezy
     release's beta4
