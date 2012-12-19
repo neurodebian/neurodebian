@@ -1,10 +1,24 @@
-neurodebian (0.30~dev2) squeeze; urgency=low
+neurodebian (0.30) neurodebian; urgency=low
 
-  * VM (6.999.b4.20121206) - development VM based on upcoming wheezy
+  * Preparing a new VM image (6.999.b4.20121206) - based on upcoming wheezy
     release's beta4
-    - uses XFCE4 instead of Gnome(3) -- Depends on gdm | lightdm now
+    - uses XFCE4 instead of Gnome(3) -- Depends on gdm | lightdm now,
+      uses urxvt as the default xterm
+    - nd-vmsetupwizard: extended list of topic choices
+    - vm/tools (with contributions from Tiziano Zito)
+      - does not require external webserver (uses Python's standard)
+      - basic cmdline options handling to avoid hard-coded values
+      - preseed.cfg is now templated
+  * website:
+    - new mirror ([de-m])
+  * nd_* tools:
+    - nd_build_testrdepends:
+      - signs the repository
+      - should work now with non-sid distributions
+    - nd_querycfg:
+      - generalized to query any config file
 
- -- Yaroslav Halchenko <debian@onerussian.com>  Mon, 10 Dec 2012 11:27:59 -0500
+ -- Yaroslav Halchenko <debian@onerussian.com>  Wed, 19 Dec 2012 10:45:02 -0500
 
 neurodebian (0.29) unstable; urgency=low
 
