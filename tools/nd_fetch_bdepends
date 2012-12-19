@@ -1,20 +1,32 @@
 #!/bin/bash
 
-tdir=$1
+dist=$1
+tdir=$2
 
+shift
 shift
 
 # provide deb-src by uncommenting
+echo "D: adjusting the sources"
 sed -i -e 's,^#deb-src,deb-src,g' /etc/apt/sources.list
+echo "D: now have"
+cat /etc/apt/sources.list
 
 mkdir -p $tdir
 cd $tdir
 apt-get update
 apt-get install -y devscripts dctrl-tools
 rm -f build-rdeps.output
+echo "D: querying rdepds for $@"
+
+# /bin/bash < /dev/tty > /dev/tty 2> /dev/tty
+
 for pkg in "$@"; do
-	build-rdeps $pkg >> build-rdeps.output
+	build-rdeps --distribution $dist $pkg >> build-rdeps.output
 done
+
+echo "D: got rdepds:"
+cat build-rdeps.output
 
 # Fetch all the sources
 grep -v -e '^[-A-Z]' -e '^ *$' build-rdeps.output \

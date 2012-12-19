@@ -77,7 +77,7 @@ cd - > /dev/null
 echo "I: Fetching all bdepends for $pkgs in $family $dist under $arch"
 # need first to provide the necessary scripts out there
 cp -p $(dirname $0)/nd_fetch_bdepends $bindir
-$CMD nd_execute $family $dist $arch --bindmounts $testdir $bindir/nd_fetch_bdepends $srcdir $pkgs
+$CMD nd_execute $family $dist $arch --bindmounts $testdir $bindir/nd_fetch_bdepends $dist $srcdir $pkgs
 
 echo "I: preparing the hook"
 cat << EOF >| $bindir/D00add_custom_repo
