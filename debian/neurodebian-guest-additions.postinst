@@ -29,10 +29,10 @@ _set_lightdm_auto_login() {
 gdm_conf=/etc/gdm/gdm.conf
 if [ "$1" = "configure" -o "$1" = "abort-upgrade" ]; then
 
-	[ -e /etc/gdm/gdm.conf ] && _set_gdm_auto_login /etc/gdm/gdm.conf 2
-    [ -e /etc/gdm3/daemon.conf ] && _set_gdm_auto_login /etc/gdm3/daemon.conf 3
+	[ -e /etc/gdm/gdm.conf ] && _set_gdm_auto_login /etc/gdm/gdm.conf 2 || :
+    [ -e /etc/gdm3/daemon.conf ] && _set_gdm_auto_login /etc/gdm3/daemon.conf 3 || :
 
-	[ -e /etc/lightdm/lightdm.conf ] && _set_lightdm_auto_login /etc/lightdm/lightdm.conf
+	[ -e /etc/lightdm/lightdm.conf ] && _set_lightdm_auto_login /etc/lightdm/lightdm.conf || :
 fi
 
 #DEBHELPER#
