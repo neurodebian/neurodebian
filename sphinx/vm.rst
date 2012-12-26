@@ -148,100 +148,103 @@ virtual machine. `[Virtual machine handling video tutorial]
 Troubleshooting
 ~~~~~~~~~~~~~~~
 
-.. raw:: html
+.. container:: foldup
 
-  <div class="expandinstructions">Click on an item to expand it</div>
+  .. container:: expandinstructions
 
-Updating the VM or installing new packages doesn't work
-  The VM uses as service that tries to figure out the best/closest package
-  repository for you. In some network environments this service might not work
-  well, or not at all. To check if this is a problem, you can modify the
-  respective configuration by hand. Edit ``/etc/apt/sources.list`` (you need to
-  use ``sudo`` for that) and replace the package repository URL with a mirror
-  close to you. A comprehensive list of mirrors is available at:
-  http://www.debian.org/mirror/list
+     Click on an item to expand it
 
-  Pick one and replace all ``geomirror.debian.net`` URLs with the new mirror
-  URL. For example, in Canada you might want to change::
+  Updating the VM or installing new packages doesn't work
+    The VM uses as service that tries to figure out the best/closest package
+    repository for you. In some network environments this service might not work
+    well, or not at all. To check if this is a problem, you can modify the
+    respective configuration by hand. Edit ``/etc/apt/sources.list`` (you need
+    to use ``sudo`` for that) and replace the package repository URL with a
+    mirror close to you. A comprehensive list of mirrors is available at:
+    http://www.debian.org/mirror/list
 
-    deb http://i386-geomirror.debian.net/debian squeeze main non-free contrib
+    Pick one and replace all ``geomirror.debian.net`` URLs with the new mirror
+    URL. For example, in Canada you might want to change::
 
-  to::
+      deb http://i386-geomirror.debian.net/debian squeeze main non-free contrib
 
-    deb http://ftp.ca.debian.org/debian/ squeeze main non-free contrib
+    to::
 
-  Only modify lines that refer to ``geomirror`` (all of them), but do **not**
-  modify entries for ``security.debian.org``.
+      deb http://ftp.ca.debian.org/debian/ squeeze main non-free contrib
 
-Our proxy setup at work prevents APT from downloading packages
-  APT needs to be told how to access the proxy. Talk to your local sysadmin
-  and ask for the proxy's address (maybe a username and password too), as well
-  as the ports for HTTP and FTP proxies. With this information add the following
-  lines in the file, /etc/apt/apt.conf.d/80proxy. This will ensure that after an
-  upgrade changes won't be lost::
+    Only modify lines that refer to ``geomirror`` (all of them), but do **not**
+    modify entries for ``security.debian.org``.
 
-    Acquire::http::proxy "http://<username>:<password>@<proxy>:<port>/";
-    Acquire::ftp::proxy "ftp://<username>:<password>@<proxy>:<port>/";
-    Acquire::https::proxy "https://<username>:<password>@<proxy>:<port>/";
+  Our proxy setup at work prevents APT from downloading packages
+    APT needs to be told how to access the proxy. Talk to your local sysadmin
+    and ask for the proxy's address (maybe a username and password too), as well
+    as the ports for HTTP and FTP proxies. With this information add the
+    following lines in the file, /etc/apt/apt.conf.d/80proxy. This will ensure
+    that after an upgrade changes won't be lost::
 
-I cannot hear sounds played in the virtual machine
-  By default the sound is muted. To enable playback launch the mixer applet by
-  clicking on the mixer icon in the task bar. Unmute the master volume control.
-  Now click on the "Volume control" to load the channel mixer dialog. Unmute
-  the "Master" and "PCM" channels and raise the volume as desired. You should
-  now be able to hear sounds played within the virtual machines through your
-  host computer's speakers.
+      Acquire::http::proxy "http://<username>:<password>@<proxy>:<port>/";
+      Acquire::ftp::proxy "ftp://<username>:<password>@<proxy>:<port>/";
+      Acquire::https::proxy "https://<username>:<password>@<proxy>:<port>/";
 
-My VM lost mounted host directories after upgrading from VirtualBox from 3.x to 4.x
-  NeuroDebian VMs prior 6.0.3 were shipped with guest additions from
-  3.x series of VirtualBox and some initial versions of VirtualBox in
-  4.x series have failed to mount host directories properly.
-  VirtualBox 4.0.8 seems to work fine with guest additions from 3.x
-  series.  If you nevertheless want to upgrade guest additions within
-  NeuroDebian VM, please rebuild the version available from the
-  backports::
+  I cannot hear sounds played in the virtual machine
+    By default the sound is muted. To enable playback launch the mixer applet by
+    clicking on the mixer icon in the task bar. Unmute the master volume
+    control. Now click on the "Volume control" to load the channel mixer dialog.
+    Unmute the "Master" and "PCM" channels and raise the volume as desired. You
+    should now be able to hear sounds played within the virtual machines through
+    your host computer's speakers.
 
-    sudo apt-get install -y linux-headers-2.6-amd64 # or -686 for 32bit
-    sudo apt-get install -y -t squeeze-backports virtualbox-ose-guest-dkms \
-         virtualbox-ose-guest-utils  virtualbox-ose-guest-x11
+  My VM lost mounted host directories after upgrading from VirtualBox from 3.x to 4.x
+    NeuroDebian VMs prior 6.0.3 were shipped with guest additions from
+    3.x series of VirtualBox and some initial versions of VirtualBox in
+    4.x series have failed to mount host directories properly.
+    VirtualBox 4.0.8 seems to work fine with guest additions from 3.x
+    series.  If you nevertheless want to upgrade guest additions within
+    NeuroDebian VM, please rebuild the version available from the
+    backports::
 
-  and reboot VM.
+      sudo apt-get install -y linux-headers-2.6-amd64 # or -686 for 32bit
+      sudo apt-get install -y -t squeeze-backports virtualbox-ose-guest-dkms \
+           virtualbox-ose-guest-utils  virtualbox-ose-guest-x11
+
+    and reboot VM.
 
 
 What has changed
 ----------------
 
-.. raw:: html
+.. container:: foldup
 
-  <div class="expandinstructions">Click on an item to expand it</div>
+  .. container:: expandinstructions
 
-6.0.6 -- 01 Oct 2012
+     Click on an item to expand it
 
-  * Updated core system to Debian squeeze 6.0.6
+  6.0.6 -- 01 Oct 2012
+    * Updated core system to Debian squeeze 6.0.6
 
-6.0.5 -- 10 Nov 2011
-  * Updated core system to Debian squeeze 6.0.3
-  * Updated shipped virtualbox-ose guest-utils and guest-x11 to 4.0.10
+  6.0.5 -- 10 Nov 2011
+    * Updated core system to Debian squeeze 6.0.3
+    * Updated shipped virtualbox-ose guest-utils and guest-x11 to 4.0.10
 
-    - ``~/host`` is now symlinked to correct path ``/media/sf_host``
-    - ``brain`` user is added to ``vboxsf`` group so mounted host
-      directories should become readily available
+      - ``~/host`` is now symlinked to correct path ``/media/sf_host``
+      - ``brain`` user is added to ``vboxsf`` group so mounted host
+        directories should become readily available
 
-  * Root partition size and swap space got doubled in size (40GB
-    and 2GB correspondingly).  Space is allocated dynamically so
-    the actual size of the virtual drive should not grow unless
-    you use it
+    * Root partition size and swap space got doubled in size (40GB
+      and 2GB correspondingly).  Space is allocated dynamically so
+      the actual size of the virtual drive should not grow unless
+      you use it
 
-6.0.4 -- 13 Jun 2011
-  * Updated shipped virtualbox-ose guest-utils and guest-x11 to 4.0.4
+  6.0.4 -- 13 Jun 2011
+    * Updated shipped virtualbox-ose guest-utils and guest-x11 to 4.0.4
 
-6.0.3 -- 12 Jun 2011 [Superseded in the archive by 6.0.4]
-  * Updated to Squeeze 6.0.1
-  * Updated VirtualBox guest additions to 4.0.4 from backports.debian.org
-  * Appliance is available as a single file (.ova) ready for the import
+  6.0.3 -- 12 Jun 2011 [Superseded in the archive by 6.0.4]
+    * Updated to Squeeze 6.0.1
+    * Updated VirtualBox guest additions to 4.0.4 from backports.debian.org
+    * Appliance is available as a single file (.ova) ready for the import
 
-6.0.2 -- 08 Feb 2011
-  * Minor update
+  6.0.2 -- 08 Feb 2011
+    * Minor update
 
-6.0.1 -- 01 Dec 2010
-  * Minor update
+  6.0.1 -- 01 Dec 2010
+    * Minor update
