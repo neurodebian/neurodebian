@@ -53,10 +53,25 @@ download server close to you:
   <div class="nojavascriptinstructions">
   This form requires javascript. If disabled, incomplete instructions are
   displayed below</div>
-  <div id="reposetup">
+  <div id="repoconfig">
   <div class="nojavascriptinstructions">
   Instructions for Debian-derived systems
   </div>
+  <p>Select desired components:<br />
+  <table><tr>
+  <td><input type="radio" name="components" value="libre"></td>
+  <td><strong>only</strong> software with guaranteed freedoms<br />
+    <span style=font-size:75%>all packages are
+    <a href="http://www.debian.org/social_contract#guidelines">DSFG</a>-compliant,
+    with permission to use, modify, re-distribute under any condition</span></td></tr>
+  <tr><td><input type="radio" name="components" value="full"></td>
+  <td>all software<br />
+    <span style=font-size:75%>
+    individual packages may have restrictive licenses and you are required to
+    check license-compliance manually
+    </span></td></tr>
+  </table>
+  <div id="reposetup">
 
 You can enable NeuroDebian on your system by simply copying and pasting the
 following two commands into a terminal window. This will add the NeuroDebian
@@ -87,6 +102,7 @@ You are ready to go -- enjoy NeuroDebian!
 .. raw:: html
 
   </div> <!-- end reposetup -->
+  </div> <!-- end repoconfig -->
 
   <div id="vmsetup">
   <div class="nojavascriptinstructions">
@@ -299,49 +315,52 @@ News
 
   };
 
-  function createrepourl(rel, mir) {
+  function createrepourl(rel, mir, comp) {
     if(rel in rel2name && mir in mirrors) {
 
         var retrepo = "wget -O- http://neuro.debian.net/lists/" + rel2name[rel] + "."
-         + mir + " | sudo tee /etc/apt/sources.list.d/neurodebian.sources.list\n"
+         + mir + "." + comp + " | sudo tee /etc/apt/sources.list.d/neurodebian.sources.list\n"
          + "sudo apt-key adv --recv-keys --keyserver pgp.mit.edu 2649A5A9\n";
         return retrepo;
     }
 
   };
-  function updateout(rel, mir) {
+
+  function update_by_form() {
+     var rel = $("#release").val();
+     var mir = $("#mirror").val();
+     var comp = $('input[name="components"]:checked').val();
      if (rel != '' && mir != '') {
         if (rel in {'win32':'', 'win64':'', 'mac':''}) {
             $('#vmimagedownload').html(createvmdownload(rel, mir));
             $('#vmsetup').slideDown();
-            $('#reposetup').slideUp();
+            $('#repoconfig').slideUp();
         } else {
-            $('#code').text(createrepourl(rel, mir));
-            $('#reposetup').slideDown();
             $('#vmsetup').slideUp();
+            $('#repoconfig').slideDown();
+            if (comp == undefined) {
+              $('#reposetup').slideUp();
+            } else {
+              $('#code').text(createrepourl(rel, mir, comp));
+              $('#reposetup').slideDown();
+            }
         };
      }
      else
      {
-        $('#reposetup').slideUp();
+        $('#repoconfig').slideUp();
         $('#vmsetup').slideUp();
      };
   };
-   $('#release').change(function() {
-     var singleValues = $("#release").val();
-     var mirrorVal = $("#mirror").val();
-     updateout(singleValues, mirrorVal);
-   });
-   $('#mirror').change(function() {
-     var singleValues = $("#release").val();
-     var mirrorVal = $("#mirror").val();
-     updateout(singleValues, mirrorVal);
-   });
 
   $(document).ready(function($) {
-     updateout($("#release").val(), $("#mirror").val());
+     update_by_form();
+     $('#repoconfig').hide()
+     $('#reposetup').hide();
+     $('#vmsetup').hide()
+     $('#release').change(update_by_form);
+     $('#mirror').change(update_by_form);
+     $('input[name=components]:radio').change(update_by_form);
   });
 
-  $('#reposetup').hide()
-  $('#vmsetup').hide()
   </script>
