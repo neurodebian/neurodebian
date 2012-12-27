@@ -36,15 +36,20 @@ distclean: clean
 
 
 source: source-stamp
-source-stamp: build/db.db
-	PYTHONPATH=.:$(PYTHONPATH) python neurodebian/dde.py \
-		--cfg neurodebian.cfg \
-		--db build/db.db \
-		--outdir build/src \
-		--pkgaddenum pkgs \
-		--extracts /home/www/neuro.debian.net/www/debian/extracts \
-		commandisirrelevant
-	rm -f html-stamp
+source-stamp: 
+	mkdir -p build/src/pkgs/
+	mkdir -p build/src/lists/
+	PYTHONPATH=.:../bigmess:$(PYTHONPATH) ../bigmess/bin/bigmess genpkgs -d build/src/pkgs/
+	PYTHONPATH=.:../bigmess:$(PYTHONPATH) ../bigmess/bin/bigmess genaptlists -d build/src/lists/
+	PYTHONPATH=.:../bigmess:$(PYTHONPATH) ../bigmess/bin/bigmess genmirrorselect > build/src/sources_lists
+#	PYTHONPATH=.:$(PYTHONPATH) python neurodebian/dde.py \
+#		--cfg neurodebian.cfg \
+#		--db build/db.db \
+#		--outdir build/src \
+#		--pkgaddenum pkgs \
+#		--extracts /home/www/neuro.debian.net/www/debian/extracts \
+#		commandisirrelevant
+#	rm -f html-stamp
 	touch $@
 
 
