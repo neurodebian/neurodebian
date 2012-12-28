@@ -39,38 +39,16 @@ source: source-stamp
 source-stamp: 
 	mkdir -p build/src/pkgs/
 	mkdir -p build/src/lists/
+	mkdir -p build/src/pkglists/
 	PYTHONPATH=.:../bigmess:$(PYTHONPATH) ../bigmess/bin/bigmess genpkgs -d build/src/pkgs/
 	PYTHONPATH=.:../bigmess:$(PYTHONPATH) ../bigmess/bin/bigmess genaptlists -d build/src/lists/
 	PYTHONPATH=.:../bigmess:$(PYTHONPATH) ../bigmess/bin/bigmess genmirrorselect > build/src/sources_lists
-#	PYTHONPATH=.:$(PYTHONPATH) python neurodebian/dde.py \
-#		--cfg neurodebian.cfg \
-#		--db build/db.db \
-#		--outdir build/src \
-#		--pkgaddenum pkgs \
-#		--extracts /home/www/neuro.debian.net/www/debian/extracts \
-#		commandisirrelevant
-#	rm -f html-stamp
+	PYTHONPATH=.:../bigmess:$(PYTHONPATH) ../bigmess/bin/bigmess genpkglists \
+		-d build/src/pkglists > build/src/pkgs.rst
 	touch $@
 
 
-removecache:
-	-rm -rf build/cache
-
-removedb:
-	-rm -f build/db.db
-
-
-updatedb: removedb removecache build/db.db
-
-
-build/db.db:
-	mkdir -p build
-	PYTHONPATH=.:$(PYTHONPATH) python neurodebian/dde.py \
-		--cfg neurodebian.cfg \
-		--db build/db.db \
-		updatedb
-	-rm -f source-stamp
-
+updatedb:
 
 upload-website: html
 	rsync -rvzlhp --delete \

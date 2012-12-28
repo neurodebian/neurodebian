@@ -7,7 +7,7 @@
 NeuroDebian provides a large collection of popular neuroscience research
 software for the Debian_ operating system as well as Ubuntu_ and other
 derivatives. Popular packages include FSL, Freesurfer, AFNI, PyMVPA and
-:ref:`many others <pkglists>`. While we do strive to maintain a high level of
+:ref:`many others <pkg_tocs>`. While we do strive to maintain a high level of
 quality, we make no guarantee that a given package works as expected, so use
 them at your own risk. If you do encounter problems or would just like to thank
 us, simply `send us an email <#contacts>`_.
@@ -199,8 +199,8 @@ News
 .. start a new list
 
 * **Services**
-* :ref:`Software <pkglists>`
-* :ref:`Data <pkgs-by_purpose-neuroscience_datasets>`
+* :ref:`Software <pkg_tocs>`
+* :ref:`Data <toc_pkgs_for_suite_data>`
 * :ref:`Appliance <chap_vm>`
 
 .. start a new list
@@ -242,18 +242,30 @@ News
    projects
    testimonials
    testimonials-topics
+   vm_welcome
+   derivatives
+
+.. are these supposed to be visible?
+.. toctree::
+   :hidden:
+
+   machines
+   todo
+
+.. toctree::
+   :hidden:
+   :glob:
+
+   pkgs/*
+   pkglists/*
 
 .. probably should be purged altogether
 .. toctree::
    :hidden:
 
-   booth_sfn2010
-   datasets
    livecd
    quotes-nihr01
    quotes-nitrc
-   sources_lists
-   vm_welcome
    dump
 
 .. include:: link_names.txt
@@ -316,9 +328,8 @@ News
   };
 
   function createrepourl(rel, mir, comp) {
-    if(rel in rel2name && mir in mirrors) {
-
-        var retrepo = "wget -O- http://neuro.debian.net/lists/" + rel2name[rel] + "."
+    if(mir in mirrors) {
+        var retrepo = "wget -O- http://neuro.debian.net/lists/" + rel + "."
          + mir + "." + comp + " | sudo tee /etc/apt/sources.list.d/neurodebian.sources.list\n"
          + "sudo apt-key adv --recv-keys --keyserver pgp.mit.edu 2649A5A9\n";
         return retrepo;
