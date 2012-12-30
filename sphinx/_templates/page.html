@@ -4,6 +4,13 @@
 <!-- HEADNOTES -->
 {{ super() }}
 
+<script type="text/javascript">
+$(document).ready(function() 
+    {
+        $(".package-availability table").tablesorter();
+    }
+);
+</script>
 
 <h2>Comments</h2>
 <div id="disqus_thread"></div>
@@ -28,4 +35,5 @@ var disqus_shortname = 'neurodebian';
   (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
 }());
 </script>
+
 {% endblock %}
