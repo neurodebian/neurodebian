@@ -4,6 +4,10 @@ WWW_DIR = build/html/
 
 WWW_UPLOAD_URI_STATIC=$(WWW_UPLOAD_URI)/_static
 
+BIGMESS_OPTS = -c neurodebian_repo.cfg
+BIGMESS_CMD = PYTHONPATH=.:../bigmess:$(PYTHONPATH) ../bigmess/bin/bigmess
+BIGMESS = $(BIGMESS_CMD) $(BIGMESS_OPTS)
+
 # Lentghy one due to updatedb
 all: updatedb upload-website mirmon
 # Quick one -- just rebuilds html if new changes and adjusts the status of the mirrors
@@ -40,11 +44,10 @@ source-stamp:
 	mkdir -p build/src/pkgs/
 	mkdir -p build/src/lists/
 	mkdir -p build/src/pkglists/
-	PYTHONPATH=.:../bigmess:$(PYTHONPATH) ../bigmess/bin/bigmess genpkgs -d build/src/pkgs/
-	PYTHONPATH=.:../bigmess:$(PYTHONPATH) ../bigmess/bin/bigmess genaptlists -d build/src/lists/
-	PYTHONPATH=.:../bigmess:$(PYTHONPATH) ../bigmess/bin/bigmess genmirrorselect > build/src/sources_lists
-	PYTHONPATH=.:../bigmess:$(PYTHONPATH) ../bigmess/bin/bigmess genpkglists \
-		-d build/src/pkglists > build/src/pkgs.rst
+	$(BIGMESS) mkpkgs  -d build/src/pkgs/
+	$(BIGMESS) mkaptcfgs -d build/src/lists/
+	$(BIGMESS) mkrepocfg > build/src/sources_lists
+	$(BIGMESS) mkpkgtocs -d build/src/pkglists > build/src/pkgs.rst
 	touch $@
 
 
