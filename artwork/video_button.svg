@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="32.417542"
+   height="16"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.3.1 r9886"
+   sodipodi:docname="video_button.svg"
+   inkscape:export-filename="/home/michael/hacking/neurodebian/sphinx/_static/video_button.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
+  <defs
+     id="defs4">
+    <linearGradient
+       id="linearGradient3869">
+      <stop
+         id="stop3871"
+         offset="0"
+         style="stop-color:#b4b4b4;stop-opacity:1;" />
+      <stop
+         style="stop-color:white;stop-opacity:0;"
+         offset="1"
+         id="stop3877" />
+    </linearGradient>
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3869"
+       id="radialGradient4388"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.98291038,0,-2.4408988e-8,0.304116,245.62666,512.40079)"
+       cx="84.205727"
+       cy="131.05092"
+       fx="84.205727"
+       fy="131.05092"
+       r="59.997341" />
+    <linearGradient
+       y2="250.93361"
+       x2="128.51839"
+       y1="250.93361"
+       x1="85.767342"
+       gradientUnits="userSpaceOnUse"
+       id="linearGradient3221"
+       xlink:href="#linearGradient3155"
+       inkscape:collect="always" />
+    <linearGradient
+       id="linearGradient3155"
+       inkscape:collect="always">
+      <stop
+         id="stop3157"
+         offset="0"
+         style="stop-color:#ffffff;stop-opacity:1;" />
+      <stop
+         id="stop3159"
+         offset="1"
+         style="stop-color:#ffffff;stop-opacity:0;" />
+    </linearGradient>
+    <linearGradient
+       y2="279.28525"
+       x2="104.90319"
+       y1="234.63956"
+       x1="103.84256"
+       gradientUnits="userSpaceOnUse"
+       id="linearGradient3217"
+       xlink:href="#linearGradient3141"
+       inkscape:collect="always" />
+    <linearGradient
+       id="linearGradient3141">
+      <stop
+         id="stop3143"
+         offset="0"
+         style="stop-color:#004191;stop-opacity:1;" />
+      <stop
+         id="stop3145"
+         offset="1"
+         style="stop-color:#000000;stop-opacity:0;" />
+    </linearGradient>
+    <linearGradient
+       y2="236.03023"
+       x2="119.52634"
+       y1="263.73013"
+       x1="97.438423"
+       gradientUnits="userSpaceOnUse"
+       id="linearGradient3219"
+       xlink:href="#linearGradient2162"
+       inkscape:collect="always" />
+    <linearGradient
+       id="linearGradient2162"
+       inkscape:collect="always">
+      <stop
+         id="stop2164"
+         offset="0"
+         style="stop-color:#000000;stop-opacity:1;" />
+      <stop
+         id="stop2166"
+         offset="1"
+         style="stop-color:#000000;stop-opacity:0;" />
+    </linearGradient>
+    <linearGradient
+       y2="250.93361"
+       x2="128.51839"
+       y1="250.93361"
+       x1="85.767342"
+       gradientUnits="userSpaceOnUse"
+       id="linearGradient3221-3"
+       xlink:href="#linearGradient3155-8"
+       inkscape:collect="always" />
+    <linearGradient
+       id="linearGradient3155-8"
+       inkscape:collect="always">
+      <stop
+         id="stop3157-4"
+         offset="0"
+         style="stop-color:#ffffff;stop-opacity:1;" />
+      <stop
+         id="stop3159-6"
+         offset="1"
+         style="stop-color:#ffffff;stop-opacity:0;" />
+    </linearGradient>
+    <linearGradient
+       y2="279.28525"
+       x2="104.90319"
+       y1="234.63956"
+       x1="103.84256"
+       gradientUnits="userSpaceOnUse"
+       id="linearGradient3217-8"
+       xlink:href="#linearGradient3141-8"
+       inkscape:collect="always" />
+    <linearGradient
+       id="linearGradient3141-8">
+      <stop
+         id="stop3143-8"
+         offset="0"
+         style="stop-color:#004191;stop-opacity:1;" />
+      <stop
+         id="stop3145-7"
+         offset="1"
+         style="stop-color:#000000;stop-opacity:0;" />
+    </linearGradient>
+    <linearGradient
+       y2="236.03023"
+       x2="119.52634"
+       y1="263.73013"
+       x1="97.438423"
+       gradientUnits="userSpaceOnUse"
+       id="linearGradient3219-3"
+       xlink:href="#linearGradient2162-3"
+       inkscape:collect="always" />
+    <linearGradient
+       id="linearGradient2162-3"
+       inkscape:collect="always">
+      <stop
+         id="stop2164-9"
+         offset="0"
+         style="stop-color:#000000;stop-opacity:1;" />
+      <stop
+         id="stop2166-1"
+         offset="1"
+         style="stop-color:#000000;stop-opacity:0;" />
+    </linearGradient>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="5.6568542"
+     inkscape:cx="34.30478"
+     inkscape:cy="0.97487477"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:window-width="1454"
+     inkscape:window-height="844"
+     inkscape:window-x="0"
+     inkscape:window-y="27"
+     inkscape:window-maximized="0" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-311.43121,-537.06918)">
+    <rect
+       inkscape:export-ydpi="64.494591"
+       inkscape:export-xdpi="64.494591"
+       inkscape:export-filename="/home/alrferreira/Desktop/debian-gnu-banner.png"
+       ry="0"
+       rx="0"
+       y="537.2608"
+       x="311.62283"
+       height="15.616756"
+       width="32.034298"
+       id="rect6677"
+       style="fill:url(#radialGradient4388);fill-opacity:1;stroke:#ccc;stroke-width:0.38324323;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+    <g
+       transform="matrix(0.53359226,0,0,0.53359226,290.06387,490.3322)"
+       style="display:none"
+       inkscape:label="Debian-text"
+       id="layer5">
+      <g
+         transform="matrix(0.04585734,0,0,0.05070038,37.456067,81.452516)"
+         id="g6679"
+         style="display:inline;enable-background:new">
+        <path
+           inkscape:connector-curvature="0"
+           class="st1"
+           d="m 269.84799,136.25108 c -0.30551,0.26427 -0.30551,27.32302 -0.61339,34.41853 -0.61102,5.779 -1.22363,18.12839 -15.30407,18.12839 -14.69303,0 -18.06159,-14.44985 -19.28521,-20.49514 -1.22442,-7.09484 -1.22442,-12.87452 -1.22442,-15.23787 0,-8.14304 0.30551,-30.74068 22.65295,-30.74068 6.73314,0 10.40639,1.57807 13.46863,2.89187 l 0.30551,11.0349 z m -57.24224,19.96732 c 0,47.55389 29.38608,47.55389 33.97747,47.55389 12.2442,0 19.89702,-5.51813 23.26477,-15.50281 l 0.61182,14.97702 c 3.67327,-0.26358 7.34731,-0.52715 13.46862,-0.52715 2.14334,0 3.97955,0 5.51028,0.26357 1.52994,0 3.06147,0 4.8977,0.26358 -3.06145,-5.51746 -5.51029,-17.60395 -5.51029,-43.87537 0,-25.74766 0,-69.36082 2.44962,-82.498905 -7.04101,2.890524 -13.1631,4.729448 -26.63253,5.781037 5.51029,4.992329 5.51029,7.357048 5.51029,29.689078 -3.67403,-1.05225 -8.57174,-2.10317 -16.53007,-2.10317 -35.20268,0 -41.01768,26.27618 -41.01768,45.97923 z"
+           id="path6681"
+           style="fill:black"
+           inkscape:export-filename="/home/alrferreira/Desktop/debian-gnu-banner.png"
+           inkscape:export-xdpi="64.494591"
+           inkscape:export-ydpi="64.494591" />
+        <path
+           inkscape:connector-curvature="0"
+           class="st1"
+           d="m 319.43741,147.54753 c 0.30552,-13.92475 3.67405,-26.53703 17.44819,-26.53703 15.30564,0 16.53006,14.45189 16.22455,26.53703 l -33.67274,0 z m 53.26347,1.83892 c 0,-19.96662 -4.59138,-39.41086 -33.67353,-39.41086 -40.40588,0 -40.40588,38.36063 -40.40588,46.50434 0,34.15496 18.06001,47.81748 48.05949,47.81748 13.46861,0 19.89704,-1.83689 23.56949,-2.62829 -0.30472,-6.04189 0.91891,-9.98468 1.83703,-15.23585 -3.97798,2.36473 -9.18354,5.25117 -21.12065,5.25117 -30.61051,0 -31.2247,-24.17028 -31.2247,-32.31331 l 52.34535,0 0.6134,-9.98468 z"
+           id="path6683"
+           style="fill:black"
+           inkscape:export-filename="/home/alrferreira/Desktop/debian-gnu-banner.png"
+           inkscape:export-xdpi="64.494591"
+           inkscape:export-ydpi="64.494591" />
+        <path
+           inkscape:connector-curvature="0"
+           class="st1"
+           d="m 436.67703,156.47993 c 0,15.76367 -3.36695,37.04751 -26.01913,37.04751 -3.36695,0 -7.34573,-0.52851 -9.79456,-1.05092 -0.30551,-6.04325 -0.30551,-16.55439 -0.30551,-28.90175 0,-14.45121 1.52913,-22.06913 3.06065,-25.74766 4.28507,-12.08786 13.46862,-12.08786 15.30566,-12.08786 14.69144,0 17.75289,17.60531 17.75289,30.74068 z m -56.62963,18.39061 c 0,12.61298 0,19.70577 -2.14253,25.22254 7.95911,2.62627 18.05999,4.20365 29.99868,4.20365 7.65204,0 29.9971,0 41.93739,-21.28111 5.81737,-9.7211 7.65203,-22.85851 7.65203,-32.84115 0,-6.0446 -0.61103,-19.44423 -6.42761,-27.85085 -5.50949,-8.14302 -14.38833,-12.08514 -23.87658,-12.08514 -18.97813,0 -24.48843,13.39963 -27.24357,20.49176 0,-8.67018 0,-38.883042 1.83705,-54.120226 -12.85682,4.990977 -20.81516,5.778993 -29.38611,6.567679 7.65204,2.627622 7.65204,13.924749 7.65204,50.181527 l 0,41.51132 -7.9e-4,0 z"
+           id="path35079"
+           style="fill:black"
+           inkscape:export-filename="/home/alrferreira/Desktop/debian-gnu-banner.png"
+           inkscape:export-xdpi="64.494591"
+           inkscape:export-ydpi="64.494591" />
+        <path
+           inkscape:connector-curvature="0"
+           class="st1"
+           d="m 495.45079,203.2465 c -3.98035,-0.52715 -6.7355,-0.78598 -12.55209,-0.78598 -6.12052,0 -10.40638,0.25883 -14.99696,0.78598 1.83543,-3.15342 2.75433,-4.7274 3.36694,-15.76298 0.61182,-14.97702 0.91655,-55.17521 -0.30787,-63.84541 -1.22364,-6.30614 -2.75356,-7.35636 -5.50871,-8.93172 15.91825,-1.31449 20.50884,-2.36405 28.16087,-5.51745 -1.83543,7.35638 -1.83543,11.29847 -1.83543,22.59492 -0.3071,58.32727 -0.61182,64.63139 3.67325,71.46264 z"
+           id="path6687"
+           style="fill:black"
+           inkscape:export-filename="/home/alrferreira/Desktop/debian-gnu-banner.png"
+           inkscape:export-xdpi="64.494591"
+           inkscape:export-ydpi="64.494591" />
+        <path
+           inkscape:connector-curvature="0"
+           class="st1"
+           d="m 558.50803,155.42903 c -0.30393,10.50979 -0.61102,18.12839 -3.97718,23.90942 -3.98116,7.61723 -11.02216,9.72108 -16.22377,9.72108 -11.6324,0 -14.08361,-8.4066 -14.08361,-16.55236 0,-16.02724 16.53166,-17.07814 23.87817,-17.07814 l 10.40639,0 0,0 z m -54.18158,20.756 c 0,10.5091 3.67404,21.28316 14.69541,25.74834 5.20083,1.83892 10.09931,1.83892 11.63001,1.83892 18.0608,0 24.1821,-11.29645 27.85538,-18.39128 -0.30393,7.35639 0,11.8236 0.6118,17.86549 3.67485,-0.26358 7.04102,-0.52715 13.16391,-0.52715 3.06223,0 6.42918,0.26357 9.79457,0.52715 -2.14255,-2.89119 -3.36539,-4.46654 -3.97798,-11.29849 -0.30709,-6.30546 -0.30709,-12.60956 -0.30709,-21.80555 l 0,-34.4192 c 0,-12.87112 -3.97797,-25.48409 -33.36566,-25.48409 -19.58913,0 -30.9176,4.99302 -36.73181,7.62063 2.44805,3.67854 4.28586,6.82923 6.12052,14.1856 7.65203,-5.77898 17.75528,-8.9324 27.85695,-8.9324 16.53086,0 16.53086,9.45957 16.53086,22.59561 -3.67406,-0.26425 -7.04338,-0.52784 -12.2458,-0.52784 -25.10021,0 -41.63107,8.41136 -41.63107,31.00426 z"
+           id="path6689"
+           style="fill:black"
+           inkscape:export-filename="/home/alrferreira/Desktop/debian-gnu-banner.png"
+           inkscape:export-xdpi="64.494591"
+           inkscape:export-ydpi="64.494591" />
+        <path
+           inkscape:connector-curvature="0"
+           class="st1"
+           d="m 672.07677,186.43327 c 0,5.77968 0,11.82089 2.75357,16.81323 -4.28508,-0.26358 -6.7363,-0.78598 -14.69543,-0.78598 -4.89688,0 -7.34414,0.25883 -11.01582,0.78598 0.61102,-2.1025 0.91416,-3.15342 1.52835,-6.04189 0.61418,-3.67785 0.91732,-16.81322 0.91732,-21.28315 l 0,-18.39198 c 0,-7.87945 0,-19.44218 -0.61101,-23.3809 -0.30631,-2.88983 -1.53153,-10.77404 -12.85604,-10.77404 -11.32765,0 -15.00091,7.09552 -16.22375,12.87654 -1.53151,6.04258 -1.53151,12.34873 -1.53151,37.30634 0,21.80621 0,23.64788 2.14253,29.68975 -3.36537,-0.26357 -7.64965,-0.78596 -13.46625,-0.78596 -4.89926,0 -7.96229,0.25882 -11.93869,0.78596 1.53151,-2.62761 2.14254,-4.205 2.75357,-13.66251 0.30866,-9.1926 1.22283,-54.91096 -0.61103,-65.68161 -1.22284,-6.56971 -3.06303,-8.14574 -5.20476,-9.7211 15.91745,-0.78869 21.12302,-2.89119 26.01911,-5.25591 l 0,18.1277 c 2.44805,-5.25116 7.34415,-17.07747 26.93645,-17.07747 24.79472,0 24.79472,15.50484 25.10339,25.48681 l 0,50.97019 0,0 z"
+           id="path6691"
+           style="fill:black"
+           inkscape:export-filename="/home/alrferreira/Desktop/debian-gnu-banner.png"
+           inkscape:export-xdpi="64.494591"
+           inkscape:export-ydpi="64.494591" />
+        <path
+           inkscape:connector-curvature="0"
+           class="st0"
+           d="M 496.9823,85.280203 480.75933,99.205621 464.53319,85.280203 480.75933,71.354772 496.9823,85.280203 z"
+           id="path6693"
+           style="fill:#d70751;fill-opacity:1"
+           inkscape:export-filename="/home/alrferreira/Desktop/debian-gnu-banner.png"
+           inkscape:export-xdpi="64.494591"
+           inkscape:export-ydpi="64.494591" />
+      </g>
+    </g>
+    <path
+       sodipodi:type="star"
+       style="fill:#d70751;fill-opacity:1;fill-rule:evenodd;stroke:none"
+       id="path3598"
+       sodipodi:sides="3"
+       sodipodi:cx="286.82065"
+       sodipodi:cy="533.39453"
+       sodipodi:r1="7.0347581"
+       sodipodi:r2="3.517379"
+       sodipodi:arg1="0"
+       sodipodi:arg2="1.0471976"
+       inkscape:flatsided="false"
+       inkscape:rounded="0"
+       inkscape:randomized="0"
+       d="m 293.85541,533.39453 -5.27607,3.04614 -5.27607,3.04614 0,-6.09228 0,-6.09228 5.27607,3.04614 z"
+       inkscape:transform-center-x="-1.7586895"
+       transform="translate(29.964953,11.724597)" />
+    <g
+       id="layer1-0"
+       inkscape:label="Layer 1"
+       transform="translate(374.98171,510.40053)">
+      <g
+         transform="translate(-32.457829,-222.92786)"
+         inkscape:export-ydpi="96"
+         inkscape:export-xdpi="96"
+         inkscape:export-filename="C:\Documents and Settings\mm81002\Desktop\film.png"
+         id="g3233" />
+    </g>
+    <g
+       transform="matrix(0.58616898,0,0,0.58616898,300.1182,401.1033)"
+       inkscape:export-ydpi="96"
+       inkscape:export-xdpi="96"
+       inkscape:export-filename="C:\Documents and Settings\mm81002\Desktop\film.png"
+       id="g3233-8">
+      <rect
+         style="fill:black;stroke:none"
+         id="rect3223"
+         width="19.039633"
+         height="13.913577"
+         x="45.768345"
+         y="244.09319"
+         ry="0.8899684" />
+      <path
+         sodipodi:type="arc"
+         style="fill:black;stroke:none"
+         id="path3227"
+         sodipodi:cx="46.500641"
+         sodipodi:cy="238.96713"
+         sodipodi:rx="4.0276146"
+         sodipodi:ry="3.4783943"
+         d="m 50.528255,238.96713 c 0,1.92107 -1.803224,3.4784 -4.027614,3.4784 -2.22439,0 -4.027615,-1.55733 -4.027615,-3.4784 0,-1.92106 1.803225,-3.47839 4.027615,-3.47839 2.22439,0 4.027614,1.55733 4.027614,3.47839 z"
+         transform="matrix(1.3636363,0,0,1.4210526,-2.2634538,-100.98388)" />
+      <path
+         sodipodi:type="arc"
+         style="fill:black;stroke:none"
+         id="path3229"
+         sodipodi:cx="46.500641"
+         sodipodi:cy="238.96713"
+         sodipodi:rx="4.0276146"
+         sodipodi:ry="3.4783943"
+         d="m 50.528255,238.96713 c 0,1.92107 -1.803224,3.4784 -4.027614,3.4784 -2.22439,0 -4.027615,-1.55733 -4.027615,-3.4784 0,-1.92106 1.803225,-3.47839 4.027615,-3.47839 2.22439,0 4.027614,1.55733 4.027614,3.47839 z"
+         transform="matrix(1.3636363,0,0,1.4210526,-15.078589,-100.98387)" />
+      <rect
+         style="fill:black;stroke:none"
+         id="rect3231"
+         width="6.0414219"
+         height="6.4075685"
+         x="65.174126"
+         y="248.1208"
+         ry="0.8899684" />
+    </g>
+  </g>
+</svg>
