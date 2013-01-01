@@ -109,6 +109,9 @@ if [ "$darch" != "$cdarch" ] ; then
 		>| /var/log/initial_setup-dkms-686-install.log 2>&1
 fi
 
+# Prune DKMS's build -- should be no need to carry it around
+find /var/lib/dkms -iname build | xargs -r rm -rf
+
 # Add brain use into vboxsf group so he gets access to shared folders
 # by default
 adduser brain vboxsf
@@ -138,7 +141,6 @@ update-alternatives --set x-terminal-emulator /usr/bin/urxvt
 # XXX last ones are actually pulled it by neurodebian-guest-additions whenever we
 # resolve their destiny ;-)   a;though it might be pooling too much, eg exim4
 
-# TODO: pre-configure the panel "Welcome to the first start of the panel", "Use default config"?
 
 # Clean-up installed development files which got pulled in for
 # VM guest additions (to build kernel modules via DKMS)
@@ -157,7 +159,10 @@ find /var/cache/apt/archives/ -name '*.deb' -delete
 # cleanup unwanted stuff
 # video drivers (all but vesa)
 apt-get purge -y --force-yes $(apt-cache search --names-only --installed xserver-xorg-video | grep xserver-xorg-video | cut -d ' ' -f 1,1) xserver-xorg-video-vesa+
-apt-get purge -y brasero
+apt-get purge -y brasero freepats
+
+# Seems to be not used by any installed piece
+apt-get purge -y libwebkitgtk-1.0-0
 
 # and whatever is obsolete
 apt-get autoremove --purge -y

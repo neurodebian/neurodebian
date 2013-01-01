@@ -42,7 +42,7 @@ rm -rf vbmnt/tmp/*
 # log files
 find vbmnt/var/log -type f -delete
 # apt lists
-find vbmnt/var/lib/apt -type f -name '*debian*' -o -type f -name '*list*' -delete
+find vbmnt/var/lib/apt -type f -name '*debian*' -o -type f -name '*list*' | xargs -r rm
 # user data
 # cannot clean all root stuff, because it also contains useful thing (e.g. git setup)
 rm -f vbmnt/root/.*history
