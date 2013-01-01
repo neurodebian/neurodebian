@@ -136,6 +136,16 @@
 .. _Lin4Neuro: http://www.nemotos.net/lin4neuro
 .. _fail2ban: http://www.fail2ban.org
 
+.. Debian releases
+.. _Debian 6.0 (squeeze): http://www.debian.org/releases/squeeze
+.. _Debian 7.0 (wheezy): http://www.debian.org/releases/wheezy
+
+.. Desktop environments
+.. _GNOME: http://www.gnome.org/
+.. _GNOME3: http://www.gnome.org/gnome-3/
+.. _XFCE: http://www.xfce.org/
+.. _XFCE4: http://www.xfce.org/
+
 .. Functional imaging labs
 .. _`functional imaging laboratory`: http://www.fil.ion.ucl.ac.uk
 .. _FMRIB: http://www.fmrib.ox.ac.uk
@@ -184,7 +194,7 @@
 .. |ITP| replace:: :abbr:`ITP (Intent to Package)`
 .. |RFP| replace:: :abbr:`RFP (Request for packaging)`
 .. |DBTS| replace:: :abbr:`DBTS (Debian Bug Tracking System)`
-
+.. _debian-installer: http://www.debian.org/devel/debian-installer/
 .. mailing lists
 .. _neurodebian-users: http://lists.alioth.debian.org/mailman/listinfo/neurodebian-users
 .. _neurodebian-devel: http://lists.alioth.debian.org/mailman/listinfo/neurodebian-devel

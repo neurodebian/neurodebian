@@ -15,14 +15,17 @@ once installed, be equipped with a large variety of neuroscience software with
 just a few mouse clicks (e.g. AFNI_, Caret_, FSL_, PyMVPA_).
 
 .. _virtual machine: http://en.wikipedia.org/wiki/Virtual_machine
-.. _AFNI: http://afni.nimh.nih.gov/afni/
-.. _Caret: http://brainvis.wustl.edu/wiki/index.php/Caret:About
-.. _FSL: http://www.fmrib.ox.ac.uk/fsl/
-.. _PyMVPA: http://www.pymvpa.org
 
 
 Downloads
 ---------
+
+Stable (6.x series)
+~~~~~~~~~~~~~~~~~~~
+
+Based on current stable `Debian 6.0 (squeeze)`_ release.  This VM
+provides a stable, well tested environment with the most of the recent
+releases available from NeuroDebian.
 
 * `NeuroDebian 6.0.6 image (32bit)
   <http://neuro.debian.net/debian/vm/NeuroDebian_6.0.6_i386.ova>`_ [~559MB]
@@ -37,6 +40,29 @@ Downloads
   *This image only works on 64bit host machines with active hardware
   virtualization support. The should include all recent Apple hardware and most
   64bit Windows systems.*
+
+Development (to be 7.x series)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Based on upcoming `Debian 7.0 (wheezy)`_ release.  Although already
+quite stable, there might be outstanding issues.  This VM also
+switches from GNOME_ (v.2) desktop environment to XFCE4_.  We
+recommend this VM over a stable one for anyone needing recent releases
+of tools not available for the stable VM (e.g. recent pandas) --
+**getting a complete "Scientific Python" stack with 100s of other
+Python modules was never easier**.  Moreover your feedback might also
+be valuable to polish upcoming Debian wheezy release and NeuroDebian
+VM 7.0.
+
+* `NeuroDebian 6.999.b4.20121231 image (32bit)
+  <http://neuro.debian.net/debian/vm/NeuroDebian_6.999.b4.20121231_i386.ova>`_ [~656MB]
+
+* `NeuroDebian 6.999.b4.20121231 image (64bit)
+  <http://neuro.debian.net/debian/vm/NeuroDebian_6.999.b4.20121231_amd64.ova>`_ [~660MB]
+
+
+Historical
+~~~~~~~~~~
 
 Virtual appliances above carry guest additions for 4.x series of the
 VirtualBox. If you still have VirtualBox 3.x, use previous 6.0.2
@@ -73,6 +99,11 @@ virtual appliances:
 
 Changes
 -------
+
+6.999.b4.20121231 -- 31 Dec 2012
+
+      * Based on beta 4 release of debian-installer_ for wheezy
+      * Comes with XFCE4_ instead of GNOME_
 
 6.0.6 -- 01 Oct 2012
 
@@ -121,8 +152,6 @@ will benefit from security bug fixes provided by the Debian project for the
 whole operating system, as well as from software updates for
 neuroscience-related packages.
 
-.. _Debian 6.0 (squeeze): http://www.debian.org/releases/squeeze
-.. _GNOME: http://www.gnome.org/
 
 
 Installation
@@ -285,3 +314,5 @@ mounted host directories.
          virtualbox-ose-guest-utils  virtualbox-ose-guest-x11
 
   and reboot VM.
+
+.. include:: link_names.txt
