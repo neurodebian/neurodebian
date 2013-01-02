@@ -47,12 +47,12 @@ Frequently Asked Questions
     at least two possibilities to achieve that:
 
     * You can approach packaging it yourself. Start by filing an ITP_ (Intent to
-      package) bugreport) and `ask us <team@neuro.debian.net>`_ to mentor your
-      upload to Debian_, if you are not a Debian developer.
+      Package) bugreport and, if you are not a Debian developer, `ask us
+      <team@neuro.debian.net>`_ to mentor your upload to Debian_.
 
-    * `Contact us <team@neuro.debian.net>`_ -- but then it might take a little
-      longer, depending on our current workload and interest in a particular
-      software.
+    * `Contact us <team@neuro.debian.net>`_ and we'll do the work for you, but
+      then it might take a little longer, depending on our current workload and
+      interest in a particular software.
 
 
   I have heard that some packages are non-free. Will you charge me for them?
@@ -77,11 +77,10 @@ Frequently Asked Questions
 
     The only difference is that a particular package becomes available through the
     NeuroDebian repository before it has passed all checks for compliance with
-    Debian's standards. But even after a package becomes part of Debian the
+    Debian's standards. But even after a package becomes part of Debian, the
     NeuroDebian repository continues to provide binary packages of new versions
-    for a certain set of Debian and Ubuntu releases (aka backports).
+    for a recent set of Debian and Ubuntu releases (aka backports).
 
-  .. _ITPs: http://www.debian.org/devel/wnpp
   .. _pkg-exppsy group on Debian's Alioth server: http://alioth.debian.org/projects/pkg-exppsy/
 
 
