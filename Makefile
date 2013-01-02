@@ -1,5 +1,5 @@
-#WWW_UPLOAD_URI = neuro.debian.net:/home/www/neuro.debian.net/www
-WWW_UPLOAD_URI = ../www
+WWW_UPLOAD_URI = neurodebian@neurodebian.ovgu.de:/home/neurodebian/www
+#WWW_UPLOAD_URI = ../www
 WWW_DIR = build/html/
 
 WWW_UPLOAD_URI_STATIC=$(WWW_UPLOAD_URI)/_static
@@ -23,6 +23,7 @@ html: pics source
 	cd artwork;	cp button_w200.png logo_tuned/fmri_w200.png ../build/src/_static; cd ..
 	cp 3rd/jquery.livetwitter/jquery.livetwitter.min.js build/src/_static
 	cd build/src && $(MAKE) html BUILDDIR=$(CURDIR)/build 2>&1
+	ln -fs /usr/share/javascript build/html/
 	mv $(WWW_DIR)/_static/robots.txt $(WWW_DIR)/
 	cp -r build/src/lists $(WWW_DIR)/
 	cp -r sphinx/survey/2011/figures/* $(WWW_DIR)/_images/
@@ -52,6 +53,8 @@ source-stamp:
 
 
 updatedb:
+	$(BIGMESS) cachefiles
+	$(BIGMESS) updatedb
 
 upload-website: html
 	rsync -rvzlhp --delete \
