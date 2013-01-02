@@ -1,4 +1,26 @@
-neurodebian (0.29) unstable; urgency=low
+neurodebian (0.30) neurodebian; urgency=low
+
+  * Preparing a new VM image (6.999.b4.20121206) - based on upcoming wheezy
+    release's beta4
+    - uses XFCE4 instead of Gnome(3) -- Depends on gdm | lightdm now,
+      uses urxvt as the default xterm
+    - nd-vmsetupwizard: extended list of topic choices
+    - vm/tools (with contributions from Tiziano Zito)
+      - does not require external webserver (uses Python's standard)
+      - basic cmdline options handling to avoid hard-coded values
+      - preseed.cfg is now templated
+  * website:
+    - new mirror ([de-m])
+  * nd_* tools:
+    - nd_build_testrdepends:
+      - signs the repository
+      - should work now with non-sid distributions
+    - nd_querycfg:
+      - generalized to query any config file
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Wed, 19 Dec 2012 10:45:02 -0500
+
+neurodebian (0.29) neurodebian; urgency=low
 
   [ Yaroslav Halchenko & Michael Hanke ]
   * website:
@@ -20,7 +42,7 @@ neurodebian (0.29) unstable; urgency=low
 
  -- Yaroslav Halchenko <debian@onerussian.com>  Mon, 01 Oct 2012 12:26:37 -0400
 
-neurodebian (0.28) unstable; urgency=low
+neurodebian (0.28) neurodebian; urgency=low
 
   [ Michael Hanke & Yaroslav Halchenko]
   * website:
@@ -36,7 +58,7 @@ neurodebian (0.28) unstable; urgency=low
 
  -- Yaroslav Halchenko <debian@onerussian.com>  Thu, 19 Jul 2012 23:46:00 -0400
 
-neurodebian (0.27) unstable; urgency=low
+neurodebian (0.27) neurodebian; urgency=low
 
   * nd_* tools:
     - backport-dsc: escape "~" to prevent expansion into $HOME
@@ -47,7 +69,7 @@ neurodebian (0.27) unstable; urgency=low
 
  -- Yaroslav Halchenko <debian@onerussian.com>  Mon, 07 Nov 2011 17:59:54 -0500
 
-neurodebian (0.26) unstable; urgency=low
+neurodebian (0.26) neurodebian; urgency=low
 
   [ Michael Hanke & Yaroslav Halchenko]
   * website:
@@ -70,14 +92,14 @@ neurodebian (0.26) unstable; urgency=low
 
  -- Yaroslav Halchenko <debian@onerussian.com>  Mon, 17 Oct 2011 00:10:27 -0400
 
-neurodebian (0.25) unstable; urgency=low
+neurodebian (0.25) neurodebian; urgency=low
 
   * Various improvements to the webportal.
   * Support for Ubuntu natty
 
  -- Michael Hanke <mih@debian.org>  Fri, 29 Apr 2011 09:19:15 -0400
 
-neurodebian (0.24) unstable; urgency=low
+neurodebian (0.24) neurodebian; urgency=low
 
   * Tuning up VM setup
   * [ed8864b] lightweighting of VM image (removing -dev packages)
@@ -94,7 +116,7 @@ neurodebian (0.24) unstable; urgency=low
 
  -- Yaroslav Halchenko <debian@onerussian.com>  Tue, 08 Feb 2011 12:41:28 -0500
 
-neurodebian (0.23) unstable; urgency=low
+neurodebian (0.23) neurodebian; urgency=low
 
   [ Michael Hanke ]
   * [de48f60] Condor to Blends
@@ -137,7 +159,7 @@ neurodebian (0.23) unstable; urgency=low
 
  -- Yaroslav Halchenko <debian@onerussian.com>  Mon, 07 Feb 2011 14:44:30 -0500
 
-neurodebian (0.22) unstable; urgency=low
+neurodebian (0.22) neurodebian; urgency=low
 
   [ Yaroslav Halchenko ]
   * blends-inject :
@@ -165,20 +187,20 @@ neurodebian (0.22) unstable; urgency=low
 
  -- Yaroslav Halchenko <debian@onerussian.com>  Mon, 10 Jan 2011 11:06:54 -0500
 
-neurodebian (0.21) unstable; urgency=low
+neurodebian (0.21) neurodebian; urgency=low
 
   * Fixing bashism in popcon post-scripts -- no "+=" operator
 
  -- Yaroslav Halchenko <debian@onerussian.com>  Tue, 07 Dec 2010 08:48:53 -0500
 
-neurodebian (0.20) unstable; urgency=low
+neurodebian (0.20) neurodebian; urgency=low
 
   * New package neurodebian-popularity-contest, which all backported
     packages will depend on.
 
  -- Yaroslav Halchenko <debian@onerussian.com>  Mon, 06 Dec 2010 14:27:56 -0500
 
-neurodebian (0.19) unstable; urgency=low
+neurodebian (0.19) neurodebian; urgency=low
 
   * Initial release.
 

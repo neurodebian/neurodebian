@@ -67,6 +67,7 @@ Thanks to the following institutions and individuals for hosting a mirror:
 * Kiyotaka Nemoto (AKA Mr. Lin4Neuro_) *[jp]*
 * Iaroslav Iurchenko *[ua]*
 * `Nikolaus Valentin Haenel`_ *[de-v]*
+* `INCF G-Node at Ludwig-Maximilians-Universität München <http://www.g-node.org>`_ *[de-m]*
 
 If your are interested in mirroring the repository, please see the :ref:`faq`.
 

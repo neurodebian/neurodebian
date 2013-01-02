@@ -47,12 +47,17 @@ git config --global user.email nd@localhost
 # -----------------
 
 # Add sources.list for backports and neurodebian
-wget -O /etc/apt/sources.list.d/neuro.debian.net.list http://neuro.debian.net/lists/squeeze.us-nh
+wget -O /etc/apt/sources.list.d/neuro.debian.net.list http://neuro.debian.net/lists/wheezy.us-nh
 
-echo "deb http://backports.debian.org/debian-backports squeeze-backports main contrib non-free" > /etc/apt/sources.list.d/backports.debian.org.list
+# Development versions (TODO: comment out upon finishing)
+#cat /etc/apt/sources.list.d/neuro.debian.net.list | sed -e 's,/debian ,/debian-devel ,g' \
+#	>| /etc/apt/sources.list.d/neuro.debian.net-devel.list
+
+## No backports yet
+## echo "deb http://backports.debian.org/debian-backports wheezy-backports main contrib non-free" > /etc/apt/sources.list.d/backports.debian.org.list
 cat << EOT > /etc/apt/preferences.d/backports.debian.org.pref
 Package: *
-Pin: release a=squeeze-backports
+Pin: release a=wheezy-backports
 Pin-Priority: 200
 EOT
 
@@ -76,14 +81,14 @@ touch /dev/vboxguest
 cunamer=`uname -r`
 cdarch=${cunamer##*-}
 # We carry 686 only
-[ $cdarch = '486' ] && darch='686' || darch=$cdarch
-apt-get install -y linux-headers-2.6-$cdarch
+[ $cdarch = '486' ] && darch='686-pae' || darch=$cdarch
+apt-get install -y linux-headers-$cdarch
 
-# Forcefully install guest additions from backports so we are
-# compatible with VirtualBox 4.x series
-apt-get install -y -t squeeze-backports virtualbox-ose-guest-dkms \
-	virtualbox-ose-guest-utils  virtualbox-ose-guest-x11 \
-	>| /var/log/initial_setup-dkms.log 2>&1
+## # Forcefully install guest additions from backports so we are
+## # compatible with VirtualBox 4.x series
+## apt-get install -y -t wheezy-backports virtualbox-ose-guest-dkms \
+## 	virtualbox-ose-guest-utils  virtualbox-ose-guest-x11 \
+## 	>| /var/log/initial_setup-dkms.log 2>&1
 
 # to get all the rest stuff in recommends
 apt-get install -y dkms neurodebian-guest-additions
@@ -92,7 +97,7 @@ if [ "$darch" != "$cdarch" ] ; then
     # Because DKMS builds for currently running kernel, which during
     # installation might be a more generic 486, lets force building for 686
 	# and also install necessary headers (will be purged later on anyways)
-	apt-get install -y linux-headers-2.6-$darch
+	apt-get install -y linux-headers-$darch
 
 	unamer=${cunamer//$cdarch/$darch}
 	# First collect information about installed vb additions
@@ -104,6 +109,9 @@ if [ "$darch" != "$cdarch" ] ; then
 		>| /var/log/initial_setup-dkms-686-install.log 2>&1
 fi
 
+# Prune DKMS's build -- should be no need to carry it around
+find /var/lib/dkms -iname build | xargs -r rm -rf
+
 # Add brain use into vboxsf group so he gets access to shared folders
 # by default
 adduser brain vboxsf
@@ -111,10 +119,28 @@ adduser brain vboxsf
 # assure at the end that we got right modules build in the right location
 find /lib/modules/*$darch -iname vboxsf.ko | grep -q .
 
+# That was for GNOME
+# apt-get install --no-install-recommends -y \
+#  gnome-core mc evince bash-completion ntpdate file-roller gnome-utils \
+#  gnome-themes gnome-disk-utility network-manager-gnome eog vim reportbug \
+#  software-center gdebi gedit-plugins gnome-media synaptic menu less libxp6
+
 apt-get install --no-install-recommends -y \
- gnome-core mc evince bash-completion ntpdate file-roller gnome-utils \
- gnome-themes gnome-disk-utility network-manager-gnome eog vim reportbug \
- software-center gdebi gedit-plugins gnome-media synaptic menu less libxp6
+ mc evince bash-completion ntpdate file-roller \
+ eog vim reportbug \
+ software-center synaptic menu less libxp6 \
+ task-xfce-desktop lightdm zenity \
+ chromium-browser \
+ sudo neurodebian-desktop update-notifier
+
+# "Slightly" better terminal by default
+# TODO: might want to change default bg color to black there
+apt-get install -y rxvt-unicode
+update-alternatives --set x-terminal-emulator /usr/bin/urxvt
+
+# XXX last ones are actually pulled it by neurodebian-guest-additions whenever we
+# resolve their destiny ;-)   a;though it might be pooling too much, eg exim4
+
 
 # Clean-up installed development files which got pulled in for
 # VM guest additions (to build kernel modules via DKMS)
@@ -132,22 +158,33 @@ find /var/cache/apt/archives/ -name '*.deb' -delete
 
 # cleanup unwanted stuff
 # video drivers (all but vesa)
-apt-get purge -y $(apt-cache search --names-only --installed xserver-xorg-video | grep xserver-xorg-video | cut -d ' ' -f 1,1) xserver-xorg-video-vesa+
-apt-get purge -y brasero
+apt-get purge -y --force-yes $(apt-cache search --names-only --installed xserver-xorg-video | grep xserver-xorg-video | cut -d ' ' -f 1,1) xserver-xorg-video-vesa+
+apt-get purge -y brasero freepats
+
+# Seems to be not used by any installed piece
+apt-get purge -y libwebkitgtk-1.0-0
 
 # and whatever is obsolete
 apt-get autoremove --purge -y
 
 # custom config
 # use NeuroDebian website as default homepage
-sed -i -e 's,http://www.debian.org,http://neuro.debian.net,g' /etc/chromium-browser/master_preferences
+sed -i -e 's,http://www.debian.org,http://neuro.debian.net,g' /etc/chromium*/master_preferences
+
+# Place default XFCE4 panel config, otherwise a dialog appears
+# Thanks go to cavalier@freenode IRC for the hint
+xfdir=/home/brain/.config/xfce4/xfconf/xfce-perchannel-xml
+mkdir -p $xfdir
+cp /etc/xdg/xfce4/panel/default.xml $xfdir/xfce4-panel.xml
+chown brain.brain -R /home/brain/.config
 
 # reduce grub timeout to speed up boot of VM
 sed -i -e 's/GRUB_TIMEOUT=5/GRUB_TIMEOUT=1/g' /etc/default/grub
 update-grub
 
 # finally configure geomirror for APT and disable deb-src lists
-sed -i -e "s/10.0.0.1:9999/$(dpkg --print-architecture)-geomirror.debian.net/" \
+cp /etc/apt/sources.list /etc/apt/sources.list.orig
+sed -i -e "s,\(deb\(\|-src\) http://\)[^/]*/debian,\1$(dpkg --print-architecture)-geomirror.debian.net/debian,g" \
     -e "s/^deb-src/#deb-src/" /etc/apt/sources.list
 
 etckeeper commit "Initial VM setup done"

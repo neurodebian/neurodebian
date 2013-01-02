@@ -2,30 +2,80 @@
 #emacs: -*- mode: shell-script; c-basic-offset: 4; tab-width: 4; indent-tabs-mode: nil -*- 
 #ex: set sts=4 ts=4 sw=4 noet:
 
+# fail early
 set -eu
-
-# TODO: arguments later on to become cmdline args
-#iso=debian-squeeze-di-beta1-amd64-businesscard.iso
-iso=debian-6.0.6-${ARCH:=amd64}-businesscard.iso
-di_cd=$(readlink -f $PWD/../../../neurodebian-images/$iso)
-di_host=head1.hydra.dartmouth.edu               # where to look for di preseed
 
 build_dir=$PWD/build
 dist_dir=$PWD/dist
 vendor="NeuroDebian"
-vm_version="6.0.6"
+vm_version="6.999.b4.20121231"
 vm_ostype=Debian
 vendor_url="http://neuro.debian.net"
 product_url="${vendor_url}/vm.html"
+di_port=10100                   # port to start webserver on
 
 # Generic definitions
 eula="This virtual appliance contains Free and Open Source Software (FOSS) released under licenses compliant with the Debian Free Software Guidelines (DFSG, see http://www.debian.org/social_contract), such as, GPL, BSD, MIT, etc.  Such software is free to be used or customized for any purpose.
 
 However, by default this virtual machine is also enabled to install additional software from Debian and NeuroDebian repositories that is distributed under more restrictive licenses (e.g. closed-source, non-commercial, research-only). It is the user's responsibility to adhere to the terms and conditions of any particular software that is installed and used in this virtual machine. Copyright and license details for any installed PACKAGE are available in /usr/share/doc/PACKAGE/copyright inside the virtual machine."
 
+# The defaults to be modified from cmdline
+di_cd=
+# look here for more details about the default IP of the host:
+# # http://www.virtualbox.org/manual/ch09.html#changenat
+mirror_host=10.0.0.1:9999
+di_tz='US/Eastern'
+di_preseed_in=
 
-# Computed settings
-#vm_basepath=
+function usage {
+echo "Usage: $0 [OPTIONS]
+
+Create ND VirtualBox appliance.
+
+Options:
+  -p PRESEED_IN path to preesed.cfg.in file for d-i
+  -i ISO        path to debian installation iso file
+  -m MIRROR     debian mirror to use for installation
+  -t TIME_ZONE  time zone of virtual machine
+  -h            Show this help and exit
+"
+}
+
+# Process cmdline
+while getopts "p:i:" OPTION
+do
+  case $OPTION in
+      "p") di_preseed_in="$OPTARG";;
+      "i") di_cd="$OPTARG";;
+      "m") mirror_host="$OPTARG";;
+      "t") di_tz="$OPTARG";;
+      "h") exit 1;;
+  esac
+done
+
+if [ -z "$di_cd" ] ; then
+    echo "You must specify the iso image (-i)" >&2
+    exit 1
+fi
+
+if [ -z "$di_preseed_in" ]; then
+    # deduce release and use corresponding directory here
+    release=$(basename "$di_cd" | cut -d- -f2)
+    di_preseed_in=$(dirname $0)/../d-i/$release/preseed.cfg.in
+    if [ ! -e "$di_preseed_in" ]; then
+        echo "$di_preseed_in is not found. Specify one with -p" >&2
+        exit 2
+    fi
+fi
+
+# Figure out our IP address for VM to reach webserver
+eth=`route | awk '/default/{print $8;}'`
+di_host=`ip addr show dev $eth | sed -ne '/inet /s, *inet \([0-9.]*\)/.*,\1,gp'`
+
+# Generate preseed file
+# yoh could not escape Python here
+di_preseed=${di_preseed_in%.in}
+python -c "open('$di_preseed', 'w').write(open('$di_preseed_in').read() % {'DI_HTTP_HOSTNAME': '$di_host:$di_port', 'MIRROR_HTTP_HOSTNAME': '$mirror_host', 'TIME_ZONE': '$di_tz'})"
 
 # By default 32bit unless installer image has amd64
 # TODO: might need to make more robust?
@@ -62,7 +112,7 @@ VBoxManage unregistervm "${vm_name}" --delete || :
 rm -f ${vm_disk}
 }
 
-clean_buildvm                   # clean things up
+clean_buildvm >&/dev/null                   # clean things up
 
 #exit
 # Check that no previous VM was left (can happen if previous failures
@@ -132,27 +182,36 @@ _info "Run Debian Installer"
 # type  auto url=$di_host
 # press Enter"
 
+# start local web server to serve preseed file
+builtin cd $(dirname ${di_preseed})
+python -m SimpleHTTPServer ${di_port} >&/dev/null &
+di_pid=$!
+builtin cd -
+
+
+
 VBoxManage startvm "${vm_name}"
 
+# TODO: see if we could just use virtinst (virt-install tool) to run d-i
+#       with pre-seeding without this hackery.  See
+#       http://honk.sigxcpu.org/con/Preseeding_Debian_virtual_machines_with_virt_install.html
+#       for an example
 sleep 5                         # give some time to make sure we get to menu
 # Send our sequence -- cruel way
 #VBoxManage controlvm "${vm_name}" keyboardputscancode \
 #    01 81 \
 #    1e 9e 16 96 14 94 18 98 39 b9 16 96 13 93 26 a6 0d 8d 23 a3 15 95 20 a0 13 93 1e 9e \
 #    1c 9c # ESCAPE, auto url=hydra, ENTER
-echo "typeGuest \"${vm_name}\" \"&ESC;Wauto url=${di_host}&ENTER;\"" | /usr/lib/virtualbox/vboxshell.py
-
-: "
-oops -- asked either I want to store Partitioning on the disk...
-
-didn't happen before
-"
+echo "typeGuest \"${vm_name}\" \"&ESC;Wauto url=${di_host}|;${di_port}/$(basename ${di_preseed})&ENTER;\"" | /usr/lib/virtualbox/vboxshell.py
 
 # wait for it to finish! -- found no cleaner way :-/
 sleep 10
 while VBoxManage showvminfo "${vm_name}" | grep -q running; do
     sleep 5
 done
+
+# kill the web server
+kill ${di_pid} || echo "Could not kill the webserver"
 
 _info Compacting VDI
 sudo ./nd_compactvdi "${vm_disk}"

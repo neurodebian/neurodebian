@@ -16,10 +16,6 @@ variety of neuroscience software with just a few mouse clicks (e.g. AFNI_,
 FSL_, PyMVPA_).
 
 .. _virtual machine: http://en.wikipedia.org/wiki/Virtual_machine
-.. _AFNI: http://afni.nimh.nih.gov/afni/
-.. _Caret: http://brainvis.wustl.edu/wiki/index.php/Caret:About
-.. _FSL: http://www.fmrib.ox.ac.uk/fsl/
-.. _PyMVPA: http://www.pymvpa.org
 
 The virtual machine contains an installation of `Debian 6.0 (squeeze)`_ with a
 GNOME_ desktop environment. All installed software comes from standard Debian
@@ -219,6 +215,11 @@ What has changed
 
      Click on an item to expand it
 
+  6.999.b4.20121231 -- 31 Dec 2012
+
+    * Based on beta 4 release of debian-installer_ for wheezy
+    * Comes with XFCE4_ instead of GNOME_
+
   6.0.6 -- 01 Oct 2012
     * Updated core system to Debian squeeze 6.0.6
 
@@ -248,3 +249,5 @@ What has changed
 
   6.0.1 -- 01 Dec 2010
     * Minor update
+
+.. include:: link_names.txt

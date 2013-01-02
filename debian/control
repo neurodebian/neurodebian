@@ -14,7 +14,7 @@ XS-DM-Upload-Allowed: yes
 Package: neurodebian-dev
 Architecture: all
 Depends: ${misc:Depends}, devscripts, cowbuilder, neurodebian-keyring
-Recommends: python, zerofree, moreutils, time, ubuntu-keyring, debian-archive-keyring
+Recommends: python, zerofree, moreutils, time, ubuntu-keyring, debian-archive-keyring, apt-utils
 Suggests: virtualbox-ose, virtualbox-ose-fuse
 Description: NeuroDebian development tools
  neuro.debian.net sphinx website sources and development tools used by
@@ -65,8 +65,13 @@ Description: Helper for NeuroDebian popularity contest submissions
 Package: neurodebian-guest-additions
 Architecture: all
 Pre-Depends: virtualbox-ose-guest-utils, virtualbox-ose-guest-x11, virtualbox-ose-guest-dkms
-Depends: ${misc:Depends}, sudo, neurodebian-desktop, gdm | gdm3, update-manager-gnome, update-notifier
-Recommends: chromium-browser
+Depends: ${misc:Depends},
+         sudo,
+         neurodebian-desktop,
+         gdm | lightdm,
+		 zenity,
+Recommends: chromium-browser,
+            update-manager-gnome, update-notifier,
 Description: NeuroDebian guest additions (DO NOT INSTALL OUTSIDE VIRTUALBOX)
  This package configures a Debian installation as a guest operating system
  in a VirtualBox-based virtual machine for NeuroDebian.
