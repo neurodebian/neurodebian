@@ -27,6 +27,32 @@ the origin of necessary tools.
    These projects are not maintained by NeuroDebian_ team.  Please direct all
    you support inquiries to respective authors/maintainers.
 
+Hybrid Live Media
+=================
+
+NEST Live Media
+---------------
+
++---------------------------+----------------------------------------------------------------+
+|**Author**                 | Yury V. Zaytsev <zaytsev@fz-juelich.de>                        |
++---------------------------+----------------------------------------------------------------+
+|**Homepage**               | http://www.nest-initiative.org/index.php/Software:Download     |
++---------------------------+----------------------------------------------------------------+
+|**Purpose**                | Demonstration live media for conferences and students          |
++---------------------------+----------------------------------------------------------------+
+|**Features**               | - Based on Ubuntu 12.04 LTS (i386 only)                        |
+|                           | - ISO for DVDs and sticks, OVA for VirtualBox                  |
++---------------------------+----------------------------------------------------------------+
+|**Pre-installed Software** | NeuroDebian                                                    |
+|                           |  PyNN, Brian                                                   |
+|                           | Custom:                                                        |
+|                           |  NEST, NEURON                                                  |
++---------------------------+----------------------------------------------------------------+
+|**Download**               | http://www.nest-initiative.org/download/gplreleases/ [~1.5G]   |
++---------------------------+----------------------------------------------------------------+
+|**References**             | https://github.com/nest/livecd-scripts                         |
++---------------------------+----------------------------------------------------------------+
+
 Live CD/USB Media
 =================
 
