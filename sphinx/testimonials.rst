@@ -29,12 +29,26 @@ Research Institutions
 ..   not implemented for now
 ..   :sections: group
 
+.. quote::
+    :author: Christian Haselgrove
+    :affiliation: Vice President for Neuroinformatics at
+				  Neuromorphometrics, Inc; University of Massachusetts Medical School
+    :date: 2013-02-06
+    :tags: email, derivatives, management
+
+    Developing informatics infrastructure often involves building
+    complex systems that require interaction between existing
+    components such as software and atlases.  NeuroDebian makes it
+    trivial to manage the components of these systems, freeing me to
+    focus on the novel and important aspects of my work.
+
 
 Research Software Projects
 --------------------------
 
 .. quotes::
    :group: Research software projects
+
 
 .. quote::
    :author: Stephan Gerhard, et al.
@@ -90,22 +104,10 @@ Research Software Projects
     or operating system.
 
 .. quote::
-    :author: Christian Haselgrove
-    :affiliation: University of Massachusetts Medical School
-    :date: 2013-02-06
-    :tags: email, derivatives, management
-
-    Developing informatics infrastructure often involves building
-    complex systems that require interaction between existing
-    components such as software and atlases.  NeuroDebian makes it
-    trivial to manage the components of these systems, freeing me to
-    focus on the novel and important aspects of my work.
-
-.. quote::
    :author: Nina Preuss
    :affiliation: PMP, nitrc.org
    :date: 2013-02-06
-   :tags: disqus, money, quality, contributions
+   :tags: disqus, money, quality, contributions, cloud, derivatives
 
     NITRC-CE, or the NITRC Computational Environment, on the Amazon
     Marketplace wouldn't have happened as quickly and thus cost effectively

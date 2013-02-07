@@ -26,7 +26,7 @@ Quotes from NITRC project page
    :author: Dr. Robert Buccigrossi
    :affiliation: Technical Lead of the NITRC project
    :date: 2011-09-22
-   :tags: nitrc, ease
+   :tags: nitrc, ease, cloud, derivatives
    :group: Research software projects
    :source: NITRC forum: http://www.nitrc.org/forum/message.php?msg_id=5013
 
