@@ -111,7 +111,7 @@ Research Software Projects
 
     NITRC-CE, or the NITRC Computational Environment, on the Amazon
     Marketplace wouldn't have happened as quickly and thus cost effectively
-    without leveraging NeuroDebian's good works. We appreciative their
+    without leveraging NeuroDebian's good works. We appreciate their
     critical contribution to the neuroimaging compute community.
 
 .. quote::
