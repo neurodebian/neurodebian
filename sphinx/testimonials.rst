@@ -177,3 +177,13 @@ Individual Laboratories and Researchers
    population-specific template creation to pipelining the analysis of
    fMRI, DTI and morphology studies. There is a great chance I will
    end up working exclusively with NeuroDebian!
+
+.. quote::
+   :author: Mathias Goldau
+   :affiliation: Cortical Networks, Max-Planck-Institute for neurological research, Cologne, Germany
+   :date: 2013-02-07
+   :tags: email, time, breadth
+
+   Without NeuroDebian we would have wasted precious time for
+   deploying software, and we wouldn't have tested so many software
+   tools.
