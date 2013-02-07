@@ -9,7 +9,7 @@ NeuroDebian "Derivatives"
 
 .. replace with icons eventually
 
-`Live CD/USB Media`_ | `Virtual Appliances`_ | `Cloud Solutions`_
+`Hybrid Live Media`_ | `Live CD/USB Media`_ | `Virtual Appliances`_ | `Cloud Solutions`_
 
 NeuroDebian_ is not a *Linux distribution* in a traditional sense because we
 are working within Debian_ project thus not providing our custom installer
@@ -26,6 +26,7 @@ the origin of necessary tools.
 
    These projects are not maintained by NeuroDebian_ team.  Please direct all
    you support inquiries to respective authors/maintainers.
+
 
 Hybrid Live Media
 =================
@@ -70,7 +71,7 @@ USB Stick for Computational Neuroscience by Cengiz Günay
 |                           | - Based on Ubuntu_ 11.04                              |
 +---------------------------+-------------------------------------------------------+
 |**Pre-installed Software** | NeuroDebian                                           |
-|                           |  XPPAUT_ 6.11b, python-brian_                               |
+|                           |  XPPAUT_ 6.11b, python-brian_                         |
 |                           | Custom:                                               |
 |                           |  Genesis_ 2.3, Neuron_ 7.2, XPPAUT_ 6.10              |
 +---------------------------+-------------------------------------------------------+
@@ -118,7 +119,7 @@ XNAT
 +---------------------------+-------------------------------------------------------+
 |**Purpose**                | XNAT_ deployment                                      |
 +---------------------------+-------------------------------------------------------+
-|**Features**               | - XNAT_ 1.5                                            |
+|**Features**               | - XNAT_ 1.5                                           |
 |                           | - 64-bit only                                         |
 |                           | - Based on NeuroDebian VM appliance                   |
 +---------------------------+-------------------------------------------------------+
@@ -143,11 +144,15 @@ Cloud Solutions
 NeuroCloud
 ----------
 
-http://gow.epsrc.ac.uk/ViewGrant.aspx?GrantRef=EP/I016856/1
+http://gow.epsrc.ac.uk/NGBOViewGrant.aspx?GrantRef=EP/I016856/1
+
+NITRC Computational Environment
+-------------------------------
+
+`NITRC-CE @ Amazon Marketplace <https://aws.amazon.com/marketplace/pp/B00AW0MBLO/ref=srh_res_product_title?ie=UTF8&sr=0-2&qid=1358898165456>`_
 
 ..  * INCF Cloud App?
 
-..  * NITRC?
 
 
 .. include:: link_names.txt
