@@ -123,6 +123,13 @@ Research Software Projects
    For any neuroscientist that relies on open-source software,
    NeuroDebian is the single most important resource.
 
+.. quote::
+   :author: Sebastian Eichelbaum
+   :affiliation: OpenWalnut project, Image and Signal Processing Group, Institute of Computer Science, University of Leipzig, Germany
+   :date: 2013-02-11
+
+   With NeuroDebian we can utilize thousands of tools, providing the foundation for our research. On the other hand, we can provide our tools to a large community easily.
+
 
 
 Individual Laboratories and Researchers
