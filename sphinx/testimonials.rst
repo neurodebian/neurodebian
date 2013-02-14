@@ -127,6 +127,7 @@ Research Software Projects
    :author: Sebastian Eichelbaum
    :affiliation: OpenWalnut project, Image and Signal Processing Group, Institute of Computer Science, University of Leipzig, Germany
    :date: 2013-02-11
+   :tags: email, breadth, dissemination
 
    With NeuroDebian we can utilize thousands of tools, providing the foundation for our research. On the other hand, we can provide our tools to a large community easily.
 
