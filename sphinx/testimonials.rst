@@ -132,6 +132,14 @@ Research Software Projects
    With NeuroDebian we can utilize thousands of tools, providing the foundation for our research. On the other hand, we can provide our tools to a large community easily.
 
 
+.. quote::
+   :author: Francisco Pereira
+   :affiliation: Siemens Corporate Research
+   :date: 2013-02-06
+   :tags: gplus, time
+
+   Thanks to NeuroDebian I now have to spend my time thinking hard about what to do with the tools, rather than leisurely installing them and tracking dependencies.﻿
+
 
 Individual Laboratories and Researchers
 ---------------------------------------
