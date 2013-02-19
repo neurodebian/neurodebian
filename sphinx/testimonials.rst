@@ -140,6 +140,17 @@ Research Software Projects
 
    Thanks to NeuroDebian I now have to spend my time thinking hard about what to do with the tools, rather than leisurely installing them and tracking dependencies.﻿
 
+.. quote::
+   :author: Alexander Wiebel
+   :affiliation: OpenWalnut project, Zuse Institute Berlin (ZIB), Germany
+   :date: 2013-02-19
+   :tags: email, breadth, dissemination
+
+   It is great to have NeuroDebian as a platform to bring our
+   visualization system OpenWalnut to a broad audience together with the large variety of
+   related data analysis tools available in NeuroDebian.
+
+
 
 Individual Laboratories and Researchers
 ---------------------------------------
@@ -203,3 +214,16 @@ Individual Laboratories and Researchers
    Without NeuroDebian we would have wasted precious time for
    deploying software, and we wouldn't have tested so many software
    tools.
+
+.. quote::
+   :author: Joseph Viviano
+   :affiliation: York University, Toronto Canada
+   :date: 2013-02-19
+   :tags: email, reproducibility, versioning, impact
+
+   NeuroDebian not only helped our lab focus on research and producing
+   results with FOSS, it has also made it much easier to maintain
+   version control, facilitating data portability and
+   reproducibility. I see this as the most important current project
+   working towards transparent neuroscientific methods with clear and
+   reproducible results.
