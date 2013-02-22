@@ -227,3 +227,15 @@ Individual Laboratories and Researchers
    reproducibility. I see this as the most important current project
    working towards transparent neuroscientific methods with clear and
    reproducible results.
+
+.. quote::
+   :author: Dr. Bertram Walter
+   :affiliation: Bender Institute of Neuroimaging, University of Giessen, Germany
+   :date: 2013-02-22
+   :tags: email, money, maintenance, support, quality
+
+   Neurodebian provides not only a platform for neuroscience
+   applications that makes maintenance of collections of tools
+   easy. The staff also gives a very quick support in case of - very
+   rare - problems.  Altogether Neurodebian saves a lot of time and
+   money.
