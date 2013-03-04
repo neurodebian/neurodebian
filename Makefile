@@ -1,5 +1,5 @@
-WWW_UPLOAD_URI = neurodebian@neurodebian.ovgu.de:/home/neurodebian/www
-#WWW_UPLOAD_URI = ../www
+#WWW_UPLOAD_URI = neurodebian@neurodebian.ovgu.de:/home/neurodebian/www
+WWW_UPLOAD_URI = ../../www
 WWW_DIR = build/html/
 
 WWW_UPLOAD_URI_STATIC=$(WWW_UPLOAD_URI)/_static

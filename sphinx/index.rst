@@ -9,8 +9,8 @@ software for the Debian_ operating system as well as Ubuntu_ and other
 derivatives. Popular packages include FSL, Freesurfer, AFNI, PyMVPA and
 :ref:`many others <pkg_tocs>`. While we do strive to maintain a high level of
 quality, we make no guarantee that a given package works as expected, so use
-them at your own risk. If you do encounter problems or would just like to thank
-us, simply `send us an email <#contacts>`_.
+them at your own risk. If you do encounter problems or you just like to say
+thanks, simply `send us an email <#contacts>`_.
 
 Learn more about NeuroDebian, the goals of this project, and help us |spread|!
 
