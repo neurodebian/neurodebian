@@ -54,7 +54,7 @@ source-stamp:
 
 
 updatedb:
-	$(BIGMESS) cachefiles
+	$(BIGMESS) cachefiles -f
 	$(BIGMESS) updatedb
 
 upload-website: html
