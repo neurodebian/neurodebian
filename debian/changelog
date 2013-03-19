@@ -1,3 +1,10 @@
+neurodebian (0.31) UNRELEASED; urgency=low
+
+  * debian/copyright:
+    - adjusted for dep5 v1.0. compliance
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Tue, 12 Mar 2013 20:41:56 -0400
+
 neurodebian (0.30) neurodebian; urgency=low
 
   * Preparing a new VM image (6.999.b4.20121206) - based on upcoming wheezy

@@ -1,17 +1,17 @@
-Format-Specification: http://wiki.debian.org/Proposals/CopyrightFormat
-Name: NeuroDebian
-Maintainer: NeuroDebian team <team@neuro.debian.net>
-Source: http://neuro.debian.net
+Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: NeuroDebian
+Upstream-Contact: NeuroDebian team <team@neuro.debian.net>
+Source-Location: http://git.debian.org/?p=pkg-exppsy/neurodebian.git
 
 
 Files: *
-Copyright: 2009-2010 NeuroDebian Team
+Copyright: 2009-2013 NeuroDebian Team
 License: GPL-3+
  On Debian systems the full text of the GNU General Public License can be found
  in the `/usr/share/common-licenses/GPL-3' file.
 
 Files: artwork/openlogo*.svg
-Copyright 1999, Software in the Public Interest
+Copyright: 1999 Software in the Public Interest
 License: MIT
  Permission is hereby granted, free of charge, to any person obtaining
  a copy of this software and associated documentation files (the
