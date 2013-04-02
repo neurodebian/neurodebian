@@ -243,7 +243,7 @@ Publications
 Halchenko, Y.O. and Hanke, M. (2013). `Open is not enough: benefits from Debian as an integrated, community-driven computing platform.
 <http://neuro.debian.net/_files/Halchenko_OpenIsNotEnough_UCAR2013.pdf>`_  *Talk
 given at* `SEA-2013 <http://sea.ucar.edu/event/open-not-enough-benefits-debian-integrated-community-driven-computing-platform>`_
-conference*, University Corporation for Atmospheric Research (UCAR), Boulder CO, USA.
+conference, University Corporation for Atmospheric Research (UCAR), Boulder CO, USA.
 
 Hanke, M. (2012). `Share your tools! But fear the wombat! Seriously.
 <http://neuro.debian.net/_files/Hanke_FearTheWombat_Brainhack2012.pdf>`_  *Talk
