@@ -324,6 +324,9 @@ bp_dch_cmd="dch --noconf --force-distribution --force-bad-version -c $sdir/debia
 # extract the original source package
 dpkg-source -x $dsc_file $sdir
 # note backport in changelog
+# This will create a new changelog entry
+# All subsequent calls to dch should use -a to assure that those entries
+# are appended to the existing entry (otherwise with wheezy new entries will be added)
 $bp_dch_cmd -D ${bp_distribution} -l "${bp_version}" "Backported for ${bp_distribution}."
 
 if [ "$bp_update_maintainer" = 1 ]; then
@@ -342,7 +345,7 @@ if [ "$bp_apply_patches" = 1 ]; then
       printf "${green}Enabling additional quilt patch series for $bp_distribution.\n${NC}"
     fi
     cat $sdir/debian/patches/series-$bp_distribution >> $sdir/debian/patches/series
-    $bp_dch_cmd "Added 'series-$bp_distribution' in quilt patch series."
+    $bp_dch_cmd -a "Added 'series-$bp_distribution' in quilt patch series."
   fi
   # look for backport patches
   for p in $(ls -1 $sdir/debian/patches/$bp_distribution-dsc-patch* 2> /dev/null || true); do
@@ -350,7 +353,7 @@ if [ "$bp_apply_patches" = 1 ]; then
       printf "${green}Applying additional patch $(basename "$p").\n${NC}"
     fi
     patch -p1 --directory=$sdir < "$p"
-    $bp_dch_cmd "Applied additional patch from debian/patches/$(basename "$p")."
+    $bp_dch_cmd -a "Applied additional patch from debian/patches/$(basename "$p")."
   done
 fi
 
@@ -360,7 +363,7 @@ if [ -n "$bp_mod_control" ]; then
     printf "${green}Modifying debian/control with given instructions.\n${NC}"
   fi
   bash -c "sed -i $bp_mod_control $sdir/debian/control"
-  $bp_dch_cmd "Used following sed expression to modify debian/control:$bp_mod_control."
+  $bp_dch_cmd -a "Used following sed expression to modify debian/control:$bp_mod_control."
 fi
 
 # extract final version
