@@ -56,6 +56,7 @@ source-stamp:
 updatedb:
 	$(BIGMESS) cachefiles -f
 	$(BIGMESS) updatedb
+	-rm source-stamp
 
 upload-website: html
 	rsync -rvzlhp --delete \
