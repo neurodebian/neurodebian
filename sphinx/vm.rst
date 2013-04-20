@@ -216,7 +216,6 @@ What has changed
      Click on an item to expand it
 
   6.999.b4.20121231 -- 31 Dec 2012
-
     * Based on beta 4 release of debian-installer_ for wheezy
     * Comes with XFCE4_ instead of GNOME_
 
