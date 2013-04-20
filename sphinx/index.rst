@@ -75,11 +75,12 @@ News
   <div id="sitemap">
 
 * **About**
-* :ref:`Team <chap_team>`
-* :ref:`chap_popularity`
+* :ref:`The Team <chap_team>`
 * :ref:`FAQ <faq>`
 * :ref:`Blog <blog>`
+* :ref:`chap_popularity`
 * :ref:`chap_publications`
+* :ref:`chap_acknowledgments`
 * :ref:`testimonials`
 * :ref:`coffeeart`
 
@@ -93,6 +94,7 @@ News
 .. start a new list
 
 * **Community**
+* :ref:`Contacts <chap_contacts>`
 * :ref:`Mailing lists <chap_mailinglists>`
 * `OpenHatch <https://openhatch.org/+projects/NeuroDebian>`_
 * `Identi.ca <http://identi.ca/neurodebian>`_
@@ -120,6 +122,9 @@ News
 
    blog/index
    faq
+   thanks
+   popularity
+   about
    pkgs
    spread
    vm
@@ -153,7 +158,6 @@ News
    livecd
    quotes-nihr01
    quotes-nitrc
-   dump
 
 .. include:: link_names.txt
 .. include:: substitutions.txt
