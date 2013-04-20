@@ -80,7 +80,7 @@ News
 * :ref:`Blog <blog>`
 * :ref:`chap_popularity`
 * :ref:`chap_publications`
-* :ref:`chap_acknowledgments`
+* :ref:`chap_acknowledgements`
 * :ref:`testimonials`
 * :ref:`coffeeart`
 
