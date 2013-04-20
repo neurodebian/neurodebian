@@ -4,7 +4,8 @@ Install a package
 Step 1
 ------
 
-*[skip this steps if your machine is already configured to use this repository]*
+*[skip this steps if your are using the NeuroDebian virtual machine or if your
+machine is already configured to use this repository]*
 
 .. include:: reposetup.rst
 

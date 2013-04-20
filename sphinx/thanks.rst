@@ -41,3 +41,5 @@ If your are interested in mirroring the repository, please see the :ref:`faq`.
 .. _Paul Ivanov: http://www.pirsquared.org
 .. _Medical-image Analysis and Statistical Interpretation lab at Vanderbilt: https://masi.vuse.vanderbilt.edu
 .. _Nikolaus Valentin Haenel: http://haenel.co
+
+.. include:: link_names.txt

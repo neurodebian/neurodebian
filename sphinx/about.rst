@@ -51,3 +51,4 @@ maintainers_ that help to make Debian_ the ultimate software platform for
 neuroscience.
 
 .. _maintainers: pkgs.html#by-maintainer
+.. include:: link_names.txt

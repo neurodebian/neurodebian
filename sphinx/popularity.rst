@@ -43,4 +43,4 @@ In addition to popcon pages for your "core" distribution (e.g. `Debian
 submissions to `NeuroDebian <http://neuro.debian.net/popcon/>`__ and
 know that you are already contributing back to the community.
 
-
+..include:: link_names.txt
