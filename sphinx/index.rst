@@ -21,7 +21,7 @@ Learn more about NeuroDebian, the goals of this project, and help us |spread|!
 
 .. raw:: html
 
-  <div class="linkmore"><a href="/publications.html">more publications</a></div>
+  <div class="linkmore"><a href="publications.html" name="publications">more publications</a></div>
   <div class="clearer"></div>
   <!-- for dynamic quote update via javascript -->
   <hr />
@@ -33,7 +33,7 @@ Learn more about NeuroDebian, the goals of this project, and help us |spread|!
 .. raw:: html
 
   </div><!-- randomquote -->
-  <div class="linkmore"><a href="/testimonials.html">more testimonials</a></div>
+  <div class="linkmore"><a href="testimonials.html">more testimonials</a></div>
 
 .. _Ubuntu: http://www.ubuntu.com
 
@@ -73,6 +73,13 @@ News
 
   <hr />
   <div id="sitemap">
+  <!-- Some anchors to orient users of old-website urls -->
+  <a name="acknowledgements"/>
+  <a name="contacts"/>
+  <a name="the-team"/>
+  <a name="debian-installation"/>
+  <a name="virtual-machine"/>
+  <a name="ways-to-use-neurodebian">&nbsp;</a>
 
 * **About**
 * :ref:`The Team <chap_team>`

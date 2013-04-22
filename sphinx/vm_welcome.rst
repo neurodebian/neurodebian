@@ -8,7 +8,7 @@ machine. Below you can find a list of resources that you may find
 interesting:
 
 * :ref:`NeuroDebian news <news>`
-* :ref:`User support <support>`
+* :ref:`User support <chap_contacts>`
 * :ref:`Virtual machine tutorial video <chap_vm>`
 * :ref:`Known issues and troubleshooting <chap_vm_troubleshooting>`
 
