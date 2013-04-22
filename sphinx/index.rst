@@ -95,7 +95,7 @@ News
 
 * **Services**
 * :ref:`Software <pkg_tocs>`
-* :ref:`Data <toc_pkgs_for_suite_data>`
+* :ref:`Data <toc_pkgs_for_release_data>`
 * :ref:`Appliance <chap_vm>`
 
 .. start a new list
