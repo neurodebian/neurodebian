@@ -52,9 +52,10 @@ source-stamp:
 	$(BIGMESS) mkpkgtocs -d build/src/pkglists > build/src/pkgs.rst
 	touch $@
 
-
-updatedb:
+cachefiles:
 	$(BIGMESS) cachefiles -f
+
+updatedb: cachefiles
 	$(BIGMESS) updatedb
 	-rm source-stamp
 
@@ -78,5 +79,5 @@ mirmon:
 	cat $(WWW_UPLOAD_URI_STATIC)/{index-header,mirrors-status,index-trailer}.ihtml \
 	 >| $(WWW_UPLOAD_URI)/mirrors-status.html
 
-.PHONY: removedb removecache updatedb upload-website clean distclean pics html mirmon
+.PHONY: removedb removecache cachefiles updatedb upload-website clean distclean pics html mirmon
 
