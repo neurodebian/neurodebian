@@ -44,7 +44,7 @@ USB Stick for Computational Neuroscience by Cengiz Günay
 |                           | - Based on Ubuntu_ 11.04                              |
 +---------------------------+-------------------------------------------------------+
 |**Pre-installed Software** | NeuroDebian                                           |
-|                           |  XPPAUT_ 6.11b, python-brian_                               |
+|                           |  XPPAUT_ 6.11b, python-brian_                         |
 |                           | Custom:                                               |
 |                           |  Genesis_ 2.3, Neuron_ 7.2, XPPAUT_ 6.10              |
 +---------------------------+-------------------------------------------------------+

@@ -94,6 +94,3 @@ efficient, more open, and more fun
 
 .. _DebConf10: http://debconf10.debconf.org/
 .. _Dartmouth College: http://www.dartmouth.edu/
-.. _chap_popularity:
-
-
