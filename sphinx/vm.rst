@@ -54,11 +54,11 @@ Python modules was never easier**.  Moreover your feedback might also
 be valuable to polish upcoming Debian wheezy release and NeuroDebian
 VM 7.0.
 
-* `NeuroDebian 6.999.b4.20121231 image (32bit)
-  <http://neuro.debian.net/debian/vm/NeuroDebian_6.999.b4.20121231_i386.ova>`_ [~656MB]
+* `NeuroDebian 6.999.b4.20130421 image (32bit)
+  <http://neuro.debian.net/debian/vm/NeuroDebian_6.999.b4.20130421_i386.ova>`_ [~670MB]
 
-* `NeuroDebian 6.999.b4.20121231 image (64bit)
-  <http://neuro.debian.net/debian/vm/NeuroDebian_6.999.b4.20121231_amd64.ova>`_ [~660MB]
+* `NeuroDebian 6.999.b4.20130421 image (64bit)
+  <http://neuro.debian.net/debian/vm/NeuroDebian_6.999.b4.20130421_amd64.ova>`_ [~670MB]
 
 
 Historical
@@ -99,6 +99,10 @@ virtual appliances:
 
 Changes
 -------
+
+6.999.b4.20130421 -- 22 Apr 2013
+
+      * Refreshed VM appliance to avoid lengthy initial upgrade
 
 6.999.b4.20121231 -- 31 Dec 2012
 
