@@ -1,3 +1,20 @@
+neurodebian (0.31) neurodebian; urgency=low
+
+  * debian/copyright:
+    - adjusted for dep5 v1.0. compliance
+  * website:
+    - updated URL of the Magdeburg mirror
+    - more testimonials, derivatives information
+  * VM (6.999.b4.20121231):
+    - small fixes (cleanup etc)
+  * nd_* tools:
+    - backport-dsc: assure adding log entries to freshly created changelog
+      entry
+    - removed karmic, maverick and natty from build targets -- their support
+      ended
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Tue, 12 Mar 2013 20:41:56 -0400
+
 neurodebian (0.30) neurodebian; urgency=low
 
   * Preparing a new VM image (6.999.b4.20121206) - based on upcoming wheezy

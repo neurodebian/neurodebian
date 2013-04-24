@@ -9,7 +9,7 @@ NeuroDebian "Derivatives"
 
 .. replace with icons eventually
 
-`Live CD/USB Media`_ | `Virtual Appliances`_ | `Cloud Solutions`_
+`Hybrid Live Media`_ | `Live CD/USB Media`_ | `Virtual Appliances`_ | `Cloud Solutions`_
 
 NeuroDebian_ is not a *Linux distribution* in a traditional sense because we
 are working within Debian_ project thus not providing our custom installer
@@ -26,6 +26,33 @@ the origin of necessary tools.
 
    These projects are not maintained by NeuroDebian_ team.  Please direct all
    you support inquiries to respective authors/maintainers.
+
+
+Hybrid Live Media
+=================
+
+NEST Live Media
+---------------
+
++---------------------------+----------------------------------------------------------------+
+|**Author**                 | Yury V. Zaytsev <zaytsev@fz-juelich.de>                        |
++---------------------------+----------------------------------------------------------------+
+|**Homepage**               | http://www.nest-initiative.org/index.php/Software:Download     |
++---------------------------+----------------------------------------------------------------+
+|**Purpose**                | Demonstration live media for conferences and students          |
++---------------------------+----------------------------------------------------------------+
+|**Features**               | - Based on Ubuntu 12.04 LTS (i386 only)                        |
+|                           | - ISO for DVDs and sticks, OVA for VirtualBox                  |
++---------------------------+----------------------------------------------------------------+
+|**Pre-installed Software** | NeuroDebian                                                    |
+|                           |  PyNN, Brian                                                   |
+|                           | Custom:                                                        |
+|                           |  NEST, NEURON                                                  |
++---------------------------+----------------------------------------------------------------+
+|**Download**               | http://www.nest-initiative.org/download/gplreleases/ [~1.5G]   |
++---------------------------+----------------------------------------------------------------+
+|**References**             | https://github.com/nest/livecd-scripts                         |
++---------------------------+----------------------------------------------------------------+
 
 Live CD/USB Media
 =================
@@ -117,11 +144,15 @@ Cloud Solutions
 NeuroCloud
 ----------
 
-http://gow.epsrc.ac.uk/ViewGrant.aspx?GrantRef=EP/I016856/1
+http://gow.epsrc.ac.uk/NGBOViewGrant.aspx?GrantRef=EP/I016856/1
+
+NITRC Computational Environment
+-------------------------------
+
+`NITRC-CE @ Amazon Marketplace <https://aws.amazon.com/marketplace/pp/B00AW0MBLO/ref=srh_res_product_title?ie=UTF8&sr=0-2&qid=1358898165456>`_
 
 ..  * INCF Cloud App?
 
-..  * NITRC?
 
 
 .. include:: link_names.txt
