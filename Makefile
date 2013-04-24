@@ -5,7 +5,7 @@ WWW_DIR = build/html/
 WWW_UPLOAD_URI_STATIC=$(WWW_UPLOAD_URI)/_static
 
 BIGMESS_OPTS = -c neurodebian_repo.cfg
-BIGMESS_CMD = PYTHONPATH=.:../bigmess:$(PYTHONPATH) ../bigmess/bin/bigmess
+BIGMESS_CMD = PYTHONPATH=.:3rd/bigmess:$(PYTHONPATH) 3rd/bigmess/bin/bigmess
 BIGMESS = $(BIGMESS_CMD) $(BIGMESS_OPTS)
 
 # Lentghy one due to updatedb
