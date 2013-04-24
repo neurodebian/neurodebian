@@ -35,9 +35,6 @@ whole workstation, where it quickly becomes troublesome to combine the desire
 for latest research methodology for new studies and the need for stability for
 ongoing projects.
 
-.. _Debian 6.0 (squeeze): http://www.debian.org/releases/squeeze
-.. _GNOME: http://www.gnome.org/
-
 
 Installation
 ~~~~~~~~~~~~
@@ -205,6 +202,17 @@ Troubleshooting
 
     and reboot VM.
 
+  I am still running an older VirtualBox 3.x
+    Download one of the image files listed below. These older releases
+    are distributed as a `zip` file. Please extract all files from the
+    `.zip` file, using appropriate software for your operating system.
+
+    * `NeuroDebian 6.0.2 image (32bit)
+      <http://neuro.debian.net/debian/vm/neurodebian_6.0.2_i386.zip>`_ [~545MB]
+
+    * `NeuroDebian 6.0.2 image (64bit)
+      <http://neuro.debian.net/debian/vm/neurodebian_6.0.2_amd64.zip>`_ [~560MB]
+
 
 What has changed
 ----------------
@@ -214,6 +222,9 @@ What has changed
   .. container:: expandinstructions
 
      Click on an item to expand it
+
+  6.999.b4.20130421 -- 22 Apr 2013
+    * Refreshed VM appliance to avoid lengthy initial upgrade
 
   6.999.b4.20121231 -- 31 Dec 2012
     * Based on beta 4 release of debian-installer_ for wheezy

@@ -93,16 +93,15 @@ You are ready to go -- enjoy NeuroDebian!
 
 .. note::
 
-  If you still running an older VirtualBox 3.x, download one of the image files
-  listed below. These older releases are distributed as a `zip` file. Please
-  extract all files from the `.zip` file, using appropriate software
-  for your operating system.
+  If you want a verified stable (but older) virtual appliances based
+  on `Debian 6.0 (squeeze)`_ release, download one of the image files
+  listed below.
 
-  * `NeuroDebian 6.0.2 image (32bit)
-    <http://neuro.debian.net/debian/vm/neurodebian_6.0.2_i386.zip>`_ [~545MB]
+  * `NeuroDebian 6.0.6 image (32bit)
+    <http://neuro.debian.net/debian/vm/NeuroDebian_6.0.6_i386.ova>`_ [~559MB]
 
-  * `NeuroDebian 6.0.2 image (64bit)
-    <http://neuro.debian.net/debian/vm/neurodebian_6.0.2_amd64.zip>`_ [~560MB]
+  * `NeuroDebian 6.0.6 image (64bit)
+    <http://neuro.debian.net/debian/vm/NeuroDebian_6.0.6_amd64.ova>`_ [~576MB]
 
 .. raw:: html
 
@@ -115,7 +114,7 @@ You are ready to go -- enjoy NeuroDebian!
 
   <script type="text/javascript">
   function createvmdownload(rel, mir) {
-        var img_version = '6.0.5';
+        var img_version = '6.999.b4.20130421';
         var img_suffix;
         var base_url;
         var img_url;
