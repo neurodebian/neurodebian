@@ -2,68 +2,51 @@
 
 {% block extrahead %}
   <meta name="keywords" content="debian, neuroscience">
+  <script language="javascript" type="text/javascript"
+  src="/javascript/jquery-mousewheel/jquery.mousewheel.min.js"></script>
+  <script language="javascript" type="text/javascript"
+  src="/javascript/jquery-easing/jquery.easing.min.js"></script>
+  <script language="javascript" type="text/javascript"
+  src="/javascript/jquery-fancybox/jquery.fancybox.min.js"></script>
+  <link rel="stylesheet" href="/javascript/jquery-fancybox/jquery.fancybox.css"
+  type="text/css" media="screen" />
 {% endblock %}
 
-{% block rootrellink %}
-  <li><a href="http://www.debian.org" target="_blank">Debian</a> ||&nbsp;</li>
-  <li><a href="{{ pathto('index') }}">Neuroscience</a> :&nbsp;</li>
-  <li><a href="{{ pathto('pkgs') }}">Software</a> |&nbsp;</li>
-  <li><a href="{{ pathto('pkglists/pkgs-by_release-datasets_(data)') }}">Datasets</a> |&nbsp;</li>
-  <li><a href="{{ pathto('vm') }}">Virtual Machine</a> |&nbsp;</li>
-  <li><a href="{{ pathto('faq') }}">FAQ</a> |&nbsp;</li>
-  <li><a href="{{ pathto('testimonials') }}">Testimonials</a> &nbsp;</li>
+{% block header %}
+  <div class="buttonbar">
+  <ul>
+  <li><a href="http://www.debian.org" target="_blank"><img border="0" src="/_static/debian.png" title="Visit debian.org" /><br />Debian</a></li>
+ <li><a href="{{ pathto('index') }}"><img border="0" src="/_static/neurodebian.png" title="Go to the home page" /><br />Home</a></li>
+ <li><a href="{{ pathto('pkgs') }}"><img border="0" src="/_static/package.png" title="List of available software" /><br />Software</a></li>
+ <li><a href="{{ pathto('pkglists/toc_pkgs_for_release_data') }}"><img border="0" src="/_static/datasets.png" title="List of available datasets" /><br />Data</a></li>
+ <li><a href="{{ pathto('vm') }}"><img border="0" src="/_static/machine.png" title="Get NeuroDebian for your non-Debian computer" /><br />VM</a></li>
+ <li><a href="{{ pathto('projects') }}"><img border="0" src="/_static/workarea.png" title="Current and planned projects: Get involved!" /><br />Contribute</a></li>
+ <li><a href="{{ pathto('derivatives') }}"><img border="0" src="/_static/derivatives.png" title="Projects that use NeuroDebian as a foundation" /><br />Derived</a></li>
+ <li><a href="/blog/index.html"><img border="0" src="/_static/rssfeeds.png" title="Read news, and how-to's in the NeuroDebian Insider Blog. Subscribe!" /><br />Blog</a></li>
+ <li><a href="{{ pathto('faq') }}"><img border="0" src="/_static/faq.png" title="Frequently asked questions" /><br />FAQ</a></li>
+  </ul>
+  </div>
+  <div class="clearer"></div>
 {% endblock %}
+
+{% block rootrellink %}{% endblock %}
 
 {% block relbaritems %}
 <li class="right"><a href="#disqus_thread">Comments</a>&nbsp;|</li>
+{% block sidebarsearch %}
+{{ super() }}
+{% endblock %}
+<li class="right" style="position:relative;top:3px"><div class="g-plusone"></div></li>
+<li class="right" style="position:relative;top:1px"><a href="https://twitter.com/share" class="twitter-share-button" data-size="large" data-hashtags="neurodebian" data-dnt="true"></a></li?
 {% endblock %}
 
 {% block sidebar1 %}{% endblock %}
-
-{% block sidebar2 %}
-{{ sidebar() }}
-{% endblock %}
-
-{% block sidebarsearch %}
-{{ super() }}
-
-<p>
-<form method="POST" action="https://openhatch.org/+do/project.views.wanna_help_do">
-    <input type="hidden" name="from_offsite" value="True" />
-    <input type="hidden" value="7781" name="project"/>
-    <input type="submit" value="I want to help" rel="tipsy-south" id="openhatch-wannahelp-button" original-title="Click to add yourself to the list of people who want to contribute. People of all levels are welcome!"/>
-</form>
-</p>
-<style>
-    @import url('https://openhatch.org/static/css/tipsy.css');
-</style>
-<style type="text/css">
-#openhatch-wannahelp-button:hover, #openhatch-wannahelp-button:focus {
-	background-image:url('https://openhatch.org/static/images/wannahelp-button-bg-hover.png');
-	color:#222; text-decoration:none; }
-#openhatch-wannahelp-button { width: 90%; height: 3em; margin-bottom: 1em; background: #C8E29D
-	url('https://openhatch.org/static/images/wannahelp-button-bg.png') repeat-x
-	scroll center top; border:3px solid #fff;  cursor:pointer; cursor: hand;
-	font-family: Helvetica, sans-serif; font-size:13pt; font-weight:normal;
-	text-align:center; text-shadow:0 1px 0 #fff; white-space:normal; }
-#openhatch-wannahelp-button { -moz-border-radius: 8px; color: #444; float:left;
-	padding:10px 20px; display:block; padding:0px 8px; }
-#openhatch-wannahelp-button:focus { outline-color:-moz-use-text-color;
-	outline-style:none; outline-width:medium; }
-</style>
-<!-- Disabling openhatche's copy of jquery, even though loosing cool tipsy functionality for now
-<script type="text/javascript" src="https://openhatch.org/static/packed/selections_for_widget.js?1271800811"></script>
--->
-<p><a href="https://www.ohloh.net/stack_entries/new?project_id=neurodebian&ref=sample"><img
-src="{{ pathto('_static/ohloh_iuseit.png', 1) }}" border="0" alt="Click to get yourself listed as a NeuroDebian user" /></a></p>
-<p><a href="http://www.nitrc.org/projects/neurodebian"><img
-src="{{ pathto('_static/nitrc_listed.png', 1) }}" border="0" alt="NITRC-listed" /></a></p>
-{% endblock %}
-
+{% block sidebar2 %}{% endblock %}
 
 {% block footer %}
+<div class="clearer"></div>
 {{ super() }}
-<div class="footer">
+<div class="footer" style="padding-top:0px">
 The source code for this portal is licensed under the
 <a href="http://www.gnu.org/licenses/gpl-3.0.html"
    title="Text of the GPL-3 license">GPL-3</a> and is available on
@@ -71,5 +54,43 @@ The source code for this portal is licensed under the
    title="Browse or clone the Git repository">
 git.debian.org</a>.
 </div>
+<!-- G+ button logic -->
+<script type="text/javascript" src="https://apis.google.com/js/plusone.js">
+  {parsetags: 'explicit'}
+</script>
+<script type="text/javascript">gapi.plusone.go();</script>
+<!-- Twitter -->
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+<!-- trigger convenience setup with javascript enabled -->
+<script type="text/javascript">
+  $('.foldup dt').click(function(e){
+      $(this).nextUntil('dt').toggle();
+  });
+  $('.foldup dd').hide();
+  $('.expandinstructions').show();
+  $('.nojavascriptinstructions').hide();
+</script>
+<!-- turn all [youtube] links into buttons and open them in fancy player-->
+<script type="text/javascript">
+$(document).ready(function(){
+  $('a[href^="http://www.youtube.com/watch"]').click(function() {
+     $.fancybox({
+        'title': this.title,
+        'href': this.href.replace(new RegExp("watch\\?v=", "i"), 'v/'),
+        'type': 'swf',
+        'swf': {'wmode': 'transparent', 'allowfullscreen': 'true'}
+      });
+    return false;
+    });
+  $('a[href^="http://www.youtube.com/watch"]').each(function() {
+      var content = $(this).html();
+      if (content.charAt(0) == '[' && content.charAt(content.length-1) == ']') {
+          $(this).html('<img class="inlineimage" src="/_static/video_button.png" alt="video link button" title="' + content + '" />');
+      } else {
+          return content;
+      };
+    });
+});
+</script>
 {% endblock %}
 

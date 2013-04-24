@@ -1,5 +1,5 @@
-2011
-====
+Blog posts in 2011
+==================
 
 .. toctree::
    :maxdepth: 1

@@ -1,0 +1,80 @@
+.package-info-links {
+  float: right;
+  margin-left: 1em;
+  padding-left: 1em;
+  border-left: 1px solid #ccc;
+}
+
+.package-info-links dd {
+  margin-left: 0px;
+}
+
+.package-info-links dd {
+  margin-left: 0px;
+}
+
+.package-info-links ul {
+  margin-left: 0;
+  padding-left: 0;
+  list-style-type: none;
+}
+
+.package-info-links a {
+  display: block;
+  padding: 3px;
+}
+
+.pkg-install-link,
+.pkg-bugreport-link{
+  width: 100%;
+  text-align: center;
+  display: inline;
+}
+
+.pkg-install-link a,
+.pkg-bugreport-link a {
+  color: #444;
+  font-weight: bold;
+  padding: 0.5em;
+}
+
+.pkg-bugreport-link a {
+  background-color: #ffe7e7;
+  border-top: 1px solid #d70751;
+  border-bottom: 1px solid #d70751;
+}
+
+.pkg-install-link a {
+  background-color: #e7e7ff;
+  border-top: 1px solid #20435C;
+  border-bottom: 1px solid #20435C;
+}
+
+.pkg-install-link a:hover {
+  background-color: #20435C;
+}
+
+.pkg-bugreport-link a:hover {
+  background-color: #d70751;
+}
+
+.pkg-install-link a:hover,
+.pkg-bugreport-link a:hover {
+  text-decoration: none;
+  color: white;
+}
+
+.license-reminder {
+  color: #d70751;
+  font-weight: bold;
+}
+
+.package-availability {
+  padding-top: 2em;
+}
+
+.package-availability caption {
+  font-style: italic;
+  text-align: left;
+  margin-bottom: .5em;
+}

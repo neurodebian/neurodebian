@@ -1,0 +1,10 @@
+{%- if pagename != "search" %}
+<li id="searchbox">
+    <form class="search" style="display:inline" action="{{ pathto('search') }}" method="get">
+      <input type="search" size="15" maxlength="1000" value="search for..." name="q" onfocus="this.value=''" />
+      <input type="submit" value="{{ _('Go') }}" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</li>
+{%- endif %}

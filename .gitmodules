@@ -1,3 +1,6 @@
 [submodule "3rd/jquery.livetwitter"]
 	path = 3rd/jquery.livetwitter
 	url = git://github.com/elektronaut/jquery.livetwitter.git
+[submodule "3rd/bigmess"]
+	path = 3rd/bigmess
+	url = git://github.com/neurodebian/bigmess.git

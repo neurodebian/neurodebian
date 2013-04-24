@@ -236,4 +236,14 @@ Coffee Art
 .. figure:: /pics/coffeeart/IMG_6647.JPG
 
 
+.. raw:: html
+
+  <script type="text/javascript">
+  $(document).ready(function(){
+    $('.figure img').each(function() {
+      $(this).wrap('<a class="figurelink" href="' + $(this).attr('src') + '" rel="coffee"></a>');
+    });
+    $('a.figurelink').fancybox();
+  });
+  </script>
 
