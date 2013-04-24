@@ -13,6 +13,12 @@ all: updatedb upload-website mirmon
 # Quick one -- just rebuilds html if new changes and adjusts the status of the mirrors
 refresh: upload-website-stamp mirmon
 
+website-build-depends:
+	: # Python modules
+	sudo apt-get install python-sphinx python-argparse python-xdg python-debian
+	: # JavaScripts
+	sudo apt-get install libjs-jquery-easing libjs-jquery-mousewheel libjs-jquery-fancybox
+
 
 pics:
 	$(MAKE) -C artwork
