@@ -6,7 +6,7 @@
 
 NeuroDebian provides a large collection of popular neuroscience research
 software for the Debian_ operating system as well as Ubuntu_ and other
-derivatives. Popular packages include FSL, Freesurfer, AFNI, PyMVPA and
+derivatives. Popular packages include AFNI, FSL, PyMVPA and
 :ref:`many others <pkg_tocs>`. While we do strive to maintain a high level of
 quality, we make no guarantee that a given package works as expected, so use
 them at your own risk. If you do encounter problems or you just like to say
