@@ -1,0 +1,80 @@
+#!/usr/bin/python
+#emacs: -*- mode: python-mode; py-indent-offset: 4; tab-width: 4; indent-tabs-mode: nil -*-
+#ex: set sts=4 ts=4 sw=4 noet:
+"""Script to do rudimentary checks of NeuroDebian mirrors to verify they are in good shape
+"""
+
+
+import sys
+from urllib import urlopen
+from ConfigParser import SafeConfigParser
+
+#cfg_path="/etc/neurodebian/neurodebian.cfg"
+cfg_path="./neurodebian.cfg"
+main_mirror='us-nh'
+
+# read configuration
+cfg = SafeConfigParser()
+cfg.read(cfg_path)
+
+# load information about mirrors
+mirrors = cfg.options('mirrors')
+urls = dict([(x, cfg.get('mirrors', x)) for x in mirrors])
+slave_mirrors = mirrors.pop(mirrors.index(main_mirror))
+
+#if True:
+def fetch_listing(url):
+    """Traverses whole website, obtains listing of all files available
+
+
+    TODO: eventually use scrapy, but stable one has only 0.8 while
+    0.16 is out... so -- later
+    """
+    print url
+    #url = 'http://neuro.debian.net/debian/dists/dapper/'
+    #url = "http://mirror.aarnet.edu.au/pub/neurodebian/dists/dapper/"
+    parser = etree.HTMLParser()
+    from lxml.html import parse, submit_form, fromstring
+    #page = etree.parse(urlopen('http://neuro.debian.net/debian/dists/dapper/'), parser)
+    #page = objectify.parse(urlopen('http://neuro.debian.net/debian/dists/dapper/'), parser)
+    page = parse(url).getroot()
+
+    #page = fromstring(''.join(urlopen(url).readlines()))
+    #page.make_links_absolute(url)
+
+
+    # go through all rows with links
+    rows = [row for row in page.iter('tr')]
+    res = {}
+    for row in rows:
+        pass
+
+    # do I need parent actually for anything?  yes -- time/size
+    # actually -- of no use since presence/presentation heavily varies
+    # across mirrors, so let's not rely on them
+    links = [ (l[0].getparent().getparent(),
+               l[2].endswith('/'),) +
+              l
+              for l in page.iterlinks()
+              if (l[1] == 'href'
+                  and not (
+                      l[2][0] in ('/', '?')
+                      or l[2].startswith('http://')
+                      or l[2].startswith('mailto:')
+                      )) ]
+
+    for p, isdir, a, _, name, _ in links:
+        print name
+        if isdir:
+            fetch_listing('%s/%s' %
+                          (url, name))
+
+if False:
+    for m, url in urls.iteritems():
+        print "Mirror %s" % m
+        fetch_listing(url + '/dists/dapper')
+else:
+    fetch_listing(urls[main_mirror] + '/dists/dapper')
+"""
+au has fancier index pages, so we would need to distil page first more
+"""
