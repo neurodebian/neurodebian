@@ -4,3 +4,6 @@
 [submodule "3rd/bigmess"]
 	path = 3rd/bigmess
 	url = git://github.com/neurodebian/bigmess.git
+[submodule "3rd/nvd3"]
+	path = 3rd/nvd3
+	url = git://github.com/novus/nvd3.git

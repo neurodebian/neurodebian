@@ -51,11 +51,15 @@ source: source-stamp
 source-stamp: 
 	mkdir -p build/src/pkgs/
 	mkdir -p build/src/lists/
+	mkdir -p build/src/_static/
 	mkdir -p build/src/pkglists/
 	$(BIGMESS) mkpkgs  -d build/src/pkgs/
 	$(BIGMESS) mkaptcfgs -d build/src/lists/
 	$(BIGMESS) mkrepocfg > build/src/sources_lists
 	$(BIGMESS) mkpkgtocs -d build/src/pkglists > build/src/pkgs.rst
+	cp 3rd/nvd3/*.min.js build/src/_static/
+	cp 3rd/nvd3/lib/d3*.min.js build/src/_static/
+	cp 3rd/nvd3/src/nv*.css build/src/_static/
 	touch $@
 
 cachefiles:

@@ -10,9 +10,24 @@ Popularity Statistics
 Repository subscriptions
 ========================
 
+Interactive visualization of new NeuroDebian repository subscriptions. Plotted
+are each week's average number of daily subscriptions for all Debian and Ubuntu
+releases. Statistics for individual releases can be compared by clicking on the
+respective curves and labels in the legend.
+
+Note that each machine only needs to be subcribed to the repository, and only
+subscriptions done via the website are counted.
+
+
 .. raw:: html
 
- <p><img border="0" src="_files/nd_subscriptionstats.png" title="Statistics of new repository subscriptions for all supported releases. Note: subscription is only done once per machine." /></p>
+  <link href="/_static/nv.d3.css" rel="stylesheet" type="text/css">
+  <div><svg style="height:500px" id="subscriptionchart"></svg></div>
+
+  <script src="/_static/d3.v2.min.js"></script>
+  <script src="/_static/nv.d3.min.js"></script>
+  <script src="/_static/subscriptionchart.js"></script>
+
 
 Popularity Contest
 ==================
