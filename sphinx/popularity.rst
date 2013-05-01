@@ -15,8 +15,8 @@ are each week's average number of daily subscriptions for all Debian and Ubuntu
 releases. Statistics for individual releases can be compared by clicking on the
 respective curves and labels in the legend.
 
-Note that each machine only needs to be subcribed to the repository, and only
-subscriptions done via the website are counted.
+Note that each machine only needs to be subscribed to the repository once, and
+only subscriptions done via the website are counted.
 
 
 .. raw:: html
