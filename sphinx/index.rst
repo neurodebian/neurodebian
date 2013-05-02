@@ -98,6 +98,7 @@ News
 * :ref:`Software <pkg_tocs>`
 * :ref:`Data <toc_pkgs_for_release_data>`
 * :ref:`Appliance <chap_vm>`
+* :ref:`Mirrors <chap_mirrors_stats>`
 
 .. start a new list
 

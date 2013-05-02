@@ -48,12 +48,13 @@ distclean: clean
 
 
 source: source-stamp
-source-stamp: 
+source-stamp:
 	mkdir -p build/src/pkgs/
 	mkdir -p build/src/lists/
 	mkdir -p build/src/pkglists/
 	$(BIGMESS) mkpkgs  -d build/src/pkgs/
 	$(BIGMESS) mkaptcfgs -d build/src/lists/
+	$(BIGMESS) mkmirrorsstat -d build/src
 	$(BIGMESS) mkrepocfg > build/src/sources_lists
 	$(BIGMESS) mkpkgtocs -d build/src/pkglists > build/src/pkgs.rst
 	touch $@
