@@ -139,6 +139,7 @@
 .. Debian releases
 .. _Debian 6.0 (squeeze): http://www.debian.org/releases/squeeze
 .. _Debian 7.0 (wheezy): http://www.debian.org/releases/wheezy
+.. _Debian 8.0 (jessie): http://www.debian.org/releases/jessie
 
 .. Desktop environments
 .. _GNOME: http://www.gnome.org/
