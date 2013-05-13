@@ -184,7 +184,7 @@ update-grub
 
 # finally configure geomirror for APT and disable deb-src lists
 cp /etc/apt/sources.list /etc/apt/sources.list.orig
-sed -i -e "s,\(deb\(\|-src\) http://\)[^/]*/debian,\1$(dpkg --print-architecture)-geomirror.debian.net/debian,g" \
+sed -i -e "s,\(deb\(\|-src\) http://\)[^/]*/debian,\1http.debian.net/debian,g" \
     -e "s/^deb-src/#deb-src/" /etc/apt/sources.list
 
 etckeeper commit "Initial VM setup done"
