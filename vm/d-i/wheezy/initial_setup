@@ -133,14 +133,12 @@ apt-get install --no-install-recommends -y \
  chromium-browser \
  sudo neurodebian-desktop update-notifier
 
-# "Slightly" better terminal by default
-# TODO: might want to change default bg color to black there
-apt-get install -y rxvt-unicode
-update-alternatives --set x-terminal-emulator /usr/bin/urxvt
+# Assure having xfce4 terminal and it being default one
+apt-get install -y xfce4-terminal
+update-alternatives --set x-terminal-emulator /usr/bin/xfce4-terminal
 
 # XXX last ones are actually pulled it by neurodebian-guest-additions whenever we
-# resolve their destiny ;-)   a;though it might be pooling too much, eg exim4
-
+# resolve their destiny ;-)   although it might be pooling too much, eg exim4
 
 # Clean-up installed development files which got pulled in for
 # VM guest additions (to build kernel modules via DKMS)
