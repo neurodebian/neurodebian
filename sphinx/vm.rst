@@ -223,6 +223,11 @@ What has changed
 
      Click on an item to expand it
 
+  7.0.0 -- 15 May 2013
+    * VM appliance based on the official wheezy release.
+    * Uses xfce4-terminal by default (instead of urxvt/rxvt-unicode as
+      in beta-releases)
+
   6.999.b4.20130421 -- 22 Apr 2013
     * Refreshed VM appliance to avoid lengthy initial upgrade
 

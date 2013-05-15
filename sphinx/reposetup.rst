@@ -114,7 +114,7 @@ You are ready to go -- enjoy NeuroDebian!
 
   <script type="text/javascript">
   function createvmdownload(rel, mir) {
-        var img_version = '6.999.b4.20130421';
+        var img_version = '7.0.0';
         var img_suffix;
         var base_url;
         var img_url;
