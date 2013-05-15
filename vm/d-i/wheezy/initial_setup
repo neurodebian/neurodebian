@@ -135,7 +135,8 @@ apt-get install --no-install-recommends -y \
 
 # Assure having xfce4 terminal and it being default one
 apt-get install -y xfce4-terminal
-update-alternatives --set x-terminal-emulator /usr/bin/xfce4-terminal
+# Do not even try to deal with alternatives -- it will be the one and would puke
+# update-alternatives --set x-terminal-emulator /usr/bin/xfce4-terminal
 
 # XXX last ones are actually pulled it by neurodebian-guest-additions whenever we
 # resolve their destiny ;-)   although it might be pooling too much, eg exim4
