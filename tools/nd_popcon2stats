@@ -35,7 +35,9 @@ def error(msg):
     sys.stderr.write('E: %s\n' % msg)
 
 def info(msg):
-    sys.stderr.write("I: %s\n" % msg)
+    # print nothing ATM
+    # sys.stderr.write("I: %s\n" % msg)
+    pass
 
 file_regex = re.compile('.*popcon-(\d{4}-\d{1,2}-\d{1,2})(|.gz)')
 
