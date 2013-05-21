@@ -1,0 +1,107 @@
+#!/usr/bin/python
+# emacs: -*- mode: python; py-indent-offset: 4; indent-tabs-mode: nil -*-
+# vi: set ft=python sts=4 ts=4 sw=4 et:
+#
+import fileinput
+import sys
+import time
+from datetime import datetime
+import re
+import sets
+import json
+import operator
+
+
+releases = {
+    'etch': 'Debian GNU/Linux 4.0 (etch)',
+    'lenny': 'Debian GNU/Linux 5.0 (lenny)',
+    'squeeze': 'Debian GNU/Linux 6.0 (squeeze)',
+    'wheezy': 'Debian testing (wheezy)',
+    'sid': 'Debian unstable (sid)',
+    'hardy': 'Ubuntu 08.04 LTS "Hardy Heron" (hardy)',
+    'jaunty': 'Ubuntu 09.04 "Jaunty Jackalope" (jaunty)',
+    'karmic': 'Ubuntu 09.10 "Karmic Koala" (karmic)',
+    'lucid': 'Ubuntu 10.04 LTS "Lucid Lynx" (lucid)',
+    'maverick': 'Ubuntu 10.10 "Maverick Meerkat" (maverick)',
+    'natty': 'Ubuntu 11.04 "Natty Narwhal" (natty)',
+    'oneiric': 'Ubuntu 11.10 "Oneiric Ocelot" (oneiric)',
+    'precise': 'Ubuntu 12.04 LTS "Precise Pangolin" (precise)',
+    'quantal': 'Ubuntu 12.10 "Quantal Quetzal" (quantal)',
+    'raring': 'Ubuntu 13.04 "Raring Ringtail" (raring)',
+    'saucy': 'Ubuntu 13.10 "Saucy Salamander" (saucy)',
+}
+
+def error(msg):
+    sys.stderr.write('E: %s\n' % msg)
+
+def info(msg):
+    sys.stderr.write("I: %s\n" % msg)
+
+file_regex = re.compile('.*popcon-(\d{4}-\d{1,2}-\d{1,2})(|.gz)')
+
+def read_popcon_stats(filename, read_packages=True):
+    info("Reading %s" % filename)
+    entry = dict(submissions = None,
+                 package = {},
+                 release = {},
+                 architecture = {})
+
+    for line in fileinput.FileInput(filename, openhook=fileinput.hook_compressed):
+        key, values = [x.strip().lower() for x in line.split(':', 1)]
+        if key == 'package':          # most probable
+            if not read_packages:
+                break
+            try:
+                pkg, vote, old, recent, nofiles = values.split()
+            except ValueError:
+                raise ValueError("Failed to split %s" % values)
+            entry[key][pkg] = tuple(int(x) for x in (vote, old, recent, nofiles))
+        elif key in ('release', 'architecture'):
+            kvalue, value = values.split()
+            entry[key][kvalue] = int(value)
+        elif key == 'submissions':
+            entry[key] = int(values)
+        else:
+            raise ValueError("Do not know how to handle line" % line)
+    return entry
+
+if __name__ == '__main__':
+    data = {}
+
+    popcon_versions = {}
+    timestamps = sets.Set()
+
+    for f in sys.argv[1:]:
+        file_reg = file_regex.match(f)
+        if not file_reg:
+            error("Failed to recognize filename %s" % f)
+            continue
+
+        date = time.strptime(file_reg.groups()[0], '%Y-%m-%d')
+        entry = read_popcon_stats(f, read_packages=False)
+
+        date_int = int(time.mktime(date)*1000)
+        # Let's coarsen a bit -- to a week which makes sense anyways
+        # since popcon submissions are spread over a week for balanced
+        # load
+        coarsen_days = 7
+        coarsen = coarsen_days*24*3600*1000
+        # coarsen and place marker at the end of the duration
+        # but not later than today
+        date_int = min((date_int//coarsen + 1)*coarsen,
+                       time.time()*1000)
+        for version, count in entry['release'].iteritems():
+            if not version in popcon_versions:
+                popcon_versions[version] = {}
+            popcon_ = popcon_versions[version]
+            popcon_[date_int] = count + popcon_.get(date_int, 0)
+            timestamps.add(date_int)
+
+    # we need to make sure that for every date we have an entry for
+    # every version, otherwise d3 pukes because of ... d3.v2.js:expand
+    export = [{'key': k,
+               'values': [[date, popcon_versions[k].get(date, 0)/coarsen_days]
+                          for date in sorted(list(timestamps))]}
+              for k in sorted(popcon_versions.keys())]
+    print json.dumps(export)
+
