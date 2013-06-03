@@ -24,6 +24,7 @@ Archive
    :maxdepth: 2
    :glob:
 
+   2013/index
    2012/index
    2011/index
    2010/index
