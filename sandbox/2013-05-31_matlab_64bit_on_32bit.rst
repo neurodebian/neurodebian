@@ -1,5 +1,5 @@
-:date: 2012-05-31 22:16:00
-:tags: debian, neuroscience, software, matlab, multiarch, 
+:date: 2012-06-03 14:00:00
+:tags: debian, neuroscience, software, matlab, multiarch
 
 .. _chap_matlab_64bit_on_32bit:
 
@@ -38,10 +38,11 @@ Procedure
    sudo dpkg --add-architecture amd64
    sudo apt-get update
 
-- [1-5 min] Install 64bit libraries needed for matlab::
+- [1-5 min] Install 64bit libraries (and compilers) needed for matlab::
 
    sudo apt-get install libstdc++6:amd64 zlib1g:amd64 libncurses5:amd64 \
-     libxp6:amd64 libstdc++6-4.4-dev:amd64 libxt6:amd64 libxmu6:amd64 libxtst6:amd64
+     libxp6:amd64 libstdc++6-4.4-dev:amd64 libxt6:amd64 libxmu6:amd64 libxtst6:amd64 \
+     g++:amd64 gcc:amd64 binutils:amd64
 
 Now your 64bit matlab (which you hopefully "registered" with
 :ref:`matlab-support <binary_pkg_matlab-support>`) is ready to run.
