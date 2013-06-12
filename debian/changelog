@@ -1,3 +1,10 @@
+neurodebian (0.32) UNRELEASED; urgency=low
+
+  * nd_* tools:
+    - cmdsettings.sh: drop building for EOLed hardy, add raring
+
+ --
+
 neurodebian (0.31) neurodebian; urgency=low
 
   * debian/copyright:
