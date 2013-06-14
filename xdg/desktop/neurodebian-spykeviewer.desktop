@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Spyke Viewer
+GenericName=Graphical utility for analyzing electrophysiological data
+Exec=nd-autoinstall spykeviewer
+Type=Application
+Terminal=false
+Categories=X-NeuroDebian-Electrophysiology
+Icon=spykeviewer.png
