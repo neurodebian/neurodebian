@@ -66,6 +66,9 @@ News
  The news widget requires javascript
  </div>
 
+The news widget has been disabled temporarily. Please go
+`here <https://identi.ca/neurodebian>`_ to visit the news feed.
+
 .. _identi.ca: http://identi.ca/neurodebian
 .. _twitter: http://twitter.com/NeuroDebian
 
