@@ -56,9 +56,9 @@ News
  <a class="twitter-timeline" href="https://twitter.com/NeuroDebian"
     data-widget-id="360194288006606848"
     data-link-color="#820430"
-    width="auto" height="150px"
+    height="150px"
     data-show-replies="false"
-    data-chrome="nofooter transparent">Tweets by @NeuroDebian</a>
+    data-chrome="noheader nofooter transparent">Tweets by @NeuroDebian</a>
  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 
  <div class="nojavascriptinstructions">

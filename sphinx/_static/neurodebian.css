@@ -59,6 +59,12 @@ div#identica_widget p {
 	list-style-image:url(neurodebian_bullet.png);
 }
 
+iframe.twitter-timeline {
+    border-bottom: 1px dotted #aaa;
+    margin-left: 1%;
+    width: 99%;
+}
+
 div.tweet {
     border-bottom: 1px dotted #aaa;
 	margin-left: 2em;
