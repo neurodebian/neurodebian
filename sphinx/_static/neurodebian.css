@@ -831,9 +831,16 @@ div.buttonbar ul {
 
 div.buttonbar li {
     display: inline;
-    float: left;
     margin: 5px;
     text-align: center;
+}
+
+div.buttonbar.leftbar li {
+    float: left;
+}
+
+div.buttonbar.rightbar li {
+    float: right;
 }
 
 div#randomquote {

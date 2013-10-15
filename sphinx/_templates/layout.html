@@ -13,7 +13,7 @@
 {% endblock %}
 
 {% block header %}
-  <div class="buttonbar">
+  <div class="buttonbar leftbar">
   <ul>
   <li><a href="http://www.debian.org" target="_blank"><img border="0" src="/_static/debian.png" title="Visit debian.org" /><br />Debian</a></li>
  <li><a href="{{ pathto('index') }}"><img border="0" src="/_static/neurodebian.png" title="Go to the home page" /><br />Home</a></li>
@@ -26,7 +26,13 @@
  <li><a href="{{ pathto('faq') }}"><img border="0" src="/_static/faq.png" title="Frequently asked questions" /><br />FAQ</a></li>
   </ul>
   </div>
-  <div class="clearer"></div>
+
+  <div class="buttonbar rightbar">
+  <ul>
+  <li><a href="http://www.ipsy.ovgu.de/psychoinformatics.html" target="_blank"><img border="0" src="/_static/uni-md-logo.png" title="Psychoinformatics lab, University of Magdeburg, Germany" height="50" /></a></li>
+  <li><img border="0" src="/_static/ccn-logo.png" title="Center for Cognitive Neuroscience, Dartmouth College, USA" height="50" /></li>
+  </ul>
+  </div>
 {% endblock %}
 
 {% block rootrellink %}{% endblock %}
