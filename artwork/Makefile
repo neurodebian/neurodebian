@@ -1,7 +1,7 @@
 all:: pics
 
 SVGIS=$(shell /bin/ls *.svgtune | sed -e 's/.svgtune/_tuned/g')
-ICONSIZED=ccn-logo_h50.png uni-md-logo_h50.png
+ICONSIZED=ccn-logo_h50.png uni-md-logo_h50.png dartmouth-logo_h50.png
 
 pics: $(SVGIS) $(ICONSIZED)
 
