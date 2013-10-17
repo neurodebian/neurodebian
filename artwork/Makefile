@@ -1,12 +1,14 @@
 all:: pics
 
 SVGIS=$(shell /bin/ls *.svgtune | sed -e 's/.svgtune/_tuned/g')
+ICONSIZED=ccn-logo_h50.png uni-md-logo_h50.png
 
-pics: $(SVGIS)
+pics: $(SVGIS) $(ICONSIZED)
 
 clean::
 	for p in *.svg; do rm -f $${p%*.svg}.{pdf,eps,png}; done
 	rm -rf *_tuned
+	rm -f  $(ICONSIZED)
 
 ignore-%:
 	@grep -q "^$*$$" .gitignore || { \
@@ -28,6 +30,10 @@ ignore-%:
 	@echo "Rendering $@"
 	@inkscape -z -f "$<" -e "$@" -w 200
 
+# icon sized versions
+%_h50.png: %.png ignore-%_h50.png
+	@echo "Generating downscaled $@"
+	@convert -geometry x50 "$<" "$@"
 
 # Some enforced conversions to overcome problems with transparency issues
 # in PDFs
