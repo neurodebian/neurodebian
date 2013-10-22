@@ -92,7 +92,7 @@ mv `awk '{print $1,$2;}' up-to-date-list.txt | while read p v; do grep -l "${p}_
 /home/neurodebian/reprepro/nd_processincoming.sh
 
 # locally now updated the cows
-sudo nd_updatedist nd+ubuntu precise
+sudo nd_updatedist nd+ubuntu $dist
 
 # And build which previously failed, most probably due to unsatisfied dependencies
 # and possibly failure with outdated versions of 3rd party modules
