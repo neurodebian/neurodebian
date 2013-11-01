@@ -1,9 +1,16 @@
-neurodebian (0.32) UNRELEASED; urgency=low
+neurodebian (0.32) neurodebian; urgency=low
 
+  [ Michael Hanke ]
+  * complete redesign of the website, now based on modularized-away bigmess
+
+  [ Yaroslav Halchenko ]
   * nd_* tools:
     - cmdsettings.sh: drop building for EOLed hardy, add raring
+    - vmsetupvizard: install all ipython frontends (notebook, qtconsole)
+      for recent versions of ipython
+  * bulk of other changes
 
- --
+ -- Yaroslav Halchenko <debian@onerussian.com>  Fri, 01 Nov 2013 16:30:46 -0400
 
 neurodebian (0.31) neurodebian; urgency=low
 
