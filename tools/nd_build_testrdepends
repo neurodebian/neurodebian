@@ -28,9 +28,12 @@ srcdir=$testdir/srcs
 oldbuildsdir=$srcdir/old
 newbuildsdir=$srcdir/new
 
-echo "I: Building the new package for $pkg"
+echo "I: Updating target chroot $family $dist"
+$CMD nd_updatedist $family $dist $arch
 
 mkdir -p $debdir $srcdir $bindir $secdir
+
+echo "I: Building the new package for $pkg"
 $CMD nd_build $family $dist $arch $dscfile --buildresult=$debdir
 
 echo "I: Initiating the repository"

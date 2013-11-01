@@ -19,6 +19,7 @@ apt-get install -y devscripts dctrl-tools
 rm -f build-rdeps.output
 echo "D: querying rdepds for $@"
 
+# D: interactive shell for debugging
 # /bin/bash < /dev/tty > /dev/tty 2> /dev/tty
 
 for pkg in "$@"; do
