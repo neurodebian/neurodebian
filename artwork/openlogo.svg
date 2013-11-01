@@ -14,18 +14,21 @@
 	<!ENTITY ns_xlink "http://www.w3.org/1999/xlink">
 ]>
 <svg 
-	 xmlns:x="&ns_extend;" xmlns:i="&ns_ai;" xmlns:graph="&ns_graphs;" i:viewOrigin="251 467" i:rulerOrigin="0 0" i:pageBounds="0 792 612 0"
-	 xmlns="&ns_svg;" xmlns:xlink="&ns_xlink;" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
+	 xmlns:x="http://ns.adobe.com/Extensibility/1.0/"
+     xmlns:i="http://ns.adobe.com/AdobeIllustrator/10.0/"
+     xmlns:graph="http://ns.adobe.com/Graphs/1.0/" i:viewOrigin="251 467" i:rulerOrigin="0 0" i:pageBounds="0 792 612 0"
+	 xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
 	 width="108.758" height="144.133" viewBox="0 0 108.758 144.133" overflow="visible" enable-background="new 0 0 108.758 144.133"
 	 xml:space="preserve">
 	<metadata>
-		<variableSets  xmlns="&ns_vars;">
+		<variableSets  xmlns="http://ns.adobe.com/Variables/1.0/">
 			<variableSet  varSetName="binding1" locked="none">
 				<variables></variables>
-				<v:sampleDataSets  xmlns="&ns_custom;" xmlns:v="&ns_vars;"></v:sampleDataSets>
+				<v:sampleDataSets  xmlns="http://ns.adobe.com/GenericCustomNamespace/1.0/" xmlns:v="http://ns.adobe.com/Variables/1.0/"></v:sampleDataSets>
 			</variableSet>
 		</variableSets>
-		<sfw  xmlns="&ns_sfw;">
+		<sfw  xmlns="http://ns.adobe.com/SaveForWeb/1.0/">
 			<slices></slices>
 			<sliceSourceBounds  y="322.867" x="251" width="108.758" height="144.133" bottomLeftOrigin="true"></sliceSourceBounds>
 		</sfw>
