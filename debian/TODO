@@ -1,2 +1,5 @@
 * make ARCHS argument for cmdsettings.sh to be used by the tools so we could build on sparcs etc
 * add ipython-notebook/qtconsole (and probably ipython1x over ipython01x for >= wheezy) to welcomewizard
+
+  would need to assure that mvpa2-tutorial is aware of ipython1x first
+  then... not now
