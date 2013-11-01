@@ -144,7 +144,7 @@ Very (Special|Stable) Operating Platform
   requiring the most recent versions of software.
 
 %\item[Testing] \emph{Constantly changing future release candidate}\\
-\item[``Always-ready-to-release'']\hfill\emph{Testing} (now \emph{wheezy})\\
+\item[``Always-ready-to-release'']\hfill\emph{Testing} (now \emph{jessie})\\
 %  What to become a next \emph{Stable} release candidate.\\
   Software versions known to be secure and of good quality.
 %  Software migrated from \emph{Unstable} which is known to be of good
@@ -154,7 +154,7 @@ Very (Special|Stable) Operating Platform
   of software.
 
 %\item[Stable] \emph{Official release}\\
-\item[Official release]\hfill\emph{Stable} (now \emph{squeeze})\\
+\item[Official release]\hfill\emph{Stable} (now 7.2, \emph{wheezy})\\
   % Software verified to be well tested and secure,
   % Very stable (hence the name) and secure
   % but might be lacking the most recent versions.\\% of the software.\\
@@ -163,7 +163,7 @@ Very (Special|Stable) Operating Platform
   \emph{Testing} is assured to be robust. %, on average bi-yearly.
   Complementary updates keep the
   system secure. \\
-  \emph{Stable} is the best choice where stability and security are of
+  \emph{Stable} is the best choice where reliability and security are of
   primary importance.
 \end{description}
 
@@ -171,13 +171,13 @@ Very (Special|Stable) Operating Platform
 \ndsubsection{It has names}
 
 The code names of Debian releases are names of characters from the Toy
-Story animation, e.g. sid, squeeze, lenny.  \emph{Unstable}
+Story animation, \emph{e.g.} sid, jessie, wheezy.  \emph{Unstable}
 flavor always called \emph{sid}, while a new name chosen for every
 upcoming release and assigned to \emph{Testing} to become a code name
 of the release when it becomes \emph{Stable}.\\  At the moment
-\emph{squeeze} is \emph{Testing}, and \emph{lenny} is \emph{Stable}.
-As soon as \emph{squeeze} gets released, \emph{Testing} will be given
-a new name -- \emph{wheezy}.
+\emph{jessie} is \emph{Testing}, and \emph{wheezy} is \emph{Stable}.
+As soon as \emph{jessie} gets released, \emph{Testing} will be given
+a new name.% -- \emph{jessie}.
 \end{comment}
 
 \ndsubsection{Three Debian components}
@@ -233,6 +233,7 @@ teams, such as Debian-Science or Debian-Med.
 \item[Live CD/DVD] \url{http://www.debian.org/CD/live/}
 \item[Run in a Virtual Machine] \url{http://neuro.debian.net/vm.html}
 \item[Development version] \url{http://www.debian.org/devel/debian-installer}
+\item[Use in a cloud] \url{https://wiki.debian.org/Cloud}
 \end{description}
 
 % \ndsubsection{Get \emph{Testing/Unstable} Debian}
@@ -244,7 +245,11 @@ teams, such as Debian-Science or Debian-Med.
 \ndsubsection{How to install software}
 
 GUI (Synaptic): \textit{Select and click ``Apply''}\\
-\includegraphics[width=\columnwidth]{shots/synaptic-fslview}
+\begin{center}
+\vspace{-1.2em}
+\includegraphics[width=0.95\columnwidth]{shots/synaptic-fslview}
+\vspace{-0.7em}
+\end{center}
 
 Command line: \texttt{apt-get install <packagename>}
 
@@ -261,9 +266,10 @@ Command line:
 
 \ndsubsection{How to get support}
 
+\hspace{1em}\url{http://www.debian.org/support}
+
 \begin{description}[nolistsep,leftmargin=1pc,style=nextline]
-\item[Overview]
-\url{http://www.debian.org/support}
+%\item[Overview]
 
 %\item[GUI]
 %  Use \emph{Synaptic Package Manager}
@@ -422,11 +428,11 @@ efforts of thousands of Debian contributors.
 \vspace{-0.1em}
 \end{flushright}
 \textit{Distributed computing:} Condor, DMTCP, IPython, \ldots \\
-\textit{Electrophysiology:} BioSig, EEGLAB, Sigviewer, \ldots\\
+\textit{Electrophysiology:} BioSig, Neo, Sigviewer, \ldots\\
 \textit{Machine Learning:} MDP, PyMVPA, sklearn, \ldots\\
-\textit{Neural Modeling:} Brian, CNrun, PyNN, XPPAUT, \ldots\\
-\textit{Imaging:} AFNI, FSL, Mricron, NiPy, SPM, \ldots\\
-\textit{Psychophysics:} PsychoPy, Psychtoolbox, PyEPL, \ldots\\
+\textit{Neural Modeling:} Brian, CNrun, PyNN, XPPAUT \ldots\\
+\textit{Imaging:} AFNI, CMTK, FSL, Mricron, NiPy \ldots\\
+\textit{Psychophysics:} PsychoPy, Psychtoolbox-3, PyEPL \ldots\\
 \vspace{-0.8em}
 
 % TODO: Environments... -- list avail cloud env using NeuroDebian
@@ -502,17 +508,19 @@ buga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dugabuga dug
 \ndsubsection{Work-in-progress}
 \begin{description}[nolistsep,leftmargin=1pc,style=nextline]
 \item[Increased coverage]
-\textit{Electrophysiology:} Fieldtrip, Spyke Viewer, \ldots \\
-\textit{Neural Modeling:} NEURON, (NEST), LFPy, \\
+\textit{Electrophysiology:} Fieldtrip \\
+\textit{Neural Modeling:} NEURON, (NEST), LFPy \\
 \textit{Imaging:} DTI-TK, Freesurfer, XNAT, \ldots
 % \epigraph{Having FreeSurfer integrated into the Debian operating system by the NeuroDebian team would have enormous benefits for us, and for the thousands of users of FreeSurfer across the world.}{Prof. Bruce Fischl}{Director, Computational Core at Martinos Center at Massachusetts General Hospital, Charlestown, Massachusetts, USA}
 \item[Improved quality assurance]
-  Extended integration and regression testing
+  Extended integration and regression testing\\
+  \url{http://testkraut.readthedocs.org}
 \item[Available snapshotting service]
   % Entire NeuroDebian repository for any given past moment
   All versions of packages readily available
 \item[Data as the 1st-class citizen]
-  \url{http://neuro.debian.net/datasets.html}
+  \url{http://neuro.debian.net/datasets.html}\\
+  \url{http://github.com/neurodebian/datagit}
 % yoh: see TODO above -- we can say that it is available already
 %\item[Universal availability]
 %  % \begin{itemize}[nolistsep,leftmargin=1pc,topsep=0em]
