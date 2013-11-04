@@ -223,6 +223,12 @@ What has changed
 
      Click on an item to expand it
 
+  7.2.0 -- 03 Nov 2013
+    * VM appliance based on the official wheezy point release 7.2.
+    * Ships with updated neurodebian-* packages:
+      - installs ipython notebook and qtconsole for "Scientific Python"
+		and "PyMVPA tutorial" welcome wizard choices.
+
   7.0.0 -- 15 May 2013
     * VM appliance based on the official wheezy release.
     * Uses xfce4-terminal by default (instead of urxvt/rxvt-unicode as
