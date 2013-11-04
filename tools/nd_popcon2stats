@@ -7,7 +7,6 @@ import sys
 import time
 from datetime import datetime
 import re
-import sets
 import json
 import operator
 
@@ -71,7 +70,7 @@ if __name__ == '__main__':
     data = {}
 
     popcon_versions = {}
-    timestamps = sets.Set()
+    timestamps = set()
 
     for f in sys.argv[1:]:
         file_reg = file_regex.match(f)

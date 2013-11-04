@@ -7,7 +7,6 @@ import sys
 import time
 from datetime import datetime
 import re
-import sets
 import json
 import operator
 
@@ -61,7 +60,7 @@ if __name__ == '__main__':
         rstats[date] = rtime
         data[releases[release]] = rstats
     # determine the union of all timestamps
-    timestamps = sets.Set()
+    timestamps = set()
     for codename, stats in data.iteritems():
         timestamps.union_update(stats.keys())
     export = [{'key': release,
