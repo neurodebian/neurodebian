@@ -47,7 +47,8 @@ def read_popcon_stats(filename, read_packages=True):
     entry = dict(submissions = None,
                  package = {},
                  release = {},
-                 architecture = {})
+                 architecture = {},
+                 vendor = {})
 
     for line in fileinput.FileInput(filename, openhook=fileinput.hook_compressed):
         key, values = [x.strip().lower() for x in line.split(':', 1)]
@@ -59,13 +60,13 @@ def read_popcon_stats(filename, read_packages=True):
             except ValueError:
                 raise ValueError("Failed to split %s" % values)
             entry[key][pkg] = tuple(int(x) for x in (vote, old, recent, nofiles))
-        elif key in ('release', 'architecture'):
+        elif key in ('release', 'architecture', 'vendor'):
             kvalue, value = values.split()
             entry[key][kvalue] = int(value)
         elif key == 'submissions':
             entry[key] = int(values)
         else:
-            raise ValueError("Do not know how to handle line" % line)
+            raise ValueError("Do not know how to handle line %r" % line)
     return entry
 
 if __name__ == '__main__':
