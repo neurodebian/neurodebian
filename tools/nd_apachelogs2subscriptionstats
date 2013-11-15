@@ -62,7 +62,7 @@ if __name__ == '__main__':
     # determine the union of all timestamps
     timestamps = set()
     for codename, stats in data.iteritems():
-        timestamps.union_update(stats.keys())
+        timestamps.update(stats.keys())
     export = [{'key': release,
                'values': [[ts, float(data[release].setdefault(ts, 0)) / 7]
                         for ts in sorted(timestamps)]}
