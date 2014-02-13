@@ -18,7 +18,7 @@ FSL_, PyMVPA_).
 .. _virtual machine: http://en.wikipedia.org/wiki/Virtual_machine
 
 The virtual machine contains an installation of `Debian 7.0 (wheezy)`_ with a
-GNOME_ desktop environment. All installed software comes from standard Debian
+XFCE4_ desktop environment. All installed software comes from standard Debian
 packages, or prospective Debian packages from NeuroDebian. The virtual machine
 can be seen as a showcase of what Debian for neuroscience research feels like.
 Once downloaded this virtual machine can be kept up to date, just as any other
