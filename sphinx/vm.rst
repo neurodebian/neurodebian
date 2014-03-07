@@ -223,6 +223,9 @@ What has changed
 
      Click on an item to expand it
 
+  7.4.0 -- 28 Feb 2014
+    * VM appliance based on the official wheezy point release 7.4.
+
   7.2.0 -- 03 Nov 2013
     * VM appliance based on the official wheezy point release 7.2.
     * Ships with updated neurodebian-* packages:
