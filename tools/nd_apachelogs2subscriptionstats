@@ -29,6 +29,7 @@ releases = {
     'quantal': 'Ubuntu 12.10 "Quantal Quetzal" (quantal)',
     'raring': 'Ubuntu 13.04 "Raring Ringtail" (raring)',
     'saucy': 'Ubuntu 13.10 "Saucy Salamander" (saucy)',
+    'trusty': 'Ubuntu 14.04 "Trusty Tahr" (trusty)',
 }
 
 
