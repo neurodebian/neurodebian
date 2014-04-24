@@ -3,3 +3,4 @@
 
   would need to assure that mvpa2-tutorial is aware of ipython1x first
   then... not now
+* make all nd_* scripts usable out of the box on non-x86 boxes

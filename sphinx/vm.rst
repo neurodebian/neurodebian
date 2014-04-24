@@ -223,6 +223,11 @@ What has changed
 
      Click on an item to expand it
 
+  7.4.20140423 -- 24 Apr 2014
+    * VM appliance based on the updated wheezy point release 7.4.
+      Should resolve problems with upgrades of the guest additions.
+      See http://neuro.debian.net/faq.html#comment-1351846812
+
   7.4.0 -- 28 Feb 2014
     * VM appliance based on the official wheezy point release 7.4.
 
