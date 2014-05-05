@@ -133,8 +133,11 @@ apt-get install --no-install-recommends -y \
  chromium-browser \
  sudo neurodebian-desktop update-notifier
 
-# Assure having xfce4 terminal and it being default one
-apt-get install -y xfce4-terminal
+# Assure having xfce4 terminal and it being default one and other handy
+# XFCE4 components
+apt-get install -y xfce4-terminal thunar-archive-plugin
+apt-get install --no-install-recommends -y gedit yelp
+
 # Do not even try to deal with alternatives -- it will be the one and would puke
 # update-alternatives --set x-terminal-emulator /usr/bin/xfce4-terminal
 
