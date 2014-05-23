@@ -1,0 +1,458 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SCRIBUSUTF8NEW Version="1.4.3.svn">
+    <DOCUMENT ANZPAGES="2" PAGEWIDTH="892.913385826772" PAGEHEIGHT="595.275590551181" BORDERLEFT="8.50393700787402" BORDERRIGHT="8.50393700787402" BORDERTOP="8.50393700787402" BORDERBOTTOM="8.50393700787402" PRESET="0" BleedTop="5.66929133858268" BleedLeft="5.66929133858268" BleedRight="5.66929133858268" BleedBottom="5.66929133858268" ORIENTATION="1" PAGESIZE="Custom" FIRSTNUM="1" BOOK="0" AUTOSPALTEN="1" ABSTSPALTEN="11" UNITS="1" DFONT="Arial Regular" DSIZE="12" DCOL="1" DGAP="0" TabFill="" TabWidth="36" AUTHOR="" COMMENTS="" KEYWORDS="" PUBLISHER="" DOCDATE="" DOCTYPE="" DOCFORMAT="" DOCIDENT="" DOCSOURCE="" DOCLANGINFO="" DOCRELATION="" DOCCOVER="" DOCRIGHTS="" DOCCONTRIB="" TITLE="" SUBJECT="" VHOCH="33" VHOCHSC="66" VTIEF="33" VTIEFSC="66" VKAPIT="75" BASEGRID="14.4" BASEO="0" AUTOL="20" UnderlinePos="-1" UnderlineWidth="-1" StrikeThruPos="-1" StrikeThruWidth="-1" GROUPC="1" HCMS="0" DPSo="0" DPSFo="0" DPuse="0" DPgam="0" DPbla="1" DPMo="CineonLog M " DPPr="Fogra27L CMYK Coated Press" DPIn="CineonLog M " DPInCMYK="Fogra27L CMYK Coated Press" DPIn2="CineonLog M " DPIn3="Fogra27L CMYK Coated Press" DISc="1" DIIm="0" ALAYER="0" LANGUAGE="English" MINWORDLEN="3" HYCOUNT="2" AUTOMATIC="1" AUTOCHECK="0" GUIDELOCK="1" SnapToGuides="1" SnapToGrid="0" MINGRID="20.001" MAJGRID="100.001" SHOWGRID="0" SHOWGUIDES="1" showcolborders="1" SHOWFRAME="1" SHOWLAYERM="0" SHOWMARGIN="1" SHOWBASE="0" SHOWPICT="1" SHOWControl="0" SHOWLINK="0" rulerMode="1" showrulers="1" showBleed="1" rulerXoffset="0" rulerYoffset="0" GuideRad="10" GRAB="4" POLYC="4" POLYF="0.707" POLYR="0" POLYCUR="0" POLYFD="0" POLYS="0" AutoSave="1" AutoSaveTime="600000" ScratchBottom="20" ScratchLeft="100" ScratchRight="100" ScratchTop="20" GapHorizontal="0" GapVertical="40" StartArrow="0" EndArrow="0" PEN="Black" BRUSH="None" PENLINE="Black" PENTEXT="Black" StrokeText="Black" TextBackGround="None" TextLineColor="None" TextBackGroundShade="100" TextLineShade="100" TextPenShade="100" TextStrokeShade="100" STIL="1" STILLINE="1" WIDTH="1" WIDTHLINE="1" PENSHADE="100" LINESHADE="100" BRUSHSHADE="100" MAGMIN="10" MAGMAX="3200" MAGSTEP="200" CPICT="None" PICTSHADE="100" PICTSCX="1" PICTSCY="1" PSCALE="1" PASPECT="1" EmbeddedPath="0" HalfRes="1" dispX="10.001" dispY="10.001" constrain="15" MINORC="#00ff00" MAJORC="#00ff00" GuideC="#000080" BaseC="#c0c0c0" GuideZ="10" BACKG="1" PAGEC="#ffffff" MARGC="#0000ff" RANDF="0" currentProfile="PDF 1.3">
+        <CheckProfile Name="PDF 1.3" ignoreErrors="0" autoCheck="1" checkGlyphs="1" checkOrphans="1" checkOverflow="1" checkPictures="1" checkResolution="1" checkTransparency="1" minResolution="144" maxResolution="2400" checkAnnotations="0" checkRasterPDF="1" checkForGIF="1" ignoreOffLayers="0" checkOffConflictLayers="0"/>
+        <CheckProfile Name="PDF 1.4" ignoreErrors="0" autoCheck="1" checkGlyphs="1" checkOrphans="1" checkOverflow="1" checkPictures="1" checkResolution="1" checkTransparency="0" minResolution="144" maxResolution="2400" checkAnnotations="0" checkRasterPDF="1" checkForGIF="1" ignoreOffLayers="0" checkOffConflictLayers="0"/>
+        <CheckProfile Name="PDF 1.5" ignoreErrors="0" autoCheck="1" checkGlyphs="1" checkOrphans="1" checkOverflow="1" checkPictures="1" checkResolution="1" checkTransparency="0" minResolution="144" maxResolution="2400" checkAnnotations="0" checkRasterPDF="1" checkForGIF="1" ignoreOffLayers="0" checkOffConflictLayers="0"/>
+        <CheckProfile Name="PDF/X-3" ignoreErrors="0" autoCheck="1" checkGlyphs="1" checkOrphans="1" checkOverflow="1" checkPictures="1" checkResolution="1" checkTransparency="1" minResolution="144" maxResolution="2400" checkAnnotations="1" checkRasterPDF="1" checkForGIF="1" ignoreOffLayers="0" checkOffConflictLayers="0"/>
+        <CheckProfile Name="PostScript" ignoreErrors="0" autoCheck="1" checkGlyphs="1" checkOrphans="1" checkOverflow="1" checkPictures="1" checkResolution="1" checkTransparency="1" minResolution="144" maxResolution="2400" checkAnnotations="0" checkRasterPDF="1" checkForGIF="1" ignoreOffLayers="0" checkOffConflictLayers="0"/>
+        <COLOR NAME="Black" CMYK="#000000ff" Spot="0" Register="0"/>
+        <COLOR NAME="Blue" RGB="#0000ff" Spot="0" Register="0"/>
+        <COLOR NAME="Cool Black" CMYK="#990000ff" Spot="0" Register="0"/>
+        <COLOR NAME="Cyan" CMYK="#ff000000" Spot="0" Register="0"/>
+        <COLOR NAME="Green" RGB="#00ff00" Spot="0" Register="0"/>
+        <COLOR NAME="Magenta" CMYK="#00ff0000" Spot="0" Register="0"/>
+        <COLOR NAME="Red" RGB="#ff0000" Spot="0" Register="0"/>
+        <COLOR NAME="Registration" CMYK="#ffffffff" Spot="0" Register="1"/>
+        <COLOR NAME="Rich Black" CMYK="#996666ff" Spot="0" Register="0"/>
+        <COLOR NAME="Warm Black" CMYK="#00994cff" Spot="0" Register="0"/>
+        <COLOR NAME="White" CMYK="#00000000" Spot="0" Register="0"/>
+        <COLOR NAME="Yellow" CMYK="#0000ff00" Spot="0" Register="0"/>
+        <HYPHEN/>
+        <STYLE NAME="Default Paragraph Style" ALIGN="0" LINESPMode="0" LINESP="15" INDENT="0" RMARGIN="0" FIRST="0" VOR="0" NACH="0" DROP="0" DROPLIN="2" DROPDIST="0"/>
+        <CHARSTYLE CNAME="Default Character Style" FONT="Arial Regular" FONTSIZE="12" FEATURES="inherit" FCOLOR="Black" FSHADE="100" SCOLOR="Black" SSHADE="100" TXTSHX="5" TXTSHY="-5" TXTOUT="1" TXTULP="-0.1" TXTULW="-0.1" TXTSTP="-0.1" TXTSTW="-0.1" SCALEH="100" SCALEV="100" BASEO="0" KERN="0" LANGUAGE="English"/>
+        <LAYERS NUMMER="0" LEVEL="0" NAME="Background" SICHTBAR="1" DRUCKEN="1" EDIT="1" FLOW="1" TRANS="1" BLEND="0" OUTL="0" LAYERC="#000000"/>
+        <Printer firstUse="1" toFile="1" useAltPrintCommand="1" outputSeparations="1" useSpotColors="1" useColor="1" mirrorH="1" mirrorV="1" useICC="1" doGCR="1" doClip="1" setDevParam="1" useDocBleeds="1" cropMarks="1" bleedMarks="1" registrationMarks="1" colorMarks="1" includePDFMarks="1" PSLevel="-65794" PDLanguage="-65794" markOffset="nan" BleedTop="0" BleedLeft="0" BleedRight="0" BleedBottom="0" printer="" filename="" separationName="" printerCommand=""/>
+        <PDF firstUse="0" Thumbnails="0" Articles="0" Bookmarks="0" Compress="1" CMethod="0" Quality="0" MirrorH="0" MirrorV="0" Clip="0" RotateDeg="0" PresentMode="0" RecalcPic="0" Grayscale="0" RGBMode="1" UseProfiles="0" UseProfiles2="0" Binding="0" PicRes="300" Resolution="300" Version="13" Intent="1" Intent2="0" SolidP="CineonLog M " ImageP="CineonLog M " PrintP="Fogra27L CMYK Coated Press" InfoString="" BTop="0" BLeft="0" BRight="0" BBottom="0" useDocBleeds="1" cropMarks="0" bleedMarks="0" registrationMarks="0" colorMarks="0" docInfoMarks="0" markOffset="0" ImagePr="0" PassOwner="" PassUser="" Permissions="-4" Encrypt="0" UseLayers="0" UseLpi="0" UseSpotColors="1" doMultiFile="0" displayBookmarks="0" displayFullscreen="0" displayLayers="0" displayThumbs="0" hideMenuBar="0" hideToolBar="0" fitWindow="0" PageLayout="0" openAction="">
+            <Effekte pageEffectDuration="1" pageViewDuration="1" effectType="0" Dm="0" M="0" Di="0"/>
+            <LPI Color="" Frequency="10" Angle="0" SpotFunction="0"/>
+            <LPI Color="Black" Frequency="133" Angle="45" SpotFunction="3"/>
+            <LPI Color="Cyan" Frequency="133" Angle="105" SpotFunction="3"/>
+            <LPI Color="Magenta" Frequency="133" Angle="75" SpotFunction="3"/>
+            <LPI Color="Yellow" Frequency="133" Angle="90" SpotFunction="3"/>
+        </PDF>
+        <DocItemAttributes/>
+        <TablesOfContents/>
+        <PageSets>
+            <Set Name="Single Page" FirstPage="0" Rows="1" Columns="1"/>
+            <Set Name="Double Sided" FirstPage="1" Rows="1" Columns="2">
+                <PageNames Name="Left Page"/>
+                <PageNames Name="Right Page"/>
+            </Set>
+            <Set Name="3-Fold" FirstPage="0" Rows="1" Columns="3">
+                <PageNames Name="Left Page"/>
+                <PageNames Name="Middle"/>
+                <PageNames Name="Right Page"/>
+            </Set>
+            <Set Name="4-Fold" FirstPage="0" Rows="1" Columns="4">
+                <PageNames Name="Left Page"/>
+                <PageNames Name="Middle Left"/>
+                <PageNames Name="Middle Right"/>
+                <PageNames Name="Right Page"/>
+            </Set>
+        </PageSets>
+        <Sections>
+            <Section Number="0" Name="0" From="0" To="1" Type="Type_1_2_3" Start="1" Reversed="0" Active="1"/>
+        </Sections>
+        <MASTERPAGE PAGEXPOS="100" PAGEYPOS="20" PAGEWIDTH="892.913385826772" PAGEHEIGHT="595.275590551181" BORDERLEFT="8.50393700787402" BORDERRIGHT="8.50393700787402" BORDERTOP="8.50393700787402" BORDERBOTTOM="8.50393700787402" NUM="0" NAM="Normal" MNAM="" Size="Custom" Orientation="1" LEFT="0" PRESET="0" VerticalGuides="" HorizontalGuides="" AGhorizontalAutoGap="0" AGverticalAutoGap="0" AGhorizontalAutoCount="0" AGverticalAutoCount="0" AGhorizontalAutoRefer="0" AGverticalAutoRefer="0" AGSelection="0 0 0 0"/>
+        <PAGE PAGEXPOS="100" PAGEYPOS="20" PAGEWIDTH="892.913385826772" PAGEHEIGHT="595.275590551181" BORDERLEFT="5.66929133858268" BORDERRIGHT="5.66929133858268" BORDERTOP="5.66929133858268" BORDERBOTTOM="5.66929133858268" NUM="0" NAM="" MNAM="Normal" Size="Custom" Orientation="1" LEFT="0" PRESET="0" VerticalGuides="0 297.638 595.276 892.913 " HorizontalGuides="9.6 " AGhorizontalAutoGap="0" AGverticalAutoGap="0" AGhorizontalAutoCount="0" AGverticalAutoCount="0" AGhorizontalAutoRefer="0" AGverticalAutoRefer="0" AGSelection="0 0 0 0"/>
+        <PAGE PAGEXPOS="100" PAGEYPOS="655.275590551181" PAGEWIDTH="892.913385826772" PAGEHEIGHT="595.275590551181" BORDERLEFT="8.50393700787402" BORDERRIGHT="8.50393700787402" BORDERTOP="8.50393700787402" BORDERBOTTOM="8.50393700787402" NUM="1" NAM="" MNAM="Normal" Size="Custom" Orientation="1" LEFT="0" PRESET="0" VerticalGuides="0 297.638 595.276 892.913 " HorizontalGuides="9.6 " AGhorizontalAutoGap="0" AGverticalAutoGap="0" AGhorizontalAutoCount="0" AGverticalAutoCount="0" AGhorizontalAutoRefer="0" AGverticalAutoRefer="0" AGSelection="0 0 0 0"/>
+        <PAGEOBJECT OwnPage="0" PTYPE="9" XPOS="105.669291338583" YPOS="25.6692913385827" WIDTH="284.330708661417" HEIGHT="583.937007874016" RADRECT="0" FRTYPE="0" CLIPEDIT="0" PWIDTH="1" PCOLOR="None" PCOLOR2="None" COLUMNS="1" COLGAP="0" NAMEDLST="" SHADE="100" SHADE2="100" GRTYP="0" ROT="0" PLINEART="1" PLINEEND="0" PLINEJOIN="0" LOCALSCX="1" LOCALSCY="1" LOCALX="0" LOCALY="-5.66929133858268" PICART="1" PLTSHOW="0" BASEOF="0" textPathType="0" textPathFlipped="0" FLIPPEDH="0" FLIPPEDV="0" SCALETYPE="1" RATIO="1" PRINTABLE="1" ANNOTATION="0" ANNAME="" TEXTFLOWMODE="0" TEXTFLOW="0" TEXTFLOW2="0" TEXTFLOW3="0" AUTOTEXT="0" EXTRA="0" TEXTRA="0" BEXTRA="0" REXTRA="0" FLOP="0" PFILE="" PFILE2="" PFILE3="" PRFILE="" EPROF="" IRENDER="1" EMBEDDED="0" LOCK="0" LOCKR="0" REVERS="0" TransValue="0" TransValueS="0" TransBlend="0" TransBlendS="0" isTableItem="0" TopLine="0" LeftLine="0" RightLine="0" BottomLine="0" isGroupControl="0" NUMDASH="0" DASHS="" DASHOFF="0" NUMPO="16" POCOOR="0 0 0 0 284.331 0 284.331 0 284.331 0 284.331 0 284.331 583.937 284.331 583.937 284.331 583.937 284.331 583.937 0 583.937 0 583.937 0 583.937 0 583.937 0 0 0 0 " NUMCO="16" COCOOR="0 0 0 0 284.331 0 284.331 0 284.331 0 284.331 0 284.331 583.937 284.331 583.937 284.331 583.937 284.331 583.937 0 583.937 0 583.937 0 583.937 0 583.937 0 0 0 0 " NUMGROUP="0" GROUPS="" startArrowIndex="0" endArrowIndex="0" OnMasterPage="" ImageClip="" ImageRes="1" Pagenumber="0" isInline="0" fillRule="1" doOverprint="0" gXpos="0" gYpos="0" gWidth="0" gHeight="0" LAYER="0" BOOKMARK="0" NEXTITEM="-1" BACKITEM="-1">
+            <trail/>
+            <LATEX ConfigFile="100_latex.xml" DPI="0" USE_PREAMBLE="1">
+                <PROPERTY name="additionalheaders" value="\usepackage{color}&#10;\usepackage{flowfram}&#10;\usepackage{tabularx}           % for column-width tables&#10;\usepackage[table]{xcolor}      % color control&#10;&#10;\usepackage[colorlinks]{hyperref}&#10;&#10;\usepackage{graphicx}&#10;\graphicspath{&#10; {/home/mih/hacking/neurodebian/artwork/}&#10;}&#10;&#10;\usepackage{enumitem}           % useful for control of listings&#10;\usepackage[compact,raggedright]{titlesec}&#10;&#10;\newcommand{\epigraph}[3]{\textit{#1}\linebreak \vspace{-1.5em} \begin{flushright}\hspace{5em}\ --\ #2\linebreak\small{#3} \end{flushright}}&#10;&#10;\pagestyle{empty}&#10;\parindent=0pt&#10;&#10;% To create tables within multicols&#10;\makeatletter&#10;\newenvironment{ndtable}&#10;  {\def\@captype{table}}&#10;  {}&#10;&#10;\newcommand{\ndheading}[3]{%&#10;\vspace{0.5em}&#10;\begin{ndtable}%&#10;\rowcolors[\hline]{1}{#2}{} \arrayrulecolor{#3}&#10;\begin{tabularx}{\columnwidth}{&gt;{\centering\arraybackslash}X}\vspace{-.5em}\normalfont\large\bfseries&#10;  #1\vspace{0.05em}\\\end{tabularx}&#10;\end{ndtable}&#10;\vspace{-.5em}&#10;}&#10;&#10;\definecolor{secfgcol}{RGB}{215, 6, 83}&#10;\definecolor{secbgcol}{RGB}{255, 241, 248}&#10;\newcommand{\ndsection}[1]{\ndheading{#1}{secbgcol}{secfgcol}}&#10;\newcommand{\ndsubsection}[1]{\ndheading{#1}{secbgcol}{secfgcol}}&#10;&#10;&#10;"/>
+                <PROPERTY name="font" value="\usepackage{helvet}"/>
+                <PROPERTY name="fontsize" value="10pt"/>\vspace{-1cm}
+
+\section*{The Universal Operating System}
+\begin{center}
+\noindent
+\includegraphics[width=0.5\columnwidth]{openlogo}
+%\includegraphics[width=0.5\columnwidth]{openlogo-vsop}
+
+\url{http://www.debian.org}
+%\ndsection{Debian GNU/Linux}
+
+% \hrule
+\end{center}
+\vspace{-1em}
+
+\ndsection{Debian}
+
+was founded by Ian Murdock in August 1993 with the goal
+to create an easy to install and maintain non-commercial GNU/Linux
+operating system that would be able to compete in the
+commercial market.  Since then, Debian established itself as an
+independent and unique project driven by more than 3000
+enthusiastic contributors all around the globe.
+Principles of \mbox{\emph{do-ocracy}} and democracy backed up by evolving transparent
+standards allowed Debian to deliver the most comprehensive operating system -- not
+only by amount of integrated software, but also by
+number of the supported hardware architectures.
+% Current installer of Debian has been translated more that to 60 languages.
+% (12 ???  officially supported architectures).
+% Well appreciated
+The high quality and openness of Debian made it the foundation of choice for
+more than 120 derivative GNU/Linux distributions, such as Ubuntu and
+Mint.
+
+\ndsubsection{Debian is}
+\begin{description}[nolistsep,leftmargin=0.8em]
+\item[V\textnormal{ersatile}]\hfill\url{http://packages.debian.org}\\
+  Over 15000 software packages maintained by experts to provide
+  a stable system for \textit{any} field of application.
+\item[S\textnormal{ecure}]\hfill\url{http://www.debian.org/security}\\
+  Security updates guarantee safe operation.
+%\item[S]table
+% \item[S\textnormal{imple}]\blank\\
+%   Single command is enough to install or upgrade single
+%   software or the entire system at once
+\item[O\textnormal{pen}]\hfill\url{http://www.debian.org/social_contract}\\
+  All software is free and open-source (FOSS).\\
+  Debian is governed by public democratic processes.
+\item[P\textnormal{opular}]\hfill\url{http://www.debian.org/users}\\
+  Used by governments, companies, educational institutions.
+\end{description}
+
+</LATEX>
+            <PageItemAttributes/>
+        </PAGEOBJECT>
+        <PAGEOBJECT OwnPage="0" PTYPE="9" XPOS="405.6" YPOS="25.6692913385827" WIDTH="280.8" HEIGHT="583.937007874016" RADRECT="0" FRTYPE="0" CLIPEDIT="0" PWIDTH="1" PCOLOR="None" PCOLOR2="None" COLUMNS="1" COLGAP="0" NAMEDLST="" SHADE="100" SHADE2="100" GRTYP="0" ROT="0" PLINEART="1" PLINEEND="0" PLINEJOIN="0" LOCALSCX="1" LOCALSCY="1" LOCALX="0" LOCALY="-5.66929133858268" PICART="1" PLTSHOW="0" BASEOF="0" textPathType="0" textPathFlipped="0" FLIPPEDH="0" FLIPPEDV="0" SCALETYPE="1" RATIO="1" PRINTABLE="1" ANNOTATION="0" ANNAME="" TEXTFLOWMODE="0" TEXTFLOW="0" TEXTFLOW2="0" TEXTFLOW3="0" AUTOTEXT="0" EXTRA="0" TEXTRA="0" BEXTRA="0" REXTRA="0" FLOP="0" PFILE="" PFILE2="" PFILE3="" PRFILE="" EPROF="" IRENDER="1" EMBEDDED="0" LOCK="0" LOCKR="0" REVERS="0" TransValue="0" TransValueS="0" TransBlend="0" TransBlendS="0" isTableItem="0" TopLine="0" LeftLine="0" RightLine="0" BottomLine="0" isGroupControl="0" NUMDASH="0" DASHS="" DASHOFF="0" NUMPO="16" POCOOR="0 0 0 0 280.8 0 280.8 0 280.8 0 280.8 0 280.8 583.937 280.8 583.937 280.8 583.937 280.8 583.937 0 583.937 0 583.937 0 583.937 0 583.937 0 0 0 0 " NUMCO="16" COCOOR="0 0 0 0 280.8 0 280.8 0 280.8 0 280.8 0 280.8 583.937 280.8 583.937 280.8 583.937 280.8 583.937 0 583.937 0 583.937 0 583.937 0 583.937 0 0 0 0 " NUMGROUP="0" GROUPS="" startArrowIndex="0" endArrowIndex="0" OnMasterPage="" ImageClip="" ImageRes="1" Pagenumber="0" isInline="0" fillRule="1" doOverprint="0" gXpos="0" gYpos="0" gWidth="0" gHeight="0" LAYER="0" BOOKMARK="0" NEXTITEM="-1" BACKITEM="-1">
+            <trail/>
+            <LATEX ConfigFile="100_latex.xml" DPI="0" USE_PREAMBLE="1">
+                <PROPERTY name="additionalheaders" value="\usepackage{color}&#10;\usepackage{flowfram}&#10;\usepackage{tabularx}           % for column-width tables&#10;\usepackage[table]{xcolor}      % color control&#10;&#10;\usepackage[colorlinks]{hyperref}&#10;&#10;\usepackage{graphicx}&#10;\graphicspath{&#10; {/home/mih/hacking/neurodebian/artwork/}&#10;}&#10;&#10;\usepackage{enumitem}           % useful for control of listings&#10;\usepackage[compact,raggedright]{titlesec}&#10;&#10;\newcommand{\epigraph}[3]{\textit{#1}\linebreak \vspace{-1.5em} \begin{flushright}\hspace{5em}\ --\ #2\linebreak\small{#3} \end{flushright}}&#10;&#10;\pagestyle{empty}&#10;\parindent=0pt&#10;&#10;% To create tables within multicols&#10;\makeatletter&#10;\newenvironment{ndtable}&#10;  {\def\@captype{table}}&#10;  {}&#10;&#10;\newcommand{\ndheading}[3]{%&#10;\vspace{0.5em}&#10;\begin{ndtable}%&#10;\rowcolors[\hline]{1}{#2}{} \arrayrulecolor{#3}&#10;\begin{tabularx}{\columnwidth}{&gt;{\centering\arraybackslash}X}\vspace{-.5em}\normalfont\large\bfseries&#10;  #1\vspace{0.05em}\\\end{tabularx}&#10;\end{ndtable}&#10;\vspace{-.5em}&#10;}&#10;&#10;\definecolor{secfgcol}{RGB}{215, 6, 83}&#10;\definecolor{secbgcol}{RGB}{255, 241, 248}&#10;\newcommand{\ndsection}[1]{\ndheading{#1}{secbgcol}{secfgcol}}&#10;\newcommand{\ndsubsection}[1]{\ndheading{#1}{secbgcol}{secfgcol}}&#10;&#10;&#10;"/>
+                <PROPERTY name="font" value="\usepackage{helvet}"/>
+                <PROPERTY name="fontsize" value="10pt"/>\ndsubsection{Three Debian suites}
+
+% Debian distribution comes in 3 major flavors
+
+\begin{description}[nolistsep,leftmargin=1pc,topsep=0em]
+
+%\item[Unstable] \emph{Constantly changing distribution}\\
+\item[Development]\hfill\emph{Unstable} (always \emph{sid})\\
+  Never \emph{released}, constantly evolving platform to integrate new
+  versions of software into Debian.\\
+  %entry point for the software to appear in Debian.\\
+  Despite its name, \emph{Unstable} is a good platform for those
+  requiring the most recent versions of software.
+
+%\item[Testing] \emph{Constantly changing future release candidate}\\
+\item[``Always-ready-to-release'']\hfill\emph{Testing} (now \emph{jessie})\\
+%  What to become a next \emph{Stable} release candidate.\\
+  Software versions known to be secure and of good quality.
+%  Software migrated from \emph{Unstable} which is known to be of good
+%  quality.  Immediate updates are provided only
+%  to assure secure and robust performance. \\
+  \emph{Testing} provides a good balance between stability and recency
+  of software.
+
+%\item[Stable] \emph{Official release}\\
+\item[Official release]\hfill\emph{Stable} (now 7.5, \emph{wheezy})\\
+  % Software verified to be well tested and secure,
+  % Very stable (hence the name) and secure
+  % but might be lacking the most recent versions.\\% of the software.\\
+  % of not the most recent versions. \\
+  \emph{Stable} is released ``when it is ready'', \emph{i.e.} when
+  \emph{Testing} is assured to be robust. %, on average bi-yearly.
+  Complementary updates keep the
+  system secure. \\
+  \emph{Stable} is the best choice where reliability and security are of
+  primary importance.
+\end{description}
+
+\ndsubsection{Three Debian components}
+
+% Debian distribution comes in 3 major flavors
+%Debian Free Software Guidelines (DFSG)\\
+%\url{http://www.debian.org/social_contract}
+
+\begin{description}[nolistsep,leftmargin=1pc,topsep=0em]
+\item[Free as in freedom]\hfill\emph{main}\\
+  % This is the actual Debian with full support.\\
+  All software in \emph{main} is distributed under FOSS licenses
+  compliant with Debian Free Software Guidelines (DFSG) to assure
+  complete freedom to use, modify, and (re-)distribute.
+\item[Wanna-be free]\hfill\emph{contrib}\\
+  FOSS depending on \emph{non-free} 3rd party software.
+%  Software which, despite being free itself, depends on
+%  \emph{non-free} 3rd party software, rendering it useless without
+\item[Somewhat free]\hfill\emph{non-free}\\
+  Software under restrictive licenses available at no charge.
+ % removing some freedoms
+ % (\emph{e.g.} non-commercial use only), but which is allowed to be
+ % used for free and re-distributed (\emph{e.g. NVidia drivers})
+\end{description}
+
+
+\ndsubsection{Who is Debian}
+% could be simply 'Debian People' or 'Debian Community'
+
+Debian is the only major operating system developed
+solely by volunteer individuals who collaborate via the Internet.
+Debian developers, teams or individual contributors improve the operating
+system not by writing new applications (in most cases) but by
+\begin{itemize}[nolistsep,topsep=0em,leftmargin=1pc]
+\item integrating existing software into Debian
+\item fixing and communicating bug reports to original developers
+\item assuring overall quality of the distribution
+\item improving documentation and translations
+\item providing user support
+\end{itemize}
+
+Packaged software in Debian have individual maintainers who are
+often also users of a particular software, and who are therefore interested in its
+reliable operation. Certain fields of applications have dedicated maintainer
+teams, such as Debian-Science or Debian-Med.
+
+</LATEX>
+            <PageItemAttributes/>
+        </PAGEOBJECT>
+        <PAGEOBJECT OwnPage="0" PTYPE="9" XPOS="703.2" YPOS="25.6692913385827" WIDTH="284.044094488189" HEIGHT="583.937007874016" RADRECT="0" FRTYPE="0" CLIPEDIT="0" PWIDTH="1" PCOLOR="None" PCOLOR2="None" COLUMNS="1" COLGAP="0" NAMEDLST="" SHADE="100" SHADE2="100" GRTYP="0" ROT="0" PLINEART="1" PLINEEND="0" PLINEJOIN="0" LOCALSCX="1" LOCALSCY="1" LOCALX="0" LOCALY="-5.66929133858268" PICART="1" PLTSHOW="0" BASEOF="0" textPathType="0" textPathFlipped="0" FLIPPEDH="0" FLIPPEDV="0" SCALETYPE="1" RATIO="1" PRINTABLE="1" ANNOTATION="0" ANNAME="" TEXTFLOWMODE="0" TEXTFLOW="0" TEXTFLOW2="0" TEXTFLOW3="0" AUTOTEXT="0" EXTRA="0" TEXTRA="0" BEXTRA="0" REXTRA="0" FLOP="0" PFILE="" PFILE2="" PFILE3="" PRFILE="" EPROF="" IRENDER="1" EMBEDDED="0" LOCK="0" LOCKR="0" REVERS="0" TransValue="0" TransValueS="0" TransBlend="0" TransBlendS="0" isTableItem="0" TopLine="0" LeftLine="0" RightLine="0" BottomLine="0" isGroupControl="0" NUMDASH="0" DASHS="" DASHOFF="0" NUMPO="16" POCOOR="0 0 0 0 284.044 0 284.044 0 284.044 0 284.044 0 284.044 583.937 284.044 583.937 284.044 583.937 284.044 583.937 0 583.937 0 583.937 0 583.937 0 583.937 0 0 0 0 " NUMCO="16" COCOOR="0 0 0 0 284.044 0 284.044 0 284.044 0 284.044 0 284.044 583.937 284.044 583.937 284.044 583.937 284.044 583.937 0 583.937 0 583.937 0 583.937 0 583.937 0 0 0 0 " NUMGROUP="0" GROUPS="" startArrowIndex="0" endArrowIndex="0" OnMasterPage="" ImageClip="" ImageRes="1" Pagenumber="0" isInline="0" fillRule="1" doOverprint="0" gXpos="0" gYpos="0" gWidth="0" gHeight="0" LAYER="0" BOOKMARK="0" NEXTITEM="-1" BACKITEM="-1">
+            <trail/>
+            <LATEX ConfigFile="100_latex.xml" DPI="0" USE_PREAMBLE="1">
+                <PROPERTY name="additionalheaders" value="\usepackage{color}&#10;\usepackage{flowfram}&#10;\usepackage{tabularx}           % for column-width tables&#10;\usepackage[table]{xcolor}      % color control&#10;&#10;\usepackage[colorlinks]{hyperref}&#10;&#10;\usepackage{graphicx}&#10;\graphicspath{&#10; {/home/mih/hacking/neurodebian/artwork/}&#10;}&#10;&#10;\usepackage{enumitem}           % useful for control of listings&#10;\usepackage[compact,raggedright]{titlesec}&#10;&#10;\newcommand{\epigraph}[3]{\textit{#1}\linebreak \vspace{-1.5em} \begin{flushright}\hspace{5em}\ --\ #2\linebreak\small{#3} \end{flushright}}&#10;&#10;\pagestyle{empty}&#10;\parindent=0pt&#10;&#10;% To create tables within multicols&#10;\makeatletter&#10;\newenvironment{ndtable}&#10;  {\def\@captype{table}}&#10;  {}&#10;&#10;\newcommand{\ndheading}[3]{%&#10;\vspace{0.5em}&#10;\begin{ndtable}%&#10;\rowcolors[\hline]{1}{#2}{} \arrayrulecolor{#3}&#10;\begin{tabularx}{\columnwidth}{&gt;{\centering\arraybackslash}X}\vspace{-.5em}\normalfont\large\bfseries&#10;  #1\vspace{0.05em}\\\end{tabularx}&#10;\end{ndtable}&#10;\vspace{-.5em}&#10;}&#10;&#10;\definecolor{secfgcol}{RGB}{215, 6, 83}&#10;\definecolor{secbgcol}{RGB}{255, 241, 248}&#10;\newcommand{\ndsection}[1]{\ndheading{#1}{secbgcol}{secfgcol}}&#10;\newcommand{\ndsubsection}[1]{\ndheading{#1}{secbgcol}{secfgcol}}&#10;&#10;&#10;"/>
+                <PROPERTY name="font" value="\usepackage{helvet}"/>
+                <PROPERTY name="fontsize" value="10pt"/>\ndsubsection{How to get Debian}
+
+%\subsubsection*{Stable}
+\begin{description}[nolistsep,leftmargin=1pc,style=nextline]
+\item[Install on a hard-drive] \url{http://www.debian.org/distrib/}
+\item[Live CD/DVD] \url{http://www.debian.org/CD/live/}
+\item[Run in a Virtual Machine] \url{http://neuro.debian.net/vm.html}
+\item[Development version] \url{http://www.debian.org/devel/debian-installer}
+\item[Use in a cloud] \url{https://wiki.debian.org/Cloud}
+\end{description}
+
+% \ndsubsection{Get \emph{Testing/Unstable} Debian}
+%
+% Install on a hard-drive or in a Virtual Machine\\
+% \url{http://www.debian.org/devel/debian-installer}
+%
+
+\ndsubsection{How to install software}
+
+GUI (Synaptic): \textit{Select and click ``Apply''}\\
+\begin{center}
+\vspace{-1.2em}
+\includegraphics[width=0.95\columnwidth]{shots/synaptic-fslview}
+\vspace{-0.7em}
+\end{center}
+
+Command line: \texttt{apt-get install &lt;packagename&gt;}
+
+
+
+\ndsubsection{How to upgrade the entire system}
+
+GUI (Synaptic):
+
+\quad\textit{Click ``Mark All Upgrades'', ``Apply''}\\
+Command line:
+
+\quad\texttt{apt-get update; apt-get dist-upgrade}
+
+\ndsubsection{How to get support}
+
+\hspace{1em}\url{http://www.debian.org/support}
+
+\begin{description}[nolistsep,leftmargin=1pc,style=nextline]
+%\item[Overview]
+
+%\item[GUI]
+%  Use \emph{Synaptic Package Manager}
+\item[Software bug]
+  \texttt{reportbug &lt;packagename&gt;}
+\item[Support]
+  \url{http://www.debian.org/MailingLists}\\
+  \url{http://forums.debian.net},  \url{http://ask.debian.net}\\
+  \url{http://www.debian.org/consultants}
+\end{description}
+
+</LATEX>
+            <PageItemAttributes/>
+        </PAGEOBJECT>
+        <PAGEOBJECT OwnPage="1" PTYPE="9" XPOS="105.669291339" YPOS="663.779527559472" WIDTH="284.3307087" HEIGHT="583.9370079" RADRECT="0" FRTYPE="0" CLIPEDIT="0" PWIDTH="1" PCOLOR="None" PCOLOR2="None" COLUMNS="1" COLGAP="0" NAMEDLST="" SHADE="100" SHADE2="100" GRTYP="0" ROT="0" PLINEART="1" PLINEEND="0" PLINEJOIN="0" LOCALSCX="1" LOCALSCY="1" LOCALX="0" LOCALY="-5.669291339" PICART="1" PLTSHOW="0" BASEOF="0" textPathType="0" textPathFlipped="0" FLIPPEDH="0" FLIPPEDV="0" SCALETYPE="1" RATIO="1" PRINTABLE="1" ANNOTATION="0" ANNAME="" TEXTFLOWMODE="0" TEXTFLOW="0" TEXTFLOW2="0" TEXTFLOW3="0" AUTOTEXT="0" EXTRA="0" TEXTRA="0" BEXTRA="0" REXTRA="0" FLOP="0" PFILE="" PFILE2="" PFILE3="" PRFILE="" EPROF="" IRENDER="1" EMBEDDED="0" LOCK="0" LOCKR="0" REVERS="0" TransValue="0" TransValueS="0" TransBlend="0" TransBlendS="0" isTableItem="0" TopLine="0" LeftLine="0" RightLine="0" BottomLine="0" isGroupControl="0" NUMDASH="0" DASHS="" DASHOFF="0" NUMPO="16" POCOOR="0 0 0 0 284.331 0 284.331 0 284.331 0 284.331 0 284.331 583.937 284.331 583.937 284.331 583.937 284.331 583.937 0 583.937 0 583.937 0 583.937 0 583.937 0 0 0 0 " NUMCO="16" COCOOR="0 0 0 0 284.331 0 284.331 0 284.331 0 284.331 0 284.331 583.937 284.331 583.937 284.331 583.937 284.331 583.937 0 583.937 0 583.937 0 583.937 0 583.937 0 0 0 0 " NUMGROUP="0" GROUPS="" startArrowIndex="0" endArrowIndex="0" OnMasterPage="" ImageClip="" ImageRes="1" Pagenumber="0" isInline="0" fillRule="1" doOverprint="0" gXpos="0" gYpos="0" gWidth="0" gHeight="0" LAYER="0" BOOKMARK="0" NEXTITEM="-1" BACKITEM="-1">
+            <trail/>
+            <LATEX ConfigFile="100_latex.xml" DPI="0" USE_PREAMBLE="1">
+                <PROPERTY name="additionalheaders" value="\usepackage{color}&#10;\usepackage{flowfram}&#10;\usepackage{tabularx}           % for column-width tables&#10;\usepackage[table]{xcolor}      % color control&#10;&#10;\usepackage[colorlinks]{hyperref}&#10;&#10;\usepackage{graphicx}&#10;\graphicspath{&#10; {/home/mih/hacking/neurodebian/artwork/}&#10;}&#10;&#10;\usepackage{enumitem}           % useful for control of listings&#10;\usepackage[compact,raggedright]{titlesec}&#10;&#10;\newcommand{\epigraph}[3]{\textit{#1}\linebreak \vspace{-1.5em} \begin{flushright}\hspace{5em}\ --\ #2\linebreak\small{#3} \end{flushright}}&#10;&#10;\pagestyle{empty}&#10;\parindent=0pt&#10;&#10;% To create tables within multicols&#10;\makeatletter&#10;\newenvironment{ndtable}&#10;  {\def\@captype{table}}&#10;  {}&#10;&#10;\newcommand{\ndheading}[3]{%&#10;\vspace{0.5em}&#10;\begin{ndtable}%&#10;\rowcolors[\hline]{1}{#2}{} \arrayrulecolor{#3}&#10;\begin{tabularx}{\columnwidth}{&gt;{\centering\arraybackslash}X}\vspace{-.5em}\normalfont\large\bfseries&#10;  #1\vspace{0.05em}\\\end{tabularx}&#10;\end{ndtable}&#10;\vspace{-.5em}&#10;}&#10;&#10;\definecolor{secfgcol}{RGB}{215, 6, 83}&#10;\definecolor{secbgcol}{RGB}{255, 241, 248}&#10;\newcommand{\ndsection}[1]{\ndheading{#1}{secbgcol}{secfgcol}}&#10;\newcommand{\ndsubsection}[1]{\ndheading{#1}{secbgcol}{secfgcol}}&#10;&#10;&#10;"/>
+                <PROPERTY name="font" value="\usepackage{helvet}"/>
+                <PROPERTY name="fontsize" value="10pt"/>\section*{The Universal Research Platform}
+\begin{center}
+\includegraphics[width=\columnwidth]{logo_tuned/label}
+\url{http://neuro.debian.net}
+%\ndsection{NeuroDebian Project:}
+% \hrule
+\end{center}
+
+\ndsection{NeuroDebian is}
+
+a Debian project that provides the Neuroscience community with a
+stable and versatile research platform -- the Debian operating system.
+Since 2005, \mbox{NeuroDebian} integrates neuroscience software into Debian
+to allow neuroscientists to benefit from the advantages of
+the universal operating system in their day-to-day research activities.
+The NeuroDebian repository
+(\url{http://neuro.debian.net}) offers the latest research software for
+all Debian suites (and various releases of Ubuntu).
+The combination of a stable generic
+operating system, Debian, and a variety of conveniently accessible research
+software creates a versatile research platform for neuroscience that offers the
+latest methodologies of the field to everyone, for free.
+These advantages make NeuroDebian increasingly popular among
+neuroscientists and scientific software developers.
+
+\vspace{2em}
+
+\ndsubsection{NeuroDebian is NOT}
+
+yet another Debian GNU/Linux derivative distribution.  All work done
+by the NeuroDebian project targets the official Debian operating system. This
+approach helps to increase the longevity of the project by relying on the
+efforts of thousands of Debian contributors.
+</LATEX>
+            <PageItemAttributes/>
+        </PAGEOBJECT>
+        <PAGEOBJECT OwnPage="1" PTYPE="9" XPOS="403.803354330709" YPOS="663.779527533071" WIDTH="284.3307087" HEIGHT="583.9370079" RADRECT="0" FRTYPE="0" CLIPEDIT="0" PWIDTH="1" PCOLOR="None" PCOLOR2="None" COLUMNS="1" COLGAP="0" NAMEDLST="" SHADE="100" SHADE2="100" GRTYP="0" ROT="0" PLINEART="1" PLINEEND="0" PLINEJOIN="0" LOCALSCX="1" LOCALSCY="1" LOCALX="0" LOCALY="-5.669291339" PICART="1" PLTSHOW="0" BASEOF="0" textPathType="0" textPathFlipped="0" FLIPPEDH="0" FLIPPEDV="0" SCALETYPE="1" RATIO="1" PRINTABLE="1" ANNOTATION="0" ANNAME="" TEXTFLOWMODE="0" TEXTFLOW="0" TEXTFLOW2="0" TEXTFLOW3="0" AUTOTEXT="0" EXTRA="0" TEXTRA="0" BEXTRA="0" REXTRA="0" FLOP="0" PFILE="" PFILE2="" PFILE3="" PRFILE="" EPROF="" IRENDER="1" EMBEDDED="0" LOCK="0" LOCKR="0" REVERS="0" TransValue="0" TransValueS="0" TransBlend="0" TransBlendS="0" isTableItem="0" TopLine="0" LeftLine="0" RightLine="0" BottomLine="0" isGroupControl="0" NUMDASH="0" DASHS="" DASHOFF="0" NUMPO="16" POCOOR="0 0 0 0 284.331 0 284.331 0 284.331 0 284.331 0 284.331 583.937 284.331 583.937 284.331 583.937 284.331 583.937 0 583.937 0 583.937 0 583.937 0 583.937 0 0 0 0 " NUMCO="16" COCOOR="0 0 0 0 284.331 0 284.331 0 284.331 0 284.331 0 284.331 583.937 284.331 583.937 284.331 583.937 284.331 583.937 0 583.937 0 583.937 0 583.937 0 583.937 0 0 0 0 " NUMGROUP="0" GROUPS="" startArrowIndex="0" endArrowIndex="0" OnMasterPage="" ImageClip="" ImageRes="1" Pagenumber="0" isInline="0" fillRule="1" doOverprint="0" gXpos="0" gYpos="0" gWidth="0" gHeight="0" LAYER="0" BOOKMARK="0" NEXTITEM="-1" BACKITEM="-1">
+            <trail/>
+            <LATEX ConfigFile="100_latex.xml" DPI="0" USE_PREAMBLE="1">
+                <PROPERTY name="additionalheaders" value="\usepackage{color}&#10;\usepackage{flowfram}&#10;\usepackage{tabularx}           % for column-width tables&#10;\usepackage[table]{xcolor}      % color control&#10;&#10;\usepackage[colorlinks]{hyperref}&#10;&#10;\usepackage{graphicx}&#10;\graphicspath{&#10; {/home/mih/hacking/neurodebian/artwork/}&#10; {/home/mih/hacking/neurodebian/artwork/shots}&#10;}&#10;&#10;\usepackage{enumitem}           % useful for control of listings&#10;\usepackage[compact,raggedright]{titlesec}&#10;&#10;\newcommand{\epigraph}[3]{\textit{#1}\linebreak \vspace{-1.5em} \begin{flushright}\hspace{5em}\ --\ #2\linebreak\small{#3} \end{flushright}}&#10;&#10;\pagestyle{empty}&#10;\parindent=0pt&#10;&#10;% To create tables within multicols&#10;\makeatletter&#10;\newenvironment{ndtable}&#10;  {\def\@captype{table}}&#10;  {}&#10;&#10;\newcommand{\ndheading}[3]{%&#10;\vspace{0.5em}&#10;\begin{ndtable}%&#10;\rowcolors[\hline]{1}{#2}{} \arrayrulecolor{#3}&#10;\begin{tabularx}{\columnwidth}{&gt;{\centering\arraybackslash}X}\vspace{-.5em}\normalfont\large\bfseries&#10;  #1\vspace{0.05em}\\\end{tabularx}&#10;\end{ndtable}&#10;\vspace{-.5em}&#10;}&#10;&#10;\definecolor{secfgcol}{RGB}{215, 6, 83}&#10;\definecolor{secbgcol}{RGB}{255, 241, 248}&#10;\newcommand{\ndsection}[1]{\ndheading{#1}{secbgcol}{secfgcol}}&#10;\newcommand{\ndsubsection}[1]{\ndheading{#1}{secbgcol}{secfgcol}}&#10;&#10;&#10;"/>
+                <PROPERTY name="font" value="\usepackage{helvet}"/>
+                <PROPERTY name="fontsize" value="10pt"/>\ndsubsection{Software at your fingertips}
+\begin{flushright}
+\vspace{-0.5em}
+\url{http://neuro.debian.net/pkgs.html}
+\vspace{-0.1em}
+\end{flushright}
+\textit{Distributed computing:} Condor, DMTCP, IPython, \ldots \\
+\textit{Electrophysiology:} BioSig, Neo, Sigviewer, \ldots\\
+\textit{Machine Learning:} MDP, PyMVPA, sklearn, \ldots\\
+\textit{Neural Modeling:} Brian, CNrun, PyNN, XPPAUT \ldots\\
+\textit{Imaging:} AFNI, CMTK, FSL, Mricron, NiPy \ldots\\
+\textit{Psychophysics:} PsychoPy, Psychtoolbox-3, PyEPL \ldots\\
+\vspace{-0.8em}
+
+% TODO: Environments... -- list avail cloud env using NeuroDebian
+
+\ndsubsection{Benefits from Debian integration}
+
+\begin{itemize}[nolistsep,leftmargin=1pc]
+
+% rephrase to outline the benefit, not burden
+\item Debian standards and policies guarantee quality and robustness.
+
+\item Debian's centralized bug tracking system provides a unified
+  single-point of entry for bug reporting and troubleshooting
+  for any software in Debian.
+
+\item Debian makes software available through a world-wide distribution
+  network, thus offloading bandwidth demands.
+
+\item Other Debian contributors handle large-scale aspects of
+  deployment, quality assurance, porting and integration at the level
+  of the entire distribution:
+
+\begin{description}[nolistsep,leftmargin=1pc]
+\item[Porting] Software sources get built for 11 hardware
+  architectures and 3 kernels (Linux, HURD, kFreeBSD). Porter teams
+  maintain build infrastructure and help make the code
+  platform-agnostic.
+\item[QA] Whole-archive rebuilds assure robustness of packaging and
+  warn about upcoming problems (core libraries upgrades) beforehand.
+\item[Internationalization (I18n)] Translator teams help localize
+  software for more than 60 languages.
+\end{description}
+
+\item Neuroscience software becomes a 1st-class citizen within the
+  Debian project, which guarantees its longevity, smooth installation
+  and upgrades.
+
+%\item Participation in the Debian community helps to assure Debian's
+%  aptness for the neuroscientific software demands
+
+\end{itemize}
+
+\ndsubsection{How to get NeuroDebian}
+
+\textit{Debian/Ubuntu:} \url{neuro.debian.net} repository \\
+\textit{Others:} NeuroDebian Virtual Machine
+
+% Here place a left-top corner of OSX with seamless mode
+\vspace{3mm}
+\includegraphics[width=\columnwidth]{shots/mac_vm_mricron}
+
+</LATEX>
+            <PageItemAttributes/>
+        </PAGEOBJECT>
+        <PAGEOBJECT OwnPage="1" PTYPE="9" XPOS="702.913385788189" YPOS="663.779527533071" WIDTH="284.3307087" HEIGHT="583.9370079" RADRECT="0" FRTYPE="0" CLIPEDIT="0" PWIDTH="1" PCOLOR="None" PCOLOR2="None" COLUMNS="1" COLGAP="0" NAMEDLST="" SHADE="100" SHADE2="100" GRTYP="0" ROT="0" PLINEART="1" PLINEEND="0" PLINEJOIN="0" LOCALSCX="1" LOCALSCY="1" LOCALX="0" LOCALY="-5.669291339" PICART="1" PLTSHOW="0" BASEOF="0" textPathType="0" textPathFlipped="0" FLIPPEDH="0" FLIPPEDV="0" SCALETYPE="1" RATIO="1" PRINTABLE="1" ANNOTATION="0" ANNAME="" TEXTFLOWMODE="0" TEXTFLOW="0" TEXTFLOW2="0" TEXTFLOW3="0" AUTOTEXT="0" EXTRA="0" TEXTRA="0" BEXTRA="0" REXTRA="0" FLOP="0" PFILE="" PFILE2="" PFILE3="" PRFILE="" EPROF="" IRENDER="1" EMBEDDED="0" LOCK="0" LOCKR="0" REVERS="0" TransValue="0" TransValueS="0" TransBlend="0" TransBlendS="0" isTableItem="0" TopLine="0" LeftLine="0" RightLine="0" BottomLine="0" isGroupControl="0" NUMDASH="0" DASHS="" DASHOFF="0" NUMPO="16" POCOOR="0 0 0 0 284.331 0 284.331 0 284.331 0 284.331 0 284.331 583.937 284.331 583.937 284.331 583.937 284.331 583.937 0 583.937 0 583.937 0 583.937 0 583.937 0 0 0 0 " NUMCO="16" COCOOR="0 0 0 0 284.331 0 284.331 0 284.331 0 284.331 0 284.331 583.937 284.331 583.937 284.331 583.937 284.331 583.937 0 583.937 0 583.937 0 583.937 0 583.937 0 0 0 0 " NUMGROUP="0" GROUPS="" startArrowIndex="0" endArrowIndex="0" OnMasterPage="" ImageClip="" ImageRes="1" Pagenumber="0" isInline="0" fillRule="1" doOverprint="0" gXpos="0" gYpos="0" gWidth="0" gHeight="0" LAYER="0" BOOKMARK="0" NEXTITEM="-1" BACKITEM="-1">
+            <trail/>
+            <LATEX ConfigFile="100_latex.xml" DPI="0" USE_PREAMBLE="1">
+                <PROPERTY name="additionalheaders" value="\usepackage{color}&#10;\usepackage{flowfram}&#10;\usepackage{tabularx}           % for column-width tables&#10;\usepackage[table]{xcolor}      % color control&#10;&#10;\usepackage[colorlinks]{hyperref}&#10;&#10;\usepackage{graphicx}&#10;\graphicspath{&#10; {/home/mih/hacking/neurodebian/artwork/}&#10; {/home/mih/hacking/neurodebian/artwork/shots}&#10;}&#10;&#10;\usepackage{enumitem}           % useful for control of listings&#10;\usepackage[compact,raggedright]{titlesec}&#10;&#10;\newcommand{\epigraph}[3]{\textit{#1}\linebreak \vspace{-1.5em} \begin{flushright}\hspace{5em}\ --\ #2\linebreak\small{#3} \end{flushright}}&#10;&#10;\pagestyle{empty}&#10;\parindent=0pt&#10;&#10;% To create tables within multicols&#10;\makeatletter&#10;\newenvironment{ndtable}&#10;  {\def\@captype{table}}&#10;  {}&#10;&#10;\newcommand{\ndheading}[3]{%&#10;\vspace{0.5em}&#10;\begin{ndtable}%&#10;\rowcolors[\hline]{1}{#2}{} \arrayrulecolor{#3}&#10;\begin{tabularx}{\columnwidth}{&gt;{\centering\arraybackslash}X}\vspace{-.5em}\normalfont\large\bfseries&#10;  #1\vspace{0.05em}\\\end{tabularx}&#10;\end{ndtable}&#10;\vspace{-.5em}&#10;}&#10;&#10;\definecolor{secfgcol}{RGB}{215, 6, 83}&#10;\definecolor{secbgcol}{RGB}{255, 241, 248}&#10;\newcommand{\ndsection}[1]{\ndheading{#1}{secbgcol}{secfgcol}}&#10;\newcommand{\ndsubsection}[1]{\ndheading{#1}{secbgcol}{secfgcol}}&#10;&#10;&#10;"/>
+                <PROPERTY name="font" value="\usepackage{helvet}"/>
+                <PROPERTY name="fontsize" value="10pt"/>\ndsubsection{Work-in-progress}
+\begin{description}[nolistsep,leftmargin=1pc,style=nextline]
+\item[Increased coverage]
+\textit{Electrophysiology:} Fieldtrip \\
+\textit{Neural Modeling:} NEURON, (NEST), LFPy \\
+\textit{Imaging:} DTI-TK, Freesurfer, XNAT, \ldots
+% \epigraph{Having FreeSurfer integrated into the Debian operating system by the NeuroDebian team would have enormous benefits for us, and for the thousands of users of FreeSurfer across the world.}{Prof. Bruce Fischl}{Director, Computational Core at Martinos Center at Massachusetts General Hospital, Charlestown, Massachusetts, USA}
+\item[Improved quality assurance]
+  Extended integration and regression testing\\
+  \url{http://testkraut.readthedocs.org}
+\item[Available snapshotting service]
+  % Entire NeuroDebian repository for any given past moment
+  All versions of packages readily available
+\item[Data as the 1st-class citizen]
+  \url{http://neuro.debian.net/datasets.html}\\
+  \url{http://github.com/neurodebian/datagit}
+% yoh: see TODO above -- we can say that it is available already
+%\item[Universal availability]
+%  % \begin{itemize}[nolistsep,leftmargin=1pc,topsep=0em]
+%  % \item Virtual Appliance enhancements
+%  %\item
+%  Cloud computing
+%  %\end{itemize}
+\end{description}
+
+
+\ndsubsection{Testimonials}
+\begin{flushright}
+\vspace{-0.5em}
+\url{http://neuro.debian.net/testimonials.html}
+\vspace{-0.5em}
+\end{flushright}
+% TODO  yoh: This one remains the best summary IMHO.  But may be
+% we would just kick this section out an place Testimonials into References
+\epigraph{The approach taken with NeuroDebian is plainly the most appropriate
+approach to software distribution for the dominant platform in brain
+image analysis, and I have great confidence that this project will be
+a major asset to the neuroscience community in facilitating the
+distribution of stable software, improving the reliability and
+replicability of analyses, and in helping to improve software
+:RENDER FRAME: updateImage(): &quot;Running the external application failed!&quot; 
+development practices.}{Prof. Daniel Y. Kimberg}{Director, Data
+Processing Facility, Center for Functional Neuroimaging, University of
+Pennsylvania, Philadelphia, USA}
+
+\ndsubsection{Acknowledgements}
+
+NeuroDebian is grateful to all Debian developers and contributors for
+developing the Debian operating system, to
+\href{http://www.incf.org}{INCF} for the support in community outreach
+and technical collaborations, and to
+Prof. \href{http://haxbylab.dartmouth.edu}{James V. Haxby}
+(\href{http://www.dartmouth.edu/~psych}{PBS Department, Dartmouth
+  College}) for his continued support and endless supply of Italian
+espresso (\url{http://neuro.debian.net/coffeeart.html}).
+
+
+\ndsubsection{References}
+
+Halchenko, Y. O. \&amp; Hanke, M. (2012). \href{http://www.frontiersin.org/Neuroinformatics/10.3389/fninf.2012.00022/full}{Open is not enough. Let’s take the next step: An integrated, community-driven computing platform for neuroscience}. Frontiers in Neuroinformatics, 6:22.
+
+% TODO: adjust for the new layout
+\url{http://neuro.debian.net/#publications}
+</LATEX>
+            <PageItemAttributes/>
+        </PAGEOBJECT>
+    </DOCUMENT>
+</SCRIBUSUTF8NEW>
