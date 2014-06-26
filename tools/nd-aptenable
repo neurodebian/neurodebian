@@ -13,13 +13,15 @@ set -u
 nd_aptenable_version=0.1
 
 nd_key_id=0x2649A5A9
+nd_config_file=/etc/neurodebian/neurodebian.cfg
+nd_mirror_origin=http://neuro.debian.net/debian
+nd_mirror_default=$nd_mirror_origin # or may be AWS?
 
 # To be set by cmdline args
 ae_release=
 ae_components=software,data
 ae_flavor=
-ae_mirror_main=http://neuro.debian.net/debian
-ae_mirror=
+ae_mirror=best
 ae_suffix=
 ae_verbose=1
 ae_overwrite=
@@ -27,24 +29,22 @@ ae_sources=
 ae_dry_run=
 
 ae_sudo=
+exe_dir=$(dirname $0)
 
 # TODOs:
-# - distribute/enable key
 # - apt priority! (so we could avoid automagic upgrades etc)
 # - multiarch setups
 
+ae_tempdir=$(mktemp -d)
+trap "rm -rf \"$ae_tempdir\"" TERM INT EXIT
 
-# TODO -- consider fetching the most recent version from online
-# concerns -- without any validation might be subject to injection through man-in-the-middle etc
-nd_configfile=/etc/neurodebian/neurodebian.cfg # TODO - comes from neurodebian-devel pkg...
-# TODO: Or should it be parsed out from the NeuroDebian website itself?
-#  may be we could provide that file from the neurodebian website...
 
 print_verbose()
 {
     level=$1; shift
 	if [ "$ae_verbose" -ge $level ]; then
-        echo -e "I: $*"
+        # use stderr for printing within functions stdout of which might be used
+        echo -e "I: $*" >&2
     fi
 }
 
@@ -57,7 +57,7 @@ error()
 
 print_version()
 {
-cat << EOT
+    cat << EOT
 nd-aptenable $nd_aptenable_version
 
 Copyright (C) 2014 Yaroslav Halchenko <debian@onerussian.com>
@@ -82,7 +82,7 @@ eval_dry()
 
 print_help()
 {
-cat << EOT
+    cat << EOT
 
 Usage:  nd-aptenable [options]
 
@@ -164,17 +164,54 @@ Examples:
 EOT
 }
 
-get_mirrors() {
-    # Determine available mirrors by fetching our .cfg file
-    /etc/neurodebian/neurodebian.cfg
+get_neurodebian_cfg()
+{
+    # First we try to fetch the most recent version from the github
+    print_verbose 3 "Fetching config file from the github repository"
+    cfgfile_temp="$ae_tempdir/neurodebian.cfg"
+    wget -c -q -O$cfgfile_temp https://raw.githubusercontent.com/neurodebian/neurodebian/master/neurodebian.cfg \
+        && { echo $cfgfile_temp; } \
+        || { [ -e "$nd_config_file" ] && return "$nd_config_file"; }
+    # if not -- should blow up
 }
 
-print_mirrors() {
-    echo "TODO"
-    exit 1
+get_mirrors()
+{
+#    echo "TODO: fetch uptodate neurodebian.cfg"
+    nd_config=`get_neurodebian_cfg`
+    $exe_dir/nd_querycfg --config-file="$nd_config" "mirrors" \
+    | sed -e 's,=, ,'g \
+    | while read mirror_name mirror_url; do
+        # verify that url is just a url
+        if echo "$mirror_url" | grep -v -e '^[a-z0-9:+]*://[-+_%.a-z0-9/]*$'; then
+            print_verbose 1 "Mirror $mirror_name has 'illegit' URL: $mirror_url.  Skipping"
+        fi
+        echo "$mirror_name $mirror_url"
+    done
 }
 
-get_apt_policy() {
+netselect_mirror() {
+    # select "closest" mirror according to netselect.
+    print_verbose 2 "Selecting the 'best' mirror using netselect"
+    if ! which netselect >/dev/null; then
+        print_verbose 1 "netselect (apt-get install netselect) needed to select the 'best' mirror was not found"
+        print_verbose 1 "Selecting the default repository: $nd_mirror_default"
+        echo $nd_mirror_default
+    fi
+    get_mirrors | awk '{print $2;}' | $ae_sudo xargs netselect -D -s 1 | awk '{print $2;}'
+}
+
+get_mirror_url() {
+    # given mirror alias -- find its url
+    url=$(get_mirrors | awk "/^$1 /{print \$2;}")
+    if [ -z "$url" ]; then
+        error 9 "Cannot resolve mirror $1 to the URL"
+    fi
+    echo $url
+}
+
+get_apt_policy()
+{
     # Get apt-cache policy output in a single list for matching suites
     # (could be a separated with \| or , for multiple choices, e.g.
     #
@@ -185,7 +222,8 @@ get_apt_policy() {
     apt-cache policy | grep -B1 -e "o=\(${suites//,/\\|}\)" | tr '\n' ' ' | sed -e 's, -- ,\n,g' | grep -v -e '-\(updates\|security\)' | sort -nr
 }
 
-include_component() {
+include_component()
+{
     echo "$ae_components" | tr ',' '\n' | grep -q "^$1\$"
 }
 
@@ -198,7 +236,7 @@ include_component() {
 # Note that we use `"$@"' to let each command-line parameter expand to a
 # separate word. The quotes around `$@' are essential!
 # We need CLOPTS as the `eval set --' would nuke the return value of getopt.
-CLOPTS=`getopt -o h,r:,m:,f:,c:,q,v,n --long help,version,quiet,verbose,mirror:,release:,flavor:,components:,suffix:,overwrite,sources,no-sources,dry-run,print-mirrors -n 'nd-aptenable' -- "$@"`
+CLOPTS=`getopt -o h,r:,m:,f:,c:,q,v,n --long help,version,quiet,verbose,mirror:,release:,flavor:,components:,suffix:,overwrite,sources,no-sources,dry-run,print-mirrors,print-best-mirror -n 'nd-aptenable' -- "$@"`
 
 if [ $? != 0 ] ; then
   error 2 "Problem with parsing cmdline.  Terminating..."
@@ -206,6 +244,10 @@ fi
 
 # Note the quotes around `$CLOPTS': they are essential!
 eval set -- "$CLOPTS"
+
+if [ `whoami` != "root" ]; then
+    ae_sudo=sudo
+fi
 
 while true ; do
   case "$1" in
@@ -215,7 +257,8 @@ while true ; do
       # TODO
       -m|--mirror) shift;  ae_mirror="$1"; shift;;
       # TODO
-         --print-mirrors)  print_mirrors; exit 0;;
+         --print-mirrors)  get_mirrors; exit 0;;
+         --print-best-mirror)  netselect_mirror; exit 0;;
       -n|--dry-run)        ae_dry_run=1; shift;;
          --suffix) shift;  ae_suffix="$1"; shift;;
          --overwrite)      ae_overwrite="$1"; shift;;
@@ -236,17 +279,14 @@ if [ $# -gt 0 ] ; then
     exit 2
 fi
 
+# Inform!
+[ -z "$ae_sudo" ] || print_verbose 1 "This script requires root access.  Since current user is not root, sudo will be used"
 
 #
 # Basic system/environment knowledge
 #
 
 ae_output_file=/etc/apt/sources.list.d/neurodebian.sources${ae_suffix}.list
-
-if [ `whoami` != "root" ]; then
-    print_verbose 1 "This script requires root access.  Since current user is not root, sudo will be used"
-    ae_sudo=sudo
-fi
 
 apt_policy=$(get_apt_policy "Debian,Ubuntu" )
 
@@ -267,16 +307,21 @@ fi
 if include_component software || include_component data; then
     # for now just use default
     if [ -z "$ae_mirror" ]; then # none specified
-        ae_mirror_url=$ae_mirror_main
+        ae_mirror_url=$nd_mirror_origin
     else
         if ! [[ "$ae_mirror" =~ ".*://.*" ]]; then
             # TODO -- determine from the abbreviation
-            echo TODO
-            ae_mirror_url=$ae_mirror_main
+            case "$ae_mirror" in
+                best)    ae_mirror_url=$(netselect_mirror);;
+                default) ae_mirror_url=$nd_mirror_default;;
+                origin)  ae_mirror_url=$nd_mirror_origin;;
+                *)       ae_mirror_url=$(get_mirror_url "$ae_mirror");;
+            esac
+        else
+            ae_mirror_url="$ae_mirror" # it was some kind of a URL already
         fi
     fi
 fi
-
 
 #
 # Prepare APT file
@@ -323,6 +368,11 @@ fi
 if [ -e "$ae_output_file" ] && [ -z "$ae_overwrite" ]; then
     # error 3
     print_verbose 1 "File $ae_output_file already exists, containing:\n\n`cat \"$ae_output_file\"`\n\nI: Use --overwrite option to regenerate with:\n\n$apt_list"
+    if get_apt_policy NeuroDebian >/dev/null; then
+        print_verbose 1 "NeuroDebian repositories are already available, thus skipping the rest."
+        print_verbose 1 "Rerun with --overwrite if you would like to reconfigure."
+        exit 0
+    fi
 else
     print_verbose 1 "Generating $ae_output_file"
     if [ -z "$ae_dry_run" ]; then
@@ -351,7 +401,7 @@ fi
 
 print_verbose 1 "Updating APT listings, might take a few minutes"
 if [ -z "$ae_dry_run" ]; then
-    apt_logfile=$(mktemp)
+    apt_logfile=$(ae_tempdir)/apt.log
     $ae_sudo apt-get update 1>"$apt_logfile" 2>&1 \
         && rm -f "$apt_logfile" \
         || {
