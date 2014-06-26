@@ -269,8 +269,10 @@ if include_component software || include_component data; then
     if [ -z "$ae_mirror" ]; then # none specified
         ae_mirror_url=$ae_mirror_main
     else
-        if [ ! "$ae_mirror" ~= ".*://.*" ]; then
+        if ! [[ "$ae_mirror" =~ ".*://.*" ]]; then
             # TODO -- determine from the abbreviation
+            echo TODO
+            ae_mirror_url=$ae_mirror_main
         fi
     fi
 fi
