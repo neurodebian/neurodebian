@@ -105,7 +105,7 @@ Options:
     Comma separated list of components to enable among:
      software -- primary software repository
      data -- data packages
-     devel -- "overlay" of development versions (like Debian "experimental").
+     devel -- "overlay" of development versions (like Debians' "experimental").
               Not sufficient on its own and available only from the main site
     If not specified -- "software,data"
 
@@ -122,7 +122,8 @@ Options:
     multiple repositories
 
   --sources, --no-sources
-    Either to enable deb-src lines.  If not specified -- deduced based on ??? TODO
+    Either to enable deb-src lines.  If none specified -- would be enabled if
+    sources for a core package (apt) are available.
 
   -n, --dry-run
     Do not perform any changes -- generated configurations and commands will
@@ -340,7 +341,11 @@ case $ae_flavor in
  *) error 5 "Unknown value of flavor $apt_flavor.  Must be full or libre"
 esac
 
-if [ -z "$ae_sources" ] || [ $ae_sources -eq 0 ]; then
+if [ -z "$ae_sources" ]; then
+    apt-cache showsrc apt >&/dev/null && ae_sources=1 || ae_sources=0
+fi
+
+if [ $ae_sources -eq 0 ]; then
     sources_comment="#"
 else
     sources_comment=""
@@ -374,11 +379,19 @@ fi
 
 if [ -e "$ae_output_file" ] && [ -z "$ae_overwrite" ]; then
     # TODO: compare the content
-    # error 3
-    print_verbose 1 "File $ae_output_file already exists, containing:\n\n`cat \"$ae_output_file\"`\n\nI: Use --overwrite option to regenerate with:\n\n$apt_list"
-    if get_apt_policy NeuroDebian >/dev/null; then
-        print_verbose 1 "NeuroDebian repositories are already available, thus skipping the rest."
-        print_verbose 1 "Rerun with --overwrite if you would like to reconfigure."
+    if diff "$ae_output_file" <(echo "$apt_list") | grep -q .; then
+        # error 3
+        print_verbose 1 "File $ae_output_file already exists, containing:\n`cat \"$ae_output_file\"`\n\nI: New configuration is different:\n$apt_list"
+        if get_apt_policy NeuroDebian >/dev/null; then
+            print_verbose 1 "NeuroDebian repositories are already available, thus skipping the rest."
+            print_verbose 1 "Rerun with --overwrite if you would like to reconfigure."
+            exit 0
+        else
+            print_verbose 1 "NeuroDebian configuration is found but not yet available -- continuing with new configuration."
+        fi
+    else
+        print_verbose 1 "New configuration is identical to existing and NeuroDebian repository is already enabled."
+        print_verbose 1 "Skiping the rest. Rerun with --overwrite if you would like to reconfigure."
         exit 0
     fi
 else
