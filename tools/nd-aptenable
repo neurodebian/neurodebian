@@ -1,0 +1,366 @@
+#!/bin/bash
+#emacs: -*- mode: shell-script; c-basic-offset: 4; tab-width: 4; indent-tabs-mode: nil -*-
+#ex: set sts=4 ts=4 sw=4 et:
+
+# play safe
+set -e
+set -u
+
+############
+# Defaults #
+############
+
+nd_aptenable_version=0.1
+
+nd_key_id=0x2649A5A9
+
+# To be set by cmdline args
+ae_release=
+ae_components=software,data
+ae_flavor=
+ae_mirror_main=http://neuro.debian.net/debian
+ae_mirror=
+ae_suffix=
+ae_verbose=1
+ae_overwrite=
+ae_sources=
+ae_dry_run=
+
+ae_sudo=
+
+# TODOs:
+# - distribute/enable key
+# - apt priority! (so we could avoid automagic upgrades etc)
+# - multiarch setups
+
+
+# TODO -- consider fetching the most recent version from online
+# concerns -- without any validation might be subject to injection through man-in-the-middle etc
+nd_configfile=/etc/neurodebian/neurodebian.cfg # TODO - comes from neurodebian-devel pkg...
+# TODO: Or should it be parsed out from the NeuroDebian website itself?
+#  may be we could provide that file from the neurodebian website...
+
+print_verbose()
+{
+    level=$1; shift
+	if [ "$ae_verbose" -ge $level ]; then
+        echo -e "I: $*"
+    fi
+}
+
+error()
+{
+    code=$1; shift
+	echo -e "E: $*" >&2
+    exit $code
+}
+
+print_version()
+{
+cat << EOT
+nd-aptenable $nd_aptenable_version
+
+Copyright (C) 2014 Yaroslav Halchenko <debian@onerussian.com>
+
+Licensed under GNU Public License version 3 or later.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+Written by Yaroslav Halchenko for the NeuroDebian project.
+
+EOT
+}
+
+eval_dry()
+{
+    if [ -z "$ae_dry_run" ]; then
+        eval "$ae_sudo $@"
+    else
+        echo "DRY: $@"
+    fi
+}
+
+print_help()
+{
+cat << EOT
+
+Usage:  nd-aptenable [options]
+
+Enables NeuroDebian repository for the current Debian or Ubuntu release.
+
+Options:
+
+  -r, --release=RELEASE
+    Name of the Debian/Ubuntu release to be used.  If not specified,
+    it is deduced from the  apt-cache policy  output, by taking repository
+    of Debian or Ubuntu origin with highest priority.
+
+  -f, --flavor=full|libre
+    Which flavor of the repository should be enabled:
+     libre -- Only  main  component, containing only DFSG-compliant content.
+     full -- Includes main, contrib, and non-free.
+    If not specified -- deduced from the output of apt-cache policy
+
+  -c, --components=c1,c2,c3
+    Comma separated list of components to enable among:
+     software -- primary software repository
+     data -- data packages
+     devel -- "overlay" of development versions (like Debian "experimental").
+              Not sufficient on its own and available only from the main site
+    If not specified -- "software,data"
+
+  -m, --mirror=NAME|URL
+    Which mirror to use.  Could be a mirror code-name (as specified in
+    /etc/neurodebian/neurodebian.cfg), or a URL (TODO).
+
+  --overwrite,
+    If apt file already present, it would not be overriden (by default).
+    Use this option to overwrite.
+
+  --suffix=SUFFIX
+    Which suffix to add to the apt file, in case you are trying to enable
+    multiple repositories
+
+  --sources, --no-sources
+    Either to enable deb-src lines.  If not specified -- deduced based on ??? TODO
+
+  -n, --dry-run
+    Do not perform any changes -- generated configurations and commands will
+    simply be printed to stdout
+
+  -v, --verbose
+    Enable additional progress messages.  Could be used multiple times
+
+  -q, --quiet
+    Make operation quiet -- only error messages would be output
+
+  -h, --help
+    Print short description, usage summary and option list.
+
+  --version
+    Print version information and exit.
+
+Exit status:
+
+  non-0 exit status in case of error.  Error exit code would depend
+  on which command has failed
+
+Examples:
+
+  - Enable software and data components from the optimal (according to
+    netselect) mirror.  Some information about progress will be printed
+
+    nd-aptenable
+
+  - Quietly enable -devel repository for the current release, and place apt
+    configuration into /etc/apt/sources.list.d/neurodebian.sources-devel.list
+
+    nd-aptenable -q --suffix=-devel -c devel
+
+  - Force sid distribution, all the components, from the Japan mirror:
+
+    nd-aptenable -q --suffix=-de-sid-full -c software,data,devel -m jp
+
+EOT
+}
+
+get_mirrors() {
+    # Determine available mirrors by fetching our .cfg file
+    /etc/neurodebian/neurodebian.cfg
+}
+
+print_mirrors() {
+    echo "TODO"
+    exit 1
+}
+
+get_apt_policy() {
+    # Get apt-cache policy output in a single list for matching suites
+    # (could be a separated with \| or , for multiple choices, e.g.
+    #
+    # get_apt_policy Debian,Ubuntu
+    # or
+    # get_apt_policy NeuroDebian
+    suites="$1"
+    apt-cache policy | grep -B1 -e "o=\(${suites//,/\\|}\)" | tr '\n' ' ' | sed -e 's, -- ,\n,g' | grep -v -e '-\(updates\|security\)' | sort -nr
+}
+
+include_component() {
+    echo "$ae_components" | tr ',' '\n' | grep -q "^$1\$"
+}
+
+
+#
+# Commandline options handling
+#
+
+# Parse commandline options (taken from the getopt examples from the Debian util-linux package)
+# Note that we use `"$@"' to let each command-line parameter expand to a
+# separate word. The quotes around `$@' are essential!
+# We need CLOPTS as the `eval set --' would nuke the return value of getopt.
+CLOPTS=`getopt -o h,r:,m:,f:,c:,q,v,n --long help,version,quiet,verbose,mirror:,release:,flavor:,components:,suffix:,overwrite,sources,no-sources,dry-run,print-mirrors -n 'nd-aptenable' -- "$@"`
+
+if [ $? != 0 ] ; then
+  error 2 "Problem with parsing cmdline.  Terminating..."
+fi
+
+# Note the quotes around `$CLOPTS': they are essential!
+eval set -- "$CLOPTS"
+
+while true ; do
+  case "$1" in
+	  -r|--release) shift; ae_release="$1"; shift;;
+	  -f|--flavor) shift;  ae_flavor="$1"; shift;;
+	  -c|--components) shift; ae_components="$1"; shift;;
+      # TODO
+      -m|--mirror) shift;  ae_mirror="$1"; shift;;
+      # TODO
+         --print-mirrors)  print_mirrors; exit 0;;
+      -n|--dry-run)        ae_dry_run=1; shift;;
+         --suffix) shift;  ae_suffix="$1"; shift;;
+         --overwrite)      ae_overwrite="$1"; shift;;
+         --sources)        ae_sources=1; shift;;
+         --no-sources)     ae_sources=0; shift;;
+	  -q|--quiet)          ae_verbose=0; shift;;
+	  -v|--verbose)        ae_verbose=$(($ae_verbose+1)); shift;;
+	  -h|--help) print_help; exit 0;;
+	  --version) print_version; exit 0;;
+	  --) shift ; break ;;
+	  *) error 1 "Internal error! ($1)";;
+  esac
+done
+
+
+if [ $# -gt 0 ] ; then
+    print_help >&2
+    exit 2
+fi
+
+
+#
+# Basic system/environment knowledge
+#
+
+ae_output_file=/etc/apt/sources.list.d/neurodebian.sources${ae_suffix}.list
+
+if [ `whoami` != "root" ]; then
+    print_verbose 1 "This script requires root access.  Since current user is not root, sudo will be used"
+    ae_sudo=sudo
+fi
+
+apt_policy=$(get_apt_policy "Debian,Ubuntu" )
+
+if [ -z "$ae_release" ]; then
+    ae_release=$(echo "$apt_policy" | head -1 | sed -e 's/.*,n=\([^,]*\),.*/\1/g')
+fi
+
+if [ -z "$ae_flavor" ]; then
+    ae_flavor=$(echo "$apt_policy" | grep -e ",n=$ae_release," | grep -qe 'c=\(non-free\|restricted\)' && echo "full" || echo "libre")
+fi
+
+#
+# Determine which mirror to use
+#
+
+# TODO -- determine mirror URL
+# Not necessary for -devel available only from the main site
+if include_component software || include_component data; then
+    # for now just use default
+    if [ -z "$ae_mirror" ]; then # none specified
+        ae_mirror_url=$ae_mirror_main
+    else
+        if [ ! "$ae_mirror" ~= ".*://.*" ]; then
+            # TODO -- determine from the abbreviation
+        fi
+    fi
+fi
+
+
+#
+# Prepare APT file
+#
+
+case $ae_flavor in
+ full)  apt_flavor="contrib non-free";;
+ libre) apt_flavor="";;
+ *) error 5 "Unknown value of flavor $apt_flavor.  Must be full or libre"
+esac
+
+if [ -z "$ae_sources" ] || [ $ae_sources -eq 0 ]; then
+    sources_comment="#"
+else
+    sources_comment=""
+fi
+
+apt_list=
+
+if include_component software; then
+    apt_list+="
+# NeuroDebian software repository
+deb     $ae_mirror_url $ae_release main $apt_flavor
+${sources_comment}deb-src $ae_mirror_url $ae_release main $apt_flavor
+"
+fi
+
+if include_component data; then
+    apt_list+="
+# NeuroDebian data repository
+deb     $ae_mirror_url data main $apt_flavor
+${sources_comment}deb-src $ae_mirror_url data main $apt_flavor
+"
+fi
+
+if include_component devel; then
+    apt_list+="
+# NeuroDebian -devel repository
+deb     http://neuro.debian.net/debian-devel $ae_release main $apt_flavor
+${sources_comment}deb-src http://neuro.debian.net/debian-devel $ae_release main $apt_flavor
+"
+fi
+
+if [ -e "$ae_output_file" ] && [ -z "$ae_overwrite" ]; then
+    # error 3
+    print_verbose 1 "File $ae_output_file already exists, containing:\n\n`cat \"$ae_output_file\"`\n\nI: Use --overwrite option to regenerate with:\n\n$apt_list"
+else
+    print_verbose 1 "Generating $ae_output_file"
+    if [ -z "$ae_dry_run" ]; then
+        echo "$apt_list" >| "$ae_output_file"
+    else
+        echo "DRY:"
+        echo "$apt_list"
+    fi
+fi
+
+
+#
+# Assure present archive GPG key for APT system
+#
+
+# Figure out if key needs to be imported (if ran within package,
+# should already be there due to neurodebian-keyring package)
+if LANG=C eval $ae_sudo apt-key export $nd_key_id 2>&1 1>/dev/null | grep -qe "nothing exported"; then
+    print_verbose 1 "Fetching the key from the server"
+    eval_dry apt-key adv --recv-keys --keyserver pgp.mit.edu $nd_key_id
+fi
+
+#
+# Finalizing (apt-get update etc)
+#
+
+print_verbose 1 "Updating APT listings, might take a few minutes"
+if [ -z "$ae_dry_run" ]; then
+    apt_logfile=$(mktemp)
+    $ae_sudo apt-get update 1>"$apt_logfile" 2>&1 \
+        && rm -f "$apt_logfile" \
+        || {
+             cat "$apt_logfile"
+             error 5 "E: Update failed with exit code $? (above output logged into $apt_logfile)."
+             }
+else
+    eval_dry apt-get update
+fi
+
+if [ "$ae_verbose" -ge 2 ]; then
+    print_verbose 2 "Currently enabled NeuroDebian suites/mirrors:"
+    get_apt_policy NeuroDebian
+fi
