@@ -2,6 +2,9 @@
 #emacs: -*- mode: shell-script; c-basic-offset: 4; tab-width: 4; indent-tabs-mode: nil -*-
 #ex: set sts=4 ts=4 sw=4 et:
 
+# Depends:    apt, python, wget
+# Recommends: netselect
+
 # play safe
 set -e
 set -u
@@ -111,7 +114,7 @@ Options:
 
   -m, --mirror=NAME|URL
     Which mirror to use.  Could be a mirror code-name (as specified in
-    /etc/neurodebian/neurodebian.cfg), or a URL (TODO).
+    /etc/neurodebian/neurodebian.cfg), or a URL.
 
   --overwrite,
     If apt file already present, it would not be overriden (by default).
@@ -185,7 +188,6 @@ query_cfg_section()
 
 get_mirrors()
 {
-#    echo "TODO: fetch uptodate neurodebian.cfg"
     nd_config=`get_neurodebian_cfg`
 #    $exe_dir/nd_querycfg -F" " --config-file="$nd_config" "mirrors" \
     query_cfg_section "$nd_config" "mirrors" \
@@ -205,8 +207,9 @@ netselect_mirror() {
         print_verbose 1 "netselect (apt-get install netselect) needed to select the 'best' mirror was not found"
         print_verbose 1 "Selecting the default repository: $nd_mirror_default"
         echo $nd_mirror_default
+    else
+        get_mirrors | awk '{print $2;}' | $ae_sudo xargs netselect -D -s 1 | awk '{print $2;}'
     fi
-    get_mirrors | awk '{print $2;}' | $ae_sudo xargs netselect -D -s 1 | awk '{print $2;}'
 }
 
 get_mirror_url() {
@@ -262,9 +265,7 @@ while true ; do
 	  -r|--release) shift; ae_release="$1"; shift;;
 	  -f|--flavor) shift;  ae_flavor="$1"; shift;;
 	  -c|--components) shift; ae_components="$1"; shift;;
-      # TODO
       -m|--mirror) shift;  ae_mirror="$1"; shift;;
-      # TODO
          --print-mirrors)  get_mirrors; exit 0;;
          --print-best-mirror)  netselect_mirror; exit 0;;
       -n|--dry-run)        ae_dry_run=1; shift;;
@@ -310,15 +311,13 @@ fi
 # Determine which mirror to use
 #
 
-# TODO -- determine mirror URL
-# Not necessary for -devel available only from the main site
+# knowing mirror is not necessary for -devel available only from the main site
 if include_component software || include_component data; then
     # for now just use default
     if [ -z "$ae_mirror" ]; then # none specified
         ae_mirror_url=$nd_mirror_origin
     else
         if ! [[ "$ae_mirror" =~ ".*://.*" ]]; then
-            # TODO -- determine from the abbreviation
             case "$ae_mirror" in
                 best)    ae_mirror_url=$(netselect_mirror);;
                 default) ae_mirror_url=$nd_mirror_default;;
@@ -378,7 +377,6 @@ ${sources_comment}deb-src http://neuro.debian.net/debian-devel $ae_release main 
 fi
 
 if [ -e "$ae_output_file" ] && [ -z "$ae_overwrite" ]; then
-    # TODO: compare the content
     if diff "$ae_output_file" <(echo "$apt_list") | grep -q .; then
         # error 3
         print_verbose 1 "File $ae_output_file already exists, containing:\n`cat \"$ae_output_file\"`\n\nI: New configuration is different:\n$apt_list"
