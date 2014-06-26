@@ -175,12 +175,19 @@ get_neurodebian_cfg()
     # if not -- should blow up
 }
 
+query_cfg_section()
+{
+    config_file="$1"
+    section="$2"
+    python -c "from ConfigParser import SafeConfigParser as SP; cfg = SP(); cfg.read('$config_file'); print('\n'.join([' '.join(x) for x in cfg.items('$section')]))"
+}
+
 get_mirrors()
 {
 #    echo "TODO: fetch uptodate neurodebian.cfg"
     nd_config=`get_neurodebian_cfg`
-    $exe_dir/nd_querycfg --config-file="$nd_config" "mirrors" \
-    | sed -e 's,=, ,'g \
+#    $exe_dir/nd_querycfg -F" " --config-file="$nd_config" "mirrors" \
+    query_cfg_section "$nd_config" "mirrors" \
     | while read mirror_name mirror_url; do
         # verify that url is just a url
         if echo "$mirror_url" | grep -v -e '^[a-z0-9:+]*://[-+_%.a-z0-9/]*$'; then
@@ -366,6 +373,7 @@ ${sources_comment}deb-src http://neuro.debian.net/debian-devel $ae_release main 
 fi
 
 if [ -e "$ae_output_file" ] && [ -z "$ae_overwrite" ]; then
+    # TODO: compare the content
     # error 3
     print_verbose 1 "File $ae_output_file already exists, containing:\n\n`cat \"$ae_output_file\"`\n\nI: Use --overwrite option to regenerate with:\n\n$apt_list"
     if get_apt_policy NeuroDebian >/dev/null; then
@@ -376,7 +384,7 @@ if [ -e "$ae_output_file" ] && [ -z "$ae_overwrite" ]; then
 else
     print_verbose 1 "Generating $ae_output_file"
     if [ -z "$ae_dry_run" ]; then
-        echo "$apt_list" >| "$ae_output_file"
+        echo "$apt_list" | $ae_sudo bash -c "cat - >| '$ae_output_file'"
     else
         echo "DRY:"
         echo "$apt_list"
@@ -401,7 +409,7 @@ fi
 
 print_verbose 1 "Updating APT listings, might take a few minutes"
 if [ -z "$ae_dry_run" ]; then
-    apt_logfile=$(ae_tempdir)/apt.log
+    apt_logfile="$ae_tempdir/apt.log"
     $ae_sudo apt-get update 1>"$apt_logfile" 2>&1 \
         && rm -f "$apt_logfile" \
         || {
