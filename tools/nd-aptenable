@@ -16,6 +16,7 @@ set -u
 nd_aptenable_version=0.1
 
 nd_key_id=0x2649A5A9
+nd_config_url=https://raw.githubusercontent.com/neurodebian/neurodebian/master/neurodebian.cfg
 nd_config_file=/etc/neurodebian/neurodebian.cfg
 nd_mirror_origin=http://neuro.debian.net/debian
 nd_mirror_default=$nd_mirror_origin # or may be AWS?
@@ -173,16 +174,19 @@ get_neurodebian_cfg()
     # First we try to fetch the most recent version from the github
     print_verbose 3 "Fetching config file from the github repository"
     cfgfile_temp="$ae_tempdir/neurodebian.cfg"
-    wget -c -q -O$cfgfile_temp https://raw.githubusercontent.com/neurodebian/neurodebian/master/neurodebian.cfg \
+    wget --no-check-certificate -c -q -O$cfgfile_temp \
+        $nd_config_url \
         && { echo $cfgfile_temp; } \
-        || { [ -e "$nd_config_file" ] && return "$nd_config_file"; }
-    # if not -- should blow up
+        || { [ -e "$nd_config_file" ] \
+             && echo "$nd_config_file" \
+             || error 10 "Neither could fetch $nd_config_url, nor found $nd_config_file"; }
 }
 
 query_cfg_section()
 {
     config_file="$1"
     section="$2"
+    print_verbose 3 "Querying config $config_file section $section"
     python -c "from ConfigParser import SafeConfigParser as SP; cfg = SP(); cfg.read('$config_file'); print('\n'.join([' '.join(x) for x in cfg.items('$section')]))"
 }
 
