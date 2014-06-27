@@ -218,7 +218,7 @@ get_mirrors()
     done
 }
 
-get_apt_cache_package_version()
+get_package_version()
 {
     pkg_version=$(apt-cache policy "$1" | awk '/^ *Installed:/{print $2;}')
     [ "$pkg_version" != '(none)' ] || pkg_version=''
@@ -236,10 +236,10 @@ netselect_mirror() {
     else
         # squeeze version doesn't have -D yet to force output of the URL not IP, but for our mirrors ATM it shouldn't matter
         netselect_opts="-s 1"
-        if dpkg --compare-version $(get_apt_cache_package_version netselect) ge 0.3.ds1-17; then
+        if dpkg --compare-versions $(get_package_version netselect) ge 0.3.ds1-17; then
             netselect_opts+=" -D"
         fi
-        best_mirror=$(get_mirrors | awk '{print $2;}' | eval $ae_sudo xargs $netselect $netselect_opts | awk '{print $2;}')
+        best_mirror=$(get_mirrors | awk '{print $2;}' | eval $ae_sudo xargs netselect $netselect_opts | awk '{print $2;}')
         print_verbose 2 "Best mirror: $best_mirror"
         echo $best_mirror
     fi
@@ -496,8 +496,13 @@ if [ -z "$ae_dry_run" ]; then
     $ae_sudo apt-get update 1>"$apt_logfile" 2>&1 \
         && rm -f "$apt_logfile" \
         || {
-             cat "$apt_logfile"
-             error 5 "E: Update failed with exit code $? (above output logged into $apt_logfile)."
+             apt_log=$(cat "$apt_logfile")
+             echo "$apt_log"
+             if echo "$apt_log" | grep -q "Malformed line [0-9]* in source list $ae_output_file"; then
+                 $ae_sudo mv "${ae_output_file}" "${ae_output_file}.failed-disabled"
+                 error 6 "Update failed to possible errorneous APT listing file produced by this script.  Generated $ae_output_file renamed to ${ae_output_file}.failed-disabled to not interfer"
+             fi
+             error 5 "Update failed with exit code $? (above output logged into $apt_logfile)."
              }
 else
     eval_dry apt-get update
