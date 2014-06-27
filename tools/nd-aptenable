@@ -2,7 +2,7 @@
 #emacs: -*- mode: shell-script; c-basic-offset: 4; tab-width: 4; indent-tabs-mode: nil -*-
 #ex: set sts=4 ts=4 sw=4 et:
 
-# Depends:    apt, python, wget
+# Depends:    apt (assumed to be present), python, wget
 # Recommends: netselect
 
 # play safe
@@ -21,16 +21,18 @@ nd_config_file=/etc/neurodebian/neurodebian.cfg
 nd_mirror_origin=http://neuro.debian.net/debian
 nd_mirror_default=$nd_mirror_origin # or may be AWS?
 
-# To be set by cmdline args
-ae_release=
-ae_components=software,data
-ae_flavor=
-ae_mirror=best
-ae_suffix=
-ae_verbose=1
-ae_overwrite=
-ae_sources=
-ae_dry_run=
+# To be set by cmdline args or via env variables with prefix ND_AE_
+ae_release=${ND_AE_RELEASE:-}
+ae_components=${ND_AE_COMPONENTS:-software,data}
+ae_flavor=${ND_AE_FLAVOR:-}
+ae_mirror=${ND_AE_MIRROR:-best}
+ae_suffix=${ND_AE_SUFFIX:-}
+ae_verbose=${ND_AE_VERBOSE:-1}
+ae_overwrite=${ND_AE_OVERWRITE:-}
+ae_sources=${ND_AE_SOURCES:-}
+ae_install=${ND_AE_INSTALL:-}
+ae_dry_run=${ND_AE_DRY_RUN:-}
+ae_defun_only=${ND_AE_DEFUN_ONLY:-} # mode to source this file as a "library"
 
 ae_sudo=
 exe_dir=$(dirname $0)
@@ -48,7 +50,9 @@ print_verbose()
     level=$1; shift
 	if [ "$ae_verbose" -ge $level ]; then
         # use stderr for printing within functions stdout of which might be used
-        echo -e "I: $*" >&2
+        echo -n "I: " >&2
+        i=1; while [ $i -lt $level ]; do echo -ne " ">&2; i=$(($i+1)); done
+        echo -e "$*" >&2
     fi
 }
 
@@ -78,9 +82,13 @@ EOT
 eval_dry()
 {
     if [ -z "$ae_dry_run" ]; then
-        eval "$ae_sudo $@"
+        if eval "$ae_sudo $@" 1>|"$ae_tempdir/eval.log" 2>&1; then
+            rm "$ae_tempdir/eval.log"
+        else
+            error $? "Command $@ failed with exit code $?.  Output was: `cat $ae_tempdir/eval.log`"
+        fi
     else
-        echo "DRY: $@"
+        echo "DRY: $@" >&2
     fi
 }
 
@@ -133,6 +141,10 @@ Options:
     Do not perform any changes -- generated configurations and commands will
     simply be printed to stdout
 
+  --install
+    If found absent, all necessary tools (wget, netselect) if available will
+    be apt-get installed
+
   -v, --verbose
     Enable additional progress messages.  Could be used multiple times
 
@@ -174,6 +186,7 @@ get_neurodebian_cfg()
     # First we try to fetch the most recent version from the github
     print_verbose 3 "Fetching config file from the github repository"
     cfgfile_temp="$ae_tempdir/neurodebian.cfg"
+    assure_command_from_package wget wget 1
     wget --no-check-certificate -c -q -O$cfgfile_temp \
         $nd_config_url \
         && { echo $cfgfile_temp; } \
@@ -187,6 +200,7 @@ query_cfg_section()
     config_file="$1"
     section="$2"
     print_verbose 3 "Querying config $config_file section $section"
+    assure_command_from_package python python-minimal 1
     python -c "from ConfigParser import SafeConfigParser as SP; cfg = SP(); cfg.read('$config_file'); print('\n'.join([' '.join(x) for x in cfg.items('$section')]))"
 }
 
@@ -207,16 +221,20 @@ get_mirrors()
 netselect_mirror() {
     # select "closest" mirror according to netselect.
     print_verbose 2 "Selecting the 'best' mirror using netselect"
-    if ! which netselect >/dev/null; then
+    assure_command_from_package netselect
+    if ! which netselect >&/dev/null; then
         print_verbose 1 "netselect (apt-get install netselect) needed to select the 'best' mirror was not found"
         print_verbose 1 "Selecting the default repository: $nd_mirror_default"
         echo $nd_mirror_default
     else
-        get_mirrors | awk '{print $2;}' | $ae_sudo xargs netselect -D -s 1 | awk '{print $2;}'
+        best_mirror=$(get_mirrors | awk '{print $2;}' | $ae_sudo xargs netselect -D -s 1 | awk '{print $2;}')
+        print_verbose 2 "Best mirror: $best_mirror"
+        echo $best_mirror
     fi
 }
 
-get_mirror_url() {
+get_mirror_url()
+{
     # given mirror alias -- find its url
     url=$(get_mirrors | awk "/^$1 /{print \$2;}")
     if [ -z "$url" ]; then
@@ -234,14 +252,50 @@ get_apt_policy()
     # or
     # get_apt_policy NeuroDebian
     suites="$1"
-    apt-cache policy | grep -B1 -e "o=\(${suites//,/\\|}\)" | tr '\n' ' ' | sed -e 's, -- ,\n,g' | grep -v -e '-\(updates\|security\)' | sort -nr
+    $ae_sudo apt-cache policy | grep -B1 -e "o=\(${suites//,/\\|}\)" | tr '\n' ' ' | sed -e 's, -- ,\n,g' | grep -v -e '-\(updates\|security\)' | sort -nr
 }
 
-include_component()
+is_component_included()
 {
     echo "$ae_components" | tr ',' '\n' | grep -q "^$1\$"
 }
 
+is_sources_enabled()
+{
+    apt-cache showsrc apt >&/dev/null && echo 1 || echo 0
+}
+
+assure_command_from_package()
+{
+    cmd=$1
+    pkg=${2:-$cmd}
+    fail=${3:-}
+
+    which "$cmd" >&/dev/null && return 0
+
+    # if absent -- check availability of the package
+    apt_cache=$(LANG=C apt-cache policy "$pkg" 2>&1)
+    if [[ "$apt_cache" =~ "Unable to locate package" ]] || [[ "$apt_cache" =~ "Candidate: (none)" ]]; then
+        print_verbose 1 "Package $pkg providing command $cmd is N/A. Skipping"
+        return 10;
+    fi
+    if echo "$apt_cache" | grep -q '^\s*\*\*\*'; then
+        print_verbose 1 "WARNING -- command $cmd is N/A but package $pkg is claimed to be installed"
+        [ -z "$fail" ] && return 11 || error $fail "Command $cmd is required to proceed"
+    fi
+    if [ "$ae_install" = "1" ]; then
+        print_verbose 1 "Installing $pkg package to get $cmd command"
+        eval_dry DEBIAN_FRONTEND=noninteractive apt-get install -y "$pkg"
+        return
+    else
+        print_verbose 1 "Command $cmd (from package $pkg) is N/A."
+        print_verbose 1 "Use with --install to get all necessary packages installed automatically"
+        [ -z "$fail" ] && return 12 || error $fail "Command $cmd is required to proceed"
+    fi
+}
+
+# if it was requested -- return without doing anything
+[ -z "$ae_defun_only" ] || return
 
 #
 # Commandline options handling
@@ -251,7 +305,7 @@ include_component()
 # Note that we use `"$@"' to let each command-line parameter expand to a
 # separate word. The quotes around `$@' are essential!
 # We need CLOPTS as the `eval set --' would nuke the return value of getopt.
-CLOPTS=`getopt -o h,r:,m:,f:,c:,q,v,n --long help,version,quiet,verbose,mirror:,release:,flavor:,components:,suffix:,overwrite,sources,no-sources,dry-run,print-mirrors,print-best-mirror -n 'nd-aptenable' -- "$@"`
+CLOPTS=`getopt -o h,r:,m:,f:,c:,q,v,n --long help,version,quiet,verbose,mirror:,release:,flavor:,components:,suffix:,overwrite,sources,no-sources,install,dry-run,print-mirrors,print-best-mirror -n 'nd-aptenable' -- "$@"`
 
 if [ $? != 0 ] ; then
   error 2 "Problem with parsing cmdline.  Terminating..."
@@ -277,6 +331,7 @@ while true ; do
          --overwrite)      ae_overwrite="$1"; shift;;
          --sources)        ae_sources=1; shift;;
          --no-sources)     ae_sources=0; shift;;
+         --install)        ae_install=1; shift;;
 	  -q|--quiet)          ae_verbose=0; shift;;
 	  -v|--verbose)        ae_verbose=$(($ae_verbose+1)); shift;;
 	  -h|--help) print_help; exit 0;;
@@ -316,7 +371,7 @@ fi
 #
 
 # knowing mirror is not necessary for -devel available only from the main site
-if include_component software || include_component data; then
+if is_component_included software || is_component_included data; then
     # for now just use default
     if [ -z "$ae_mirror" ]; then # none specified
         ae_mirror_url=$nd_mirror_origin
@@ -345,7 +400,7 @@ case $ae_flavor in
 esac
 
 if [ -z "$ae_sources" ]; then
-    apt-cache showsrc apt >&/dev/null && ae_sources=1 || ae_sources=0
+    ae_sources=$(is_sources_enabled)
 fi
 
 if [ $ae_sources -eq 0 ]; then
@@ -356,7 +411,7 @@ fi
 
 apt_list=
 
-if include_component software; then
+if is_component_included software; then
     apt_list+="
 # NeuroDebian software repository
 deb     $ae_mirror_url $ae_release main $apt_flavor
@@ -364,7 +419,7 @@ ${sources_comment}deb-src $ae_mirror_url $ae_release main $apt_flavor
 "
 fi
 
-if include_component data; then
+if is_component_included data; then
     apt_list+="
 # NeuroDebian data repository
 deb     $ae_mirror_url data main $apt_flavor
@@ -372,7 +427,7 @@ ${sources_comment}deb-src $ae_mirror_url data main $apt_flavor
 "
 fi
 
-if include_component devel; then
+if is_component_included devel; then
     apt_list+="
 # NeuroDebian -devel repository
 deb     http://neuro.debian.net/debian-devel $ae_release main $apt_flavor
@@ -417,6 +472,7 @@ if LANG=C eval $ae_sudo apt-key export $nd_key_id 2>&1 1>/dev/null | grep -qe "n
     print_verbose 1 "Fetching the key from the server"
     eval_dry apt-key adv --recv-keys --keyserver pgp.mit.edu $nd_key_id
 fi
+
 
 #
 # Finalizing (apt-get update etc)
