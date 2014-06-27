@@ -236,8 +236,12 @@ netselect_mirror() {
     else
         # squeeze version doesn't have -D yet to force output of the URL not IP, but for our mirrors ATM it shouldn't matter
         netselect_opts="-s 1"
-        if dpkg --compare-versions $(get_package_version netselect) ge 0.3.ds1-17; then
+        netselect_version="$(get_package_version netselect)"
+        if dpkg --compare-versions "$netselect_version" ge 0.3.ds1-17; then
             netselect_opts+=" -D"
+        fi
+        if dpkg --compare-versions "$netselect_version" ge 0.3.ds1-15; then
+            netselect_opts+=" -I"
         fi
         best_mirror=$(get_mirrors | awk '{print $2;}' | eval $ae_sudo xargs netselect $netselect_opts | awk '{print $2;}')
         print_verbose 2 "Best mirror: $best_mirror"
