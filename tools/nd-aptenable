@@ -218,6 +218,13 @@ get_mirrors()
     done
 }
 
+get_apt_cache_package_version()
+{
+    pkg_version=$(apt-cache policy "$1" | awk '/^ *Installed:/{print $2;}')
+    [ "$pkg_version" != '(none)' ] || pkg_version=''
+    echo "$pkg_version"
+}
+
 netselect_mirror() {
     # select "closest" mirror according to netselect.
     print_verbose 2 "Selecting the 'best' mirror using netselect"
@@ -227,7 +234,12 @@ netselect_mirror() {
         print_verbose 1 "Selecting the default repository: $nd_mirror_default"
         echo $nd_mirror_default
     else
-        best_mirror=$(get_mirrors | awk '{print $2;}' | $ae_sudo xargs netselect -D -s 1 | awk '{print $2;}')
+        # squeeze version doesn't have -D yet to force output of the URL not IP, but for our mirrors ATM it shouldn't matter
+        netselect_opts="-s 1"
+        if dpkg --compare-version $(get_apt_cache_package_version netselect) ge 0.3.ds1-17; then
+            netselect_opts+=" -D"
+        fi
+        best_mirror=$(get_mirrors | awk '{print $2;}' | eval $ae_sudo xargs $netselect $netselect_opts | awk '{print $2;}')
         print_verbose 2 "Best mirror: $best_mirror"
         echo $best_mirror
     fi
