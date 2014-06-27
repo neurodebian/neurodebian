@@ -499,8 +499,8 @@ if [ -z "$ae_dry_run" ]; then
              apt_log=$(cat "$apt_logfile")
              echo "$apt_log"
              if echo "$apt_log" | grep -q "Malformed line [0-9]* in source list $ae_output_file"; then
-                 $ae_sudo mv "${ae_output_file}" "${ae_output_file}.failed-disabled"
-                 error 6 "Update failed to possible errorneous APT listing file produced by this script.  Generated $ae_output_file renamed to ${ae_output_file}.failed-disabled to not interfer"
+                 $ae_sudo mv "${ae_output_file}" "${ae_output_file}-failed.disabled"
+                 error 6 "Update failed to possible errorneous APT listing file produced by this script.  Generated $ae_output_file renamed to ${ae_output_file}-failed.disabled to not interfer"
              fi
              error 5 "Update failed with exit code $? (above output logged into $apt_logfile)."
              }
