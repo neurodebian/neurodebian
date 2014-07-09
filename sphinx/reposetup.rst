@@ -143,7 +143,7 @@ You are ready to go -- enjoy NeuroDebian!
     if(mir in mirrors) {
         var retrepo = "wget -O- http://neuro.debian.net/lists/" + rel + "."
          + mir + "." + comp + " | sudo tee /etc/apt/sources.list.d/neurodebian.sources.list\n"
-         + "sudo apt-key adv --recv-keys --keyserver pgp.mit.edu 2649A5A9\n";
+         + "sudo apt-key adv --recv-keys --keyserver hkp://pgp.mit.edu:80 2649A5A9\n";
         return retrepo;
     }
 
