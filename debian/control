@@ -31,7 +31,7 @@ Architecture: all
 Pre-depends: neurodebian-keyring, python-minimal, wget
 Depends: ${misc:Depends}
 Recommends: netselect
-Description: installer of the NeuroDebian APT repository
+Description: NeuroDebian APT repository installer
  Besides making (neuro)scientific software available on stock Debian
  systems, neuro.debian.net (and mirrors around the globe) provides
  a repository with backport builds of the NeuroDebian-maintained

@@ -41,9 +41,16 @@ exe_dir=$(dirname $0)
 # - apt priority! (so we could avoid automagic upgrades etc)
 # - multiarch setups
 
-ae_tempdir=$(mktemp -d)
-trap "rm -rf \"$ae_tempdir\"" TERM INT EXIT
+if [ -z "${ND_AE_TEMPDIR:-}" ]; then
+    ae_tempdir=$(mktemp -d)
+    trap "rm -rf \"$ae_tempdir\"" TERM INT EXIT
+else
+    # reuse the same directory/fetched configuration if was specified
+    ae_tempdir="${ND_AE_TEMPDIR:-}"
+fi
 
+
+nd_config_file_fresh="$ae_tempdir/neurodebian.cfg"
 
 print_verbose()
 {
@@ -107,6 +114,9 @@ Options:
     it is deduced from the  apt-cache policy  output, by taking repository
     of Debian or Ubuntu origin with highest priority.
 
+  --print-releases
+    Return a list of releases present in NeuroDebian repository.
+
   -f, --flavor=full|libre
     Which flavor of the repository should be enabled:
      libre -- Only  main  component, containing only DFSG-compliant content.
@@ -124,6 +134,9 @@ Options:
   -m, --mirror=NAME|URL
     Which mirror to use.  Could be a mirror code-name (as specified in
     /etc/neurodebian/neurodebian.cfg), or a URL.
+
+  --print-mirrors
+    Return a list (with abbreviation) of known NeuroDebian mirrors.
 
   --overwrite,
     If apt file already present, it would not be overriden (by default).
@@ -183,13 +196,17 @@ EOT
 
 get_neurodebian_cfg()
 {
+    if [ -s "$nd_config_file_fresh" ]; then
+        print_verbose 3 "Config file $nd_config_file_fresh exists -- not fetching"
+        echo "$nd_config_file_fresh"
+        return 0
+    fi
     # First we try to fetch the most recent version from the github
     print_verbose 3 "Fetching config file from the github repository"
-    cfgfile_temp="$ae_tempdir/neurodebian.cfg"
     assure_command_from_package wget wget 1
-    wget --no-check-certificate -c -q -O$cfgfile_temp \
+    wget --no-check-certificate -c -q -O$nd_config_file_fresh \
         $nd_config_url \
-        && { echo $cfgfile_temp; } \
+        && { echo "$nd_config_file_fresh"; } \
         || { [ -e "$nd_config_file" ] \
              && echo "$nd_config_file" \
              || error 10 "Neither could fetch $nd_config_url, nor found $nd_config_file"; }
@@ -208,13 +225,31 @@ get_mirrors()
 {
     nd_config=`get_neurodebian_cfg`
 #    $exe_dir/nd_querycfg -F" " --config-file="$nd_config" "mirrors" \
+    n=""
     query_cfg_section "$nd_config" "mirrors" \
     | while read mirror_name mirror_url; do
         # verify that url is just a url
         if echo "$mirror_url" | grep -v -e '^[a-z0-9:+]*://[-+_%.a-z0-9/]*$'; then
             print_verbose 1 "Mirror $mirror_name has 'illegit' URL: $mirror_url.  Skipping"
         fi
-        echo "$mirror_name $mirror_url"
+        [ -z "$n" ] || echo -ne "${ND_IFS:-\n}"; n+=1
+        echo -n "$mirror_name $mirror_url"
+    done
+}
+
+get_releases()
+{
+    nd_config=`get_neurodebian_cfg`
+    n=""
+    query_cfg_section "$nd_config" "release files" \
+    | while read release_name release_url; do
+        # verify that url is just a url
+        if [ "$release_name" = "data" ]; then
+            # skip data
+            continue
+        fi
+        [ -z "$n" ] || echo -ne "${ND_IFS:-\n}"; n+=1
+        echo -n "$release_name"
     done
 }
 
@@ -321,7 +356,7 @@ assure_command_from_package()
 # Note that we use `"$@"' to let each command-line parameter expand to a
 # separate word. The quotes around `$@' are essential!
 # We need CLOPTS as the `eval set --' would nuke the return value of getopt.
-CLOPTS=`getopt -o h,r:,m:,f:,c:,q,v,n --long help,version,quiet,verbose,mirror:,release:,flavor:,components:,suffix:,overwrite,sources,no-sources,install,dry-run,print-mirrors,print-best-mirror -n 'nd-aptenable' -- "$@"`
+CLOPTS=`getopt -o h,r:,m:,f:,c:,q,v,n --long help,version,quiet,verbose,mirror:,release:,flavor:,components:,suffix:,overwrite,sources,no-sources,install,dry-run,print-releases,print-mirrors,print-best-mirror -n 'nd-aptenable' -- "$@"`
 
 if [ $? != 0 ] ; then
   error 2 "Problem with parsing cmdline.  Terminating..."
@@ -342,6 +377,7 @@ while true ; do
       -m|--mirror) shift;  ae_mirror="$1"; shift;;
          --print-mirrors)  get_mirrors; exit 0;;
          --print-best-mirror)  netselect_mirror; exit 0;;
+         --print-releases)  get_releases; exit 0;;
       -n|--dry-run)        ae_dry_run=1; shift;;
          --suffix) shift;  ae_suffix="$1"; shift;;
          --overwrite)      ae_overwrite="$1"; shift;;
