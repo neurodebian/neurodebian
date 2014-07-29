@@ -280,8 +280,13 @@ netselect_mirror() {
             netselect_opts+=" -I"
         fi
         best_mirror=$(get_mirrors | awk '{print $2;}' | eval $ae_sudo xargs netselect $netselect_opts | awk '{print $2;}')
-        print_verbose 2 "Best mirror: $best_mirror"
-        echo $best_mirror
+        if [ -z "$best_mirror" ]; then
+            print_verbose 1 "Failed to select mirror using netselect. Selecting default one ($nd_mirror_default)"
+            echo "$nd_mirror_default"
+        else
+            print_verbose 2 "Best mirror: $best_mirror"
+            echo $best_mirror
+        fi
     fi
 }
 
@@ -327,7 +332,7 @@ assure_command_from_package()
 
     # if absent -- check availability of the package
     apt_cache=$(LANG=C apt-cache policy "$pkg" 2>&1)
-    if [[ "$apt_cache" =~ "Unable to locate package" ]] || [[ "$apt_cache" =~ "Candidate: (none)" ]]; then
+    if [[ "$apt_cache" =~ Unable\ to\ locate\ package ]] || [[ "$apt_cache" =~ Candidate:\ (none) ]]; then
         print_verbose 1 "Package $pkg providing command $cmd is N/A. Skipping"
         return 10;
     fi
@@ -430,7 +435,7 @@ if is_component_included software || is_component_included data; then
     if [ -z "$ae_mirror" ]; then # none specified
         ae_mirror_url=$nd_mirror_origin
     else
-        if ! [[ "$ae_mirror" =~ ".*://.*" ]]; then
+        if ! [[ "$ae_mirror" =~ .*://.* ]]; then
             case "$ae_mirror" in
                 best)    ae_mirror_url=$(netselect_mirror);;
                 default) ae_mirror_url=$nd_mirror_default;;
@@ -550,6 +555,8 @@ if [ ! -z "$ae_update" ]; then
     else
         eval_dry apt-get update
     fi
+else
+    print_verbose 1 "apt-get update  was not run. Please run to take an effect of changes"
 fi
 
 if [ "$ae_verbose" -ge 2 ]; then

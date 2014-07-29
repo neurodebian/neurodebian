@@ -82,22 +82,13 @@ Description: Additional suffix to use in the NeuroDebian APT file name
  (e.g. NeuroDebian devel) or release, without interfering with the
  main/default configuration file.
 
-Template: neurodebian-repository/apt-update
-Type: boolean
-Default: true
-Description: Should apt-get update be run to update list of packages?
-
-Template: neurodebian-repository/apt-update-failed
-Type: error
-Description: apt-get update failed
- An attempt to update package lists of enabled APT repositories (via
- apt-get update) has failed.
-
-Template: neurodebian-repository/netselect-not-found
-Type: error
-Description: netselect tool was not found
- Please install netselect tool first (apt-get install netselect) or
- choose a specific mirror.
+Template: neurodebian-repository/run-update-note
+Type: note
+Description: Upon completion of installation invoke update in your APT frontend.
+ For the installed NeuroDebian APT configuration to take an effect,
+ list of packages needs to be updated.  This needs to be done
+ "manually" (e.g. apt-get update) upon completion of installation of
+ the neurodebian-repository package.
 
 Template: neurodebian-repository/netselect-not-found
 Type: error

@@ -2,14 +2,9 @@
 
 set -e
 
-
 case "$1" in
     purge)
 		rm -f /etc/apt/sources.list.d/neurodebian.sources*.list
-		db_get neurodebian-repository/apt-update || :
-		if [ "$RET" = "true" ] ; then
-		   apt-get update
-		fi
     ;;
 
     remove|upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)
