@@ -1,0 +1,26 @@
+#!/bin/bash
+
+set -e
+
+
+case "$1" in
+    purge)
+		rm -f /etc/apt/sources.list.d/neurodebian.sources*.list
+		db_get neurodebian-repository/apt-update || :
+		if [ "$RET" = "true" ] ; then
+		   apt-get update
+		fi
+    ;;
+
+    remove|upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)
+    ;;
+
+    *)
+        echo "postrm called with unknown argument \`$1'" >&2
+        exit 1
+    ;;
+esac
+
+#DEBHELPER#
+
+exit 0

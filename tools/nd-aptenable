@@ -31,6 +31,7 @@ ae_verbose=${ND_AE_VERBOSE:-1}
 ae_overwrite=${ND_AE_OVERWRITE:-}
 ae_sources=${ND_AE_SOURCES:-}
 ae_install=${ND_AE_INSTALL:-}
+ae_update=${ND_AE_UPDATE:-1}
 ae_dry_run=${ND_AE_DRY_RUN:-}
 ae_defun_only=${ND_AE_DEFUN_ONLY:-} # mode to source this file as a "library"
 
@@ -356,7 +357,7 @@ assure_command_from_package()
 # Note that we use `"$@"' to let each command-line parameter expand to a
 # separate word. The quotes around `$@' are essential!
 # We need CLOPTS as the `eval set --' would nuke the return value of getopt.
-CLOPTS=`getopt -o h,r:,m:,f:,c:,q,v,n --long help,version,quiet,verbose,mirror:,release:,flavor:,components:,suffix:,overwrite,sources,no-sources,install,dry-run,print-releases,print-mirrors,print-best-mirror -n 'nd-aptenable' -- "$@"`
+CLOPTS=`getopt -o h,r:,m:,f:,c:,q,v,n --long help,version,quiet,verbose,mirror:,release:,flavor:,components:,suffix:,overwrite,sources,no-sources,install,dry-run,do-not-update,print-releases,print-mirrors,print-best-mirror -n 'nd-aptenable' -- "$@"`
 
 if [ $? != 0 ] ; then
   error 2 "Problem with parsing cmdline.  Terminating..."
@@ -381,6 +382,7 @@ while true ; do
       -n|--dry-run)        ae_dry_run=1; shift;;
          --suffix) shift;  ae_suffix="$1"; shift;;
          --overwrite)      ae_overwrite="$1"; shift;;
+         --do-not-update)  ae_update=""; shift;;
          --sources)        ae_sources=1; shift;;
          --no-sources)     ae_sources=0; shift;;
          --install)        ae_install=1; shift;;
@@ -530,22 +532,24 @@ fi
 # Finalizing (apt-get update etc)
 #
 
-print_verbose 1 "Updating APT listings, might take a few minutes"
-if [ -z "$ae_dry_run" ]; then
-    apt_logfile="$ae_tempdir/apt.log"
-    $ae_sudo apt-get update 1>"$apt_logfile" 2>&1 \
-        && rm -f "$apt_logfile" \
-        || {
-             apt_log=$(cat "$apt_logfile")
-             echo "$apt_log"
-             if echo "$apt_log" | grep -q "Malformed line [0-9]* in source list $ae_output_file"; then
-                 $ae_sudo mv "${ae_output_file}" "${ae_output_file}-failed.disabled"
-                 error 6 "Update failed to possible errorneous APT listing file produced by this script.  Generated $ae_output_file renamed to ${ae_output_file}-failed.disabled to not interfer"
-             fi
-             error 5 "Update failed with exit code $? (above output logged into $apt_logfile)."
-             }
-else
-    eval_dry apt-get update
+if [ ! -z "$ae_update" ]; then
+    print_verbose 1 "Updating APT listings, might take a few minutes"
+    if [ -z "$ae_dry_run" ]; then
+        apt_logfile="$ae_tempdir/apt.log"
+        $ae_sudo apt-get update 1>"$apt_logfile" 2>&1 \
+            && rm -f "$apt_logfile" \
+            || {
+                 apt_log=$(cat "$apt_logfile")
+                 echo "$apt_log"
+                 if echo "$apt_log" | grep -q "Malformed line [0-9]* in source list $ae_output_file"; then
+                     $ae_sudo mv "${ae_output_file}" "${ae_output_file}-failed.disabled"
+                     error 6 "Update failed to possible errorneous APT listing file produced by this script.  Generated $ae_output_file renamed to ${ae_output_file}-failed.disabled to not interfer"
+                 fi
+                 error 5 "Update failed with exit code $? (above output logged into $apt_logfile)."
+                 }
+    else
+        eval_dry apt-get update
+    fi
 fi
 
 if [ "$ae_verbose" -ge 2 ]; then

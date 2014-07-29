@@ -1,0 +1,33 @@
+#!/bin/bash
+
+set -e
+
+. /usr/share/debconf/confmodule
+
+
+case "$1" in
+    configure)
+ 		# obtain all the options and call nd-aptenable
+		opts=""
+		db_get neurodebian-repository/release; [ "$RET" = "auto" ] || opts+=" -r '$RET'"
+		db_get neurodebian-repository/mirror;  nd_mirror="${RET##* }" # get just a url if it came together with alias
+		db_get neurodebian-repository/flavor;  nd_flavor="$RET"
+		db_get neurodebian-repository/components; nd_components="$RET"
+
+		db_get neurodebian-repository/overwrite;  [ "$RET" = "true" ] && opts+=" --overwrite" || :
+		db_get neurodebian-repository/suffix;     [ "$RET" = "" ]     || opts+=" --suffix='$RET'" || :
+		db_get neurodebian-repository/apt-update; [ "$RET" = "true" ] || opts+=" --do-not-update" || :
+
+		eval nd-aptenable -m "$nd_mirror" $opts
+    ;;
+    abort-upgrade|abort-remove|abort-deconfigure)
+        # nothing to do
+    ;;
+
+    *)
+        echo "postinst called with unknown argument \`$1'" >&2
+        exit 1
+    ;;
+esac
+
+#DEBHELPER#
