@@ -28,8 +28,8 @@ Description: turnkey platform for the neuroscience
 
 Package: neurodebian-repository
 Architecture: all
-Pre-depends: neurodebian-keyring, python-minimal, wget
-Depends: ${misc:Depends}
+Pre-depends: python-minimal, wget
+Depends: neurodebian-keyring, ${misc:Depends}
 Recommends: netselect
 Description: NeuroDebian APT repository installer
  Besides making (neuro)scientific software available on stock Debian
