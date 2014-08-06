@@ -422,7 +422,7 @@ if [ -z "$ae_release" ]; then
 fi
 
 if [ -z "$ae_flavor" ]; then
-    ae_flavor=$(echo "$apt_policy" | grep -e ",n=$ae_release," | grep -qe 'c=\(non-free\|restricted\)' && echo "full" || echo "libre")
+    ae_flavor=$(echo "$apt_policy" | grep -e ",n=$ae_release," | grep -qe 'c=\(non-free\|multiverse\)' && echo "full" || echo "libre")
 fi
 
 #

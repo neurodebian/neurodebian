@@ -45,8 +45,8 @@ Description: NeuroDebian flavor to use:
     all three areas (main, contrib, non-free)
   auto
     determine which flavor to choose based on current output of
-    apt-cache policy ('full' -- if non-free or restricted
-    archives are enabled)
+    apt-cache policy ('full' -- if non-free (Debian) or multiverse
+	(Ubuntu) areas are enabled)
 
 Template: neurodebian-repository/components
 Type: multiselect
