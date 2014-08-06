@@ -27,8 +27,8 @@ Description: NeuroDebian mirror to use:
   - origin: original NeuroDebian repository
   - best: will try to use netselect to select "closest" mirror.
     Depending on the configuration of the firewall, and actual mirror
-    setup, might fail to select actually closest one.  netselect
-    must be installed to use this feature.
+    setup, might fail to select actually closest one.  If netselect
+    is not available, default mirror (possibly 'origin') will be used.
 
 
 Template: neurodebian-repository/flavor
