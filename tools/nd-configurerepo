@@ -74,7 +74,7 @@ error()
 print_version()
 {
     cat << EOT
-nd-aptenable $nd_aptenable_version
+nd-configurerepo $nd_aptenable_version
 
 Copyright (C) 2014 Yaroslav Halchenko <debian@onerussian.com>
 
@@ -104,7 +104,7 @@ print_help()
 {
     cat << EOT
 
-Usage:  nd-aptenable [options]
+Usage:  nd-configurerepo [options]
 
 Enables NeuroDebian repository for the current Debian or Ubuntu release.
 
@@ -181,16 +181,16 @@ Examples:
   - Enable software and data components from the optimal (according to
     netselect) mirror.  Some information about progress will be printed
 
-    nd-aptenable
+    nd-configurerepo
 
   - Quietly enable -devel repository for the current release, and place apt
     configuration into /etc/apt/sources.list.d/neurodebian.sources-devel.list
 
-    nd-aptenable -q --suffix=-devel -c devel
+    nd-configurerepo -q --suffix=-devel -c devel
 
   - Force sid distribution, all the components, from the Japan mirror:
 
-    nd-aptenable -q --suffix=-de-sid-full -c software,data,devel -m jp
+    nd-configurerepo -q --suffix=-de-sid-full -c software,data,devel -m jp
 
 EOT
 }
@@ -362,7 +362,7 @@ assure_command_from_package()
 # Note that we use `"$@"' to let each command-line parameter expand to a
 # separate word. The quotes around `$@' are essential!
 # We need CLOPTS as the `eval set --' would nuke the return value of getopt.
-CLOPTS=`getopt -o h,r:,m:,f:,c:,q,v,n --long help,version,quiet,verbose,mirror:,release:,flavor:,components:,suffix:,overwrite,sources,no-sources,install,dry-run,do-not-update,print-releases,print-mirrors,print-best-mirror -n 'nd-aptenable' -- "$@"`
+CLOPTS=`getopt -o h,r:,m:,f:,c:,q,v,n --long help,version,quiet,verbose,mirror:,release:,flavor:,components:,suffix:,overwrite,sources,no-sources,install,dry-run,do-not-update,print-releases,print-mirrors,print-best-mirror -n 'nd-configurerepo' -- "$@"`
 
 if [ $? != 0 ] ; then
   error 2 "Problem with parsing cmdline.  Terminating..."
