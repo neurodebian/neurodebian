@@ -2,6 +2,7 @@ neurodebian (0.33~a1) UNRELEASED; urgency=medium
 
   * Support popularity-contest >= 1.61 encrypting submissions:
     - provide GPG public key for encryption of submissions
+  * Updated list of currently supported Ubuntu releases
 
  -- Yaroslav Halchenko <debian@onerussian.com>  Wed, 06 Aug 2014 16:21:04 -0400
 
