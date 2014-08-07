@@ -12,30 +12,15 @@ XS-DM-Upload-Allowed: yes
 
 Package: neurodebian
 Architecture: all
-Depends: ${misc:Depends}, neurodebian-repository
-Recommends: neurodebian-desktop, neurodebian-popularity-contest
+Pre-depends: python-minimal, wget
+Depends: neurodebian-keyring, ${misc:Depends}
+Recommends: netselect
+Suggests: neurodebian-desktop, neurodebian-popularity-contest
 Description: turnkey platform for the neuroscience
  The NeuroDebian project integrates and maintain a variety of
  neuroscience-oriented (such as AFNI, FSL, PsychoPy, etc.) and many
  generic computational (such as condor, pandas, etc.) software projects
  within Debian.
- .
- This meta-package depends on packages needed for a typical
- NeuroDebian deployment, e.g. enabling the complementary NeuroDebian
- repository of package backports and perspective packages not yet
- available from stock Debian/Ubuntu.
-
-
-Package: neurodebian-repository
-Architecture: all
-Pre-depends: python-minimal, wget
-Depends: neurodebian-keyring, ${misc:Depends}
-Recommends: netselect
-Description: NeuroDebian APT repository installer
- Besides making (neuro)scientific software available on stock Debian
- systems, neuro.debian.net (and mirrors around the globe) provides
- a repository with backport builds of the NeuroDebian-maintained
- packages for all supported Debian and Ubuntu releases.
  .
  This package enables NeuroDebian repository on top of the stock
  Debian or Ubuntu system.

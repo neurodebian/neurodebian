@@ -2,7 +2,7 @@ neurodebian (0.33~a1) unstable; urgency=medium
 
   * New "upstream" release
   * New features:
-    - neurodebian and neurodebian-repository packages to provide 1-click
+    - neurodebian and neurodebian packages to provide 1-click
       NeuroDebian deployment on Debian/Ubuntu boxesw
 
  -- Yaroslav Halchenko <debian@onerussian.com>  Mon, 28 Jul 2014 20:03:12 -0400
