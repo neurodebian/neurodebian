@@ -2,11 +2,12 @@
 
 #DEBHELPER#
 
-# If requested to be purged -- remove our entry
 popcon_conf=/etc/popularity-contest.conf
-if [ "$1" = "purge" ]; then
+nd_popcon_conf=/etc/popularity-contest.d/neurodebian.conf
+remove_neurodebian_popcon_pre161() {
 	# Adjust popularity-contest.conf
-	if [ -e "$popcon_conf" ]; then
+	if [ -e "$popcon_conf" ] \
+	   && grep -q "http://neuro.debian.net/cgi-bin/popcon-submit.cgi" $popcon_conf; then
 		echo "Removing NeuroDebian url for Popularity Contest submissions."
 		# First remove any explicit mentioning and then empty additions
 		sed -i -e 's,http://neuro.debian.net/cgi-bin/popcon-submit.cgi,,g' \
@@ -14,4 +15,9 @@ if [ "$1" = "purge" ]; then
 			   -e '/SUBMITURLS="$SUBMITURLS *"/d' \
 			"$popcon_conf"
 	fi
+}
+
+# If requested to be purged -- remove our entry
+if [ "$1" = "purge" ]; then
+	remove_neurodebian_popcon_pre161
 fi

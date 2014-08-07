@@ -1,0 +1,2 @@
+popcon/neurodebian.conf /etc/popularity-contest.d
+popcon/neurodebian-popcon.gpg /usr/share/popularity-contest
