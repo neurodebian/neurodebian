@@ -3,6 +3,7 @@ set -ex
 
 # minimal installation with few of those packages
 apt_file=/etc/apt/sources.list.d/local.list
+apt_nd_file=/etc/apt/sources.list.d/neurodebian.sources.list
 
 # clean up from a previous test
 dpkg --purge neurodebian neurodebian-keyring || :
@@ -24,8 +25,8 @@ apt-get install -y --allow-unauthenticated neurodebian
 # Very cruel way to figure out the default release. Would fail if
 # options, such as multiarch, are specified after deb
 release=$(grep -e '^\s*deb\s' /etc/apt/sources.list | head -1 | awk '{print $3;}')
-grep -E "^deb\s+http.* $release main\s*\$" /etc/apt/sources.list.d/neurodebian.sources.list
-grep -E '^deb\s+http.* data main\s*$' /etc/apt/sources.list.d/neurodebian.sources.list
+grep -E "^deb\s+http.* $release main\s*\$" $apt_nd_file
+grep -E '^deb\s+http.* data main\s*$'      $apt_nd_file
 # May be even retrospect stored debconf configuration
 apt-get install debconf-utils
 debconf-get-selections | grep neurodebian/release.*select.*auto
@@ -34,5 +35,10 @@ apt-get update
 # Make sure it is active
 apt-cache policy | grep o=NeuroDebian,.*,n=data
 apt-cache policy | grep o=NeuroDebian,.*,n=$release
+
+# Now lets remove
+dpkg --purge neurodebian
+[ ! -e $apt_nd_file ]
+apt-cache policy | grep o=NeuroDebian && exit 1 || :
 
 echo "I: success"
