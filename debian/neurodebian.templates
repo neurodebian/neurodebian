@@ -10,8 +10,10 @@ Default: auto
 Description: Release name of the base system
  Specify for which Debian or Ubuntu release (e.g. wheezy or trusty).
  .
- If 'auto', Debian or Ubuntu release name will be deduced from
- apt-cache policy.
+ If 'auto', Debian or Ubuntu release name will be '${release}' as
+ deduced from the output of apt-cache policy.  If the release of your
+ system is not '${release}' -- please choose specific one which
+ matches best.
 
 
 Template: neurodebian/mirror
@@ -44,9 +46,8 @@ Description: NeuroDebian flavor to use:
   full
     all three areas (main, contrib, non-free)
   auto
-    determine which flavor to choose based on current output of
-    apt-cache policy ('full' -- if non-free (Debian) or multiverse
-	(Ubuntu) areas are enabled)
+    according to output of apt-cache policy '${flavor}' will be used.
+    If that is not the flavor you need, select manually another one.
 
 Template: neurodebian/components
 Type: multiselect

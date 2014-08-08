@@ -37,6 +37,8 @@ ae_defun_only=${ND_AE_DEFUN_ONLY:-} # mode to source this file as a "library"
 
 ae_sudo=
 exe_dir=$(dirname $0)
+do_print_release=
+do_print_flavor=
 
 # TODOs:
 # - apt priority! (so we could avoid automagic upgrades etc)
@@ -116,13 +118,19 @@ Options:
     of Debian or Ubuntu origin with highest priority.
 
   --print-releases
-    Return a list of releases present in NeuroDebian repository.
+    Print a list of releases present in NeuroDebian repository.
+
+  --print-release
+    Print the release deduced from the output of apt-cache policy.
 
   -f, --flavor=full|libre
     Which flavor of the repository should be enabled:
      libre -- Only  main  component, containing only DFSG-compliant content.
      full -- Includes main, contrib, and non-free.
-    If not specified -- deduced from the output of apt-cache policy
+    If not specified -- deduced from the output of apt-cache policy.
+
+  --print-flavor
+    Print the flavor deduced from the output of apt-cache policy.
 
   -c, --components=c1,c2,c3
     Comma separated list of components to enable among:
@@ -362,7 +370,7 @@ assure_command_from_package()
 # Note that we use `"$@"' to let each command-line parameter expand to a
 # separate word. The quotes around `$@' are essential!
 # We need CLOPTS as the `eval set --' would nuke the return value of getopt.
-CLOPTS=`getopt -o h,r:,m:,f:,c:,q,v,n --long help,version,quiet,verbose,mirror:,release:,flavor:,components:,suffix:,overwrite,sources,no-sources,install,dry-run,do-not-update,print-releases,print-mirrors,print-best-mirror -n 'nd-configurerepo' -- "$@"`
+CLOPTS=`getopt -o h,r:,m:,f:,c:,q,v,n --long help,version,quiet,verbose,mirror:,release:,flavor:,components:,suffix:,overwrite,sources,no-sources,install,dry-run,do-not-update,print-releases,print-release,print-mirrors,print-best-mirror,print-flavor -n 'nd-configurerepo' -- "$@"`
 
 if [ $? != 0 ] ; then
   error 2 "Problem with parsing cmdline.  Terminating..."
@@ -384,6 +392,8 @@ while true ; do
          --print-mirrors)  get_mirrors; exit 0;;
          --print-best-mirror)  netselect_mirror; exit 0;;
          --print-releases)  get_releases; exit 0;;
+         --print-release)  do_print_release=1; shift;;
+         --print-flavor)  do_print_flavor=1; shift;;
       -n|--dry-run)        ae_dry_run=1; shift;;
          --suffix) shift;  ae_suffix="$1"; shift;;
          --overwrite)      ae_overwrite="$1"; shift;;
@@ -419,10 +429,18 @@ apt_policy=$(get_apt_policy "Debian,Ubuntu" )
 
 if [ -z "$ae_release" ]; then
     ae_release=$(echo "$apt_policy" | head -1 | sed -e 's/.*,n=\([^,]*\),.*/\1/g')
+    if [ ! -z "$do_print_release" ]; then
+        echo $ae_release
+        exit 0
+    fi
 fi
 
 if [ -z "$ae_flavor" ]; then
     ae_flavor=$(echo "$apt_policy" | grep -e ",n=$ae_release," | grep -qe 'c=\(non-free\|multiverse\)' && echo "full" || echo "libre")
+    if [ ! -z "$do_print_flavor" ]; then
+        echo $ae_flavor
+        exit 0
+    fi
 fi
 
 #
