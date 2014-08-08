@@ -11,7 +11,7 @@ Vcs-Git: git://git.debian.org/git/pkg-exppsy/neurodebian.git
 
 Package: neurodebian
 Architecture: all
-Pre-depends: python-minimal, wget
+Pre-depends: python, wget
 Depends: neurodebian-keyring, ${misc:Depends}
 Recommends: netselect
 Suggests: neurodebian-desktop, neurodebian-popularity-contest

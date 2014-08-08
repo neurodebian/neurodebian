@@ -113,8 +113,8 @@ Enables NeuroDebian repository for the current Debian or Ubuntu release.
 Options:
 
   -r, --release=RELEASE
-    Name of the Debian/Ubuntu release to be used.  If not specified,
-    it is deduced from the  apt-cache policy  output, by taking repository
+    Name of the Debian/Ubuntu release to be used. If not specified,
+    it is deduced from the 'apt-cache policy' output, by taking repository
     of Debian or Ubuntu origin with highest priority.
 
   --print-releases
@@ -125,8 +125,10 @@ Options:
 
   -f, --flavor=full|libre
     Which flavor of the repository should be enabled:
-     libre -- Only  main  component, containing only DFSG-compliant content.
-     full -- Includes main, contrib, and non-free.
+
+      libre  Only 'main' component, containing only DFSG-compliant content.
+      full   Includes 'main', 'contrib', and 'non-free'.
+
     If not specified -- deduced from the output of apt-cache policy.
 
   --print-flavor
@@ -134,14 +136,16 @@ Options:
 
   -c, --components=c1,c2,c3
     Comma separated list of components to enable among:
-     software -- primary software repository
-     data -- data packages
-     devel -- "overlay" of development versions (like Debians' "experimental").
-              Not sufficient on its own and available only from the main site
+
+     software  primary software repository
+     data      data packages
+     devel     "overlay" of development versions (like Debians' "experimental").
+               Not sufficient on its own and available only from the main site
+
     If not specified -- "software,data"
 
   -m, --mirror=NAME|URL
-    Which mirror to use.  Could be a mirror code-name (as specified in
+    Which mirror to use. Could be a mirror code-name (as specified in
     /etc/neurodebian/neurodebian.cfg), or a URL.
 
   --print-mirrors
@@ -156,7 +160,7 @@ Options:
     multiple repositories
 
   --sources, --no-sources
-    Either to enable deb-src lines.  If none specified -- would be enabled if
+    Either to enable deb-src lines. If none specified -- would be enabled if
     sources for a core package (apt) are available.
 
   -n, --dry-run
@@ -168,7 +172,7 @@ Options:
     be apt-get installed
 
   -v, --verbose
-    Enable additional progress messages.  Could be used multiple times
+    Enable additional progress messages. Could be used multiple times
 
   -q, --quiet
     Make operation quiet -- only error messages would be output
@@ -181,25 +185,20 @@ Options:
 
 Exit status:
 
-  non-0 exit status in case of error.  Error exit code would depend
-  on which command has failed
+  non-0 exit status in case of error.
+  Error exit code would depend on which command has failed.
 
 Examples:
-
-  - Enable software and data components from the optimal (according to
+  nd-configurerepo
+    Enable software and data components from the optimal (according to
     netselect) mirror.  Some information about progress will be printed
 
-    nd-configurerepo
-
-  - Quietly enable -devel repository for the current release, and place apt
+  nd-configurerepo -q --suffix=-devel -c devel
+    Quietly enable -devel repository for the current release, and place apt
     configuration into /etc/apt/sources.list.d/neurodebian.sources-devel.list
 
-    nd-configurerepo -q --suffix=-devel -c devel
-
-  - Force sid distribution, all the components, from the Japan mirror:
-
-    nd-configurerepo -q --suffix=-de-sid-full -c software,data,devel -m jp
-
+  nd-configurerepo -q --suffix=-de-sid-full -c software,data,devel -m jp
+    Force sid distribution, all the components, from the Japan mirror
 EOT
 }
 

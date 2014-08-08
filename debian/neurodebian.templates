@@ -53,7 +53,7 @@ Template: neurodebian/components
 Type: multiselect
 Choices: software, data, devel
 Default: software, data
-_Description: Select NeuroDebian repository components to enable
+_Description: NeuroDebian repository components to enable:
  NeuroDebian repository provides
  .
   software
@@ -78,18 +78,18 @@ _Description: Should existing NeuroDebian APT file be overridden?
 Template: neurodebian/suffix
 Type: string
 Default:
-_Description: Additional suffix to use in the NeuroDebian APT file name:
+_Description: Additional suffix for the NeuroDebian APT file name:
  For instance if you would like to enable additional repository
  (e.g. NeuroDebian devel) or release, without interfering with the
- main/default configuration file.
+ main/default configuration file.  Generally should be left empty.
 
 Template: neurodebian/run-update-note
 Type: note
-_Description: Upon completion of installation invoke update in your APT frontend.
+_Description: APT list of packages needs to be updated.
  For the installed NeuroDebian APT configuration to take an effect,
  list of packages needs to be updated.  This needs to be done
- "manually" (e.g. apt-get update) upon completion of installation of
- the neurodebian package.
+ "manually" (e.g., via apt-get update) upon completion of installation
+ of the neurodebian package.
 
 Template: neurodebian/netselect-not-found
 Type: error
