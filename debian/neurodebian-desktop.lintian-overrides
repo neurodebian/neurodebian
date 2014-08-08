@@ -1,0 +1,7 @@
+# Those .desktop files on purpose do not include main category for
+# them all to appear only under a non-standard additional NeuroDebian
+# submenu
+neurodebian-desktop: desktop-entry-lacks-main-category usr/share/applications/neurodebian-*.desktop
+
+# .desktop entries to fire up a browser pointing to a webpage (e.g. documentation)
+neurodebian-desktop: desktop-command-not-in-package usr/share/applications/neurodebian-*.desktop x-www-browser

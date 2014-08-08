@@ -1,0 +1,12 @@
+# This package is intended to be installed only under VirtualBox.
+# Those deployments could be considered "local", thus making /mnt
+# the logical location for a custom mount point.  No other files
+# get installed under that directory
+neurodebian-guest-additions: dir-or-file-in-mnt mnt/host/
+
+# No manpage yet
+neurodebian-guest-additions: binary-without-manpage usr/bin/nd-vmsetupwizard
+
+# Similarly to the case of .desktop files in -desktop package
+# lack of main category is intentional
+neurodebian-guest-additions: desktop-entry-lacks-main-category usr/share/applications/neurodebianguest-vmsetupwizard.desktop

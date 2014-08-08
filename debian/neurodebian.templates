@@ -85,7 +85,7 @@ _Description: Additional suffix for the NeuroDebian APT file name:
 
 Template: neurodebian/run-update-note
 Type: note
-_Description: APT list of packages needs to be updated.
+_Description: APT list of packages needs to be updated
  For the installed NeuroDebian APT configuration to take an effect,
  list of packages needs to be updated.  This needs to be done
  "manually" (e.g., via apt-get update) upon completion of installation
