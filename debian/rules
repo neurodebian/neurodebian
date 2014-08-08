@@ -35,5 +35,6 @@ override_dh_auto_install::
 override_dh_auto_test::
 
 override_dh_clean:
+	debconf-updatepo
 	dh_clean
 	$(MAKE) -C artwork clean
