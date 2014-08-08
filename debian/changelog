@@ -1,5 +1,6 @@
 neurodebian (0.33) unstable; urgency=medium
 
+  * Initial upload to Debian proper (Closes: #757279)
   * Support popularity-contest >= 1.61 encrypting submissions:
     - provide GPG public key for encryption of submissions
   * Updated list of currently supported Ubuntu releases
@@ -9,7 +10,7 @@ neurodebian (0.33) unstable; urgency=medium
   * Breakage of "compatibility":
     - do not install sphinx sources
 
- -- Yaroslav Halchenko <debian@onerussian.com>  Fri, 08 Aug 2014 14:21:46 -0400
+ -- Yaroslav Halchenko <debian@onerussian.com>  Fri, 08 Aug 2014 16:29:40 -0400
 
 neurodebian (0.32) neurodebian; urgency=low
 
