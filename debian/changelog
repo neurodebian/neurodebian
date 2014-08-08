@@ -6,6 +6,8 @@ neurodebian (0.33) unstable; urgency=medium
   * New features:
     - neurodebian and neurodebian packages to provide 1-click
       NeuroDebian deployment on Debian/Ubuntu boxesw
+  * Breakage of "compatibility":
+    - do not install sphinx sources
 
  -- Yaroslav Halchenko <debian@onerussian.com>  Fri, 08 Aug 2014 14:21:46 -0400
 

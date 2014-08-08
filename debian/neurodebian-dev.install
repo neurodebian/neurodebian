@@ -3,4 +3,3 @@ tools/nd_* usr/bin/
 neurodebian.cfg /etc/neurodebian/
 cmdsettings.sh /etc/neurodebian/
 pkgs usr/share/neurodebian/
-sphinx usr/share/neurodebian/
