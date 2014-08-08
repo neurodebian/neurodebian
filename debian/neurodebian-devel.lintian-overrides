@@ -1,0 +1,2 @@
+# we do not provide manpages for the devel scripts yet
+neurodebian-devel binary: binary-without-manpage usr/bin/nd_*
