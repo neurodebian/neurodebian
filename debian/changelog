@@ -6,7 +6,7 @@ neurodebian (0.33) unstable; urgency=medium
   * Updated list of currently supported Ubuntu releases
   * New features:
     - neurodebian and neurodebian packages to provide 1-click
-      NeuroDebian deployment on Debian/Ubuntu boxesw
+      NeuroDebian deployment on Debian/Ubuntu boxes
   * Breakage of "compatibility":
     - do not install sphinx sources
 
