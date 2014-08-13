@@ -78,14 +78,13 @@ Description: Helper for NeuroDebian popularity contest submissions
 
 Package: neurodebian-guest-additions
 Architecture: all
-Depends:
- virtualbox-guest-utils,
- virtualbox-guest-x11,
- virtualbox-guest-dkms,
 Depends: ${misc:Depends},
+		 virtualbox-guest-utils,
+		 virtualbox-guest-x11,
+		 virtualbox-guest-dkms,
          sudo,
          neurodebian-desktop,
-         gdm | lightdm,
+         lightdm | x-display-manager,
 		 zenity,
 Recommends: chromium,
             update-notifier,

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neurodebian\n"
 "Report-Msgid-Bugs-To: neurodebian@packages.debian.org\n"
-"POT-Creation-Date: 2014-08-08 15:23-0400\n"
+"POT-Creation-Date: 2014-08-13 14:01-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -162,7 +162,7 @@ msgstr ""
 #. Type: note
 #. Description
 #: ../neurodebian.templates:8001
-msgid "APT list of packages needs to be updated."
+msgid "APT list of packages needs to be updated"
 msgstr ""
 
 #. Type: note

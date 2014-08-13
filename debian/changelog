@@ -4,8 +4,10 @@ neurodebian (0.34) unstable; urgency=medium
     ftpmaster concerns (Thanks Ansgar Burchardt for the thorough review
     and suggestions)
   * debian/control
-    - neurodebian-guest-additions: moved virtualbox-guest* dependencies
-      into Depends (from Pre-Depends), and stripping deprecated -ose suffix
+    - neurodebian-guest-additions:
+      - moved virtualbox-guest* dependencies into Depends (from
+        Pre-Depends), and stripping deprecated -ose suffix
+      - dropped depends on elderly gdm, now lightdm or any x-display-manager
     - fixing package names for chromium, and removing update-manager-gnome
       N/A in sid
   * debian/neurodebian-popularity-contest.*
