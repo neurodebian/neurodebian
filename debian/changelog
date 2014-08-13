@@ -8,6 +8,11 @@ neurodebian (0.34) unstable; urgency=medium
       into Depends (from Pre-Depends), and stripping deprecated -ose suffix
     - fixing package names for chromium, and removing update-manager-gnome
       N/A in sid
+  * debian/neurodebian-popularity-contest.*
+    - .postinst  should try to remove old-fashion popcon entry only if
+      upgrading/configuring from pre 0.33 version of neurodebian-*
+    - .postrm  removed altogether since will not longer be needed because
+      popcon configuration gets installed as a config file now
   * tools/nd-configurerepo
     - use long GPG key id
     - unify prefix for environment variables to be NEURODEBIAN_ instead of

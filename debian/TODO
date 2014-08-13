@@ -54,5 +54,3 @@ echo "I: success"
 
 * add backport patch for wheezy for neurodebian-guest-additions to pre-depend on update-manager-gnome
 
-* popcon: cleanup **only** when upgrading from older version of the neurodebian-popcon
-

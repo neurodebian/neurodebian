@@ -48,8 +48,11 @@ if [ "$1" = "configure" -o "$1" = "abort-upgrade" ]; then
 	if dpkg --compare-versions $popcon_version lt 1.61; then
 		add_neurodebian_popcon_pre161
 	else
-		# Assure that we have no "old" settings for submission
-		remove_neurodebian_popcon_pre161 || :
+		# Assure that we have no "old" settings for submission if
+		# previous version of our package was old
+		if [ "$1" = "configure" ] && [ -z "$2" ] && dpkg --compare-versions "$2" lt 0.33; then
+			remove_neurodebian_popcon_pre161 || :
+		fi
 	fi
 fi
 
