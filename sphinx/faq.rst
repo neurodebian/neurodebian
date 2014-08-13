@@ -112,7 +112,7 @@ Frequently Asked Questions
 
     1. Get the key. Either download the `repository key from here
        <_static/neuro.debian.net.asc>`_
-       or fetch it from http://wwwkeys.pgp.net (2649A5A9).
+       or fetch it from http://wwwkeys.pgp.net (0xA5D32F012649A5A9).
 
     2. Now feed the key into APT by invoking::
 

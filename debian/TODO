@@ -56,4 +56,3 @@ echo "I: success"
 
 * popcon: cleanup **only** when upgrading from older version of the neurodebian-popcon
 
-* replace short nd_key_id with the long one
