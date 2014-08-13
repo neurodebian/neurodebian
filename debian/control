@@ -78,14 +78,17 @@ Description: Helper for NeuroDebian popularity contest submissions
 
 Package: neurodebian-guest-additions
 Architecture: all
-Pre-Depends: virtualbox-ose-guest-utils, virtualbox-ose-guest-x11, virtualbox-ose-guest-dkms
+Pre-Depends:
+ virtualbox-guest-utils,
+ virtualbox-guest-x11,
+ virtualbox-guest-dkms,
 Depends: ${misc:Depends},
          sudo,
          neurodebian-desktop,
          gdm | lightdm,
 		 zenity,
-Recommends: chromium-browser,
-            update-manager-gnome, update-notifier,
+Recommends: chromium,
+            update-notifier,
 Description: NeuroDebian guest additions (DO NOT INSTALL OUTSIDE VIRTUALBOX)
  This package configures a Debian installation as a guest operating system
  in a VirtualBox-based virtual machine for NeuroDebian.

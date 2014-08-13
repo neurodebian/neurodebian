@@ -1,6 +1,19 @@
-neurodebian (0.33) unstable; urgency=medium
+neurodebian (0.34) unstable; urgency=medium
 
-  * Initial upload to Debian proper (Closes: #757279)
+  * Re-upload to Debian proper (Closes: #757279), addressing Debian
+    ftpmaster concerns (Thanks Ansgar Burchardt for the thorough review
+    and suggestions)
+  * debian/control
+    - neurodebian-guest-additions: moved virtualbox-guest* dependencies
+      into Depends (from Pre-Depends), and stripping deprecated -ose suffix
+    - fixing package names for chromium, and removing update-manager-gnome
+      N/A in sid
+
+ --
+
+neurodebian (0.33) UNRELEASED; urgency=medium
+
+  * Initial (rejected) upload to Debian proper
   * Support popularity-contest >= 1.61 encrypting submissions:
     - provide GPG public key for encryption of submissions
   * Updated list of currently supported Ubuntu releases
