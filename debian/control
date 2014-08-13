@@ -78,7 +78,7 @@ Description: Helper for NeuroDebian popularity contest submissions
 
 Package: neurodebian-guest-additions
 Architecture: all
-Pre-Depends:
+Depends:
  virtualbox-guest-utils,
  virtualbox-guest-x11,
  virtualbox-guest-dkms,
