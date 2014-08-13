@@ -1,0 +1,18 @@
+From: Yaroslav Halchenko <debian@onerussian.com>
+Subject: While prepareing NeuroDebian VM based on wheezy, we would need update-manager-gnome present there
+
+Origin: NeuroDebian
+Last-Update: 2014-08-13
+
+diff --git a/debian/control b/debian/control
+index 6444510..70cf60e 100644
+--- a/debian/control
++++ b/debian/control
+@@ -88,6 +88,7 @@ Depends: ${misc:Depends},
+          gdm | lightdm,
+ 		 zenity,
+ Recommends: chromium,
++            update-manager-gnome,
+             update-notifier,
+ Description: NeuroDebian guest additions (DO NOT INSTALL OUTSIDE VIRTUALBOX)
+  This package configures a Debian installation as a guest operating system
