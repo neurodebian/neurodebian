@@ -15,25 +15,25 @@ set -u
 
 nd_aptenable_version=0.1
 
-nd_key_id=0x2649A5A9
+nd_key_id=0xA5D32F012649A5A9
 nd_config_url=https://raw.githubusercontent.com/neurodebian/neurodebian/master/neurodebian.cfg
 nd_config_file=/etc/neurodebian/neurodebian.cfg
 nd_mirror_origin=http://neuro.debian.net/debian
 nd_mirror_default=$nd_mirror_origin # or may be AWS?
 
-# To be set by cmdline args or via env variables with prefix ND_AE_
-ae_release=${ND_AE_RELEASE:-}
-ae_components=${ND_AE_COMPONENTS:-software,data}
-ae_flavor=${ND_AE_FLAVOR:-}
-ae_mirror=${ND_AE_MIRROR:-best}
-ae_suffix=${ND_AE_SUFFIX:-}
-ae_verbose=${ND_AE_VERBOSE:-1}
-ae_overwrite=${ND_AE_OVERWRITE:-}
-ae_sources=${ND_AE_SOURCES:-}
-ae_install=${ND_AE_INSTALL:-}
-ae_update=${ND_AE_UPDATE:-1}
-ae_dry_run=${ND_AE_DRY_RUN:-}
-ae_defun_only=${ND_AE_DEFUN_ONLY:-} # mode to source this file as a "library"
+# To be set by cmdline args or via env variables with prefix NEURODEBIAN_
+ae_release=${NEURODEBIAN_RELEASE:-}
+ae_components=${NEURODEBIAN_COMPONENTS:-software,data}
+ae_flavor=${NEURODEBIAN_FLAVOR:-}
+ae_mirror=${NEURODEBIAN_MIRROR:-best}
+ae_suffix=${NEURODEBIAN_SUFFIX:-}
+ae_verbose=${NEURODEBIAN_VERBOSE:-1}
+ae_overwrite=${NEURODEBIAN_OVERWRITE:-}
+ae_sources=${NEURODEBIAN_SOURCES:-}
+ae_install=${NEURODEBIAN_INSTALL:-}
+ae_update=${NEURODEBIAN_UPDATE:-1}
+ae_dry_run=${NEURODEBIAN_DRY_RUN:-}
+ae_defun_only=${NEURODEBIAN_DEFUN_ONLY:-} # mode to source this file as a "library"
 
 ae_sudo=
 exe_dir=$(dirname $0)
@@ -44,12 +44,12 @@ do_print_flavor=
 # - apt priority! (so we could avoid automagic upgrades etc)
 # - multiarch setups
 
-if [ -z "${ND_AE_TEMPDIR:-}" ]; then
+if [ -z "${NEURODEBIAN_TEMPDIR:-}" ]; then
     ae_tempdir=$(mktemp -d)
     trap "rm -rf \"$ae_tempdir\"" TERM INT EXIT
 else
     # reuse the same directory/fetched configuration if was specified
-    ae_tempdir="${ND_AE_TEMPDIR:-}"
+    ae_tempdir="${NEURODEBIAN_TEMPDIR:-}"
 fi
 
 

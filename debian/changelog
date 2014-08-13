@@ -8,8 +8,12 @@ neurodebian (0.34) unstable; urgency=medium
       into Depends (from Pre-Depends), and stripping deprecated -ose suffix
     - fixing package names for chromium, and removing update-manager-gnome
       N/A in sid
+  * tools/nd-configurerepo
+    - use long GPG key id
+    - unify prefix for environment variables to be NEURODEBIAN_ instead of
+      more cryptic ND_AE_
 
- --
+ -- Yaroslav Halchenko <debian@onerussian.com>  Wed, 13 Aug 2014 13:43:13 -0400
 
 neurodebian (0.33) UNRELEASED; urgency=medium
 
