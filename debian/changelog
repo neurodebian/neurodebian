@@ -10,8 +10,8 @@ neurodebian (0.34) unstable; urgency=medium
       - moved virtualbox-guest* dependencies into Depends (from
         Pre-Depends), and stripping deprecated -ose suffix
       - dropped depends on elderly gdm, now lightdm or any x-display-manager
-    - fixing package names for chromium, and removing update-manager-gnome
-      N/A in sid
+      - fixing package names for chromium, and removing update-manager-gnome
+        N/A in sid
   * debian/neurodebian-popularity-contest.*
     - .postinst  should try to remove old-fashion popcon entry only if
       upgrading/configuring from pre 0.33 version of neurodebian-*
@@ -21,6 +21,11 @@ neurodebian (0.34) unstable; urgency=medium
     - use long GPG key id
     - unify prefix for environment variables to be NEURODEBIAN_ instead of
       more cryptic ND_AE_
+  * tools/neurodebian.{preinst,templates,config}
+    - add an explicit question either NeuroDebian APT configuration should
+      be installed (i.e. NeuroDebian repository being enabled). debconf
+      default/value could be overriden from the environment using
+      NEURODEBIAN_ENABLE.
 
  -- Yaroslav Halchenko <debian@onerussian.com>  Wed, 13 Aug 2014 13:43:13 -0400
 

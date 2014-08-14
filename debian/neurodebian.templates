@@ -2,6 +2,18 @@ Template: neurodebian/title
 Type: title
 _Description: NeuroDebian APT repository installer
 
+Template: neurodebian/enable
+Type: boolean
+Default: false
+_Description: Should NeuroDebian repository be enabled?
+ NeuroDebian project provides a separate APT repository with backport
+ builds of most recent releases of maintained software, datasets and
+ some software not in Debian proper yet.  Enabling this additional
+ repository will make those packages available on your base system.
+ .
+ Note: although NeuroDebian team aims to assure robust and correct
+ operation of provided packages, enabling this additional archive
+ might compromise the integrity of your base system.
 
 Template: neurodebian/release
 Type: select
@@ -86,10 +98,10 @@ _Description: Additional suffix for the NeuroDebian APT file name:
 Template: neurodebian/run-update-note
 Type: note
 _Description: APT list of packages needs to be updated
- For the installed NeuroDebian APT configuration to take an effect,
- list of packages needs to be updated.  This needs to be done
- "manually" (e.g., via apt-get update) upon completion of installation
- of the neurodebian package.
+ For the installed (or removed) NeuroDebian APT configuration to take
+ an effect, list of packages needs to be updated.  This needs to be
+ done "manually" (e.g., via apt-get update) upon completion of
+ installation or reconfiguration of the neurodebian package.
 
 Template: neurodebian/netselect-not-found
 Type: error

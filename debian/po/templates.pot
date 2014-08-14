@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neurodebian\n"
 "Report-Msgid-Bugs-To: neurodebian@packages.debian.org\n"
-"POT-Creation-Date: 2014-08-13 14:01-0400\n"
+"POT-Creation-Date: 2014-08-14 12:27-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -23,21 +23,46 @@ msgstr ""
 msgid "NeuroDebian APT repository installer"
 msgstr ""
 
-#. Type: select
+#. Type: boolean
 #. Description
 #: ../neurodebian.templates:2001
+msgid "Should NeuroDebian repository be enabled?"
+msgstr ""
+
+#. Type: boolean
+#. Description
+#: ../neurodebian.templates:2001
+msgid ""
+"NeuroDebian project provides a separate APT repository with backport builds "
+"of most recent releases of maintained software, datasets and some software "
+"not in Debian proper yet.  Enabling this additional repository will make "
+"those packages available on your base system."
+msgstr ""
+
+#. Type: boolean
+#. Description
+#: ../neurodebian.templates:2001
+msgid ""
+"Note: although NeuroDebian team aims to assure robust and correct operation "
+"of provided packages, enabling this additional archive might compromise the "
+"integrity of your base system."
+msgstr ""
+
+#. Type: select
+#. Description
+#: ../neurodebian.templates:3001
 msgid "Release name of the base system:"
 msgstr ""
 
 #. Type: select
 #. Description
-#: ../neurodebian.templates:2001
+#: ../neurodebian.templates:3001
 msgid "Specify for which Debian or Ubuntu release (e.g. wheezy or trusty)."
 msgstr ""
 
 #. Type: select
 #. Description
-#: ../neurodebian.templates:2001
+#: ../neurodebian.templates:3001
 msgid ""
 "If 'auto', Debian or Ubuntu release name will be '${release}' as deduced "
 "from the output of apt-cache policy.  If the release of your system is not "
@@ -46,13 +71,13 @@ msgstr ""
 
 #. Type: select
 #. Description
-#: ../neurodebian.templates:3001
+#: ../neurodebian.templates:4001
 msgid "NeuroDebian mirror to use:"
 msgstr ""
 
 #. Type: select
 #. Description
-#: ../neurodebian.templates:3001
+#: ../neurodebian.templates:4001
 msgid ""
 "NeuroDebian project has a number of community-maintainer mirrors around the "
 "globe."
@@ -60,13 +85,13 @@ msgstr ""
 
 #. Type: select
 #. Description
-#: ../neurodebian.templates:3001
+#: ../neurodebian.templates:4001
 msgid "If you do not know which mirror URL to choose, select among"
 msgstr ""
 
 #. Type: select
 #. Description
-#: ../neurodebian.templates:3001
+#: ../neurodebian.templates:4001
 msgid ""
 " - origin: original NeuroDebian repository\n"
 " - best: will try to use netselect to select \"closest\" mirror.\n"
@@ -77,13 +102,13 @@ msgstr ""
 
 #. Type: select
 #. Description
-#: ../neurodebian.templates:4001
+#: ../neurodebian.templates:5001
 msgid "NeuroDebian flavor to use:"
 msgstr ""
 
 #. Type: select
 #. Description
-#: ../neurodebian.templates:4001
+#: ../neurodebian.templates:5001
 msgid ""
 "NeuroDebian project adheres to Debian Free Software Guidelines and has three "
 "areas of the archive in all suites/releases:"
@@ -91,7 +116,7 @@ msgstr ""
 
 #. Type: select
 #. Description
-#: ../neurodebian.templates:4001
+#: ../neurodebian.templates:5001
 msgid ""
 " libre\n"
 "   only the DFSG-compliant materials\n"
@@ -104,19 +129,19 @@ msgstr ""
 
 #. Type: multiselect
 #. Description
-#: ../neurodebian.templates:5001
+#: ../neurodebian.templates:6001
 msgid "NeuroDebian repository components to enable:"
 msgstr ""
 
 #. Type: multiselect
 #. Description
-#: ../neurodebian.templates:5001
+#: ../neurodebian.templates:6001
 msgid "NeuroDebian repository provides"
 msgstr ""
 
 #. Type: multiselect
 #. Description
-#: ../neurodebian.templates:5001
+#: ../neurodebian.templates:6001
 msgid ""
 " software\n"
 "  Packages containing software packages, often backports of stable\n"
@@ -132,13 +157,13 @@ msgstr ""
 
 #. Type: boolean
 #. Description
-#: ../neurodebian.templates:6001
+#: ../neurodebian.templates:7001
 msgid "Should existing NeuroDebian APT file be overridden?"
 msgstr ""
 
 #. Type: boolean
 #. Description
-#: ../neurodebian.templates:6001
+#: ../neurodebian.templates:7001
 msgid ""
 "If not allowed, configuration would fail if there is an existing apt "
 "configuration file for the NeuroDebian."
@@ -146,13 +171,13 @@ msgstr ""
 
 #. Type: string
 #. Description
-#: ../neurodebian.templates:7001
+#: ../neurodebian.templates:8001
 msgid "Additional suffix for the NeuroDebian APT file name:"
 msgstr ""
 
 #. Type: string
 #. Description
-#: ../neurodebian.templates:7001
+#: ../neurodebian.templates:8001
 msgid ""
 "For instance if you would like to enable additional repository (e.g. "
 "NeuroDebian devel) or release, without interfering with the main/default "
@@ -161,28 +186,29 @@ msgstr ""
 
 #. Type: note
 #. Description
-#: ../neurodebian.templates:8001
+#: ../neurodebian.templates:9001
 msgid "APT list of packages needs to be updated"
 msgstr ""
 
 #. Type: note
 #. Description
-#: ../neurodebian.templates:8001
+#: ../neurodebian.templates:9001
 msgid ""
-"For the installed NeuroDebian APT configuration to take an effect, list of "
-"packages needs to be updated.  This needs to be done \"manually\" (e.g., via "
-"apt-get update) upon completion of installation of the neurodebian package."
+"For the installed (or removed) NeuroDebian APT configuration to take an "
+"effect, list of packages needs to be updated.  This needs to be done "
+"\"manually\" (e.g., via apt-get update) upon completion of installation or "
+"reconfiguration of the neurodebian package."
 msgstr ""
 
 #. Type: error
 #. Description
-#: ../neurodebian.templates:9001
+#: ../neurodebian.templates:10001
 msgid "netselect tool was not found!"
 msgstr ""
 
 #. Type: error
 #. Description
-#: ../neurodebian.templates:9001
+#: ../neurodebian.templates:10001
 msgid ""
 "Please install netselect tool first (apt-get install netselect) or choose a "
 "specific mirror."
@@ -190,13 +216,13 @@ msgstr ""
 
 #. Type: error
 #. Description
-#: ../neurodebian.templates:10001
+#: ../neurodebian.templates:11001
 msgid "netselect tool was not found (no other mirror)!"
 msgstr ""
 
 #. Type: error
 #. Description
-#: ../neurodebian.templates:10001
+#: ../neurodebian.templates:11001
 msgid ""
 "Please install netselect tool first (apt-get install netselect) before "
 "installing/configuring this package, or run with a lower DEBIAN_PRIORITY to "

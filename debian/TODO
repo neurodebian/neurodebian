@@ -51,5 +51,3 @@ apt-cache policy | grep o=NeuroDebian,.*,n=$release
 echo "I: success"
 
 *** ~/bin/docker-debians-run /bin/bash -c "apt-get -y update >/dev/null; apt-get install -y wget >/dev/null; bash <(wget -q --no-check-certificate -O- https://raw.githubusercontent.com/yarikoptic/neurodebian/enh/neurodebian-installer/tools/nd-configurerepo) --overwrite --install --mirror=us-nh" 
-
-* TODO use NEURODEBIAN_ENABLE env variable in postinst, add explicit option
