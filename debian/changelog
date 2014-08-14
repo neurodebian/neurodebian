@@ -26,7 +26,7 @@ neurodebian (0.34) unstable; urgency=medium
   * tools/neurodebian.{preinst,templates,config}
     - add an explicit question either NeuroDebian APT configuration should
       be installed (i.e. NeuroDebian repository being enabled). debconf
-      default/value could be overriden from the environment using
+      default/value could be overridden from the environment using
       NEURODEBIAN_ENABLE.
 
  -- Yaroslav Halchenko <debian@onerussian.com>  Wed, 13 Aug 2014 13:43:13 -0400

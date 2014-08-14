@@ -152,7 +152,7 @@ Options:
     Return a list (with abbreviation) of known NeuroDebian mirrors.
 
   --overwrite,
-    If apt file already present, it would not be overriden (by default).
+    If apt file already present, it would not be overridden (by default).
     Use this option to overwrite.
 
   --suffix=SUFFIX
