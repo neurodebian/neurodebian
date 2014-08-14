@@ -20,7 +20,12 @@ apt-get install -y dpkg-dev ;  dpkg-scanpackages  . /dev/null > Packages
 # Add it to the list of available
 echo "deb file:///tmp/apt ./" >| $apt_file; apt-get update
 # Install the beast
-apt-get install -y --allow-unauthenticated neurodebian
+DEBIAN_FRONTEND=noninteractive apt-get install -y --allow-unauthenticated neurodebian
+# By default should not get enabled
+[ ! -e "$apt_nd_file" ]
+
+DEBIAN_FRONTEND=noninteractive NEURODEBIAN_ENABLE=yes apt-get install -y --allow-unauthenticated --reinstall neurodebian
+
 # Verify that it has correct entries
 # Very cruel way to figure out the default release. Would fail if
 # options, such as multiarch, are specified after deb
