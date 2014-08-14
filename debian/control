@@ -76,21 +76,3 @@ Description: Helper for NeuroDebian popularity contest submissions
  You can always enable or disable your participation in popcon by
  running 'dpkg-reconfigure popularity-contest' as root.
 
-Package: neurodebian-guest-additions
-Architecture: all
-Depends: ${misc:Depends},
-		 virtualbox-guest-utils,
-		 virtualbox-guest-x11,
-		 virtualbox-guest-dkms,
-         sudo,
-         neurodebian-desktop,
-         lightdm | x-display-manager,
-		 zenity,
-Recommends: chromium,
-            update-notifier,
-Description: NeuroDebian guest additions (DO NOT INSTALL OUTSIDE VIRTUALBOX)
- This package configures a Debian installation as a guest operating system
- in a VirtualBox-based virtual machine for NeuroDebian.
- .
- DO NOT install this package unless you know what you are doing! For example,
- installation of this package relaxes several security mechanisms.

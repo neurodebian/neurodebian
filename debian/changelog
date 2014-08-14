@@ -5,6 +5,8 @@ neurodebian (0.34) unstable; urgency=medium
     and suggestions)
   * debian/control
     - neurodebian-guest-additions:
+      - this binary package will be built ONLY for the NeuroDebian wheezy,
+        and that is why was removed from the stock debian/control
       - moved virtualbox-guest* dependencies into Depends (from
         Pre-Depends), and stripping deprecated -ose suffix
       - dropped depends on elderly gdm, now lightdm or any x-display-manager
