@@ -12,6 +12,8 @@ neurodebian (0.34) unstable; urgency=medium
       - dropped depends on elderly gdm, now lightdm or any x-display-manager
       - fixing package names for chromium, and removing update-manager-gnome
         N/A in sid
+    - neurodebian
+      - moved wget, python to Depends from Pre-Depends
   * debian/neurodebian-popularity-contest.*
     - .postinst  should try to remove old-fashion popcon entry only if
       upgrading/configuring from pre 0.33 version of neurodebian-*
