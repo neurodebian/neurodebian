@@ -12,7 +12,7 @@ Vcs-Git: git://git.debian.org/git/pkg-exppsy/neurodebian.git
 Package: neurodebian
 Architecture: all
 Pre-depends: python, wget
-Depends: neurodebian-keyring, ${misc:Depends}
+Depends: neurodebian-archive-keyring, ${misc:Depends}
 Recommends: netselect
 Suggests: neurodebian-desktop, neurodebian-popularity-contest
 Description: turnkey platform for the neuroscience
@@ -27,7 +27,7 @@ Description: turnkey platform for the neuroscience
 
 Package: neurodebian-dev
 Architecture: all
-Depends: ${misc:Depends}, devscripts, cowbuilder, neurodebian-keyring
+Depends: ${misc:Depends}, devscripts, cowbuilder, neurodebian-archive-keyring
 Recommends: python, zerofree, moreutils, time, ubuntu-keyring, debian-archive-keyring, apt-utils
 Suggests: virtualbox-ose, virtualbox-ose-fuse
 Description: NeuroDebian development tools
@@ -47,9 +47,11 @@ Description: neuroscience research environment
  automatically installed upon initial invocation.
 
 
-Package: neurodebian-keyring
+Package: neurodebian-archive-keyring
 Architecture: all
 Depends: ${misc:Depends}
+Replaces: neurodebian-keyring (<< 0.34~)
+Breaks: neurodebian-keyring (<< 0.34~)
 Description: GnuPG archive keys of the NeuroDebian archive
  The NeuroDebian project digitally signs its Release files. This package
  contains the archive keys used for that.
