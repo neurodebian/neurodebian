@@ -339,7 +339,8 @@ assure_command_from_package()
 
     # if absent -- check availability of the package
     apt_cache=$(LANG=C apt-cache policy "$pkg" 2>&1)
-    if [[ "$apt_cache" =~ Unable\ to\ locate\ package ]] || [[ "$apt_cache" =~ Candidate:\ (none) ]]; then
+    if [[ "$apt_cache" =~ Unable\ to\ locate\ package ]] || [[ "$apt_cache" =~ Candidate:\ (none) ]] \
+       || [[ "$apt_cache" =~ is\ not\ available ]] ; then
         print_verbose 1 "Package $pkg providing command $cmd is N/A. Skipping"
         return 10;
     fi
