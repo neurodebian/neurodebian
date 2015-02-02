@@ -63,7 +63,7 @@ apt-get update -y
 gpg --keyserver hkp://subkeys.pgp.net --recv-keys 16BA136C && \
         gpg --export 16BA136C | apt-key add - || :
 
-apt-get install -y --allow-unauthenticated neurodebian-keyring
+apt-get install -y --allow-unauthenticated neurodebian-archive-keyring
 apt-get update -y
 
 # to cheat the VM check

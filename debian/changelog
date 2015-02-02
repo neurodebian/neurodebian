@@ -1,12 +1,45 @@
-neurodebian (0.33) unstable; urgency=medium
+neurodebian (0.34) unstable; urgency=medium
 
-  * Initial upload to Debian proper (Closes: #757279)
+  * Re-upload to Debian proper (Closes: #757279), addressing Debian
+    ftpmaster concerns (Thanks Ansgar Burchardt for the thorough review
+    and suggestions)
+  * debian/control
+    - neurodebian-guest-additions:
+      - this binary package will be built ONLY for the NeuroDebian wheezy,
+        and that is why was removed from the stock debian/control
+      - moved virtualbox-guest* dependencies into Depends (from
+        Pre-Depends), and stripping deprecated -ose suffix
+      - dropped depends on elderly gdm, now lightdm or any x-display-manager
+      - fixing package names for chromium, and removing update-manager-gnome
+        N/A in sid
+    - neurodebian
+      - moved wget, python to Depends from Pre-Depends
+  * debian/neurodebian-popularity-contest.*
+    - .postinst  should try to remove old-fashion popcon entry only if
+      upgrading/configuring from pre 0.33 version of neurodebian-*
+    - .postrm  removed altogether since will not longer be needed because
+      popcon configuration gets installed as a config file now
+  * tools/nd-configurerepo
+    - use long GPG key id
+    - unify prefix for environment variables to be NEURODEBIAN_ instead of
+      more cryptic ND_AE_
+  * tools/neurodebian.{preinst,templates,config}
+    - add an explicit question either NeuroDebian APT configuration should
+      be installed (i.e. NeuroDebian repository being enabled). debconf
+      default/value could be overridden from the environment using
+      NEURODEBIAN_ENABLE.
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Wed, 13 Aug 2014 13:43:13 -0400
+
+neurodebian (0.33) UNRELEASED; urgency=medium
+
+  * Initial (rejected) upload to Debian proper
   * Support popularity-contest >= 1.61 encrypting submissions:
     - provide GPG public key for encryption of submissions
   * Updated list of currently supported Ubuntu releases
   * New features:
     - neurodebian and neurodebian packages to provide 1-click
-      NeuroDebian deployment on Debian/Ubuntu boxesw
+      NeuroDebian deployment on Debian/Ubuntu boxes
   * Breakage of "compatibility":
     - do not install sphinx sources
 

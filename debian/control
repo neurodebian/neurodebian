@@ -11,8 +11,7 @@ Vcs-Git: git://git.debian.org/git/pkg-exppsy/neurodebian.git
 
 Package: neurodebian
 Architecture: all
-Pre-depends: python, wget
-Depends: neurodebian-keyring, ${misc:Depends}
+Depends: python, wget, neurodebian-archive-keyring, ${misc:Depends}
 Recommends: netselect
 Suggests: neurodebian-desktop, neurodebian-popularity-contest
 Description: turnkey platform for the neuroscience
@@ -27,7 +26,7 @@ Description: turnkey platform for the neuroscience
 
 Package: neurodebian-dev
 Architecture: all
-Depends: ${misc:Depends}, devscripts, cowbuilder, neurodebian-keyring
+Depends: ${misc:Depends}, devscripts, cowbuilder, neurodebian-archive-keyring
 Recommends: python, zerofree, moreutils, time, ubuntu-keyring, debian-archive-keyring, apt-utils
 Suggests: virtualbox-ose, virtualbox-ose-fuse
 Description: NeuroDebian development tools
@@ -47,9 +46,11 @@ Description: neuroscience research environment
  automatically installed upon initial invocation.
 
 
-Package: neurodebian-keyring
+Package: neurodebian-archive-keyring
 Architecture: all
 Depends: ${misc:Depends}
+Replaces: neurodebian-keyring (<< 0.34~)
+Breaks: neurodebian-keyring (<< 0.34~)
 Description: GnuPG archive keys of the NeuroDebian archive
  The NeuroDebian project digitally signs its Release files. This package
  contains the archive keys used for that.
@@ -76,19 +77,3 @@ Description: Helper for NeuroDebian popularity contest submissions
  You can always enable or disable your participation in popcon by
  running 'dpkg-reconfigure popularity-contest' as root.
 
-Package: neurodebian-guest-additions
-Architecture: all
-Pre-Depends: virtualbox-ose-guest-utils, virtualbox-ose-guest-x11, virtualbox-ose-guest-dkms
-Depends: ${misc:Depends},
-         sudo,
-         neurodebian-desktop,
-         gdm | lightdm,
-		 zenity,
-Recommends: chromium-browser,
-            update-manager-gnome, update-notifier,
-Description: NeuroDebian guest additions (DO NOT INSTALL OUTSIDE VIRTUALBOX)
- This package configures a Debian installation as a guest operating system
- in a VirtualBox-based virtual machine for NeuroDebian.
- .
- DO NOT install this package unless you know what you are doing! For example,
- installation of this package relaxes several security mechanisms.

@@ -34,7 +34,7 @@ lb config noauto \
   --iso-preparer "NeuroDebian ${nd_version}; http://neuro.debian.net" \
   --iso-publisher "NeuroDebian project; http://neuro.debian.net" \
   --iso-volume "NeuroDebian Live ${nd_version} $nd_arch" \
-  --keyring-packages "debian-archive-keyring neurodebian-keyring" \
+  --keyring-packages "debian-archive-keyring neurodebian-archive-keyring" \
   --memtest memtest86+ \
   --mirror-bootstrap "${deb_mirror}/debian/" \
   --mirror-chroot "${deb_mirror}/debian/" \

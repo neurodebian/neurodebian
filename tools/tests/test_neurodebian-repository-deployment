@@ -6,21 +6,26 @@ apt_file=/etc/apt/sources.list.d/local.list
 apt_nd_file=/etc/apt/sources.list.d/neurodebian.sources.list
 
 # clean up from a previous test
-dpkg --purge neurodebian neurodebian-keyring || :
+dpkg --purge neurodebian neurodebian-archive-keyring || :
 echo PURGE | debconf-communicate neurodebian || :
 rm -rf /tmp/apt $apt_file;
 
 mkdir -p /tmp/apt; cd /tmp/apt;
 rm -f neurodebian-*deb; apt-get update -y; apt-get install -y wget;
-wget http://www.onerussian.com/tmp/neurodebian_0.33~a1_all.deb;
-wget http://www.onerussian.com/tmp/neurodebian-keyring_0.33~a1_all.deb;
+wget http://www.onerussian.com/tmp/neurodebian_0.34_all.deb;
+wget http://www.onerussian.com/tmp/neurodebian-archive-keyring_0.34_all.deb;
 
 # generate APT repo
 apt-get install -y dpkg-dev ;  dpkg-scanpackages  . /dev/null > Packages
 # Add it to the list of available
 echo "deb file:///tmp/apt ./" >| $apt_file; apt-get update
 # Install the beast
-apt-get install -y --allow-unauthenticated neurodebian
+DEBIAN_FRONTEND=noninteractive apt-get install -y --allow-unauthenticated neurodebian
+# By default should not get enabled
+[ ! -e "$apt_nd_file" ]
+
+DEBIAN_FRONTEND=noninteractive NEURODEBIAN_ENABLE=yes apt-get install -y --allow-unauthenticated --reinstall neurodebian
+
 # Verify that it has correct entries
 # Very cruel way to figure out the default release. Would fail if
 # options, such as multiarch, are specified after deb

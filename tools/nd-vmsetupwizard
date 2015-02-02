@@ -32,11 +32,21 @@ Do you want to proceed with updating the system?
 fi
 
 # initialize apt
-update-manager -c
+#
+# update-manager (from update-manager-gnome) and
+# update-software-center (from software-center)
+# are present only in wheezy
+if which update-manager > /dev/null; then update-manager -c; fi
 
-sudo update-software-center --debug 2>&1 | \
-	zenity $icon_opt --title="Updating Software Center Repository"  \
-		--progress  --pulsate --auto-close --auto-kill 
+if which update-software-center > /dev/null; then
+    sudo update-software-center --debug 2>&1 | \
+	    zenity $icon_opt --title="Updating Software Center Repository"  \
+		   --progress  --pulsate --auto-close --auto-kill;
+else
+    sudo apt-get update 2>&1 | \
+	    zenity $icon_opt --title="Running apt-get update" \
+		   --progress  --pulsate --auto-close --auto-kill;
+fi
 
 popconf=/etc/popularity-contest.conf
 if [ ! -e "$popconf" ] || grep -q -e '^PARTICIPATE.*no' "$popconf" ;

@@ -7,7 +7,7 @@ Script to log into a particular COW and bindmount some directory.
 Synopsis
 --------
 
-  nd_build <family> <codename> <arch> [bindmountdir] [cowbuilderopts]
+  nd_login <family> <codename> <arch> [bindmountdir] [cowbuilderopts]
 
 EOT
 exit 1
