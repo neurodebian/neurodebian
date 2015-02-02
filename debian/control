@@ -3,12 +3,26 @@ Section: science
 Priority: optional
 Maintainer: NeuroDebian Team <team@neuro.debian.net>
 Uploaders: Michael Hanke <mih@debian.org>, Yaroslav Halchenko <debian@onerussian.com>
-Build-Depends: debhelper (>= 7.0.50~), xcftools, help2man, inkscape, imagemagick, python-html5lib
-Standards-Version: 3.9.2
+Build-Depends: debhelper (>= 7.0.50~), xcftools, help2man, inkscape, imagemagick, python-html5lib, po-debconf
+Standards-Version: 3.9.5
 Homepage: http://neuro.debian.net
 Vcs-Browser: http://git.debian.org/?p=pkg-exppsy/neurodebian.git
 Vcs-Git: git://git.debian.org/git/pkg-exppsy/neurodebian.git
-XS-DM-Upload-Allowed: yes
+
+Package: neurodebian
+Architecture: all
+Pre-depends: python, wget
+Depends: neurodebian-keyring, ${misc:Depends}
+Recommends: netselect
+Suggests: neurodebian-desktop, neurodebian-popularity-contest
+Description: turnkey platform for the neuroscience
+ The NeuroDebian project integrates and maintain a variety of
+ neuroscience-oriented (such as AFNI, FSL, PsychoPy, etc.) and many
+ generic computational (such as condor, pandas, etc.) software projects
+ within Debian.
+ .
+ This package enables NeuroDebian repository on top of the stock
+ Debian or Ubuntu system.
 
 
 Package: neurodebian-dev

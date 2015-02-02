@@ -1,6 +1,0 @@
-[Desktop Entry]
-Name=VirtualBox shared folder
-Comment=Mount the shared folder of the VirtualBox host
-Exec=sh -c 'sudo mount.vboxsf -o uid=$(id -u),gid=$(id -g) host /mnt/host'
-Terminal=false
-Type=Application

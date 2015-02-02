@@ -27,11 +27,14 @@ override_dh_auto_build::
 		-n "backport Debian source packages" > build/man/backport-dsc.1
 	help2man --no-info tools/nd-autoinstall \
 		-n "install (if necessary) and run an application" > build/man/nd-autoinstall.1
+	help2man --no-info tools/nd-configurerepo \
+		-n "configure APT to use NeuroDebian repository" > build/man/nd-configurerepo.1
 
 override_dh_auto_install::
 
 override_dh_auto_test::
 
 override_dh_clean:
+	debconf-updatepo
 	dh_clean
 	$(MAKE) -C artwork clean

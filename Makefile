@@ -72,7 +72,7 @@ updatedb: cachefiles
 
 upload-website: html
 	rsync -rvzlhp --delete \
-        --exclude=debian --exclude=debian-local --exclude=debian-devel --exclude=_files \
+        --exclude=debian --exclude=debian-local --exclude=debian-devel --exclude=debian-custom --exclude=_files \
         --chmod=Dg+s,g+rw $(WWW_DIR) $(WWW_UPLOAD_URI)
 	: # Touch stamp here so we get it updated on every upload
 	touch $@-stamp

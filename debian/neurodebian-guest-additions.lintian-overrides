@@ -1,0 +1,6 @@
+# No manpage yet
+neurodebian-guest-additions: binary-without-manpage usr/bin/nd-vmsetupwizard
+
+# Similarly to the case of .desktop files in -desktop package
+# lack of main category is intentional
+neurodebian-guest-additions: desktop-entry-lacks-main-category usr/share/applications/neurodebianguest-vmsetupwizard.desktop

@@ -83,7 +83,7 @@ for f in *~nd*.changes; do uf=${f//.changes/.neurodn.upload}; [ -e $uf ] && cont
 
 # on the neuro.debian.net side
 # filtered out incoming from pkgs with versions in official distribution
-for c in *changes; do pkg_ver=`grep '\.deb$' $c | head -1  | sed -e 's,.* \([^_]*\)_\(.*\)_.*,\1 \2,g'`;  echo $pkg_ver; done | uniq | while read p v; do  uver=$(whohas -D Ubuntu --strict $p | grep '/precise/' | awk '{print $3;}');  dpkg --compare-versions $v lt "$uver" && echo $c $p $v $uver; done 2>&1 | tee up-to-date-list.txt
+for c in *changes; do pkg_ver=`grep '\.deb$' $c | head -1  | sed -e 's,.* \([^_]*\)_\(.*\)_.*,\1 \2,g'`;  echo $pkg_ver; done | uniq | while read p v; do  uver=$(whohas -D Ubuntu --strict $p | grep "/$dist/" | awk '{print $3;}');  dpkg --compare-versions $v lt "$uver" && echo $c $p $v $uver; done 2>&1 | tee up-to-date-list.txt
 
 # and moved corresponding changelogs away
 mv `awk '{print $1,$2;}' up-to-date-list.txt | while read p v; do grep -l "${p}_${v}" *changes; done | sort | uniq` NOT_UPLOADED/
@@ -97,4 +97,4 @@ sudo nd_updatedist nd+ubuntu $dist
 # And build which previously failed, most probably due to unsatisfied dependencies
 # and possibly failure with outdated versions of 3rd party modules
 #grep -v OLD summary.build | grep FAILED | sed -e 's,_\(i386\|amd64\).build.*,,g' | sort | uniq | while read p; do sudo nd_build nd+ubuntu precise $p.dsc; done
-grep -v -e OLD -e networkx summary.build | grep FAILED  | sed -e 's,_\(i386\|amd64\).build.*,,g' | sort | uniq | while read p; do sudo nd_build nd+ubuntu precise $p.dsc; done
+grep -v -e OLD -e networkx summary.build | grep FAILED  | sed -e 's,_\(i386\|amd64\).build.*,,g' | sort | uniq | while read p; do sudo nd_build nd+ubuntu $dist $p.dsc; done

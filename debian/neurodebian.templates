@@ -1,0 +1,106 @@
+Template: neurodebian/title
+Type: title
+_Description: NeuroDebian APT repository installer
+
+
+Template: neurodebian/release
+Type: select
+Choices: auto, ${releases}
+Default: auto
+_Description: Release name of the base system:
+ Specify for which Debian or Ubuntu release (e.g. wheezy or trusty).
+ .
+ If 'auto', Debian or Ubuntu release name will be '${release}' as
+ deduced from the output of apt-cache policy.  If the release of your
+ system is not '${release}' -- please choose specific one which
+ matches best.
+
+
+Template: neurodebian/mirror
+Type: select
+Choices: origin, best, custom, ${mirrors}
+Default: best
+_Description: NeuroDebian mirror to use:
+ NeuroDebian project has a number of community-maintainer mirrors
+ around the globe.
+ .
+ If you do not know which mirror URL to choose, select among
+ .
+  - origin: original NeuroDebian repository
+  - best: will try to use netselect to select "closest" mirror.
+    Depending on the configuration of the firewall, and actual mirror
+    setup, might fail to select actually closest one.  If netselect
+    is not available, default mirror (possibly 'origin') will be used.
+
+
+Template: neurodebian/flavor
+Type: select
+Choices: auto, libre, full
+Default: auto
+_Description: NeuroDebian flavor to use:
+ NeuroDebian project adheres to Debian Free Software Guidelines and
+ has three areas of the archive in all suites/releases:
+ .
+  libre
+    only the DFSG-compliant materials
+  full
+    all three areas (main, contrib, non-free)
+  auto
+    according to output of apt-cache policy '${flavor}' will be used.
+    If that is not the flavor you need, select manually another one.
+
+Template: neurodebian/components
+Type: multiselect
+Choices: software, data, devel
+Default: software, data
+_Description: NeuroDebian repository components to enable:
+ NeuroDebian repository provides
+ .
+  software
+   Packages containing software packages, often backports of stable
+   software releases for previous Debian/Ubuntu releases
+  devel
+   Additional "bleeding edge" software packages, which might not be a
+   good fit for being enabled by default. (Similar to Debian
+   experimental)
+  data
+   Packages containing data (e.g. atlases, sample datasets), often
+   required by software packages.  Should generally be enabled.
+
+
+Template: neurodebian/overwrite
+Type: boolean
+Default: true
+_Description: Should existing NeuroDebian APT file be overridden?
+ If not allowed, configuration would fail if there is
+ an existing apt configuration file for the NeuroDebian.
+
+Template: neurodebian/suffix
+Type: string
+Default:
+_Description: Additional suffix for the NeuroDebian APT file name:
+ For instance if you would like to enable additional repository
+ (e.g. NeuroDebian devel) or release, without interfering with the
+ main/default configuration file.  Generally should be left empty.
+
+Template: neurodebian/run-update-note
+Type: note
+_Description: APT list of packages needs to be updated
+ For the installed NeuroDebian APT configuration to take an effect,
+ list of packages needs to be updated.  This needs to be done
+ "manually" (e.g., via apt-get update) upon completion of installation
+ of the neurodebian package.
+
+Template: neurodebian/netselect-not-found
+Type: error
+_Description: netselect tool was not found!
+ Please install netselect tool first (apt-get install netselect) or
+ choose a specific mirror.
+
+Template: neurodebian/netselect-cannot-be-used
+Type: error
+_Description: netselect tool was not found (no other mirror)!
+ Please install netselect tool first (apt-get install netselect)
+ before installing/configuring this package, or run with a lower
+ DEBIAN_PRIORITY to choose a specific mirror.
+

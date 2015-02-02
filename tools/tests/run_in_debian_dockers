@@ -1,0 +1,10 @@
+#!/bin/bash
+
+set -u
+test=$1
+
+docker.io images 2>&1 | grep -e  "\(debian\|ubuntu\)[ ]*[0-9]"  | sort | awk '{print $1,$2;}' \
+| while read d v; do
+    echo "== $d $v"
+    chronic docker.io run --rm=true -v $PWD:$PWD $d:$v /bin/bash $PWD/$test
+done

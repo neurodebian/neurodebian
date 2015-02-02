@@ -6,7 +6,7 @@ ICONSIZED=ccn-logo_h50.png uni-md-logo_h50.png dartmouth-logo_h50.png
 pics: $(SVGIS) $(ICONSIZED)
 
 clean::
-	for p in *.svg; do rm -f $${p%*.svg}.{pdf,eps,png}; done
+	for p in *.svg; do [ "$$p" = ndhackergotchi.svg ] || rm -f $${p%*.svg}.{pdf,eps,png}; done
 	rm -rf *_tuned
 	rm -f  $(ICONSIZED)
 
