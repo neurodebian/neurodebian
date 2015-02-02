@@ -196,9 +196,18 @@ Troubleshooting
     NeuroDebian VM, please rebuild the version available from the
     backports::
 
-      sudo apt-get install -y linux-headers-2.6-amd64 # or -686 for 32bit
+      sudo apt-get install -y linux-headers-2.6-`dpkg --print-architecture`
       sudo apt-get install -y -t squeeze-backports virtualbox-ose-guest-dkms \
            virtualbox-ose-guest-utils  virtualbox-ose-guest-x11
+
+    and reboot VM.
+
+  My VM lost mounted host directories, and display auto-resizing  after upgrade
+    NeuroDebian VMs ship without Linux kernel headers pre-installed to
+    minimize distribution/running footprint for one time throw-away
+    usages of the VM.  To install headers package(s) just run
+
+      sudo apt-get install -y linux-headers-`dpkg --print-architecture`
 
     and reboot VM.
 
@@ -222,6 +231,10 @@ What has changed
   .. container:: expandinstructions
 
      Click on an item to expand it
+
+  7.8.0 -- 2 Feb 2015
+    * VM appliance based on the updated wheezy point release 7.8.0.
+      Should resolve problems with upgrades of the guest additions.
 
   7.4.20140423 -- 24 Apr 2014
     * VM appliance based on the updated wheezy point release 7.4.
