@@ -1,0 +1,13 @@
+# vim ft=yaml
+# travis-ci.org definition to provide minimalistic testing of NeuroDebian
+# setup and tools
+language: erlang
+cache:
+  - apt
+script:
+    # Test the ultimate one-liner setup for NeuroDebian repository
+    - bash tools/neurodebian-travis.sh
+    # Verify that we can "install neurodebian"
+    - sudo apt-get install neurodebian
+    # Verify that -dev installs nicely
+    - sudo apt-get install neurodebian-dev
