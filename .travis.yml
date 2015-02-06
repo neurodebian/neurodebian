@@ -9,7 +9,15 @@ script:
     - bash tools/neurodebian-travis.sh
     # Verify that we can "install neurodebian"
     - sudo apt-get install -y neurodebian
+    # but by default (fix it to not disable if was enabled?)
+    # it results in neurodebian not enabled, thus disabled:
+    - test \! -f /etc/apt/sources.list.d/neurodebian.sources.list
+    # enable it via our tool
+    - NEURODEBIAN_ENABLE=yes NEURODEBIAN_UPDATE=yes sudo nd-configurerepo
     - grep "\sprecise\s" /etc/apt/sources.list.d/neurodebian.sources.list
+    # Verify that it is still present
+    - NEURODEBIAN_ENABLE=yes sudo apt-get install -y --reinstall neurodebian
+    - test -f /etc/apt/sources.list.d/neurodebian.sources.list
     # Verify that -dev installs nicely
     - sudo apt-get install -y neurodebian-dev
 after_failure:
