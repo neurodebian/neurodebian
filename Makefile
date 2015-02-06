@@ -74,6 +74,7 @@ upload-website: html
 	rsync -rvzlhp --delete \
         --exclude=debian --exclude=debian-local --exclude=debian-devel --exclude=debian-custom --exclude=_files \
         --chmod=Dg+s,g+rw $(WWW_DIR) $(WWW_UPLOAD_URI)
+	rsync -rvzlhp --chmod=Dg+s,g+rw tools/neurodebian-travis.sh $(WWW_UPLOAD_URI)/_files/
 	: # Touch stamp here so we get it updated on every upload
 	touch $@-stamp
 
