@@ -1,3 +1,15 @@
+neurodebian (0.35) neurodebian; urgency=medium
+
+  * debian/patches/jessie-dsc-patch symlink to the one for wheezy so
+    we build guest additions for jessie VM
+  * tools/nd* accounting for new and EOLed releases of Ubuntu
+  * website:
+    - new CN mirrors
+  * brochure:
+    - note docker images
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Mon, 09 Feb 2015 18:06:57 -0500
+
 neurodebian (0.34) unstable; urgency=medium
 
   * Re-upload to Debian proper (Closes: #757279), addressing Debian
