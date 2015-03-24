@@ -273,7 +273,7 @@ d-i grub-installer/with_other_os boolean false
 # uncomment and edit these lines:
 #d-i grub-installer/only_debian boolean false
 #d-i grub-installer/with_other_os boolean false
-#d-i grub-installer/bootdev  string (hd0,0)
+d-i grub-installer/bootdev  string default
 # To install grub to multiple disks:
 #d-i grub-installer/bootdev  string (hd0,0) (hd1,0) (hd2,0)
 

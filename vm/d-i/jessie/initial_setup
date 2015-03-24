@@ -128,9 +128,9 @@ find /lib/modules/*$darch -iname vboxsf.ko | grep -q .
 apt-get install --no-install-recommends -y \
  mc evince bash-completion ntpdate file-roller \
  eog vim reportbug \
- software-center synaptic menu less libxp6 \
+ synaptic menu less libxp6 \
  task-xfce-desktop lightdm zenity \
- chromium-browser \
+ chromium \
  sudo neurodebian-desktop update-notifier \
  bc
 
@@ -171,8 +171,12 @@ apt-get purge -y libwebkitgtk-1.0-0
 apt-get autoremove --purge -y
 
 # custom config
-# use NeuroDebian website as default homepage
-sed -i -e 's,http://www.debian.org,http://neuro.debian.net,g' /etc/chromium*/master_preferences
+# use NeuroDebian website as default homepage.
+# In jessie's version of chromium that configuration file is
+# shipped under /usr/lib/chromium
+if [ -e /etc/chromium/master_preferences ]; then
+	sed -i -e 's,http://www.debian.org,http://neuro.debian.net,g' /etc/chromium*/master_preferences
+fi
 
 # Place default XFCE4 panel config, otherwise a dialog appears
 # Thanks go to cavalier@freenode IRC for the hint
