@@ -8,7 +8,7 @@ set -eu
 build_dir=$PWD/build
 dist_dir=$PWD/dist
 vendor="NeuroDebian"
-vm_version="7.999.20150209"
+vm_version="7.999.20150325+1"
 vm_ostype=Debian
 vendor_url="http://neuro.debian.net"
 product_url="${vendor_url}/vm.html"

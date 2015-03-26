@@ -35,8 +35,10 @@ find vbmnt/var/ -wholename '*xapian*.DB' -delete
 # package cache
 find vbmnt/var/cache/apt/archives/ -name '*.deb' -delete
 rm -f vbmnt/var/cache/apt/*.bin
+rm -f vbmnt/var/cache/debconf/*-old
 # device files -- udev restores them
 rm -rf vbmnt/dev/*
+
 # tmp
 rm -rf vbmnt/tmp/*
 # log files

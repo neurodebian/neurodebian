@@ -47,7 +47,7 @@ git config --global user.email nd@localhost
 # -----------------
 
 # Add sources.list for backports and neurodebian
-wget -O /etc/apt/sources.list.d/neuro.debian.net.list http://neuro.debian.net/lists/jessie.us-nh
+wget -O /etc/apt/sources.list.d/neurodebian.sources.list http://neuro.debian.net/lists/jessie.us-nh
 
 # Development versions (TODO: comment out upon finishing)
 #cat /etc/apt/sources.list.d/neuro.debian.net.list | sed -e 's,/debian ,/debian-devel ,g' \
@@ -131,13 +131,33 @@ apt-get install --no-install-recommends -y \
  synaptic menu less libxp6 \
  task-xfce-desktop lightdm zenity \
  chromium \
- sudo neurodebian-desktop update-notifier \
+ sudo neurodebian-desktop \
  bc
+
+# update-notifier is gnome's, so it pulls in lots of dependecies
+# and it seems to be of not working together with XFCE even if
+# installed but you could be wrong.  So let's just dump it
+# apt-get install -y update-notifier
+
+
+# Gnome optional pulled by gnome-core:
+apt-get purge -y gnome-core evolution-common evolution libevolution
+
+# We use XFCE now, not gnome, so remove gnome pieces
+apt-get purge -y nautilus nautilus-data gnome-sushi \
+	gnome-settings-daemon gnome-packagekit-session file-roller \
+	gnome-packagekit update-notifier
+
+# Additional packages necessary for e.g. smooth debconf operation
+apt-get install -y libgtk2-perl
 
 # Assure having xfce4 terminal and it being default one and other handy
 # XFCE4 components
 apt-get install -y xfce4-terminal thunar-archive-plugin
 apt-get install --no-install-recommends -y gedit yelp
+
+# And let's better install small useful utilities
+apt-get install -y moreutils whohas
 
 # Do not even try to deal with alternatives -- it will be the one and would puke
 # update-alternatives --set x-terminal-emulator /usr/bin/xfce4-terminal
@@ -147,11 +167,10 @@ apt-get install --no-install-recommends -y gedit yelp
 
 # Clean-up installed development files which got pulled in for
 # VM guest additions (to build kernel modules via DKMS)
-apt-get purge -y libc6-dev
-dpkg -l | awk '/^ii.*[ \t]linux-headers/{print $2;}' | xargs -r apt-get purge -y
-
-# Gnome optional pulled by gnome-core:
-apt-get purge -y gnome-core evolution-common evolution libevolution
+# yoh: so far it costed us more pain (FAQ etc) than gain (those few MB)
+#      thus no longer purging them
+#apt-get purge -y libc6-dev
+#dpkg -l | awk '/^ii.*[ \t]linux-headers/{print $2;}' | xargs -r apt-get purge -y
 
 # And utter cleanup
 apt-get -y autoremove
@@ -161,7 +180,10 @@ find /var/cache/apt/archives/ -name '*.deb' -delete
 
 # cleanup unwanted stuff
 # video drivers (all but vesa)
-apt-get purge -y --force-yes $(apt-cache search --names-only --installed xserver-xorg-video | grep xserver-xorg-video | cut -d ' ' -f 1,1) xserver-xorg-video-vesa+
+# but for them to be freed up need to remove generic tasks pulling them in
+apt-get purge -y --force-yes task-desktop task-xfce-desktop
+# --installed is not in effect and doesn't work (errors) on jessie
+apt-get purge -y --force-yes $(apt-cache search --names-only xserver-xorg-video | grep xserver-xorg-video | cut -d ' ' -f 1,1) xserver-xorg-video-vesa+
 apt-get purge -y brasero freepats
 
 # Seems to be not used by any installed piece
