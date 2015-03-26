@@ -71,6 +71,12 @@ gpg --keyserver hkp://subkeys.pgp.net --recv-keys 16BA136C && \
 apt-get install -y --allow-unauthenticated neurodebian-archive-keyring
 apt-get update -y
 
+# Install our fancy neurodebian package so we centralize future
+# management of the apt sources file via debconf
+DEBIAN_FRONTEND=noninteractive NEURODEBIAN_FLAVOR=full NEURODEBIAN_MIRROR=origin \
+ NEURODEBIAN_ENABLE=true NEURODEBIAN_OVERWRITE=1 NEURODEBIAN_UPDATE=0 \
+ apt-get install -y neurodebian
+
 # to cheat the VM check
 touch /dev/vboxguest
 
