@@ -1,3 +1,17 @@
+neurodebian (0.36) neurodebian; urgency=low
+
+  * xdg/Xresources/neurodebian
+    - removed incorrectly prefixed comment
+  * debian/control
+    - neurodebian-desktop: we don't even use gnome in VM, so now prefer 
+      adwaita icon theme
+  * debian/tools
+    - nd-configurerepo: fix setting of NEURODEBIAN_UPDATE from the environment
+  * vm/d-i/jessie
+    - initiated work on updating VM to be based on jessie
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Thu, 26 Mar 2015 09:41:25 -0400
+
 neurodebian (0.35) neurodebian; urgency=medium
 
   * debian/patches/jessie-dsc-patch symlink to the one for wheezy so

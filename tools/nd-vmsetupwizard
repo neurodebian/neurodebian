@@ -35,8 +35,14 @@ fi
 #
 # update-manager (from update-manager-gnome) and
 # update-software-center (from software-center)
-# are present only in wheezy
-if which update-manager > /dev/null; then update-manager -c; fi
+# are present only in wheezy.
+# On jessie gpk-update-viewer seems to be the update-manager from gnome-packagekit
+if which update-manager > /dev/null; then
+    update-manager -c;
+else
+    if which gpk-update-viewer > /dev/null; then gpk-update-viewer ; fi
+fi
+
 
 if which update-software-center > /dev/null; then
     sudo update-software-center --debug 2>&1 | \

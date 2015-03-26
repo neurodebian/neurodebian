@@ -1,0 +1,229 @@
+#!/bin/bash
+
+# play safe
+set -e
+set -u
+
+# Standard Debian install
+
+# prepare on hydra and use debproxy for speed
+
+# have dedicated hard-drives for swap and home
+
+# expert install
+
+# hostname: neurodebian
+# domain: ''
+
+# Needs to be assured since it got reset to debian
+hostname neurodebian  # this is not a permanent change
+echo "neurodebian" >| /etc/hostname  # make it permanent
+sed -i -e 's/^127\.0\.1\.1.*/127.0.1.1\tneurodebian/g' /etc/hosts
+
+# all file in one partition
+
+# root: not there
+# user: brain
+# pwd: neurodebian
+
+
+# Do a minimal install
+# --------------------
+
+# All files in one partition/
+# just base system, run selection, but no tasks (not even 'Standard system')
+
+# set root password to 'neurodebian' too
+#echo "Set root passwd:"
+#passwd root
+
+apt-get install --no-install-recommends -y etckeeper
+
+# setup etckeeper
+git config --global user.name NeuroDebian
+git config --global user.email nd@localhost
+
+# install new stuff
+# -----------------
+
+# Add sources.list for backports and neurodebian
+wget -O /etc/apt/sources.list.d/neurodebian.sources.list http://neuro.debian.net/lists/jessie.us-nh
+
+# Development versions (TODO: comment out upon finishing)
+#cat /etc/apt/sources.list.d/neuro.debian.net.list | sed -e 's,/debian ,/debian-devel ,g' \
+#	>| /etc/apt/sources.list.d/neuro.debian.net-devel.list
+
+## No backports yet
+## echo "deb http://backports.debian.org/debian-backports jessie-backports main contrib non-free" > /etc/apt/sources.list.d/backports.debian.org.list
+cat << EOT > /etc/apt/preferences.d/backports.debian.org.pref
+Package: *
+Pin: release a=jessie-backports
+Pin-Priority: 200
+EOT
+
+apt-get update -y
+# Backports' Release files signed with both ftpmaster and old backports keys
+# That causes APT to spit out a warning, but to not confuse users, lets simply
+# obtain that key if possible
+gpg --keyserver hkp://subkeys.pgp.net --recv-keys 16BA136C && \
+        gpg --export 16BA136C | apt-key add - || :
+
+apt-get install -y --allow-unauthenticated neurodebian-archive-keyring
+apt-get update -y
+
+# Install our fancy neurodebian package so we centralize future
+# management of the apt sources file via debconf
+DEBIAN_FRONTEND=noninteractive NEURODEBIAN_FLAVOR=full NEURODEBIAN_MIRROR=origin \
+ NEURODEBIAN_ENABLE=true NEURODEBIAN_OVERWRITE=1 NEURODEBIAN_UPDATE=0 \
+ apt-get install -y neurodebian
+
+# to cheat the VM check
+touch /dev/vboxguest
+
+# Assure that corresponding linux headers are installed since otherwise they
+# might not be.  There is also a dichotomy between target 686 and installer
+# using 486 build of the kernel.  It requires manual build/installation
+# of guest additions for 686 at this point. Hence all the ugly logic below
+cunamer=`uname -r`
+cdarch=${cunamer##*-}
+# We carry 686 only
+[ $cdarch = '486' ] && darch='686-pae' || darch=$cdarch
+apt-get install -y linux-headers-$cdarch
+
+## # Forcefully install guest additions from backports so we are
+## # compatible with VirtualBox 4.x series
+## apt-get install -y -t jessie-backports virtualbox-ose-guest-dkms \
+## 	virtualbox-ose-guest-utils  virtualbox-ose-guest-x11 \
+## 	>| /var/log/initial_setup-dkms.log 2>&1
+
+# to get all the rest stuff in recommends
+apt-get install -y dkms neurodebian-guest-additions
+
+if [ "$darch" != "$cdarch" ] ; then
+    # Because DKMS builds for currently running kernel, which during
+    # installation might be a more generic 486, lets force building for 686
+	# and also install necessary headers (will be purged later on anyways)
+	apt-get install -y linux-headers-$darch
+
+	unamer=${cunamer//$cdarch/$darch}
+	# First collect information about installed vb additions
+	vbg=( `dkms status | grep virtualbox | head -n 1 | tr ',' ' '` )
+	echo "I: forcing build and install of guest additions for 686"
+	dkms build -m ${vbg[0]} -v ${vbg[1]} -a i686 -k $unamer \
+		>| /var/log/initial_setup-dkms-686-build.log 2>&1
+	dkms install -m ${vbg[0]} -v ${vbg[1]} -a i686 -k $unamer \
+		>| /var/log/initial_setup-dkms-686-install.log 2>&1
+fi
+
+# Prune DKMS's build -- should be no need to carry it around
+find /var/lib/dkms -iname build | xargs -r rm -rf
+
+# Add brain use into vboxsf group so he gets access to shared folders
+# by default
+adduser brain vboxsf
+
+# assure at the end that we got right modules build in the right location
+find /lib/modules/*$darch -iname vboxsf.ko | grep -q .
+
+# That was for GNOME
+# apt-get install --no-install-recommends -y \
+#  gnome-core mc evince bash-completion ntpdate file-roller gnome-utils \
+#  gnome-themes gnome-disk-utility network-manager-gnome eog vim reportbug \
+#  software-center gdebi gedit-plugins gnome-media synaptic menu less libxp6
+
+apt-get install --no-install-recommends -y \
+ mc evince bash-completion ntpdate file-roller \
+ eog vim reportbug \
+ synaptic menu less libxp6 \
+ task-xfce-desktop lightdm zenity \
+ chromium \
+ sudo neurodebian-desktop \
+ bc
+
+# update-notifier is gnome's, so it pulls in lots of dependecies
+# and it seems to be of not working together with XFCE even if
+# installed but you could be wrong.  So let's just dump it
+# apt-get install -y update-notifier
+
+
+# Gnome optional pulled by gnome-core:
+apt-get purge -y gnome-core evolution-common evolution libevolution
+
+# We use XFCE now, not gnome, so remove gnome pieces
+apt-get purge -y nautilus nautilus-data gnome-sushi \
+	gnome-settings-daemon gnome-packagekit-session file-roller \
+	gnome-packagekit update-notifier
+
+# Additional packages necessary for e.g. smooth debconf operation
+apt-get install -y libgtk2-perl
+
+# Assure having xfce4 terminal and it being default one and other handy
+# XFCE4 components
+apt-get install -y xfce4-terminal thunar-archive-plugin
+apt-get install --no-install-recommends -y gedit yelp
+
+# And let's better install small useful utilities
+apt-get install -y moreutils whohas
+
+# Do not even try to deal with alternatives -- it will be the one and would puke
+# update-alternatives --set x-terminal-emulator /usr/bin/xfce4-terminal
+
+# XXX last ones are actually pulled it by neurodebian-guest-additions whenever we
+# resolve their destiny ;-)   although it might be pooling too much, eg exim4
+
+# Clean-up installed development files which got pulled in for
+# VM guest additions (to build kernel modules via DKMS)
+# yoh: so far it costed us more pain (FAQ etc) than gain (those few MB)
+#      thus no longer purging them
+#apt-get purge -y libc6-dev
+#dpkg -l | awk '/^ii.*[ \t]linux-headers/{print $2;}' | xargs -r apt-get purge -y
+
+# And utter cleanup
+apt-get -y autoremove
+
+# intermediate cleanup to prevent virtual harddrive from fragmenting too much
+find /var/cache/apt/archives/ -name '*.deb' -delete
+
+# cleanup unwanted stuff
+# video drivers (all but vesa)
+# but for them to be freed up need to remove generic tasks pulling them in
+apt-get purge -y --force-yes task-desktop task-xfce-desktop
+# --installed is not in effect and doesn't work (errors) on jessie
+apt-get purge -y --force-yes $(apt-cache search --names-only xserver-xorg-video | grep xserver-xorg-video | cut -d ' ' -f 1,1) xserver-xorg-video-vesa+
+apt-get purge -y brasero freepats
+
+# Seems to be not used by any installed piece
+apt-get purge -y libwebkitgtk-1.0-0
+
+# and whatever is obsolete
+apt-get autoremove --purge -y
+
+# custom config
+# use NeuroDebian website as default homepage.
+# In jessie's version of chromium that configuration file is
+# shipped under /usr/lib/chromium
+if [ -e /etc/chromium/master_preferences ]; then
+	sed -i -e 's,http://www.debian.org,http://neuro.debian.net,g' /etc/chromium*/master_preferences
+fi
+
+# Place default XFCE4 panel config, otherwise a dialog appears
+# Thanks go to cavalier@freenode IRC for the hint
+xfdir=/home/brain/.config/xfce4/xfconf/xfce-perchannel-xml
+mkdir -p $xfdir
+cp /etc/xdg/xfce4/panel/default.xml $xfdir/xfce4-panel.xml
+chown brain.brain -R /home/brain/.config
+
+# reduce grub timeout to speed up boot of VM
+sed -i -e 's/GRUB_TIMEOUT=5/GRUB_TIMEOUT=1/g' /etc/default/grub
+update-grub
+
+# finally configure geomirror for APT and disable deb-src lists
+cp /etc/apt/sources.list /etc/apt/sources.list.orig
+sed -i -e "s,\(deb\(\|-src\) http://\)[^/]*/debian,\1http.debian.net/debian,g" \
+    -e "s/^deb-src/#deb-src/" /etc/apt/sources.list
+
+etckeeper commit "Initial VM setup done"
+
+# Create a link to automatically mounted Shared folder
+# Created by the Welcome Wizard
+#sudo -u brain ln -s /mnt/host /home/brain/
