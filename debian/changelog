@@ -1,3 +1,13 @@
+neurodebian (0.35) UNRELEASED; urgency=low
+
+  * xdg/Xresources/neurodebian
+    - removed incorrectly prefixed comment
+  * debian/control
+    - neurodebian-desktop: we don't even use gnome in VM, so now prefer 
+      adwaita icon theme
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Thu, 26 Mar 2015 09:41:25 -0400
+
 neurodebian (0.34) unstable; urgency=medium
 
   * Re-upload to Debian proper (Closes: #757279), addressing Debian
