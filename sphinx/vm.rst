@@ -232,6 +232,14 @@ What has changed
 
      Click on an item to expand it
 
+  8.0.0 -- 5 May 2015
+    * VM appliance based on the recently releaseed jessie 8.0.0.
+	  It differs from wheezy appliance in not providing update-manager
+	  (became a heavy gnome-dependency) and not making neuro.debian.net
+	  a default home page in the browser.  But otherwise -- it got enriched
+	  with all wonderful additions of jessie, such as IPython 2.3.0 and
+	  others not readily available under wheezy.
+
   7.8.0 -- 2 Feb 2015
     * VM appliance based on the updated wheezy point release 7.8.0.
       Should resolve problems with upgrades of the guest additions.

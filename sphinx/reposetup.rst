@@ -94,14 +94,14 @@ You are ready to go -- enjoy NeuroDebian!
 .. note::
 
   If you want a verified stable (but older) virtual appliances based
-  on `Debian 6.0 (squeeze)`_ release, download one of the image files
+  on `Debian 7.8 (wheezy)`_ release, download one of the image files
   listed below.
 
-  * `NeuroDebian 6.0.6 image (32bit)
-    <http://neuro.debian.net/debian/vm/NeuroDebian_6.0.6_i386.ova>`_ [~559MB]
+  * `NeuroDebian 7.8.0 image (32bit)
+    <http://neuro.debian.net/debian/vm/NeuroDebian_7.8.0_i386.ova>`_ [~652MB]
 
-  * `NeuroDebian 6.0.6 image (64bit)
-    <http://neuro.debian.net/debian/vm/NeuroDebian_6.0.6_amd64.ova>`_ [~576MB]
+  * `NeuroDebian 7.8.0 image (64bit)
+    <http://neuro.debian.net/debian/vm/NeuroDebian_7.8.0_amd64.ova>`_ [~650MB]
 
 .. raw:: html
 
@@ -114,7 +114,7 @@ You are ready to go -- enjoy NeuroDebian!
 
   <script type="text/javascript">
   function createvmdownload(rel, mir) {
-        var img_version = '7.8.0';
+        var img_version = '8.0.0';
         var img_suffix;
         var base_url;
         var img_url;
