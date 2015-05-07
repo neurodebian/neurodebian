@@ -90,6 +90,7 @@
 
 .. Not so python imaging projects
 .. _Caret: http://brainvis.wustl.edu/wiki/index.php/Caret:About
+.. _CoSMoMVPA: http://www.github.com/CoSMoMVPA
 .. _matlab: http://www.mathworks.com
 .. _spm: http://www.fil.ion.ucl.ac.uk/spm
 .. _spm8: http://www.fil.ion.ucl.ac.uk/spm/software/spm8
