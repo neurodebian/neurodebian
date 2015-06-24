@@ -1,3 +1,12 @@
+neurodebian (0.37) unstable; urgency=medium
+
+  * debian/control
+    - boosted policy to 3.9.6
+    - moved cowbuilder to Recommends (should overcome too strict
+      dependency forbidding neurodebian reside in testing)
+
+ --
+
 neurodebian (0.36) neurodebian; urgency=low
 
   * xdg/Xresources/neurodebian
