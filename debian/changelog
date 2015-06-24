@@ -4,15 +4,20 @@ neurodebian (0.37) unstable; urgency=medium
     - boosted policy to 3.9.6
     - moved cowbuilder to Recommends (should overcome too strict
       dependency forbidding neurodebian reside in testing)
+  * Debconf templates and debian/control reviewed by the debian-l10n-
+    english team as part of the Smith review project (Closes: #786448).
+    Thanks to the team and Christian Perrier and Justin B Rye.
+  * [Debconf translation updates]
+    - added cs.po (Thanks Michal Simunek!) (Closes: #789695)
 
- --
+ -- Yaroslav Halchenko <debian@onerussian.com>  Tue, 23 Jun 2015 23:58:32 -0400
 
 neurodebian (0.36) neurodebian; urgency=low
 
   * xdg/Xresources/neurodebian
     - removed incorrectly prefixed comment
   * debian/control
-    - neurodebian-desktop: we don't even use gnome in VM, so now prefer 
+    - neurodebian-desktop: we don't even use gnome in VM, so now prefer
       adwaita icon theme
   * debian/tools
     - nd-configurerepo: fix setting of NEURODEBIAN_UPDATE from the environment

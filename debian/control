@@ -14,13 +14,13 @@ Architecture: all
 Depends: python, wget, neurodebian-archive-keyring, ${misc:Depends}
 Recommends: netselect
 Suggests: neurodebian-desktop, neurodebian-popularity-contest
-Description: turnkey platform for the neuroscience
- The NeuroDebian project integrates and maintain a variety of
- neuroscience-oriented (such as AFNI, FSL, PsychoPy, etc.) and many
- generic computational (such as condor, pandas, etc.) software projects
- within Debian.
+Description: neuroscience-oriented distribution - repository configuration
+ The NeuroDebian project integrates and maintains a variety of software
+ projects within Debian that are useful for neuroscience (such as AFNI,
+ FSL, PsychoPy, etc.) or generic computation (such as HTCondor,
+ pandas, etc.).
  .
- This package enables NeuroDebian repository on top of the stock
+ This package enables the NeuroDebian repository on top of a standard
  Debian or Ubuntu system.
 
 
@@ -29,8 +29,13 @@ Architecture: all
 Depends: ${misc:Depends}, devscripts, neurodebian-archive-keyring
 Recommends: python, zerofree, moreutils, time, ubuntu-keyring, debian-archive-keyring, apt-utils, cowbuilder
 Suggests: virtualbox-ose, virtualbox-ose-fuse
-Description: NeuroDebian development tools
- neuro.debian.net sphinx website sources and development tools used by
+Description: neuroscience-oriented distribution - development tools
+ The NeuroDebian project integrates and maintains a variety of software
+ projects within Debian that are useful for neuroscience (such as AFNI,
+ FSL, PsychoPy, etc.) or generic computation (such as HTCondor,
+ pandas, etc.).
+ .
+ This package provides sources and development tools used by
  NeuroDebian to provide backports for a range of Debian/Ubuntu
  releases.
 
@@ -41,10 +46,15 @@ Depends: ${misc:Depends}, ssh-askpass-gnome | ssh-askpass, desktop-base,
          adwaita-icon-theme | gnome-icon-theme,
          neurodebian-popularity-contest
 Suggests:
-Description: neuroscience research environment
- This package contains NeuroDebian artwork (icons, background image)
- and a NeuroDebian menu featuring most popular neuroscience tools
- automatically installed upon initial invocation.
+Description: neuroscience-oriented distribution - desktop integration
+ The NeuroDebian project integrates and maintains a variety of software
+ projects within Debian that are useful for neuroscience (such as AFNI,
+ FSL, PsychoPy, etc.) or generic computation (such as HTCondor,
+ pandas, etc.).
+ .
+ This package provides NeuroDebian artwork (icons, background image)
+ and a NeuroDebian menu featuring the most popular neuroscience tools,
+ which will be automatically installed upon initial invocation.
 
 
 Package: neurodebian-archive-keyring
@@ -52,29 +62,37 @@ Architecture: all
 Depends: ${misc:Depends}
 Replaces: neurodebian-keyring (<< 0.34~)
 Breaks: neurodebian-keyring (<< 0.34~)
-Description: GnuPG archive keys of the NeuroDebian archive
+Description: neuroscience-oriented distribution - GnuPG archive keys
+ The NeuroDebian project integrates and maintains a variety of software
+ projects within Debian that are useful for neuroscience (such as AFNI,
+ FSL, PsychoPy, etc.) or generic computation (such as HTCondor,
+ pandas, etc.).
+ .
  The NeuroDebian project digitally signs its Release files. This package
  contains the archive keys used for that.
 
 Package: neurodebian-popularity-contest
 Architecture: all
 Depends: ${misc:Depends}, popularity-contest
-Description: Helper for NeuroDebian popularity contest submissions
+Description: neuroscience-oriented distribution - popcon integration
+ The NeuroDebian project integrates and maintains a variety of software
+ projects within Debian that are useful for neuroscience (such as AFNI,
+ FSL, PsychoPy, etc.) or generic computation (such as HTCondor,
+ pandas, etc.).
+ .
  This package is a complement to the generic popularity-contest
  package to enable anonymous submission of usage statistics to
  NeuroDebian in addition to the popcon submissions to the underlying
- distribution (e.g. Debian or Ubuntu) popcon server.
+ distribution (either Debian or Ubuntu) popcon server.
  .
- Your participation in popcon is important for following reasons:
-  - Popular packages receive more attention from developers, bugs are
+ Participating in popcon is important for the following reasons:
+  * Popular packages receive more attention from developers; bugs are
     fixed faster and updates are provided quicker.
-  - Assure that we do not drop support for a previous release of Debian
-    or Ubuntu while are active users.
-  - User statistics could be used by upstream research software
-    developers to acquire funding for continued development.
+  * It ensures that support is not dropped for a previous release of
+    Debian or Ubuntu while there are active users.
+  * User statistics may be useful for upstream research software
+    developers seeking funding for continued development.
  .
- It has an effect only if you have decided to participate in the
- Popularity Contest of your distribution, i.e. Debian or Ubuntu.
- You can always enable or disable your participation in popcon by
- running 'dpkg-reconfigure popularity-contest' as root.
-
+ This requires that popcon is activated for the underlying distribution
+ (Debian or Ubuntu), which can be achieved by running
+ "dpkg-reconfigure popularity-contest" as root.
