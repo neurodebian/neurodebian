@@ -23,13 +23,23 @@ if [ "$1" = "configure" -o "$1" = "abort-upgrade" ]; then
         desktop-background \
         /usr/share/backgrounds/neurodebian.png 100
 
-    # push SVG icon and pixmaps for all relevant sizes
-    SIZES=$(ls /usr/share/icons/gnome/*/places | sed -rn 's,^.*/([0-9]+)x[0-9]+/.*$,\1,p')
-    command="update-alternatives --install /usr/share/icons/gnome/scalable/places/start-here.svg start-here.svg /usr/share/pixmaps/neurodebian.svg 100"
-    for s in $SIZES; do
-      command="$command --slave /usr/share/icons/gnome/${s}x${s}/places/start-here.png start-here-${s}.png /usr/share/pixmaps/neurodebian.png"
+    # /usr/share/icons/gnome/scalable/places
+    # For now disabled override of start-here since generally there is no alternative,
+    # and we must not change content of other packages under /usr. Eventually
+    # we might divert original files and add them as alternatives, or hack up our own
+    # theme "overlay"
+    for d in ; do
+        # For the future - we might adjust for other themes as well
+        [ -e $d ] || continue
+        # push SVG icon and pixmaps for all relevant sizes
+        SIZES=$(ls ${d//scalable/*} | sed -rn 's,^.*/([0-9]+)x[0-9]+/.*$,\1,p')
+        command="update-alternatives --install $d/start-here.svg start-here.svg /usr/share/pixmaps/neurodebian.svg 100"
+        for s in $SIZES; do
+          command="$command --slave ${d//scalable/${s}x${s}}/start-here.png start-here-${s}.png /usr/share/pixmaps/neurodebian.png"
+        done
+        $command
+        break
     done
-    $command
 
     # let GTK know about the change
     write_cache

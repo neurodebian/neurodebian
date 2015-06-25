@@ -1,3 +1,10 @@
+neurodebian (0.37.1) unstable; urgency=medium
+
+  * Do not override start-here.* icons of other themes with an alternative
+    (Closes: #789916)
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Thu, 25 Jun 2015 12:32:28 -0400
+
 neurodebian (0.37) unstable; urgency=medium
 
   * debian/control
