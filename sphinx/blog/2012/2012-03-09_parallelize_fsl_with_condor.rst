@@ -122,7 +122,10 @@ By default, Condor will only run jobs when the machine is idle. If you want to
 run jobs immediately when they are submitted you need to change the
 configuration slightly. To do this run::
 
-  % sudo dpkg-reconfigure condor
+  % sudo dpkg-reconfigure htcondor
+
+
+.. note:: 26/06/2015 updated for condor to htcondor package rename
 
 This will again ask a number of questions. Leave everything on the respective
 defaults, but enable running jobs regardless of other machine activity (see
