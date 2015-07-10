@@ -9,7 +9,12 @@ neurodebian (0.37.2) unstable; urgency=low
     - French (Julien Patriarca).  Closes: #791559
     - Russian (Yuri Kozlov).  Closes: #791654
 
- -- Yaroslav Halchenko <debian@onerussian.com>  Fri, 10 Jul 2015 10:07:21 -0400
+  [ Yaroslav Halchenko ]
+  * Updated and renamed patch to add neurodebian-guest-additions package
+    for neurodebian distribution.  Now will be provided for stretch as
+    well
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Fri, 10 Jul 2015 13:11:41 -0400
 
 
 neurodebian (0.37.1) unstable; urgency=medium

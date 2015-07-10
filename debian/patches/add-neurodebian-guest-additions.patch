@@ -1,0 +1,34 @@
+Author: Yaroslav Halchenko <debian@onerussian.com>
+Description: guest-additions package to be built only for NeuroDebian repository
+  Its primarily purpose is customization of the NeuroDebian Virtualbox appliance.
+  As such it should not be generally useful and thus will be made available only
+  for specific builds of the package for the NeuroDebian repository.
+
+Origin: NeuroDebian
+Last-Update: 2014-08-14
+
+--- a/debian/control
++++ b/debian/control
+@@ -96,3 +96,22 @@ Description: neuroscience-oriented distr
+  This requires that popcon is activated for the underlying distribution
+  (Debian or Ubuntu), which can be achieved by running
+  "dpkg-reconfigure popularity-contest" as root.
++
++Package: neurodebian-guest-additions
++Architecture: all
++Depends: ${misc:Depends},
++         virtualbox-guest-utils,
++         virtualbox-guest-x11,
++         virtualbox-guest-dkms,
++         sudo,
++         neurodebian-desktop,
++         lightdm | x-display-manager,
++         zenity,
++Recommends: chromium,
++            update-notifier,
++Description: NeuroDebian guest additions (DO NOT INSTALL OUTSIDE VIRTUALBOX)
++ This package configures a Debian installation as a guest operating system
++ in a VirtualBox-based virtual machine for NeuroDebian.
++ .
++ DO NOT install this package unless you know what you are doing! For example,
++ installation of this package relaxes several security mechanisms.
