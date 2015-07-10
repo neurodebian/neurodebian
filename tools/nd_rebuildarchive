@@ -55,7 +55,10 @@ cat $list_file \
 	continue
     }
 
-    
+   # TODO -- we need to strip intermediate versions to avoid this horrible
+   # ./pool/main/s/stabilitycalc/stabilitycalc_0.1-1~nd11.04+1+nd11.10+1+nd12.04+1+nd12.10+1+nd13.04+1+nd13.10+1+nd14.04+1+nd14.10+1+nd15.04+1.debian.tar.xz
+   # which should become may be
+   # ./pool/main/s/stabilitycalc/stabilitycalc_0.1-1~nd11.04+nd15.04+1.debian.tar.xz
     bpdscfile=$(/home/neurodebian/neurodebian/tools/backport-dsc \
         --target-distribution "$dist" \
 	--no-maintainer-update \
