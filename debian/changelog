@@ -1,3 +1,17 @@
+neurodebian (0.37.2) unstable; urgency=low
+
+  [ Christian Perrier ]
+  * [Debconf translation updates]
+    - Danish (Joe Hansen).  Closes: #790342
+    - German (Chris Leick).  Closes: #790489
+    - Brazilian Portuguese (Adriano Rafael Gomes).  Closes: #791471
+    - Portuguese (Américo Monteiro).  Closes: #791547
+    - French (Julien Patriarca).  Closes: #791559
+    - Russian (Yuri Kozlov).  Closes: #791654
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Fri, 10 Jul 2015 10:07:21 -0400
+
+
 neurodebian (0.37.1) unstable; urgency=medium
 
   * Do not override start-here.* icons of other themes with an alternative

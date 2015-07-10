@@ -1,33 +1,33 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# German translation of the neurodebian debconf template.
+# This file is distributed under the same license as the neurodebian package.
+# Copyright (C) 2009-2014 NeuroDebian Team.
+# Copyright (C) of this file 2015 Chris Leick <c.leick@vollbio.de>.
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: neurodebian\n"
+"Project-Id-Version: neurodebian 0.35\n"
 "Report-Msgid-Bugs-To: neurodebian@packages.debian.org\n"
 "POT-Creation-Date: 2015-06-23 18:57+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"PO-Revision-Date: 2015-06-23 09:42+0200\n"
+"Last-Translator: Chris Leick <c.leick@vollbio.de>\n"
+"Language-Team: German <debian-l10n-german@lists.debian.org>\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 
 #. Type: title
 #. Description
 #: ../neurodebian.templates:2001
 msgid "NeuroDebian APT repository installer"
-msgstr ""
+msgstr "Installationsprogramm des NeuroDebian-APT-Depots"
 
 #. Type: boolean
 #. Description
 #: ../neurodebian.templates:3001
 msgid "Enable the NeuroDebian package repository?"
-msgstr ""
+msgstr "Soll das NeuroDebian-Paketdepot aktiviert werden?"
 
 #. Type: boolean
 #. Description
@@ -37,6 +37,9 @@ msgid ""
 "that is not available in Debian, including datasets and backported new "
 "releases."
 msgstr ""
+"Das NeuroDebian-Projekt stellt ein separates APT-Depot mit Software bereit, "
+"die nicht in Debian verfügbar ist, einschließlich Datensätzen und "
+"zurückportierten neuen Veröffentlichungen."
 
 #. Type: boolean
 #. Description
@@ -45,6 +48,8 @@ msgid ""
 "If you choose this option, these packages will be available for installation "
 "and upgrades."
 msgstr ""
+"Falls Sie diese Option auswählen, werden diese Pakete zur Installation und "
+"Aktualisierung verfügbar sein."
 
 #. Type: boolean
 #. Description
@@ -53,24 +58,26 @@ msgid ""
 "Even though these packages are closely maintained by the NeuroDebian team, "
 "enabling this additional archive may compromise the integrity of the system."
 msgstr ""
+"Obwohl diese Pakete nur vom NeuroDebian-Team betreut werden, kann dieses "
+"zusätzliche Archiv die Integrität des Systems beeinträchtigen."
 
 #. Type: select
 #. Choices
 #: ../neurodebian.templates:4001
 msgid "automatic"
-msgstr ""
+msgstr "automatisch"
 
 #. Type: select
 #. Choices
 #: ../neurodebian.templates:4001
 msgid "${releases}"
-msgstr ""
+msgstr "${releases}"
 
 #. Type: select
 #. Description
 #: ../neurodebian.templates:4002
 msgid "Release name of the base system:"
-msgstr ""
+msgstr "Veröffentlichungsnamen des Basissystems:"
 
 #. Type: select
 #. Description
@@ -79,6 +86,8 @@ msgid ""
 "Please specify the appropriate Debian or Ubuntu release codename (for "
 "instance \"stretch\" or \"trusty\")."
 msgstr ""
+"Bitte geben Sie den Codenamen der entsprechenden Debian- oder Ubuntu-"
+"Veröffentlichung an (zum Beispiel »stretch« oder »trusty«)."
 
 #. Type: select
 #. Description
@@ -88,12 +97,16 @@ msgid ""
 "the output of \"apt-cache policy\". If the release name for this system is "
 "not \"${release}\", you should choose the specific one which matches best."
 msgstr ""
+"Falls dies auf »automatisch« gesetzt ist, wird der Veröffentlichungsname "
+"gemäß der Ausgabe von »apt-cache policy« gesetzt. Falls der "
+"Veröffentlichungsname für dieses System nicht »${release}« ist, sollten Sie "
+"den einen auswählen, der am besten passt."
 
 #. Type: select
 #. Description
 #: ../neurodebian.templates:5001
 msgid "NeuroDebian mirror to use:"
-msgstr ""
+msgstr "NeuroDebian-Spiegelserver, der benutzt werden soll:"
 
 #. Type: select
 #. Description
@@ -102,12 +115,16 @@ msgid ""
 "The NeuroDebian project has a number of community-maintained mirrors around "
 "the globe."
 msgstr ""
+"Das NeuroDebian-Projekt hat mehrere von der Gemeinschaft betreute "
+"Spiegelserver rund um den Globus."
 
 #. Type: select
 #. Description
 #: ../neurodebian.templates:5001
 msgid "If you do not know which mirror URL to choose, select one of:"
 msgstr ""
+"Falls Sie nicht wissen, welchen Server Sie wählen sollen, nehmen Sie einen "
+"der folgenden:"
 
 #. Type: select
 #. Description
@@ -119,12 +136,19 @@ msgid ""
 "   configuration of the firewall. If netselect is not available, the\n"
 "   default mirror will be used."
 msgstr ""
+" * origin: das Original-NeuroDebian-Depot;\n"
+" * best:   wird versuchen, mittels Netselect den »nächsten« Spiegelserver\n"
+"           auszuwählen.\n"
+"   Dies kann je nach aktueller Spiegelservereinrichtung und Konfiguration "
+"der\n"
+"   Firewall fehlschlagen. Falls Netselect nicht verfügbar ist, wird der\n"
+"   Standardspiegelserver verwendet."
 
 #. Type: select
 #. Description
 #: ../neurodebian.templates:6001
 msgid "NeuroDebian flavor to use:"
-msgstr ""
+msgstr "Variante von NeuroDebian, die benutzt werden soll:"
 
 #. Type: select
 #. Description
@@ -133,6 +157,9 @@ msgid ""
 "The NeuroDebian project adheres to the Debian Free Software Guidelines, and "
 "offers three packages areas, classified by license, for all suites/releases:"
 msgstr ""
+"Das NeuroDebian-Projekt ist an die Debian-Richtlinien für freie Software "
+"gebunden und bietet drei Paketbereiche an, anhand der die Lizenz für alle "
+"Suiten und Veröffentlichungen eingestuft werden:"
 
 #. Type: select
 #. Description
@@ -146,18 +173,27 @@ msgid ""
 "   picked from the output of \"apt-cache policy\"\n"
 "   (for this machine: \"${flavor}\")."
 msgstr ""
+" libre\n"
+"   nur DFSG-konformes Material\n"
+" full\n"
+"   alle drei Bereiche (main, contrib, non-free)\n"
+" auto\n"
+"   der Ausgabe von »apt-cache policy« entnommen\n"
+"   (für diesen Rechner: »${flavor}«)."
 
 #. Type: multiselect
 #. Description
 #: ../neurodebian.templates:7001
 msgid "NeuroDebian repository components to enable:"
-msgstr ""
+msgstr "Zu aktivierende NeuroDebian-Depotbestandteile:"
 
 #. Type: multiselect
 #. Description
 #: ../neurodebian.templates:7001
 msgid "NeuroDebian repository provides three different sets of packages:"
 msgstr ""
+"Das NeuroDebian-Depot stellt drei verschiedene Paketzusammenstellungen "
+"bereit:"
 
 #. Type: multiselect
 #. Description
@@ -173,12 +209,24 @@ msgid ""
 "  Packages containing data (such as atlases or sample datasets), often\n"
 "  required by other packages. This should usually be enabled."
 msgstr ""
+" software\n"
+"  Pakete, die Software enthalten, häufig Zurückportierungen stabiler\n"
+"  Softwareveröffentlichungen für vorhergehende Releases von Debian/Ubuntu;\n"
+" devel\n"
+"  Zusätzliche »allerneuste« Softwarepakete (wie die in Debian-"
+"Experimental),\n"
+"  die zur standardmäßigen Aktivierung nicht sicher genug sind.\n"
+" data\n"
+"  Pakete, die Daten enthalten (wie Atlanten oder Beispieldatensätze), die "
+"oft\n"
+"  von anderen Paketen benötigt werden. Dies sollte üblicherweise aktiviert\n"
+"  werden."
 
 #. Type: boolean
 #. Description
 #: ../neurodebian.templates:8001
 msgid "Overwrite the existing NeuroDebian APT file?"
-msgstr ""
+msgstr "Soll die existierende NeuroDebian-APT-Datei überschrieben werden?"
 
 #. Type: boolean
 #. Description
@@ -187,12 +235,15 @@ msgid ""
 "If an APT sources.list file already exists for NeuroDebian, this package "
 "will fail to configure unless given permission to overwrite it."
 msgstr ""
+"Falls bereits eine APT-»sources.list«-Datei für NeuroDebian besteht, wird "
+"die Konfiguration fehlschlagen, bis die Erlaubnis zum Überschreiben erteilt "
+"wurde."
 
 #. Type: string
 #. Description
 #: ../neurodebian.templates:9001
 msgid "Additional suffix for the NeuroDebian APT file name:"
-msgstr ""
+msgstr "Zusätzliche Endung für den NeuroDebian-APT-Dateinamen:"
 
 #. Type: string
 #. Description
@@ -202,18 +253,21 @@ msgid ""
 "as NeuroDebian devel) or release, without interfering with the main "
 "NeuroDebian sources list."
 msgstr ""
+"Das Hinzufügen einer Endung ermöglicht das Aktivieren eines zusätzlichen "
+"Depots (wie NeuroDebian-»devel«) oder einer Veröffentlichung, ohne die "
+"Hauptquellenliste von NeuroDebian zu beeinträchtigen."
 
 #. Type: string
 #. Description
 #: ../neurodebian.templates:9001
 msgid "It should usually be left empty."
-msgstr ""
+msgstr "Normalerweise sollte dies leer gelassen werden."
 
 #. Type: note
 #. Description
 #: ../neurodebian.templates:10001
 msgid "APT update required"
-msgstr ""
+msgstr "APT-Aktualisierung erforderlich"
 
 #. Type: note
 #. Description
@@ -224,6 +278,10 @@ msgid ""
 "get update\" after the neurodebian package has been installed or "
 "reconfigured."
 msgstr ""
+"Damit die Installation (oder das Entfernen) einer NeuroDebian-»sources.list«-"
+"Datei wirksam wird, muss die Paketliste von APT aktualisiert werden. Bitte "
+"führen Sie manuell »apt-get update« aus, nachdem das NeuroDebian-Paket "
+"installiert oder neu konfiguriert wurde."
 
 #. Type: error
 #. Description
@@ -231,7 +289,7 @@ msgstr ""
 #. Description
 #: ../neurodebian.templates:11001 ../neurodebian.templates:12001
 msgid "Missing netselect tool"
-msgstr ""
+msgstr "Netselect-Werkzeug fehlt"
 
 #. Type: error
 #. Description
@@ -242,12 +300,16 @@ msgid ""
 "The \"netselect\" utility was not found. You probably need to install the "
 "netselect package."
 msgstr ""
+"Das Hilfswerkzeug »netselect« wurde nicht gefunden. Möglicherweise müssen "
+"Sie das Netselect-Paket installieren."
 
 #. Type: error
 #. Description
 #: ../neurodebian.templates:11001
 msgid "Alternatively, you can manually select the mirror to use."
 msgstr ""
+"Alternativ können Sie den Spiegelserver, der benutzt werden soll, manuell "
+"auswählen."
 
 #. Type: error
 #. Description
@@ -257,3 +319,6 @@ msgid ""
 "chosen manually. To be prompted with the relevant question, you can run "
 "\"dpkg-reconfigure -plow neurodebian\"."
 msgstr ""
+"Falls dieses Paket nicht installiert ist, muss der NeuroDebian-Spiegelserver "
+"manuell ausgewählt werden. Um die relevante Frage gestellt zu bekommen, "
+"können Sie »dpkg-reconfigure -plow neurodebian« ausführen."
