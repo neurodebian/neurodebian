@@ -9,10 +9,11 @@ Last-Update: 2014-08-14
 
 --- a/debian/control
 +++ b/debian/control
-@@ -77,3 +77,21 @@ Description: Helper for NeuroDebian popu
-  You can always enable or disable your participation in popcon by
-  running 'dpkg-reconfigure popularity-contest' as root.
- 
+@@ -96,3 +96,22 @@ Description: neuroscience-oriented distr
+  This requires that popcon is activated for the underlying distribution
+  (Debian or Ubuntu), which can be achieved by running
+  "dpkg-reconfigure popularity-contest" as root.
++
 +Package: neurodebian-guest-additions
 +Architecture: all
 +Depends: ${misc:Depends},
