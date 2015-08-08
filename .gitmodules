@@ -7,3 +7,6 @@
 [submodule "3rd/nvd3"]
 	path = 3rd/nvd3
 	url = git://github.com/novus/nvd3.git
+[submodule "3rd/sphinx-bootstrap-theme"]
+	path = 3rd/sphinx-bootstrap-theme
+	url = https://github.com/ryan-roemer/sphinx-bootstrap-theme.git
