@@ -131,7 +131,6 @@ Promotion
    proj_neuralmodeling
    proj_snapshots
    proj_template
-   livecd
    coffeeart
 
 
