@@ -1,8 +1,62 @@
 .. _WELCOme:
 
-*********************************************
- The Ultimate Neuroscience Software Platform
-*********************************************
+.. raw:: html
+
+    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+      <!-- Indicators -->
+      <ol class="carousel-indicators">
+        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+        <li data-target="#myCarousel" data-slide-to="1"></li>
+        <li data-target="#myCarousel" data-slide-to="2"></li>
+      </ol>
+      <div class="carousel-inner">
+        <div class="item active">
+          <!--<img src="pics/carus_7T_CBBS_Image_DMahler.jpg" alt="fMRI scanner">-->
+          <div class="container">
+            <div class="carousel-caption">
+              <h1>Community-driven</h1>
+              <p>Halchenko, Y. O. &amp; Hanke, M. (2012).
+              Open is not enough. Let’s take the next step: An integrated,
+              community-driven computing platform for neuroscience
+              <em>Frontiers in Neuroinformatics</em>, 6:22.</p>
+              <p><a class="btn btn-primary"
+              href="http://www.frontiersin.org/Neuroinformatics/10.3389/fninf.2012.00022/full"
+              target="_blank"
+              role="button">Learn more &raquo;</a></p>
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <!--<img src="pics/carus_jennyboat.jpg" alt="Shrimp boat">-->
+          <div class="container">
+            <div class="carousel-caption">
+              <h1>Testimonial</h1>
+              <p id="randomquote"></p>
+              <p><a class="btn btn-primary" href="testimonials.html" role="button">Read more &raquo;</a></p>
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <div class="container">
+            <div class="carousel-caption">
+              <h1>News &amp; Updates</h1>
+              <a class="twitter-timeline" href="https://twitter.com/NeuroDebian"
+                  data-widget-id="360194288006606848"
+                  data-link-color="#820430"
+                  height="130px"
+                  data-show-replies="false"
+                  data-chrome="noheader nofooter transparent">Tweets by @NeuroDebian</a>
+               <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
+              <div class="nojavascriptinstructions">The news widget requires javascript</div>
+              <p><a class="btn btn-primary" href="https://twitter.com/NeuroDebian" role="button" target="_blank">See time line &raquo;</a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <a class="left carousel-control" href="#myCarousel" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a>
+      <a class="right carousel-control" href="#myCarousel" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
+    </div><!-- /.carousel -->
 
 NeuroDebian provides a large collection of popular neuroscience research
 software for the Debian_ operating system as well as Ubuntu_ and other
@@ -12,29 +66,6 @@ derivatives. Popular packages include :ref:`AFNI <binary_pkg_afni>`,
 quality, we make no guarantee that a given package works as expected, so use
 them at your own risk. If you do encounter problems or you just like to say
 thanks, simply :ref:`send us an email <chap_contacts>`.
-
-Learn more about NeuroDebian, the goals of this project, and help us |spread|!
-
-  Halchenko, Y. O. & Hanke, M. (2012). `Open is not enough. Let’s take the
-  next step: An integrated, community-driven computing platform for neuroscience
-  <http://www.frontiersin.org/Neuroinformatics/10.3389/fninf.2012.00022/full>`_.
-  *Frontiers in Neuroinformatics*, 6:22.
-
-.. raw:: html
-
-  <div class="linkmore"><a href="publications.html" name="publications">more publications</a></div>
-  <div class="clearer"></div>
-  <!-- for dynamic quote update via javascript -->
-  <hr />
-  <div id="randomquote" title="Feedback from the community">
-
-.. quotes::
-   :random: 1
-
-.. raw:: html
-
-  </div><!-- randomquote -->
-  <div class="linkmore"><a href="testimonials.html">more testimonials</a></div>
 
 .. _Ubuntu: http://www.ubuntu.com
 
@@ -46,32 +77,10 @@ Get NeuroDebian
 
 .. include:: reposetup.rst
 
-.. _news:
-
-News
-====
-
-.. raw:: html
-
- <a class="twitter-timeline" href="https://twitter.com/NeuroDebian"
-    data-widget-id="360194288006606848"
-    data-link-color="#820430"
-    height="150px"
-    data-show-replies="false"
-    data-chrome="noheader nofooter transparent">Tweets by @NeuroDebian</a>
- <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-
- <div class="nojavascriptinstructions">
- The news widget requires javascript
- </div>
-
-.. _identi.ca: http://identi.ca/neurodebian
-.. _twitter: http://twitter.com/NeuroDebian
-
-
 .. raw:: html
 
   <hr />
+
   <div id="sitemap">
   <!-- Some anchors to orient users of old-website urls -->
   <a name="acknowledgements"/>
@@ -81,48 +90,70 @@ News
   <a name="virtual-machine"/>
   <a name="ways-to-use-neurodebian">&nbsp;</a>
 
-* **About**
-* :ref:`The Team <chap_team>`
-* :ref:`FAQ <faq>`
-* :ref:`Blog <blog>`
-* :ref:`chap_popularity`
-* :ref:`chap_publications`
-* :ref:`chap_acknowledgements`
-* :ref:`testimonials`
-* :ref:`coffeeart`
+  <div class="row center-block">
+  <div class="col-xs-3">
+
+* About
+
+  * :ref:`The Team <chap_team>`
+  * :ref:`FAQ <faq>`
+  * :ref:`Blog <blog>`
+  * :ref:`chap_popularity`
+  * :ref:`chap_publications`
+  * :ref:`chap_acknowledgements`
+  * :ref:`testimonials`
+  * :ref:`coffeeart`
 
 .. start a new list
-
-* **Services**
-* :ref:`Software <pkg_tocs>`
-* :ref:`Data <toc_pkgs_for_release_data>`
-* :ref:`Appliance <chap_vm>`
-* :ref:`Mirrors <chap_mirrors_stats>`
-
-.. start a new list
-
-* **Community**
-* :ref:`Contacts <chap_contacts>`
-* :ref:`Mailing lists <chap_mailinglists>`
-* `OpenHatch <https://openhatch.org/+projects/NeuroDebian>`_
-* `Identi.ca <http://identi.ca/neurodebian>`_
-* `Twitter <http://twitter.com/NeuroDebian>`_
-* `Google+ <https://plus.google.com/104292290917252528951>`_
-* `YouTube <http://www.youtube.com/neurodebian>`_
-* `GitHub <https://github.com/neurodebian>`_
-
-.. start a new list
-
-* **Related**
-* `Debian <http://www.debian.org>`_
-* `Debian Med <http://www.debian.org/devel/debian-med>`_
-* `INCF <http://software.incf.org/software/neurodebian>`_
-* `NITRC <http://www.nitrc.org/projects/neurodebian>`_
 
 .. raw:: html
 
-  </div><div class="clearer"></div>
-  <hr />
+  </div> <!-- .col-xs-3 -->
+  <div class="col-xs-3">
+
+* Services
+
+  * :ref:`Software <pkg_tocs>`
+  * :ref:`Data <toc_pkgs_for_release_data>`
+  * :ref:`Appliance <chap_vm>`
+  * :ref:`Mirrors <chap_mirrors_stats>`
+
+.. start a new list
+
+.. raw:: html
+
+  </div> <!-- .col-xs-3 -->
+  <div class="col-xs-3">
+
+* Community
+
+  * :ref:`Contacts <chap_contacts>`
+  * :ref:`Mailing lists <chap_mailinglists>`
+  * `OpenHatch <https://openhatch.org/+projects/NeuroDebian>`_
+  * `Identi.ca <http://identi.ca/neurodebian>`_
+  * `Twitter <http://twitter.com/NeuroDebian>`_
+  * `Google+ <https://plus.google.com/104292290917252528951>`_
+  * `YouTube <http://www.youtube.com/neurodebian>`_
+  * `GitHub <https://github.com/neurodebian>`_
+
+.. start a new list
+
+.. raw:: html
+
+  </div> <!-- .col-xs-3 -->
+  <div class="col-xs-3">
+
+* Related
+
+  * `Debian <http://www.debian.org>`_
+  * `Debian Med <http://www.debian.org/devel/debian-med>`_
+  * `INCF <http://software.incf.org/software/neurodebian>`_
+  * `NITRC <http://www.nitrc.org/projects/neurodebian>`_
+
+.. raw:: html
+
+  </div> <!-- .col-xs-3 -->
+  </div><!-- /.row -->
 
 
 .. toctree::
@@ -132,40 +163,13 @@ News
    faq
    thanks
    popularity
-   about
-   pkgs
    spread
-   vm
    publications
    coffeeart
    photoalbum
    projects
    testimonials
-   testimonials-topics
-   vm_welcome
    derivatives
-
-.. are these supposed to be visible?
-.. toctree::
-   :hidden:
-
-   machines
-   todo
-
-.. toctree::
-   :hidden:
-   :glob:
-
-   pkgs/*
-   pkglists/*
-
-.. probably should be purged altogether
-.. toctree::
-   :hidden:
-
-   livecd
-   quotes-nihr01
-   quotes-nitrc
 
 .. include:: link_names.txt
 .. include:: substitutions.txt
