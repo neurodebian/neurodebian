@@ -1,5 +1,5 @@
-#WWW_UPLOAD_URI = neurodebian@neurodebian.ovgu.de:/home/neurodebian/www
-WWW_UPLOAD_URI = ../../www
+WWW_UPLOAD_URI = neurodebian@neurodebian.ovgu.de:/home/neurodebian/www
+#WWW_UPLOAD_URI = ../../www
 WWW_DIR = build/html/
 
 WWW_UPLOAD_URI_STATIC=$(WWW_UPLOAD_URI)/_static
@@ -53,11 +53,11 @@ source-stamp:
 	mkdir -p build/src/lists/
 	mkdir -p build/src/_static/
 	mkdir -p build/src/pkglists/
-	$(BIGMESS) mkpkgs  -d build/src/pkgs/
+	$(BIGMESS) mkpkgs --template sphinx/bigmess/binary_pkg.rst -d build/src/pkgs/
 	$(BIGMESS) mkaptcfgs -d build/src/lists/
-	$(BIGMESS) mkmirrorsstat -d build/src
-	$(BIGMESS) mkrepocfg > build/src/sources_lists
-	$(BIGMESS) mkpkgtocs -d build/src/pkglists > build/src/pkgs.rst
+#	$(BIGMESS) mkmirrorsstat -d build/src
+	$(BIGMESS) mkrepocfg --template sphinx/bigmess/sources_lists.rst > build/src/sources_lists
+	$(BIGMESS) mkpkgtocs --srcpkgtoc-template sphinx/bigmess/pkg_toc.rst --binpkgtoc-template sphinx/bigmess/pkg_toc.rst -d build/src/pkglists > build/src/pkgs.rst
 	cp 3rd/nvd3/*.min.js build/src/_static/
 	cp 3rd/nvd3/lib/d3*.min.js build/src/_static/
 	cp 3rd/nvd3/src/nv*.css build/src/_static/
