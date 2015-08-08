@@ -1,59 +1,11 @@
 {% extends "!layout.html" %}
 
-{% block extrahead %}
-  <meta name="keywords" content="debian, neuroscience">
-  <script language="javascript" type="text/javascript"
-  src="/javascript/jquery-mousewheel/jquery.mousewheel.min.js"></script>
-  <script language="javascript" type="text/javascript"
-  src="/javascript/jquery-easing/jquery.easing.min.js"></script>
-  <script language="javascript" type="text/javascript"
-  src="/javascript/jquery-fancybox/jquery.fancybox.min.js"></script>
-  <link rel="stylesheet" href="/javascript/jquery-fancybox/jquery.fancybox.css"
-  type="text/css" media="screen" />
-{% endblock %}
-
-{% block header %}
-  <div class="buttonbar leftbar">
-  <ul>
-  <li><a href="http://www.debian.org" target="_blank"><img border="0" src="/_static/debian.png" title="Visit debian.org" /><br />Debian</a></li>
- <li><a href="{{ pathto('index') }}"><img border="0" src="/_static/neurodebian.png" title="Go to the home page" /><br />Home</a></li>
- <li><a href="{{ pathto('pkgs') }}"><img border="0" src="/_static/package.png" title="List of available software" /><br />Software</a></li>
- <li><a href="{{ pathto('pkglists/toc_pkgs_for_release_data') }}"><img border="0" src="/_static/datasets.png" title="List of available datasets" /><br />Data</a></li>
- <li><a href="{{ pathto('vm') }}"><img border="0" src="/_static/machine.png" title="Get NeuroDebian for your non-Debian computer" /><br />VM</a></li>
- <li><a href="{{ pathto('projects') }}"><img border="0" src="/_static/workarea.png" title="Current and planned projects: Get involved!" /><br />Contribute</a></li>
- <li><a href="{{ pathto('derivatives') }}"><img border="0" src="/_static/derivatives.png" title="Projects that use NeuroDebian as a foundation" /><br />Derived</a></li>
- <li><a href="/blog/index.html"><img border="0" src="/_static/rssfeeds.png" title="Read news, and how-to's in the NeuroDebian Insider Blog. Subscribe!" /><br />Blog</a></li>
- <li><a href="{{ pathto('faq') }}"><img border="0" src="/_static/faq.png" title="Frequently asked questions" /><br />FAQ</a></li>
-  </ul>
-  </div>
-
-  <div class="buttonbar rightbar">
-  <ul>
-  <li><a href="http://www.ipsy.ovgu.de/psychoinformatics.html" target="_blank"><img border="0" src="/_static/uni-md-logo_h50.png" title="Psychoinformatics lab, University of Magdeburg, Germany" height="50" /></a></li>
-  <li><img border="0" src="/_static/ccn-logo_h50.png" title="Center for Cognitive Neuroscience, Dartmouth College, USA" height="50" /></li>
-  <li><a href="http://www.dartmouth.edu" target="_blank"><img border="0" src="/_static/dartmouth-logo_h50.png" title="Dartmouth College, USA" height="50" /></a></li>
-  </ul>
-  </div>
-{% endblock %}
-
-{% block rootrellink %}{% endblock %}
-
-{% block relbaritems %}
-<li class="right"><a href="#disqus_thread">Comments</a>&nbsp;|</li>
-{% block sidebarsearch %}
-{{ super() }}
-{% endblock %}
-<li class="right" style="position:relative;top:3px"><div class="g-plusone"></div></li>
-<li class="right" style="position:relative;top:1px"><a href="https://twitter.com/share" class="twitter-share-button" data-size="large" data-hashtags="neurodebian" data-dnt="true"></a></li?
-{% endblock %}
-
-{% block sidebar1 %}{% endblock %}
-{% block sidebar2 %}{% endblock %}
+{# Custom CSS overrides #}
+{% set bootswatch_css_custom = ['_static/carousel.css', '_static/neurodebian.css'] %}
 
 {% block footer %}
-<div class="clearer"></div>
 {{ super() }}
-<div class="footer" style="padding-top:0px">
+<div class="fineprint">
 The source code for this portal is licensed under the
 <a href="http://www.gnu.org/licenses/gpl-3.0.html"
    title="Text of the GPL-3 license">GPL-3</a> and is available on
