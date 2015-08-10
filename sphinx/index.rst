@@ -58,14 +58,18 @@
       <a class="right carousel-control" href="#myCarousel" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
     </div><!-- /.carousel -->
 
-NeuroDebian provides a large collection of popular neuroscience research
-software for the Debian_ operating system as well as Ubuntu_ and other
-derivatives. Popular packages include :ref:`AFNI <binary_pkg_afni>`,
-:ref:`FSL <binary_pkg_fsl-complete>`, :ref:`PyMVPA <binary_pkg_python-mvpa2>` and
-:ref:`many others <pkg_tocs>`. While we do strive to maintain a high level of
-quality, we make no guarantee that a given package works as expected, so use
-them at your own risk. If you do encounter problems or you just like to say
-thanks, simply :ref:`send us an email <chap_contacts>`.
+NeuroDebian is a community effort that provides a large collection of
+neuroscience research tools as readily usable, fully-integrated software
+packages. :ref:`These packages <pkg_tocs>` are made for the Debian_ operating
+system, but can also be found in Ubuntu_ and other
+`derivatives <https://upload.wikimedia.org/wikipedia/commons/6/69/DebianFamilyTree1210.svg>`_.
+This website offers an additional service that helps scientists to set up and
+use a NeuroDebian-based computing environment on any major operating system
+with up-to-date software and :ref:`data packages <toc_pkgs_for_field_datasets>`
+for :ref:`MRI <toc_pkgs_for_field_mri>`, :ref:`electrophysiology
+<toc_pkgs_for_field_electrophysiology>`, :ref:`computational modeling of neural
+systems <toc_pkgs_for_field_neuralmodeling>`, :ref:`psychophysics
+<toc_pkgs_for_field_psychophysics>`, and :ref:`more <pkg_tocs>`.
 
 .. _Ubuntu: http://www.ubuntu.com
 
