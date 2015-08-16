@@ -18,7 +18,11 @@
   <a role="button"
      class="btn btn-primary"
      title="Click to get installation instructions"
-     href="/install_pkg.html?p={{ pname | e }}">
+     href="/install_pkg.html?p={{ pname | e }}
+     {%- if component != 'main' -%}
+     &non_free=1
+     {%- endif -%}
+     ">
   Install package</a>
 
 {% if havemeta_README_Debian %}

@@ -86,11 +86,15 @@ Lastly, update the package index and you are ready to install packages::
 
 You are ready to go -- enjoy NeuroDebian!
 
-.. note::
+.. raw:: html
 
+  <div class="alert alert-info" role="alert">
+  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+  <span class="sr-only">Error:</span>
   Not every package is available for all distributions/releases. For information
   about which package version is available for which release and architecture,
   please have a look at the corresponding package pages.
+  </div>
 
 .. raw:: html
 
