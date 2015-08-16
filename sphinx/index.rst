@@ -161,7 +161,6 @@ Get NeuroDebian
 
    blog/index
    faq
-   thanks
    popularity
    spread
    publications
