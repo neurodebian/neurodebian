@@ -163,6 +163,7 @@ html_theme_options = {
         ("About", "about"),
         ("Packages", "pkgs"),
         ("VM", "vm"),
+        ("Blog", "blog/index"),
     ],
 
     # Render the next and previous page links in navbar. (Default: true)
