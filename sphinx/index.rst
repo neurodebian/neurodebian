@@ -11,6 +11,23 @@
       </ol>
       <div class="carousel-inner">
         <div class="item active">
+          <div class="container">
+            <div class="carousel-caption">
+              <h1>News &amp; Updates</h1>
+              <a class="twitter-timeline" href="https://twitter.com/NeuroDebian"
+                  data-widget-id="360194288006606848"
+                  data-link-color="#820430"
+                  height="130px"
+                  data-show-replies="false"
+                  data-chrome="noheader nofooter transparent">Tweets by @NeuroDebian</a>
+               <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
+              <div class="nojavascriptinstructions">The news widget requires javascript</div>
+              <p><a class="btn btn-primary" href="https://twitter.com/NeuroDebian" role="button" target="_blank">See time line &raquo;</a></p>
+            </div>
+          </div>
+        </div>
+        <div class="item">
           <!--<img src="pics/carus_7T_CBBS_Image_DMahler.jpg" alt="fMRI scanner">-->
           <div class="container">
             <div class="carousel-caption">
@@ -33,23 +50,6 @@
               <h1>Testimonial</h1>
               <p id="randomquote"></p>
               <p><a class="btn btn-primary" href="testimonials.html" role="button">Read more &raquo;</a></p>
-            </div>
-          </div>
-        </div>
-        <div class="item">
-          <div class="container">
-            <div class="carousel-caption">
-              <h1>News &amp; Updates</h1>
-              <a class="twitter-timeline" href="https://twitter.com/NeuroDebian"
-                  data-widget-id="360194288006606848"
-                  data-link-color="#820430"
-                  height="130px"
-                  data-show-replies="false"
-                  data-chrome="noheader nofooter transparent">Tweets by @NeuroDebian</a>
-               <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-
-              <div class="nojavascriptinstructions">The news widget requires javascript</div>
-              <p><a class="btn btn-primary" href="https://twitter.com/NeuroDebian" role="button" target="_blank">See time line &raquo;</a></p>
             </div>
           </div>
         </div>

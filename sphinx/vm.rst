@@ -141,163 +141,151 @@ virtual machine. `[Virtual machine handling video tutorial]
 Troubleshooting
 ~~~~~~~~~~~~~~~
 
-.. container:: foldup
+Updating the VM or installing new packages doesn't work
+  The VM uses as service that tries to figure out the best/closest package
+  repository for you. In some network environments this service might not work
+  well, or not at all. To check if this is a problem, you can modify the
+  respective configuration by hand. Edit ``/etc/apt/sources.list`` (you need
+  to use ``sudo`` for that) and replace the package repository URL with a
+  mirror close to you. A comprehensive list of mirrors is available at:
+  http://www.debian.org/mirror/list
 
-  .. container:: expandinstructions
+  Pick one and replace all ``geomirror.debian.net`` URLs with the new mirror
+  URL. For example, in Canada you might want to change::
 
-     Click on an item to expand it
+    deb http://i386-geomirror.debian.net/debian squeeze main non-free contrib
 
-  Updating the VM or installing new packages doesn't work
-    The VM uses as service that tries to figure out the best/closest package
-    repository for you. In some network environments this service might not work
-    well, or not at all. To check if this is a problem, you can modify the
-    respective configuration by hand. Edit ``/etc/apt/sources.list`` (you need
-    to use ``sudo`` for that) and replace the package repository URL with a
-    mirror close to you. A comprehensive list of mirrors is available at:
-    http://www.debian.org/mirror/list
+  to::
 
-    Pick one and replace all ``geomirror.debian.net`` URLs with the new mirror
-    URL. For example, in Canada you might want to change::
+    deb http://ftp.ca.debian.org/debian/ squeeze main non-free contrib
 
-      deb http://i386-geomirror.debian.net/debian squeeze main non-free contrib
+  Only modify lines that refer to ``geomirror`` (all of them), but do **not**
+  modify entries for ``security.debian.org``.
 
-    to::
+Our proxy setup at work prevents APT from downloading packages
+  APT needs to be told how to access the proxy. Talk to your local sysadmin
+  and ask for the proxy's address (maybe a username and password too), as well
+  as the ports for HTTP and FTP proxies. With this information add the
+  following lines in the file, /etc/apt/apt.conf.d/80proxy. This will ensure
+  that after an upgrade changes won't be lost::
 
-      deb http://ftp.ca.debian.org/debian/ squeeze main non-free contrib
+    Acquire::http::proxy "http://<username>:<password>@<proxy>:<port>/";
+    Acquire::ftp::proxy "ftp://<username>:<password>@<proxy>:<port>/";
+    Acquire::https::proxy "https://<username>:<password>@<proxy>:<port>/";
 
-    Only modify lines that refer to ``geomirror`` (all of them), but do **not**
-    modify entries for ``security.debian.org``.
+I cannot hear sounds played in the virtual machine
+  By default the sound is muted. To enable playback launch the mixer applet by
+  clicking on the mixer icon in the task bar. Unmute the master volume
+  control. Now click on the "Volume control" to load the channel mixer dialog.
+  Unmute the "Master" and "PCM" channels and raise the volume as desired. You
+  should now be able to hear sounds played within the virtual machines through
+  your host computer's speakers.
 
-  Our proxy setup at work prevents APT from downloading packages
-    APT needs to be told how to access the proxy. Talk to your local sysadmin
-    and ask for the proxy's address (maybe a username and password too), as well
-    as the ports for HTTP and FTP proxies. With this information add the
-    following lines in the file, /etc/apt/apt.conf.d/80proxy. This will ensure
-    that after an upgrade changes won't be lost::
+My VM lost mounted host directories after upgrading from VirtualBox from 3.x to 4.x
+  NeuroDebian VMs prior 6.0.3 were shipped with guest additions from
+  3.x series of VirtualBox and some initial versions of VirtualBox in
+  4.x series have failed to mount host directories properly.
+  VirtualBox 4.0.8 seems to work fine with guest additions from 3.x
+  series.  If you nevertheless want to upgrade guest additions within
+  NeuroDebian VM, please rebuild the version available from the
+  backports::
 
-      Acquire::http::proxy "http://<username>:<password>@<proxy>:<port>/";
-      Acquire::ftp::proxy "ftp://<username>:<password>@<proxy>:<port>/";
-      Acquire::https::proxy "https://<username>:<password>@<proxy>:<port>/";
+    sudo apt-get install -y linux-headers-2.6-`dpkg --print-architecture`
+    sudo apt-get install -y -t squeeze-backports virtualbox-ose-guest-dkms \
+         virtualbox-ose-guest-utils  virtualbox-ose-guest-x11
 
-  I cannot hear sounds played in the virtual machine
-    By default the sound is muted. To enable playback launch the mixer applet by
-    clicking on the mixer icon in the task bar. Unmute the master volume
-    control. Now click on the "Volume control" to load the channel mixer dialog.
-    Unmute the "Master" and "PCM" channels and raise the volume as desired. You
-    should now be able to hear sounds played within the virtual machines through
-    your host computer's speakers.
+  and reboot VM.
 
-  My VM lost mounted host directories after upgrading from VirtualBox from 3.x to 4.x
-    NeuroDebian VMs prior 6.0.3 were shipped with guest additions from
-    3.x series of VirtualBox and some initial versions of VirtualBox in
-    4.x series have failed to mount host directories properly.
-    VirtualBox 4.0.8 seems to work fine with guest additions from 3.x
-    series.  If you nevertheless want to upgrade guest additions within
-    NeuroDebian VM, please rebuild the version available from the
-    backports::
+My VM lost mounted host directories, and display auto-resizing  after upgrade
+  NeuroDebian VMs ship without Linux kernel headers pre-installed to
+  minimize distribution/running footprint for one time throw-away
+  usages of the VM.  To install headers package(s) just run::
 
-      sudo apt-get install -y linux-headers-2.6-`dpkg --print-architecture`
-      sudo apt-get install -y -t squeeze-backports virtualbox-ose-guest-dkms \
-           virtualbox-ose-guest-utils  virtualbox-ose-guest-x11
+    sudo apt-get install -y linux-headers-`dpkg --print-architecture`
 
-    and reboot VM.
+  and reboot VM.
 
-  My VM lost mounted host directories, and display auto-resizing  after upgrade
-    NeuroDebian VMs ship without Linux kernel headers pre-installed to
-    minimize distribution/running footprint for one time throw-away
-    usages of the VM.  To install headers package(s) just run
+I am still running an older VirtualBox 3.x
+  Download one of the image files listed below. These older releases
+  are distributed as a `zip` file. Please extract all files from the
+  `.zip` file, using appropriate software for your operating system.
 
-      sudo apt-get install -y linux-headers-`dpkg --print-architecture`
+  * `NeuroDebian 6.0.2 image (32bit)
+    <http://neuro.debian.net/debian/vm/neurodebian_6.0.2_i386.zip>`_ [~545MB]
 
-    and reboot VM.
-
-  I am still running an older VirtualBox 3.x
-    Download one of the image files listed below. These older releases
-    are distributed as a `zip` file. Please extract all files from the
-    `.zip` file, using appropriate software for your operating system.
-
-    * `NeuroDebian 6.0.2 image (32bit)
-      <http://neuro.debian.net/debian/vm/neurodebian_6.0.2_i386.zip>`_ [~545MB]
-
-    * `NeuroDebian 6.0.2 image (64bit)
-      <http://neuro.debian.net/debian/vm/neurodebian_6.0.2_amd64.zip>`_ [~560MB]
+  * `NeuroDebian 6.0.2 image (64bit)
+    <http://neuro.debian.net/debian/vm/neurodebian_6.0.2_amd64.zip>`_ [~560MB]
 
 
 What has changed
 ----------------
 
-.. container:: foldup
+8.0.0 -- 5 May 2015
+  * VM appliance based on the recently releaseed jessie 8.0.0.
+    It differs from wheezy appliance in not providing update-manager
+    (became a heavy gnome-dependency) and not making neuro.debian.net
+    a default home page in the browser.  But otherwise -- it got enriched
+    with all wonderful additions of jessie, such as IPython 2.3.0 and
+    others not readily available under wheezy.
 
-  .. container:: expandinstructions
+7.8.0 -- 2 Feb 2015
+  * VM appliance based on the updated wheezy point release 7.8.0.
+    Should resolve problems with upgrades of the guest additions.
 
-     Click on an item to expand it
+7.4.20140423 -- 24 Apr 2014
+  * VM appliance based on the updated wheezy point release 7.4.
+    Should resolve problems with upgrades of the guest additions.
+    See http://neuro.debian.net/faq.html#comment-1351846812
 
-  8.0.0 -- 5 May 2015
-    * VM appliance based on the recently releaseed jessie 8.0.0.
-	  It differs from wheezy appliance in not providing update-manager
-	  (became a heavy gnome-dependency) and not making neuro.debian.net
-	  a default home page in the browser.  But otherwise -- it got enriched
-	  with all wonderful additions of jessie, such as IPython 2.3.0 and
-	  others not readily available under wheezy.
+7.4.0 -- 28 Feb 2014
+  * VM appliance based on the official wheezy point release 7.4.
 
-  7.8.0 -- 2 Feb 2015
-    * VM appliance based on the updated wheezy point release 7.8.0.
-      Should resolve problems with upgrades of the guest additions.
+7.2.0 -- 03 Nov 2013
+  * VM appliance based on the official wheezy point release 7.2.
+  * Ships with updated neurodebian-* packages:
+  * installs ipython notebook and qtconsole for "Scientific Python"
+    and "PyMVPA tutorial" welcome wizard choices.
 
-  7.4.20140423 -- 24 Apr 2014
-    * VM appliance based on the updated wheezy point release 7.4.
-      Should resolve problems with upgrades of the guest additions.
-      See http://neuro.debian.net/faq.html#comment-1351846812
+7.0.0 -- 15 May 2013
+  * VM appliance based on the official wheezy release.
+  * Uses xfce4-terminal by default (instead of urxvt/rxvt-unicode as
+    in beta-releases)
 
-  7.4.0 -- 28 Feb 2014
-    * VM appliance based on the official wheezy point release 7.4.
+6.999.b4.20130421 -- 22 Apr 2013
+  * Refreshed VM appliance to avoid lengthy initial upgrade
 
-  7.2.0 -- 03 Nov 2013
-    * VM appliance based on the official wheezy point release 7.2.
-    * Ships with updated neurodebian-* packages:
-      - installs ipython notebook and qtconsole for "Scientific Python"
-		and "PyMVPA tutorial" welcome wizard choices.
+6.999.b4.20121231 -- 31 Dec 2012
+  * Based on beta 4 release of debian-installer_ for wheezy
+  * Comes with XFCE4_ instead of GNOME_
 
-  7.0.0 -- 15 May 2013
-    * VM appliance based on the official wheezy release.
-    * Uses xfce4-terminal by default (instead of urxvt/rxvt-unicode as
-      in beta-releases)
+6.0.6 -- 01 Oct 2012
+  * Updated core system to Debian squeeze 6.0.6
 
-  6.999.b4.20130421 -- 22 Apr 2013
-    * Refreshed VM appliance to avoid lengthy initial upgrade
+6.0.5 -- 10 Nov 2011
+  * Updated core system to Debian squeeze 6.0.3
+  * Updated shipped virtualbox-ose guest-utils and guest-x11 to 4.0.10
 
-  6.999.b4.20121231 -- 31 Dec 2012
-    * Based on beta 4 release of debian-installer_ for wheezy
-    * Comes with XFCE4_ instead of GNOME_
+    - ``~/host`` is now symlinked to correct path ``/media/sf_host``
+    - ``brain`` user is added to ``vboxsf`` group so mounted host
+      directories should become readily available
 
-  6.0.6 -- 01 Oct 2012
-    * Updated core system to Debian squeeze 6.0.6
+  * Root partition size and swap space got doubled in size (40GB
+    and 2GB correspondingly).  Space is allocated dynamically so
+    the actual size of the virtual drive should not grow unless
+    you use it
 
-  6.0.5 -- 10 Nov 2011
-    * Updated core system to Debian squeeze 6.0.3
-    * Updated shipped virtualbox-ose guest-utils and guest-x11 to 4.0.10
+6.0.4 -- 13 Jun 2011
+  * Updated shipped virtualbox-ose guest-utils and guest-x11 to 4.0.4
 
-      - ``~/host`` is now symlinked to correct path ``/media/sf_host``
-      - ``brain`` user is added to ``vboxsf`` group so mounted host
-        directories should become readily available
+6.0.3 -- 12 Jun 2011 [Superseded in the archive by 6.0.4]
+  * Updated to Squeeze 6.0.1
+  * Updated VirtualBox guest additions to 4.0.4 from backports.debian.org
+  * Appliance is available as a single file (.ova) ready for the import
 
-    * Root partition size and swap space got doubled in size (40GB
-      and 2GB correspondingly).  Space is allocated dynamically so
-      the actual size of the virtual drive should not grow unless
-      you use it
+6.0.2 -- 08 Feb 2011
+  * Minor update
 
-  6.0.4 -- 13 Jun 2011
-    * Updated shipped virtualbox-ose guest-utils and guest-x11 to 4.0.4
-
-  6.0.3 -- 12 Jun 2011 [Superseded in the archive by 6.0.4]
-    * Updated to Squeeze 6.0.1
-    * Updated VirtualBox guest additions to 4.0.4 from backports.debian.org
-    * Appliance is available as a single file (.ova) ready for the import
-
-  6.0.2 -- 08 Feb 2011
-    * Minor update
-
-  6.0.1 -- 01 Dec 2010
-    * Minor update
+6.0.1 -- 01 Dec 2010
+  * Minor update
 
 .. include:: link_names.txt
