@@ -260,6 +260,26 @@ For information on how to donate to this project, please visit
   </div> <!-- /div .col-md-12 -->
   </div> <!-- /div .row -->
 
+Maintainer information
+----------------------
+
+This software package is maintained for (Neuro)Debian by the follow individuals and/or groups:
+
+.. raw:: html
+
+   <div class="row">
+    <div class="col-sm-6 col-md-4">
+   {% for m in maintainers %}
+     <div class="thumbnail pull-left">
+      <img alt="Maintainer avatar" src="http://www.gravatar.com/avatar/{{ m[2][0] }}?s=100&r=g&d=mm" />
+      <div class="caption">{{ m[0] }}</div>
+    </div>
+   {%- endfor %}
+    </div>
+   </div>
+
+In order to get support, or to get in touch with a maintainer, please click the
+'Help' button at the top of the page.
 
 Advanced user information
 -------------------------

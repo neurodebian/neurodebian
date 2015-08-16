@@ -3,6 +3,12 @@
 {{ title }}
 {{ '=' * (title|count) }}
 
+{% if '<' in title %}
+.. raw:: html
+
+   <p><img alt="Maintainer avatar" src="http://www.gravatar.com/avatar/{{ emailhash }}?s=100&r=g&d=mm" /></p>
+{% endif %}
+
 .. raw:: html
 
   <table class="table table-responsive table-hover table-condensed">
