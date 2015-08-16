@@ -71,6 +71,9 @@ div#navbar {
     font-size: 75%;
 }
 
+blockquote > div > p {
+    font-size: 11pt;
+}
 
 /*
 body {
