@@ -58,9 +58,9 @@
       <a class="right carousel-control" href="#myCarousel" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
     </div><!-- /.carousel -->
 
-NeuroDebian is a community effort that provides a large collection of
-neuroscience research tools as readily usable, fully-integrated software
-packages. :ref:`These packages <pkg_tocs>` are made for the Debian_ operating
+NeuroDebian is a community effort to provide a fully-integrated computational
+environment for neuroscience research. It features :ref:`software packages
+<pkg_tocs>` that are made for the Debian_ operating
 system, but can also be found in Ubuntu_ and other
 `derivatives <https://upload.wikimedia.org/wikipedia/commons/6/69/DebianFamilyTree1210.svg>`_.
 This website offers an additional service that helps scientists to set up and
