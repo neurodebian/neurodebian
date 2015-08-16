@@ -1,12 +1,19 @@
 Answer a few question and you'll have NeuroDebian running in a few minutes.
 
+.. raw:: html
+
+  <div class="nojavascriptinstructions">
+  <div class="alert alert-danger" role="alert">
+  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+  <span class="sr-only">Error:</span>
+  This page requires javascript. If disabled, incomplete instructions are
+  displayed below</div>
+  </div>
+
 .. include:: sources_lists
 
 .. raw:: html
 
-  <div class="nojavascriptinstructions">
-  This form requires javascript. If disabled, incomplete instructions are
-  displayed below</div>
   <div id="plaininstall-instructions">
   <div class="nojavascriptinstructions">
   Instructions for systems with built-in NeuroDebian built

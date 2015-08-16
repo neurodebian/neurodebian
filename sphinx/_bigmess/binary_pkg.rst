@@ -18,7 +18,7 @@
   <a role="button"
      class="btn btn-primary"
      title="Click to get installation instructions"
-     href="/install_pkg.html?p={{ pname }}">
+     href="/install_pkg.html?p={{ pname | e }}">
   Install package</a>
 
 {% if havemeta_README_Debian %}
@@ -27,7 +27,7 @@
 
   <a role="button"
          class="btn btn-warning"
-         href="{{ cfg.get('metadata', 'source extracts baseurl') }}/{{ src_name }}/README.Debian"
+         href="{{ cfg.get('metadata', 'source extracts baseurl') | e }}/{{ src_name | e }}/README.Debian"
          title="Get essential user information for this package">Read this!</a>
 
 {% endif -%}
@@ -37,15 +37,28 @@
   <a role="button"
      class="btn btn-default"
      title="Click for information on bug reporting"
-     href="/reportbug.html?p={{ pname }}">
-  Report issue</a>
+     href="/reportbug.html?p={{ pname | e }}&src={{ src_name | e }}
+     {%- if havemeta_README_Debian -%}
+     &have_readme=1
+     {%- endif -%}
+     {%- if homepage -%}
+     &homepage={{ homepage | e }}
+     {%- endif -%}
+     {%- if 'Contact' in upstream -%}
+     &contact={{ upstream.Contact | e }}
+     {%- endif -%}
+     {%- if 'FAQ' in upstream -%}
+     &faq={{ upstream.FAQ | e }}
+     {%- endif -%}
+     ">
+  Help</a>
 
 {% if component == 'non-free' -%}
 .. raw:: html
 
   <a role="button"
          class="btn btn-danger"
-         href="{{ cfg.get('metadata', 'source extracts baseurl') }}/{{ src_name }}/copyright"
+         href="{{ cfg.get('metadata', 'source extracts baseurl') | e }}/{{ src_name | e }}/copyright"
          title="Non-standard licencing terms, verify compliance!">Check licence</a>
 
 {% elif component == 'contrib' -%}
@@ -54,7 +67,7 @@
 
   <a role="button"
          class="btn btn-danger"
-         href="{{ cfg.get('metadata', 'source extracts baseurl') }}/{{ src_name }}/copyright"
+         href="{{ cfg.get('metadata', 'source extracts baseurl') | e }}/{{ src_name | e }}/copyright"
          title="Package dependencies have non-standard licensing terms, verify compliance!">
          Check license</a>
 
@@ -64,7 +77,7 @@
 
   <a role="button"
          class="btn btn-default"
-         href="{{ cfg.get('metadata', 'source extracts baseurl') }}/{{ src_name }}/copyright"
+         href="{{ cfg.get('metadata', 'source extracts baseurl') | e }}/{{ src_name | e }}/copyright"
          title="Check license">
          Check license</a>
 
