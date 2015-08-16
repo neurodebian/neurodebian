@@ -1,3 +1,5 @@
+.. _chap_help:
+
 Help
 ====
 

@@ -97,14 +97,13 @@ Get NeuroDebian
   <div class="row center-block">
   <div class="col-xs-3">
 
-* About
+* Project
 
-  * :ref:`The Team <chap_team>`
-  * :ref:`FAQ <faq>`
+  * :ref:`About <chap_about>`
   * :ref:`Blog <blog>`
-  * :ref:`chap_popularity`
+  * :ref:`FAQ <faq>`
+  * :ref:`Statistics <chap_popularity>`
   * :ref:`chap_publications`
-  * :ref:`chap_acknowledgements`
   * :ref:`testimonials`
   * :ref:`coffeeart`
 
@@ -117,6 +116,7 @@ Get NeuroDebian
 
 * Services
 
+  * :ref:`chap_help`
   * :ref:`Software <pkg_tocs>`
   * :ref:`Data <toc_pkgs_for_release_data>`
   * :ref:`Appliance <chap_vm>`
@@ -131,10 +131,6 @@ Get NeuroDebian
 
 * Community
 
-  * :ref:`Contacts <chap_contacts>`
-  * :ref:`Mailing lists <chap_mailinglists>`
-  * `OpenHatch <https://openhatch.org/+projects/NeuroDebian>`_
-  * `Identi.ca <http://identi.ca/neurodebian>`_
   * `Twitter <http://twitter.com/NeuroDebian>`_
   * `Google+ <https://plus.google.com/104292290917252528951>`_
   * `YouTube <http://www.youtube.com/neurodebian>`_
