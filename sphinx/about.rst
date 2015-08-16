@@ -52,8 +52,11 @@ Many people have contributed to NeuroDebian over the years. We thank all
 researchers and programmers that produce scientific tools as free and
 open source software.
 
-We are grateful to `Jim Haxby`_ for his continued support and :ref:`endless
-supply of Italian espresso <coffeeart>`.
+NeuroDebian is being supported by `Center for Cognitive Neuroscience at
+Dartmouth College <http://www.dartmouth.edu/~ccn/>`_ and the `Center for
+Behavioral Brain Sciences Magdeburg <http://www.cbbs.eu>`_.  We are
+particularly grateful to `Jim Haxby`_ for his continued support and
+:ref:`endless supply of Italian espresso <coffeeart>`.
 
 .. _Jim Haxby: http://haxbylab.dartmouth.edu/ppl/jim.html
 

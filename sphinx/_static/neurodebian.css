@@ -75,6 +75,11 @@ blockquote > div > p {
     font-size: 11pt;
 }
 
+#randomquote > blockquote > div > p {
+    font-size: 9pt;
+}
+
+
 /*
 body {
     font-family: sans-serif;

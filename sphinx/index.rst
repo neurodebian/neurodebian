@@ -155,6 +155,27 @@ Get NeuroDebian
   </div> <!-- .col-xs-3 -->
   </div><!-- /.row -->
 
+  <hr />
+
+  <div class="row">
+  <div class="col-xs-12">
+  <p>sponsored by</p>
+  </div> <!-- .col-xs-12 -->
+  </div><!-- /.row -->
+  <div class="row">
+  <div class="col-xs-6">
+  <a href="www.dartmouth.edu/~ccn" title="Visit the Center for Cognitive Neuroscience at Dartmouth College">
+  <img class="center-block"
+       src="/_static/ccn-logo_h50.png"
+       alt="Dartmouth CCN logo" /></a>
+  </div> <!-- .col-xs-6 -->
+  <div class="col-xs-6">
+  <a href="http://www.cbbs.eu" title="Visit the Center for Behavioral Brain Sciences Magdeburg">
+  <img class="center-block"
+       src="/_static/cbbs-logo_h50.png"
+       alt="CBBS logo" /></a>
+  </div> <!-- .col-xs-6 -->
+  </div><!-- /.row -->
 
 .. toctree::
    :hidden:
