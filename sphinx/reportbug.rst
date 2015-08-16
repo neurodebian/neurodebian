@@ -120,7 +120,24 @@ following checklist:
      </li>
    </ul>
 
-Report bug
+If you continue to find your issue not sufficiently addressed, please **report
+it**. `This blog post <http://raphaelhertzog.com/go/bugreporting>`_ summarizes
+what makes a good report (in short: do your best to enable the recipient to
+reproduce the issue on their system). Here are a few pointers to get in touch
+with the user community and developers.
+
+Please email bug reports to the neurodebian-users_ mailing list. This is the
+best way to get quality feedback, fast.
+
+If you have evidence that your issue not specific to NeuroDebian, your report
+is best directed to the developers of the respective software.
+
+.. raw:: html
+
+  <p class="pkg_have_contact">Information on how to contact the respective
+  developers is available at <a href="###contact###">this location
+  </a><span class="pkg_have_homepage">, or on the <a href="###homepage###">
+  project homepage</a></span>.</p>
 
 .. raw:: html
 
@@ -130,82 +147,34 @@ Report bug
 
   <div id="specific-conceptual-recommendation">
 
-SC
+For conceptual questions either contact the community of the respective
+project, or post a question at `neurostars.org <https://neurostars.org>`_ (make
+sure to use the tags ``neurodebian, ###src###`` for your question).
 
 .. raw:: html
+
+  <p class="pkg_have_contact">Information on how to contact the community
+  of this software is available at <a href="###contact###">this location
+  </a><span class="pkg_have_homepage">, or on the <a href="###homepage###">
+  project homepage</a></span>.</p>
 
   </div> <!--specific-conceptual-recommendation-->
 
 .. raw:: html
 
-  <div id="general-technical-recommendation">
+  <div id="general-recommendation">
 
-GT
+For general topics, we advice to post questions to `neurostars.org <https://neurostars.org>`_ for maximum visibility and fast feedback. Make sure to use the tag
+``neurodebian`` for your questions.
 
-.. raw:: html
-
-  </div> <!--general-technical-recommendation-->
-
-.. raw:: html
-
-  <div id="general-conceptual-recommendation">
-
-GC
+Alternatively, email the neurodebian-users_ mailing list to reach a large audience
+of NeuroDebian experts.
 
 .. raw:: html
 
-  </div> <!--general-conceptual-recommendation-->
-
-###p###
-
-###src###
-
-`###homepage### <###homepage###>`_
-
-`###contact### <###contact###>`_
-
-`###faq### <###faq###>`_
-
-.. raw:: html
-
+  </div> <!--general-recommendation-->
   </div> <!-- /.panel-body -->
   </div> <!-- /.panel -->
-
-If you believe that there is a bug in ``###p###``, we would be grateful if
-you take the time to report it. Only known problems can get fixed!
-
-Here are a few tips to help you report this bug in a way that facilitates its
-resolution.
-
-Try to reproduce the bug
-  If you cannot reproduce the bug it is likely that the package maintainer
-  also cannot do it. Please make an attempt to find out under which
-  circumstances the faulty behavior occurs. However, if you can't figure it
-  out, please report the bug nevertheless -- maybe someone else can provide
-  the missing information.
-
-Describe the problem so that the developer can reproduce it
-  That means including every single detail -- not just the "important" ones.
-  What kind of system (hardware/software) are you using? What did you do
-  exactly when the bug hit you?
-
-  Remember: bug reports are not just input for developers, but also help other
-  users to identify whether they are affected by the same problem, and a
-  recommended solution applies to them as well.
-
-  A good bug report is an important service to the community!
-
-  More information on high quality bug reporting is available at:
-  http://raphaelhertzog.com/go/bugreporting/
-
-
-Please email bug reports to the neurodebian-users_ or neurodebian-devel_
-mailing list -- whichever is more appropriate. In rare cases where your
-bug report contains confidential information, please email it directly
-to `team@neuro.debian.net <mailto:team@neuro.debian.net?subject=BUG-###pkgname###:>`_.
-
-If you have evidence that the faulty behavior is not specific to NeuroDebian,
-your bug report is best directed to the developers of the respective software.
 
 .. raw:: html
 
@@ -224,24 +193,31 @@ your bug report is best directed to the developers of the respective software.
        var scope = $('input[name="issuescope"]:checked').val();
        var nature = $('input[name="issuenature"]:checked').val();
        if ( scope == 'specific' && ! pinfo['p']) {
-         $('#recommendationpanel').slideUp();
-         $('#issuenaturepanel').slideUp();
+         $('#recommendationpanel').hide();
+         $('#issuenaturepanel').hide();
          $('#picksoftwarepanel').slideDown();
        } else {
-           if ( scope != undefined) {
+           if ( scope != 'general') {
              $('#issuenaturepanel').slideDown();
              if ( nature != undefined) {
                if ( pinfo['have_readme'] ) { $('.pkg_have_readme').show() };
                if ( pinfo['faq'] ) { $('.pkg_have_faq').show() };
-               $('#specific-technical-recommendation').slideUp();
-               $('#specific-conceptual-recommendation').slideUp();
-               $('#general-technical-recommendation').slideUp();
-               $('#general-conceptual-recommendation').slideUp();
+               $('#specific-technical-recommendation').hide();
+               $('#specific-conceptual-recommendation').hide();
+               $('#general-recommendation').hide();
+               $('#' + scope + '-' + nature + '-recommendation').show();
                $('#recommendationpanel').slideDown();
-               $('#' + scope + '-' + nature + '-recommendation').slideDown();
+               <!-- magic number is to compensate for the the navbar -->
+               $(document).scrollTop( $("#recommendationpanel").offset().top - 60);
              };
+           } else {
+               $('#issuenaturepanel').slideUp();
+               $('#specific-technical-recommendation').hide();
+               $('#specific-conceptual-recommendation').hide();
+               $('#general-recommendation').show();
+               $('#recommendationpanel').slideDown();
            };
-         $('#picksoftwarepanel').slideUp();
+         $('#picksoftwarepanel').hide();
        };
     };
 
@@ -251,7 +227,7 @@ your bug report is best directed to the developers of the respective software.
        for ( v in pinfo ) {
          var marker = '###' + v + '###';
          $("div.container:contains(" + marker + ")").each(function () {
-             $(this).html($(this).html().replace(marker, pinfo[v]))
+             $(this).html($(this).html().replace(RegExp(marker, 'g'), pinfo[v]))
            });
        };
 

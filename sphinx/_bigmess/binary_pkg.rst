@@ -50,6 +50,9 @@
      {%- if 'FAQ' in upstream -%}
      &faq={{ upstream.FAQ | e }}
      {%- endif -%}
+     {%- if in_base_release|length -%}
+     &in_debian_proper=1
+     {%- endif -%}
      ">
   Help</a>
 
