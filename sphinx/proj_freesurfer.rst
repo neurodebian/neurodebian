@@ -23,7 +23,8 @@ on packaging.  Following has been done
 * modularization of the FreeSurfer distribution into code and data components
 
 * FreeSurfer 5.1.0 |FOSS| code made available from our `FreeSurfer GitHub
-  <https://github.com/neurodebian/freesurfer>`_ repository
+  <https://github.com/neurodebian/freesurfer>`_ repository (*temporarily taken
+  offline*)
 
 * :file:`debian/patches` contains a series of patches primarily to
 
