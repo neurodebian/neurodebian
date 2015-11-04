@@ -1,3 +1,10 @@
+neurodebian (0.37.3) unstable; urgency=medium
+
+  * Do not mask out NEURODEBIAN_UPDATE variable with cmdline --do-not-update,
+    
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Sun, 16 Aug 2015 16:48:40 -0400
+
 neurodebian (0.37.2) unstable; urgency=low
 
   [ Christian Perrier ]

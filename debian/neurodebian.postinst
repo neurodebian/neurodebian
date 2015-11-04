@@ -9,8 +9,11 @@ case "$1" in
     configure)
 		db_get neurodebian/enable
 		if [ "$RET" = "true" ]; then
-			# obtain all the options and call nd-configurerepo
-			opts="--do-not-update"
+			# If user decided to use NEURODEBIAN_UPDATE variable to run apt-get update
+			# do not enforce do-not-update
+			export NEURODEBIAN_UPDATE=${NEURODEBIAN_UPDATE:-0}
+			# The other options will be obtained from db and passed as cmdline opts to nd-configurerepo
+			opts=""
 			db_get neurodebian/release; [ "$RET" = "auto" ] || opts+=" -r '$RET'"
 			db_get neurodebian/mirror;	nd_mirror="${RET##* }" # get just a url if it came together with alias
 			db_get neurodebian/flavor;	nd_flavor="$RET"
