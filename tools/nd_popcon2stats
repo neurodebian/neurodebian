@@ -34,6 +34,7 @@ releases = {
     'trusty': 'Ubuntu 14.04 LTS "Trusty Tahr" (trusty)',
     'utopic': 'Ubuntu 14.10 "Utopic Unicorn" (utopic)',
     'vivid': 'Ubuntu 15.04 "Vivid Vervet" (vivid)',
+    'wily': 'Ubuntu 15.10 "Wily Werewolf" (wily)',
 }
 
 def error(msg):
