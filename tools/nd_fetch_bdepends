@@ -22,6 +22,7 @@ echo "D: querying rdepds for $@"
 # D: interactive shell for debugging
 # /bin/bash < /dev/tty > /dev/tty 2> /dev/tty
 
+# TODO: use apt-rdepends  for ultimate list
 for pkg in "$@"; do
 	build-rdeps --distribution $dist $pkg >> build-rdeps.output
 done

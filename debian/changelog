@@ -1,3 +1,19 @@
+neurodebian (0.37.4) unstable; urgency=medium
+
+  * Fixed Exec for FSL's .desktop file and added .desktop for
+    connectome-workbench
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Wed, 02 Mar 2016 08:59:38 -0500
+
+neurodebian (0.37.3) unstable; urgency=medium
+
+  * Updated desktop files for FSL to follow 5.x now (Thanks Bennet Fauber)
+  * Includes info on wily 15.04 Ubuntu release
+  * [Debconf translation updates]
+    - Dutch (Frans Spiesschaert). Closes: #798833
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Sun, 28 Feb 2016 12:23:15 -0500
+
 neurodebian (0.37.2) unstable; urgency=low
 
   [ Christian Perrier ]
