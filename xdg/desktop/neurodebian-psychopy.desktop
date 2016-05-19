@@ -7,4 +7,4 @@ Exec=nd-autoinstall psychopy %F
 Type=Application
 Terminal=false
 Categories=X-NeuroDebian-Psychophysics
-Icon=psychopy.xpm
+Icon=psychopy
