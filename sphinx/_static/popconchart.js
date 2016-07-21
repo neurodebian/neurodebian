@@ -1,7 +1,7 @@
 var colors_debian = d3.scale.linear()
-	.domain([1.43, 1.60]).range(["white", "#dd1155"])
+	.domain([1.43, 1.64]).range(["white", "#dd1155"])
 var colors_ubuntu = d3.scale.linear()
-	.domain([1.43, 1.60]).range(["white", "#dd4814"])
+	.domain([1.43, 1.64]).range(["white", "#dd4814"])
 
 keyColor = function(d, i) {
 	var version = parseFloat(d.key.substr(0, 4))
