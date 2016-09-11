@@ -3,6 +3,8 @@ neurodebian (0.37.5) unstable; urgency=medium
   * debian/control
     - -keyring pkg depends now on some gnupg version and dirmngr
       (Closes: #837085)
+  * vm/d-i/*/initial_setup
+    - replaced short key id 16BA136C with a long one (Closes: #836545)
 
  --
 
