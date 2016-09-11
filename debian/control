@@ -59,7 +59,7 @@ Description: neuroscience-oriented distribution - desktop integration
 
 Package: neurodebian-archive-keyring
 Architecture: all
-Depends: ${misc:Depends}
+Depends: ${misc:Depends}, gnupg2 | gnupg, dirmngr
 Replaces: neurodebian-keyring (<< 0.34~)
 Breaks: neurodebian-keyring (<< 0.34~)
 Description: neuroscience-oriented distribution - GnuPG archive keys

@@ -1,3 +1,11 @@
+neurodebian (0.37.5) unstable; urgency=medium
+
+  * debian/control
+    - -keyring pkg depends now on some gnupg version and dirmngr
+      (Closes: #837085)
+
+ --
+
 neurodebian (0.37.4) unstable; urgency=medium
 
   * Fixed Exec for FSL's .desktop file and added .desktop for
