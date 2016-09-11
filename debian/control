@@ -44,7 +44,9 @@ Package: neurodebian-desktop
 Architecture: all
 Depends: ${misc:Depends}, ssh-askpass-gnome | ssh-askpass, desktop-base,
          adwaita-icon-theme | gnome-icon-theme,
-         neurodebian-popularity-contest
+         neurodebian-popularity-contest,
+Recommends:
+         reportbug-ng,
 Suggests:
 Description: neuroscience-oriented distribution - desktop integration
  The NeuroDebian project integrates and maintains a variety of software
