@@ -6,8 +6,9 @@ neurodebian (0.37.5) unstable; urgency=medium
     - -desktop now recommends reportbug-ng (Closes: #795672)
   * vm/d-i/*/initial_setup
     - replaced short key id 16BA136C with a long one (Closes: #836545)
+  * addded debian/po/sv.po - thanks Jonatan Nyberg (Closes: #822111)
 
- --
+ -- Yaroslav Halchenko <debian@onerussian.com>  Sat, 10 Sep 2016 22:58:06 -0400
 
 neurodebian (0.37.4) unstable; urgency=medium
 
