@@ -7,7 +7,7 @@ buildplace="${cowbuilderroot}/build"
 
 # all currently supported dists
 allnddists="nd+debian-wheezy nd+debian-jessie nd+debian-stretch nd+debian-sid \
-            nd+ubuntu-precise nd+ubuntu-trusty nd+ubuntu-vivid nd+ubuntu-wily nd+ubuntu-xenial"
+            nd+ubuntu-precise nd+ubuntu-trusty nd+ubuntu-xenial nd+ubuntu-yakkety"
 alldists="$allnddists debian-wheezy debian-jessie debian-stretch debian-sid"
 
 # default is debian

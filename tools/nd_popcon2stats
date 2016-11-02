@@ -36,6 +36,7 @@ releases = {
     'vivid': 'Ubuntu 15.04 "Vivid Vervet" (vivid)',
     'wily': 'Ubuntu 15.10 "Wily Werewolf" (wily)',
     'xenial': 'Ubuntu 16.04 "Xenial Xerus" (xenial)',
+    'yakkety': 'Ubuntu 16.10 "Yakkety Yak" (yakkety)',
 }
 
 def error(msg):
