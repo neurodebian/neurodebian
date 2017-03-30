@@ -1,0 +1,56 @@
+# Copyright (c) 2017, Yaroslav O. Halchenko. All rights reserved. MIT license
+#
+# The purpose of the Singularity environment is to provide a relatively full
+# suite of tools provided primarily by Debian/NeuroDebian for runnin various
+# neuroimaging analyses.
+#
+# Notes:
+#  - Due to  https://github.com/singularityware/singularity/issues/471
+#    bootstrapping leads to non-usable/non-removable-without-reboot
+#    image due to some rogue run away processes.
+#    This line could help to kill them but should be used with caution
+#    since could kill other unrelated processes
+#
+#      grep -l loop /proc/*/mountinfo | sed -e 's,/proc/\(.*\)/.*,\1,g' | while read pid; do sudo kill $pid; done
+
+BootStrap: debootstrap
+OSVersion: stretch
+#MirrorURL: http://ftp.us.debian.org/debian/
+MirrorURL: http://smaug.datalad.org:3142/debian/
+
+# so if image is executed we just enter the environment
+%runscript
+    echo "Welcome to the NeuroDebian environment"
+    echo "Please source /etc/fsl/fsl.sh if you need FSL, /etc/afni/afni.sh if you need AFNI"
+    /bin/bash
+
+%post
+    echo "Configuring the environment"
+    sed -i -e 's, main$, main contrib non-free,g' /etc/apt/sources.list
+    apt-get update
+    apt-get -y install eatmydata 
+    eatmydata apt-get -y install vim wget strace time ncdu gnupg curl procps
+    wget -q -O/tmp/nd-configurerepo https://raw.githubusercontent.com/neurodebian/neurodebian/4d26c8f30433145009aa3f74516da12f560a5a13/tools/nd-configurerepo
+    bash /tmp/nd-configurerepo
+    chmod a+r -R /etc/apt
+    eatmydata apt-get -y install datalad python-nipype virtualenv dcm2niix python-dcmstack python-configparser python-funcsigs python-pytest connectome-workbench python-mvpa2 python-nilearn fsl-core fsl-atlases fsl-first-data mricron afni
+
+    # for bids-validator
+    curl -sL https://deb.nodesource.com/setup_6.x | bash - && \
+       eatmydata apt-get install -y nodejs
+    npm install -g bids-validator@0.20.0
+    chmod a+rX -R /usr/lib/node_modules/
+
+    chmod a+rX -R /etc/apt/sources.list.d
+    rm -rf /tmp/* /var/tmp/*
+    apt-get clean
+
+    # and wipe out apt lists since not to be used RW for further tuning
+    # find /var/lib/apt/lists/ -type f -delete
+    # /usr/bin/find /var/lib/apt/lists/ -type f -name \*Packages\* -o -name \*Contents\*
+    # complicates later interrogation - thus disabled
+
+    # Create some additional bind mount directories present on various compute boxes we have
+    # access to, to ease deployment
+    mkdir -p /afs /inbox /ihome /opt
+    chmod a+rX /afs /inbox /ihome /opt
