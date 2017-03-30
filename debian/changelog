@@ -1,3 +1,10 @@
+neurodebian (0.37.6) unstable; urgency=medium
+
+  * Switch to use interest-noawait for neurodebian-desktop.trigger
+    to avoid a circular deadlock (Closes: #858920)
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Tue, 28 Mar 2017 13:53:19 -0400
+
 neurodebian (0.37.5) unstable; urgency=medium
 
   * debian/control
