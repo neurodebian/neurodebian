@@ -14,13 +14,13 @@
 #      grep -l loop /proc/*/mountinfo | sed -e 's,/proc/\(.*\)/.*,\1,g' | while read pid; do sudo kill $pid; done
 
 BootStrap: debootstrap
-OSVersion: stretch
+OSVersion: jessie
 #MirrorURL: http://ftp.us.debian.org/debian/
 MirrorURL: http://smaug.datalad.org:3142/debian/
 
 # so if image is executed we just enter the environment
 %runscript
-    echo "Welcome to the NeuroDebian environment"
+    echo "Welcome to the NeuroDebian v 1.1 (Debian jessie) environment"
     echo "Please source /etc/fsl/fsl.sh if you need FSL, /etc/afni/afni.sh if you need AFNI"
     /bin/bash
 
@@ -33,7 +33,7 @@ MirrorURL: http://smaug.datalad.org:3142/debian/
     wget -q -O/tmp/nd-configurerepo https://raw.githubusercontent.com/neurodebian/neurodebian/4d26c8f30433145009aa3f74516da12f560a5a13/tools/nd-configurerepo
     bash /tmp/nd-configurerepo
     chmod a+r -R /etc/apt
-    eatmydata apt-get -y install datalad python-nipype virtualenv dcm2niix python-dcmstack python-configparser python-funcsigs python-pytest connectome-workbench python-mvpa2 python-nilearn fsl-core fsl-atlases fsl-first-data mricron afni
+    eatmydata apt-get -y install datalad python-nipype virtualenv dcm2niix python-dcmstack python-configparser python-funcsigs python-pytest connectome-workbench python-mvpa2 python-nilearn fsl-core fsl-atlases fsl-first-data mricron afni fslview fsleyes
 
     # for bids-validator
     curl -sL https://deb.nodesource.com/setup_6.x | bash - && \
