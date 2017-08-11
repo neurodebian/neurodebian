@@ -32,16 +32,19 @@ MirrorURL: http://smaug.datalad.org:3142/debian/
 
 # so if image is executed we just enter the environment
 %runscript
-    echo "Welcome to the NeuroDebian v 2.1 (Debian stretch) environment"
+    echo "Welcome to the NeuroDebian v 2.1 (Debian stretch) environment (debug for git)"
     echo "Please source /etc/fsl/fsl.sh if you need FSL, /etc/afni/afni.sh if you need AFNI"
     /bin/bash
 
 %post
     echo "Configuring the environment"
     sed -i -e 's, main$, main contrib non-free,g' /etc/apt/sources.list
+    # For build-dep
+    sed -i -e 's,^deb \(.*\),deb \1\ndeb-src \1,g' /etc/apt/sources.list
     apt-get update
     apt-get -y install eatmydata 
-    eatmydata apt-get -y install vim wget strace gdb time ncdu gnupg curl procps
+    eatmydata apt-get -y install vim wget strace gdb valgrind time ncdu gnupg curl procps
+    eatmydata apt-get -y build-dep git
     wget -q -O/tmp/nd-configurerepo https://raw.githubusercontent.com/neurodebian/neurodebian/4d26c8f30433145009aa3f74516da12f560a5a13/tools/nd-configurerepo
     bash /tmp/nd-configurerepo
     chmod a+r -R /etc/apt
@@ -64,5 +67,5 @@ MirrorURL: http://smaug.datalad.org:3142/debian/
 
     # Create some additional bind mount directories present on various compute boxes we have
     # access to, to ease deployment
-    mkdir -p /afs /inbox /ihome /opt /data /backup /apps /srv
-    chmod a+rX /afs /inbox /ihome /opt /data /backup /apps /srv
+    mkdir -p /afs /inbox /ihome /opt /data /backup /apps /srv /scratch
+    chmod a+rX /afs /inbox /ihome /opt /data /backup /apps /srv /scratch
