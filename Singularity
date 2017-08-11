@@ -23,7 +23,7 @@
 # 2.x
 #  - switch to stretch
 #  - TODO make reproducible
-#  - TODO "upgrade" bids-validator from 0.20.0
+#  - bids-validator from 0.22
 #  - Added ants, convert3d
 #
 # TODOs
@@ -32,8 +32,8 @@
 
 BootStrap: debootstrap
 OSVersion: stretch
-#MirrorURL: http://ftp.us.debian.org/debian/
-MirrorURL: http://smaug.datalad.org:3142/debian/
+MirrorURL: http://ftp.us.debian.org/debian/
+#MirrorURL: http://smaug.datalad.org:3142/debian/
 
 # so if image is executed we just enter the environment
 %runscript
