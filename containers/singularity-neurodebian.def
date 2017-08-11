@@ -15,6 +15,11 @@
 #
 # Changelog
 # ---------
+# 2.2
+#  - fresh annex with patched git to avoid "Out of memory, getdelim failed" bug
+#  - added some tools useful for debugging (gdb)
+#  - additional mountpoints (/scratch)
+#  - (note) pip is not installed on purpose, use the one within virtualenv(s)
 # 2.x
 #  - switch to stretch
 #  - TODO make reproducible
@@ -32,7 +37,7 @@ MirrorURL: http://smaug.datalad.org:3142/debian/
 
 # so if image is executed we just enter the environment
 %runscript
-    echo "Welcome to the NeuroDebian v 2.1 (Debian stretch) environment (debug for git)"
+    echo "Welcome to the NeuroDebian v 2.2 (Debian stretch) environment"
     echo "Please source /etc/fsl/fsl.sh if you need FSL, /etc/afni/afni.sh if you need AFNI"
     /bin/bash
 
@@ -40,15 +45,15 @@ MirrorURL: http://smaug.datalad.org:3142/debian/
     echo "Configuring the environment"
     sed -i -e 's, main$, main contrib non-free,g' /etc/apt/sources.list
     # For build-dep
-    sed -i -e 's,^deb \(.*\),deb \1\ndeb-src \1,g' /etc/apt/sources.list
+    # sed -i -e 's,^deb \(.*\),deb \1\ndeb-src \1,g' /etc/apt/sources.list
     apt-get update
     apt-get -y install eatmydata 
     eatmydata apt-get -y install vim wget strace gdb valgrind time ncdu gnupg curl procps
-    eatmydata apt-get -y build-dep git
+    # eatmydata apt-get -y build-dep git
     wget -q -O/tmp/nd-configurerepo https://raw.githubusercontent.com/neurodebian/neurodebian/4d26c8f30433145009aa3f74516da12f560a5a13/tools/nd-configurerepo
     bash /tmp/nd-configurerepo
     chmod a+r -R /etc/apt
-    eatmydata apt-get -y install git-annex-standalone datalad python-nipype virtualenv dcm2niix python-dcmstack python-configparser python-funcsigs python-pytest connectome-workbench python-mvpa2 python-nilearn fsl-core fsl-atlases fsl-first-data mricron afni fsleyes ants convert3d heudiconv
+    eatmydata apt-get -y install git git-annex-standalone datalad python-nipype virtualenv dcm2niix python-dcmstack python-configparser python-funcsigs python-pytest connectome-workbench python-mvpa2 python-nilearn fsl-core fsl-atlases fsl-first-data mricron afni fsleyes ants convert3d heudiconv
 
     # for bids-validator
     curl -sL https://deb.nodesource.com/setup_6.x | bash - && \
