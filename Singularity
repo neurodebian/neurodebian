@@ -13,6 +13,8 @@
 #
 #      grep -l loop /proc/*/mountinfo | sed -e 's,/proc/\(.*\)/.*,\1,g' | while read pid; do sudo kill $pid; done
 #
+# Set size to be 12000 on singularity-hub
+#
 # Changelog
 # ---------
 # 2.2
