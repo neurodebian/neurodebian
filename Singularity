@@ -32,8 +32,8 @@
 
 BootStrap: debootstrap
 OSVersion: stretch
-#MirrorURL: http://ftp.us.debian.org/debian/
-MirrorURL: http://smaug.datalad.org:3142/debian/
+MirrorURL: http://http.debian.net/debian/
+#MirrorURL: http://smaug.datalad.org:3142/debian/
 
 # so if image is executed we just enter the environment
 %runscript
