@@ -64,7 +64,9 @@ MirrorURL: http://http.debian.net/debian/
     chmod a+rX -R /usr/lib/node_modules/
 
     chmod a+rX -R /etc/apt/sources.list.d
-    rm -rf /tmp/* /var/tmp/*
+    # cleaning /tmp that thoroughly might have side effects 
+    # rm -rf /tmp/* /var/tmp/*
+    rm -rf /tmp/npm-* /tmp/nd-config* /tmp/startup* /var/tmp/npm-*
     apt-get clean
 
     # and wipe out apt lists since not to be used RW for further tuning
