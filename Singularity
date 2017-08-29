@@ -47,8 +47,8 @@ MirrorURL: http://http.debian.net/debian/
 %setup
     set -eu
     echo "Setting up the environment"
-    apt-get update
-    apt-get -y install python 
+    #apt-get update
+    #apt-get -y install python 
 
     v=`git describe --tags --match sing-\* | sed -e 's,^sing-,,g'`; \
       python -c "import json, os; f='$SINGULARITY_ROOTFS/.singularity.d/labels.json'; j=json.load(open(f)) if os.path.exists(f) else {}; j['SINGULARITY_IMAGE_VERSION']='$v' or '0.0.unknown'; json.dump(j, open(f,'w'),indent=2)"
