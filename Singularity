@@ -87,5 +87,5 @@ MirrorURL: http://http.debian.net/debian/
 
     # Create some additional bind mount directories present on various compute boxes we have
     # access to, to ease deployment
-    mkdir -p /afs /inbox /ihome /opt /data /backup /apps /srv /scratch
-    chmod a+rX /afs /inbox /ihome /opt /data /backup /apps /srv /scratch
+    mkdir -p /afs /inbox /ihome /opt /data /backup /apps /srv /scratch /idata
+    chmod a+rX /afs /inbox /ihome /opt /data /backup /apps /srv /scratch /idata
