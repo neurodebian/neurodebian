@@ -1,0 +1,17 @@
+BootStrap: docker
+From: neurodebian:nd90
+
+# so if image is executed we just enter the environment
+%runscript
+    echo "OBS v.`cat /etc/obs.version` stable NeuroDebian"
+    /usr/bin/obs "$@"
+
+
+%post
+    echo "Configuring the environment"
+    apt-get update
+    apt-get -y install eatmydata
+    eatmydata apt-get -y install obs-studio
+    rm -rf /var/lib/apt/lists/*
+    apt-get clean
+    dpkg -l obs-studio | awk '/^ii/{print $3;}' > /etc/obs.version
