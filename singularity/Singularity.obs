@@ -3,7 +3,7 @@ From: neurodebian:nd90
 
 # so if image is executed we just enter the environment
 %runscript
-    echo "OBS v.`cat /etc/obs.version` stable NeuroDebian"
+    echo "OBS `cat /etc/obs.version` stable NeuroDebian"
     /usr/bin/obs "$@"
 
 
