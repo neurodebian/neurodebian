@@ -16,7 +16,9 @@ releases = {
     'lenny': 'Debian GNU/Linux 5.0 (lenny)',
     'squeeze': 'Debian GNU/Linux 6.0 (squeeze)',
     'wheezy': 'Debian GNU/Linux 7.0 (wheezy)',
-    'jessie': 'Debian testing (jessie)',
+    'jessie': 'Debian GNU/Linux 8.0 (jessie)',
+    'stretch': 'Debian GNU/Linux 9.0 (stretch)',
+    'buster': 'Debian testing (buster)',
     'sid': 'Debian unstable (sid)',
     'hardy': 'Ubuntu 08.04 LTS "Hardy Heron" (hardy)',
     'jaunty': 'Ubuntu 09.04 "Jaunty Jackalope" (jaunty)',
@@ -30,6 +32,13 @@ releases = {
     'raring': 'Ubuntu 13.04 "Raring Ringtail" (raring)',
     'saucy': 'Ubuntu 13.10 "Saucy Salamander" (saucy)',
     'trusty': 'Ubuntu 14.04 "Trusty Tahr" (trusty)',
+    'utopic': 'Ubuntu 14.10 "Utopic Unicorn" (utopic)',
+    'vivid': 'Ubuntu 15.04 "Vivid Vervet" (vivid)',
+    'wily': 'Ubuntu 15.10 "Wily Werewolf" (wily)',
+    'xenial': 'Ubuntu 16.04 "Xenial Xerus" (xenial)',
+    'yakkety': 'Ubuntu 16.10 "Yakkety Yak" (yakkety)',
+    'zesty': 'Ubuntu 17.04 "Zesty Zapus" (zesty)',
+    'artful': 'Ubuntu 17.10 "Artful Aardvark" (artful)',
 }
 
 
