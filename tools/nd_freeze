@@ -1,0 +1,167 @@
+#!/bin/bash
+#
+# Install access to the NeuroDebian snapshot repository that allows access
+# to old packages based on dates and version numbers.
+#
+# The date/time format sent to NeuroDebian to get the repo info is in the
+# format yyyymmddThhmmssz or yyymmdd. However, the script will handle and
+# reformat a number of date/time formats. Quotes are required if there is a
+# space between the date and time components:
+#
+#   yyyymmddThh:mm:ssZ
+#   yyyymmdd
+#   mm/dd/yyyy
+#   yyyy-mm-dd
+#   yyyymmddThh:mm
+#   "yyyy-mm-dd hh:mm:ss"
+#   "mm/dd/yy hh:mm:ss"
+#
+# Browse available snapshots here:
+# http://snapshot-neuro.debian.net:5002/archive/neurodebian/
+#
+# If there is no import at the exact time you specified you will get the latest
+# available timestamp which is before the time you specified.
+
+set -e
+APT_SOURCE_PATH='/etc/apt/sources.list.d/neurodebian-snapshots.sources.list'
+
+
+# Check for date command line argument
+if [ -z "$1" ]; then
+cat << EOT
+Script to enable a NeurDebian archived snapshot repository. Snapshot repositories
+provide previous releases of packages based on point-of-time archiving.
+
+See: http://snapshot-neuro.debian.net:5002/ 
+
+Synopsis
+--------
+
+  nd_freeze <date>
+
+  Valid date formats include:
+    yyyymmddThh:mm:ssZ
+    yyyymmdd
+    mm/dd/yyyy
+    yyyy-mm-dd
+    yyyymmddThh:mm
+    "yyyy-mm-dd hh:mm:ss"
+    "mm/dd/yy hh:mm:ss"
+
+EOT
+exit 1
+fi
+user_date=$1
+
+
+# Check for existence of required command line utilities
+programs='wget sed'
+for program in $programs
+do
+  if [ -z `which ${program}` ]; then
+    cat << EOT
+ERROR: ${program} not found on this system. It is required to configure the snapshot repos.
+
+To install:
+  sudo apt-get update
+  sudo apt-get install -y ${program}
+
+EOT
+    exit 1
+  fi
+done
+
+set -u
+
+# Format date provided by user
+IFS='/- TZ:' read -r -a chunks <<< "$user_date"
+# Prepend any single date or time values with a 0
+for (( i=0; i<${#chunks[@]}; i++ )); do
+  if [ ${#chunks[i]} -eq 1 ]; then
+    chunks[$i]="0${chunks[$i]}"
+  fi
+done
+# Pull the date from the parameter string
+url_date=''
+if [ ${#chunks[0]} -eq 8 ]; then
+  url_date=${chunks[0]}
+elif [ ${#chunks[0]} -eq 4 ]; then
+  url_date="${chunks[0]}${chunks[1]}${chunks[2]}"
+elif [ ${#chunks[0]} -eq 2 ]; then
+  url_date="${chunks[2]}${chunks[0]}${chunks[1]}"
+fi
+# Pull the time from the parameter string
+url_time=''
+if [ ${#chunks[@]} -ge 2 ] && [ ${#chunks[-1]} -eq 6 ]; then
+  url_time="${chunks[-1]}"
+elif ([ ${#chunks[0]} -gt 4 ] && [ ${#chunks[@]} -eq 3 ]) || [ ${#chunks[@]} -eq 5 ]; then
+  url_time="${chunks[-2]}${chunks[-1]}00"
+elif ([ ${#chunks[0]} -gt 4 ] && [ ${#chunks[@]} -eq 4 ]) || [ ${#chunks[@]} -eq 6 ]; then
+  url_time="${chunks[-3]}${chunks[-2]}${chunks[-1]}"
+fi
+
+if [ -z "$url_date" ]; then
+cat << EOT
+ERROR: Invalid date
+
+Valid date formats include:
+  yyyymmddThh:mm:ssZ
+  yyyymmdd
+  mm/dd/yyyy
+  yyyy-mm-dd
+  yyyymmddThh:mm
+  "yyyy-mm-dd hh:mm:ss"
+  "mm/dd/yy hh:mm:ss"
+EOT
+exit 1
+fi
+
+if [ -z "$url_time" ]; then
+  previous_timestamp=$url_date
+else
+  previous_timestamp="${url_date}T${url_time}Z"
+fi
+
+# Discover distribution codename
+source_line=`cat /etc/apt/sources.list | sed -n '/^deb.*main/p' | head -1`
+codename=`echo "$source_line" | sed -E 's/^.* ([a-z]+) main.*$/\1/'`
+if [ -z "$codename" ]; then
+  echo ERROR: Unable to determine your distribution codename
+  exit 1
+fi
+
+
+# Knock on snapshot's door. This is temporarily necessary until the production
+# version of the site is made available.
+wget -O /dev/null -q http://neuro.debian.net/_files/knock-snapshots
+
+
+# Add "next" snapshot to cover package updates made after the previous snapshot
+# but before the user provided date.
+next_line=`wget -qO- http://snapshot-neuro.debian.net:5002/archive/neurodebian/${previous_timestamp}/ | sed -n '/>next<\/a>/p'`
+next_timestamp=`echo "$next_line" | sed -E 's/^.*\/archive\/neurodebian\/([0-9TZ]+)\/">next.*$/\1/'`
+if [ -z "$next_timestamp" ]; then
+  echo ERROR: Unable to determine the next snapshot timestamp.
+  exit 1
+fi
+
+# Write sources information out to /etc/apt/sources.list.d directory.
+timestamps="$previous_timestamp $next_timestamp"
+for stamp in $timestamps
+do
+cat << EOT >> $APT_SOURCE_PATH
+# NeuroDebian
+deb http://snapshot-neuro.debian.net:5002/archive/neurodebian/${stamp}/ ${codename} main contrib non-free
+deb-src http://snapshot-neuro.debian.net:5002/archive/neurodebian/${stamp}/ ${codename} main contrib non-free
+# Main Debian repository
+deb     http://snapshot.debian.org/archive/debian/${stamp}/ ${codename} main
+deb-src http://snapshot.debian.org/archive/debian/${stamp}/ ${codename} main
+# Security updates
+deb     http://snapshot.debian.org/archive/debian-security/${stamp}/ ${codename}/updates main
+deb-src http://snapshot.debian.org/archive/debian-security/${stamp}/ ${codename}/updates main
+EOT
+done
+
+echo NeuroDebian snapshot repo source information saved to $APT_SOURCE_PATH
+echo Run \"sudo apt-get update\" to make the snapshot packages available.
+exit 0
