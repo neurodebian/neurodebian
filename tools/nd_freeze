@@ -55,7 +55,7 @@ user_date=$1
 
 
 # Check for existence of required command line utilities
-programs='wget sed'
+programs='curl sed'
 for program in $programs
 do
   if [ -z `which ${program}` ]; then
@@ -133,12 +133,12 @@ fi
 
 # Knock on snapshot's door. This is temporarily necessary until the production
 # version of the site is made available.
-wget -O /dev/null -q http://neuro.debian.net/_files/knock-snapshots
+curl -s http://neuro.debian.net/_files/knock-snapshots >| /dev/null
 
 
 # Add "next" snapshot to cover package updates made after the previous snapshot
 # but before the user provided date.
-next_line=`wget -qO- http://snapshot-neuro.debian.net:5002/archive/neurodebian/${previous_timestamp}/ | sed -n '/>next<\/a>/p'`
+next_line=`curl -s http://snapshot-neuro.debian.net:5002/archive/neurodebian/${previous_timestamp}/ | sed -n '/>next<\/a>/p'`
 next_timestamp=`echo "$next_line" | sed -E 's/^.*\/archive\/neurodebian\/([0-9TZ]+)\/">next.*$/\1/'`
 if [ -z "$next_timestamp" ]; then
   echo ERROR: Unable to determine the next snapshot timestamp.
