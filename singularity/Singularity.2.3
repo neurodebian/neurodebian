@@ -1,4 +1,4 @@
-# Copyright (c) 2017, Yaroslav O. Halchenko. All rights reserved. MIT license
+# Copyright (c) 2018, Yaroslav O. Halchenko. All rights reserved. MIT license
 #
 # The purpose of the Singularity environment is to provide a relatively full
 # suite of tools provided primarily by Debian/NeuroDebian for runnin various
@@ -17,6 +17,9 @@
 #
 # Changelog
 # ---------
+# 2.3
+#  - fresh versions of the packages
+#  - freezing using WiP nd_freeze to the yesterday's day
 # 2.2
 #  - fresh annex with patched git to avoid "Out of memory, getdelim failed" bug
 #  - added some tools useful for debugging (gdb)
@@ -46,6 +49,7 @@ MirrorURL: http://http.debian.net/debian/
 
 %setup
     set -eu
+    export | grep SING
     echo "Setting up the environment"
     #apt-get update
     #apt-get -y install python 
@@ -59,7 +63,11 @@ MirrorURL: http://http.debian.net/debian/
     sed -i -e 's, main$, main contrib non-free,g' /etc/apt/sources.list
     # For build-dep
     # sed -i -e 's,^deb \(.*\),deb \1\ndeb-src \1,g' /etc/apt/sources.list
-    apt-get update
+    apt-get update -q
+    apt-get -y install -q --no-install-recommends wget
+    wget -q -O /var/tmp/nd_freeze -nc https://raw.githubusercontent.com/neurodebian/neurodebian/2e1dab5cdf9021d59812d0fd00d4293e650c48e6/tools/nd_freeze
+    bash /var/tmp/nd_freeze 20180819T11:00:00Z
+    apt-get update -q
     apt-get -y install eatmydata 
     eatmydata apt-get -y install vim wget strace gdb valgrind time ncdu gnupg curl procps
     # eatmydata apt-get -y build-dep git
