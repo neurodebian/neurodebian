@@ -571,7 +571,7 @@ if [ "$ae_update" = "1" ]; then
     print_verbose 1 "Updating APT listings, might take a few minutes"
     if [ -z "$ae_dry_run" ]; then
         apt_logfile="$ae_tempdir/apt.log"
-        $ae_sudo apt-get update 1>"$apt_logfile" 2>&1 \
+        $ae_sudo apt-get update --no-allow-insecure-repositories 1>"$apt_logfile" 2>&1 \
             && rm -f "$apt_logfile" \
             || {
                  apt_log=$(cat "$apt_logfile")
@@ -585,7 +585,7 @@ if [ "$ae_update" = "1" ]; then
                  error 5 "Update failed with exit code $?."
                  }
     else
-        eval_dry apt-get update
+        eval_dry apt-get update --no-allow-insecure-repositories
     fi
 else
     print_verbose 1 "apt-get update  was not run. Please run to take an effect of changes"
