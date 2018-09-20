@@ -3,7 +3,7 @@
 # Install access to the NeuroDebian snapshot repository that allows access
 # to old packages based on dates and version numbers.
 #
-# The date/time format sent to NeuroDebian to get the repo info is in the
+# The UTC date/time format sent to NeuroDebian to get the repo info is in the
 # format yyyymmddThhmmssz or yyymmdd. However, the script will handle and
 # reformat a number of date/time formats. Quotes are required if there is a
 # space between the date and time components:
@@ -19,12 +19,17 @@
 # Browse available snapshots here:
 # http://snapshot-neuro.debian.net:5002/archive/neurodebian/
 #
-# If there is no import at the exact time you specified you will get the latest
-# available timestamp which is before the time you specified.
+# If there is no import at the exact time you specified you will get both the
+# previous and next available timestamped repos of the one you specified to make
+# available versions that may have been placed in the repo before your
+# selected time but after the previous snapshot.
 
 set -e
 APT_SOURCE_PATH='/etc/apt/sources.list.d/neurodebian-snapshots.sources.list'
 
+# Change into the directory of the script.
+cd "$(dirname "$0")"
+PATH=.:$PATH
 
 # Check for date command line argument
 if [ -z "$1" ]; then
@@ -52,24 +57,6 @@ EOT
 exit 1
 fi
 user_date=$1
-
-
-# Check for existence of required command line utilities
-programs='wget sed'
-for program in $programs
-do
-  if [ -z `which ${program}` ]; then
-    cat << EOT
-ERROR: ${program} not found on this system. It is required to configure the snapshot repos.
-
-To install:
-  sudo apt-get update
-  sudo apt-get install -y ${program}
-
-EOT
-    exit 1
-  fi
-done
 
 set -u
 
@@ -130,16 +117,13 @@ if [ -z "$codename" ]; then
   exit 1
 fi
 
-
 # Knock on snapshot's door. This is temporarily necessary until the production
 # version of the site is made available.
-wget -O /dev/null -q http://neuro.debian.net/_files/knock-snapshots
-
+nd_freeze_helper.pl neuro.debian.net 80 _files/knock-snapshots
 
 # Add "next" snapshot to cover package updates made after the previous snapshot
 # but before the user provided date.
-next_line=`wget -qO- http://snapshot-neuro.debian.net:5002/archive/neurodebian/${previous_timestamp}/ | sed -n '/>next<\/a>/p'`
-next_timestamp=`echo "$next_line" | sed -E 's/^.*\/archive\/neurodebian\/([0-9TZ]+)\/">next.*$/\1/'`
+next_timestamp=`nd_freeze_helper.pl snapshot-neuro.debian.net 5002 archive/neurodebian/${previous_timestamp}/`
 if [ -z "$next_timestamp" ]; then
   echo ERROR: Unable to determine the next snapshot timestamp.
   exit 1
@@ -153,6 +137,11 @@ cat << EOT >> $APT_SOURCE_PATH
 # NeuroDebian
 deb http://snapshot-neuro.debian.net:5002/archive/neurodebian/${stamp}/ ${codename} main contrib non-free
 deb-src http://snapshot-neuro.debian.net:5002/archive/neurodebian/${stamp}/ ${codename} main contrib non-free
+
+# NeuroDebian data
+deb http://snapshot-neuro.debian.net:5002/archive/neurodebian/${stamp}/ data main contrib non-free
+deb-src http://snapshot-neuro.debian.net:5002/archive/neurodebian/${stamp}/ data main contrib non-free
+
 # Main Debian repository
 deb     http://snapshot.debian.org/archive/debian/${stamp}/ ${codename} main
 deb-src http://snapshot.debian.org/archive/debian/${stamp}/ ${codename} main
@@ -162,6 +151,16 @@ deb-src http://snapshot.debian.org/archive/debian-security/${stamp}/ ${codename}
 EOT
 done
 
+# Refresh apt cache if possible
+username=`whoami`
+sudo_path=`which sudo`
+if [ "$username" == "root" ]; then
+	apt-get update
+elif [ ! -z "$sudo_path" ]; then
+	sudo apt-get update
+else
+	echo Run \"apt-get update\" to make the snapshot packages available.
+fi 
+
 echo NeuroDebian snapshot repo source information saved to $APT_SOURCE_PATH
-echo Run \"sudo apt-get update\" to make the snapshot packages available.
 exit 0
