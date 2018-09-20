@@ -153,6 +153,11 @@ cat << EOT >> $APT_SOURCE_PATH
 # NeuroDebian
 deb http://snapshot-neuro.debian.net:5002/archive/neurodebian/${stamp}/ ${codename} main contrib non-free
 deb-src http://snapshot-neuro.debian.net:5002/archive/neurodebian/${stamp}/ ${codename} main contrib non-free
+
+# NeuroDebian data
+deb http://snapshot-neuro.debian.net:5002/archive/neurodebian/${stamp}/ data main contrib non-free
+deb-src http://snapshot-neuro.debian.net:5002/archive/neurodebian/${stamp}/ data main contrib non-free
+
 # Main Debian repository
 deb     http://snapshot.debian.org/archive/debian/${stamp}/ ${codename} main
 deb-src http://snapshot.debian.org/archive/debian/${stamp}/ ${codename} main
