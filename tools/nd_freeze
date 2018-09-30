@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/perl
 #
 # Install access to the NeuroDebian snapshot repository that allows access
 # to old packages based on dates and version numbers.
@@ -24,20 +24,45 @@
 # available versions that may have been placed in the repo before your
 # selected time but after the previous snapshot.
 
-set -e
-APT_SOURCE_PATH='/etc/apt/sources.list.d/neurodebian-snapshots.sources.list'
+require 5.002;
+use Socket;
 
-# Change into the directory of the script.
-cd "$(dirname "$0")"
-PATH=.:$PATH
 
-# Check for date command line argument
-if [ -z "$1" ]; then
-cat << EOT
+sub get_www_content {
+    my ($url, $port) = @_;
+    if (!$port) {
+        $port = 80;
+    }
+    $url =~ /http:\/\/([^\/]+)(.*)/;
+    my $dest = $1;
+    my $file = $2;
+    my $proto = getprotobyname('tcp');
+    socket(F, PF_INET, SOCK_STREAM, $proto);
+    my $sin = sockaddr_in($port,inet_aton($dest));
+    connect(F, $sin) || return undef;
+    my $old_fh = select(F);
+    $| = 1;
+    select($old_fh);
+    print F "GET $file HTTP/1.0\n\n";
+    $/ = undef;
+    $contents = <F>;
+    close(F);
+    return $contents;
+}
+
+
+sub get_user_timestamp {
+    my ($user_date) = @_;
+
+    # Check for date command line argument
+    if (!$user_date) {
+        print '
 Script to enable a NeurDebian archived snapshot repository. Snapshot repositories
 provide previous releases of packages based on point-of-time archiving.
 
-See: http://snapshot-neuro.debian.net:5002/ 
+See:
+    https://snapshot.debian.org/
+    http://snapshot-neuro.debian.net:5002/
 
 Synopsis
 --------
@@ -53,42 +78,39 @@ Synopsis
     "yyyy-mm-dd hh:mm:ss"
     "mm/dd/yy hh:mm:ss"
 
-EOT
-exit 1
-fi
-user_date=$1
+';
+        exit 1;
+    }
 
-set -u
+    # Prepend any single date or time values with a 0
+    my @chunks = split /[\/\- TZ\:]/, $user_date;
+    for my $i (0 .. $#chunks) {
+        if (length $chunks[$i] == 1) {
+            $chunks[$i] = "0$chunks[$i]";
+        }
+    }
 
-# Format date provided by user
-IFS='/- TZ:' read -r -a chunks <<< "$user_date"
-# Prepend any single date or time values with a 0
-for (( i=0; i<${#chunks[@]}; i++ )); do
-  if [ ${#chunks[i]} -eq 1 ]; then
-    chunks[$i]="0${chunks[$i]}"
-  fi
-done
-# Pull the date from the parameter string
-url_date=''
-if [ ${#chunks[0]} -eq 8 ]; then
-  url_date=${chunks[0]}
-elif [ ${#chunks[0]} -eq 4 ]; then
-  url_date="${chunks[0]}${chunks[1]}${chunks[2]}"
-elif [ ${#chunks[0]} -eq 2 ]; then
-  url_date="${chunks[2]}${chunks[0]}${chunks[1]}"
-fi
-# Pull the time from the parameter string
-url_time=''
-if [ ${#chunks[@]} -ge 2 ] && [ ${#chunks[-1]} -eq 6 ]; then
-  url_time="${chunks[-1]}"
-elif ([ ${#chunks[0]} -gt 4 ] && [ ${#chunks[@]} -eq 3 ]) || [ ${#chunks[@]} -eq 5 ]; then
-  url_time="${chunks[-2]}${chunks[-1]}00"
-elif ([ ${#chunks[0]} -gt 4 ] && [ ${#chunks[@]} -eq 4 ]) || [ ${#chunks[@]} -eq 6 ]; then
-  url_time="${chunks[-3]}${chunks[-2]}${chunks[-1]}"
-fi
+    # Pull the date from the parameter string
+    my $url_date = '';
+    if (length $chunks[0] == 8) {
+        $url_date = $chunks[0];
+    } elsif (length $chunks[0] == 4) {
+        $url_date = "$chunks[0]$chunks[1]$chunks[2]";
+    } elsif (length $chunks[0] == 2) {
+        $url_date = "$chunks[2]$chunks[0]$chunks[1]";
+    }
+    # Pull the time from the parameter string
+    my $url_time = '';
+    if ((scalar @chunks >= 2) && (length $chunks[-1] == 6)) {
+        $url_time = "$chunks[-1]";
+    } elsif ((length $chunks[0] > 4 && scalar @chunks == 3) || scalar @chunks == 5) {
+        $url_time = "$chunks[-2]$chunks[-1]00";
+    } elsif ((length $chunks[0] > 4 && scalar @chunks == 4) || scalar @chunks == 6) {
+        $url_time = "$chunks[-3]$chunks[-2]$chunks[-1]";
+    }
 
-if [ -z "$url_date" ]; then
-cat << EOT
+    if (!$url_date) {
+        print '
 ERROR: Invalid date
 
 Valid date formats include:
@@ -99,68 +121,161 @@ Valid date formats include:
   yyyymmddThh:mm
   "yyyy-mm-dd hh:mm:ss"
   "mm/dd/yy hh:mm:ss"
-EOT
-exit 1
-fi
+';
+        exit 1;
+    }
 
-if [ -z "$url_time" ]; then
-  previous_timestamp=$url_date
-else
-  previous_timestamp="${url_date}T${url_time}Z"
-fi
+    $user_timestamp='';
+    if ($url_time) {
+        $user_timestamp = "${url_date}T${url_time}Z";
+    } else {
+        $user_timestamp = "${url_date}T000000Z";
+    }
 
-# Discover distribution codename
-source_line=`cat /etc/apt/sources.list | sed -n '/^deb.*main/p' | head -1`
-codename=`echo "$source_line" | sed -E 's/^.* ([a-z]+) main.*$/\1/'`
-if [ -z "$codename" ]; then
-  echo ERROR: Unable to determine your distribution codename
-  exit 1
-fi
+    return $user_timestamp;
+}
+
+
+sub get_sources {
+    my %sources;
+    my @lines = split /\n/, qx/apt-cache policy/;
+    for my $i (0 .. $#lines) {
+        if ($lines[$i] =~ /(http\S+\/)([\w\-]+)\/\s+(\S+)/) {
+            my $url = $1;
+            my $repo = $2;
+            $3 =~ /([\w-\/]+)\/([\w\-]+)/;
+            my $archive = $1;
+            my $type = $2;
+            $lines[$i+1] =~ /o=(\w+),/;
+            my $domain = $1;
+            $repo = 'neurodebian' if ($domain eq 'NeuroDebian');
+            if ($domain ne "Ubuntu") {
+                my $key = "$domain|$repo|$archive";
+                if (exists $sources{$key}) {
+                    $sources{$key}{type} .= " $type";
+                } else {
+                    %{$sources{$key}} = (
+                        domain => $domain,
+                        url => $url,
+                        repo => $repo,
+                        archive => $archive,
+                        type => $type,
+                    );
+                }
+            }
+        }
+    }
+    return %sources;
+}
+
+
+sub get_next_timestamp {
+    my ($user_timestamp, $source_ref) = @_;
+    my %source = %$source_ref;
+
+    if ($source{domain} eq 'Debian') {
+        $url = "http://snapshot.debian.org/archive/${source{repo}}/${user_timestamp}/";
+        $contents = get_www_content($url, 80);
+    } else {
+        $url = "http://snapshot-neuro.debian.net/archive/${source{repo}}/${user_timestamp}/";
+        $contents = get_www_content($url, 5002);
+        if ($contents =~ /The resource has been moved to http:\/\/[0-9\.]+:5002\/archive\/${source{repo}}\/(\d{8}T\d{6}Z\/)/) {
+            $contents = get_www_content("http://snapshot-neuro.debian.net/archive/${source{repo}}/${1}", 5002);
+        }
+    }
+
+    $contents =~ /\/archive\/${source{repo}}\/([0-9TZ]+)\/">next</;
+
+    return $1;
+}
+
+
+sub write_snapshot_sources {
+    my ($user_timestamp, %sources) = @_;
+
+    open my $fp, '>', '/etc/apt/sources.list.d/snapshots.sources.list';
+
+    for my $key (keys %sources) {
+        my $next_timestamp = get_next_timestamp($user_timestamp, $sources{$key});
+        if ($sources{$key}{domain} eq 'Debian') {
+            print $fp "deb http://snapshot.debian.org/archive/${sources{$key}{repo}}/$user_timestamp/ ${sources{$key}{archive}} ${sources{$key}{type}}\n";
+            if ($next_timestamp) {
+                print $fp "deb http://snapshot.debian.org/archive/${sources{$key}{repo}}/$next_timestamp/ ${sources{$key}{archive}} ${sources{$key}{type}}\n";
+            }
+        } else {
+            print $fp "deb http://snapshot-neuro.debian.net:5002/archive/${sources{$key}{repo}}/$user_timestamp/ ${sources{$key}{archive}} ${sources{$key}{type}}\n";
+            print $fp "deb http://snapshot-neuro.debian.net:5002/archive/${sources{$key}{repo}}/$next_timestamp/ ${sources{$key}{archive}} ${sources{$key}{type}}\n";
+        }
+    }
+
+    close $fp;
+}
+
+
+sub disable_lines {
+    my ($out_file, $in_file, %sources) = @_;
+
+    qx/cp $out_file $in_file/ if (!-e $in_file);
+
+    open my $in, '<', $in_file
+        or die "Could not open file '${in_file}' $!";
+    open my $out, '>', $out_file
+        or die "Could not open file '${out_file}' $!";
+    my @lines = split /\n/, <$in>;
+    foreach (@lines) {
+        if (/^#/) {
+            print $out "$_\n";
+            next;
+        }
+        my $found = 0;
+        for my $key (keys %sources) {
+            $_ =~ /.*\/([^\/]+)$/;
+            my $file_line = join ' ', sort split /\s+/, $1;
+            $sources{$key}{archive} = 'debian' if $sources{$key}{archive} eq 'neurodebian';
+            my $source_line = join ' ', sort split /\s+/, "$sources{$key}{repo} $sources{$key}{archive} $sources{$key}{type}";
+            if ($file_line eq $source_line) {
+                $found = 1;
+                last;
+            }
+        }
+        if ($found) {
+            print $out "# $_\n";
+        } else {
+            print $out "$_\n";
+        }
+    }
+    close $in;
+    close $out;
+}
+
+
+sub disable_sources {
+    my (%sources) = @_;
+
+    # Disable Debain sources.
+    disable_lines('/etc/apt/sources.list', '/etc/apt/sources.list.bak', %sources);
+
+    # Disable NeuroDebain sources.
+    if (-e '/etc/apt/sources.list.d/neurodebian.sources.list') {
+        disable_lines('/etc/apt/sources.list.d/neurodebian.sources.list',
+            '/etc/apt/sources.list.d/neurodebian.sources.list.bak', %sources);
+    }
+
+}
+
+
+##### Program main
+
+my $user_timestamp = get_user_timestamp($ARGV[0]);
+qx/apt-get update/;
+my %sources = get_sources();
 
 # Knock on snapshot's door. This is temporarily necessary until the production
 # version of the site is made available.
-nd_freeze_helper.pl neuro.debian.net 80 _files/knock-snapshots
+get_www_content('http://neuro.debian.net/_files/knock-snapshots');
 
-# Add "next" snapshot to cover package updates made after the previous snapshot
-# but before the user provided date.
-next_timestamp=`nd_freeze_helper.pl snapshot-neuro.debian.net 5002 archive/neurodebian/${previous_timestamp}/`
-if [ -z "$next_timestamp" ]; then
-  echo ERROR: Unable to determine the next snapshot timestamp.
-  exit 1
-fi
+write_snapshot_sources($user_timestamp, %sources);
+disable_sources(%sources);
+qx/apt-get update/;
 
-# Write sources information out to /etc/apt/sources.list.d directory.
-timestamps="$previous_timestamp $next_timestamp"
-for stamp in $timestamps
-do
-cat << EOT >> $APT_SOURCE_PATH
-# NeuroDebian
-deb http://snapshot-neuro.debian.net:5002/archive/neurodebian/${stamp}/ ${codename} main contrib non-free
-deb-src http://snapshot-neuro.debian.net:5002/archive/neurodebian/${stamp}/ ${codename} main contrib non-free
-
-# NeuroDebian data
-deb http://snapshot-neuro.debian.net:5002/archive/neurodebian/${stamp}/ data main contrib non-free
-deb-src http://snapshot-neuro.debian.net:5002/archive/neurodebian/${stamp}/ data main contrib non-free
-
-# Main Debian repository
-deb     http://snapshot.debian.org/archive/debian/${stamp}/ ${codename} main
-deb-src http://snapshot.debian.org/archive/debian/${stamp}/ ${codename} main
-# Security updates
-deb     http://snapshot.debian.org/archive/debian-security/${stamp}/ ${codename}/updates main
-deb-src http://snapshot.debian.org/archive/debian-security/${stamp}/ ${codename}/updates main
-EOT
-done
-
-# Refresh apt cache if possible
-username=`whoami`
-sudo_path=`which sudo`
-if [ "$username" == "root" ]; then
-	apt-get update
-elif [ ! -z "$sudo_path" ]; then
-	sudo apt-get update
-else
-	echo Run \"apt-get update\" to make the snapshot packages available.
-fi 
-
-echo NeuroDebian snapshot repo source information saved to $APT_SOURCE_PATH
 exit 0
