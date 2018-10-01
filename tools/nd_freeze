@@ -191,9 +191,9 @@ sub get_next_timestamp {
 
 
 sub write_snapshot_sources {
-    my ($user_timestamp, %sources) = @_;
+    my ($snapshots_sources_file, $user_timestamp, %sources) = @_;
 
-    open my $fp, '>', '/etc/apt/sources.list.d/snapshots.sources.list';
+    open my $fp, '>', $snapshots_sources_file;
 
     for my $key (keys %sources) {
         my $next_timestamp = get_next_timestamp($user_timestamp, $sources{$key});
@@ -213,14 +213,14 @@ sub write_snapshot_sources {
 
 
 sub disable_lines {
-    my ($out_file, $in_file, %sources) = @_;
+    my ($sources_file, %sources) = @_;
 
-    qx/cp $out_file $in_file/ if (!-e $in_file);
+    qx/cp $sources_file ${sources_file}.original/ if (!-e "${sources_file}.original");
 
-    open my $in, '<', $in_file
-        or die "Could not open file '${in_file}' $!";
-    open my $out, '>', $out_file
-        or die "Could not open file '${out_file}' $!";
+    open my $in, '<', "${sources_file}.original"
+        or die "Could not open file '${sources_file}.original' $!";
+    open my $out, '>', $sources_file
+        or die "Could not open file '$sources_file' $!";
     my @lines = split /\n/, <$in>;
     foreach (@lines) {
         if (/^#/) {
@@ -229,9 +229,9 @@ sub disable_lines {
         }
         my $found = 0;
         for my $key (keys %sources) {
-            $_ =~ /.*\/([^\/]+)$/;
+            $_ =~ /http:\/\/[^\/]+\/(.*)$/;
             my $file_line = join ' ', sort split /\s+/, $1;
-            $sources{$key}{archive} = 'debian' if $sources{$key}{archive} eq 'neurodebian';
+            $sources{$key}{repo} = 'debian' if $sources{$key}{repo} eq 'neurodebian';
             my $source_line = join ' ', sort split /\s+/, "$sources{$key}{repo} $sources{$key}{archive} $sources{$key}{type}";
             if ($file_line eq $source_line) {
                 $found = 1;
@@ -249,33 +249,29 @@ sub disable_lines {
 }
 
 
-sub disable_sources {
-    my (%sources) = @_;
-
-    # Disable Debain sources.
-    disable_lines('/etc/apt/sources.list', '/etc/apt/sources.list.bak', %sources);
-
-    # Disable NeuroDebain sources.
-    if (-e '/etc/apt/sources.list.d/neurodebian.sources.list') {
-        disable_lines('/etc/apt/sources.list.d/neurodebian.sources.list',
-            '/etc/apt/sources.list.d/neurodebian.sources.list.bak', %sources);
-    }
-
-}
-
-
 ##### Program main
 
 my $user_timestamp = get_user_timestamp($ARGV[0]);
+my $snapshots_sources_file = '/etc/apt/sources.list.d/snapshots.sources.list';
+my @sources_files = ('/etc/apt/sources.list', '/etc/apt/sources.list.d/neurodebian.sources.list');
+
+# Restore original sources files and apt-cache if this is a rerun of the command.
+qx/rm $snapshots_sources_file/ if (-e $snapshots_sources_file);
+foreach my $sources_file (@sources_files) {
+    qx/cp ${sources_file}.original $sources_file/ if (-e "${sources_file}.original");
+}
 qx/apt-get update/;
+
 my %sources = get_sources();
 
 # Knock on snapshot's door. This is temporarily necessary until the production
 # version of the site is made available.
 get_www_content('http://neuro.debian.net/_files/knock-snapshots');
 
-write_snapshot_sources($user_timestamp, %sources);
-disable_sources(%sources);
+write_snapshot_sources($snapshots_sources_file, $user_timestamp, %sources);
+foreach my $sources_file (@sources_files) {
+    disable_lines($sources_file, %sources) if (-e $sources_file);
+}
 qx/apt-get update/;
 
 exit 0
