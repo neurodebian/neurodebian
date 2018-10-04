@@ -63,6 +63,17 @@ sub get_www_content {
 }
 
 
+# Function to run apt-get update
+sub run_apt_get_update {
+    print "Refreshing apt cache ...\n";
+    qx!apt-get --allow-original-apt-sources update 2> /dev/null!;
+    my $exitcode = $? >> 8;
+    if ($exitcode > 0) {
+        qx/apt-get update/;
+    }
+}
+
+
 # Function validates and then returns the user provided freeze date in the
 # format yyyymmddThh:mm:ssZ.
 # 
@@ -168,8 +179,7 @@ sub get_sources {
     my @lines = split /\n/, qx/apt-cache policy/;
     # Check to see if we need to update the cache before checking the policy.
     if ($#lines < 5) {
-        print "Refreshing apt cache ...\n";
-        qx/apt-get update/;
+        run_apt_get_update();
         @lines = split /\n/, qx/apt-cache policy/;
     }
     print "Discovering installed repository sources ...\n";
@@ -185,7 +195,7 @@ sub get_sources {
             $repo = 'neurodebian' if ($domain eq 'NeuroDebian');
             # Skip Ubuntu repos because there are not snapshots. Skip security
             # and updates repos because they expire after a week and are inaccessible.
-            if ($domain ne "Ubuntu" and !($repo =~ /security/) and !($archive =~ /updates/)) {
+            if ($domain ne "Ubuntu") {
                 my $key = "$domain|$repo|$archive";
                 if (exists $sources{$key}) {
                     $sources{$key}{type} .= " $type";
@@ -295,6 +305,11 @@ sub disable_lines {
 
 ##### Program main
 
+# Set apt setting to allow "outdated" repositories.
+if (! -e '/etc/apt/apt.conf.d/10no--check-valid-until') {
+    qx!echo 'Acquire::Check-Valid-Until "0";' > /etc/apt/apt.conf.d/10no--check-valid-until!;
+}
+
 my $user_timestamp = get_user_timestamp($ARGV[0]);
 my $snapshots_sources_file = '/etc/apt/sources.list.d/snapshots.sources.list';
 my @sources_files = ('/etc/apt/sources.list', '/etc/apt/sources.list.d/neurodebian.sources.list');
@@ -305,8 +320,7 @@ foreach my $sources_file (@sources_files) {
 }
 if (-e $snapshots_sources_file) {
     qx/rm $snapshots_sources_file/;
-    print "Refreshing apt cache ...\n";
-    qx/apt-get update/;
+    run_apt_get_update();
 }
 
 my %sources = get_sources();
@@ -314,7 +328,6 @@ write_snapshot_sources($snapshots_sources_file, $user_timestamp, %sources);
 foreach my $sources_file (@sources_files) {
     disable_lines($sources_file, %sources) if (-e $sources_file);
 }
-print "Refreshing apt cache ...\n";
-qx/apt-get update/;
+run_apt_get_update();
 
 exit 0
