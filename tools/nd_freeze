@@ -184,7 +184,7 @@ sub get_sources {
     }
     print "Discovering installed repository sources ...\n";
     for my $i (0 .. $#lines) {
-        if ($lines[$i] =~ /(http\S+\/)([\w\-]+)\/\s+(\S+)/) {
+        if ($lines[$i] =~ /(http\S+\/)([\w\-]+)\/?\s+(\S+)/) {
             my $url = $1;
             my $repo = $2;
             $3 =~ /([\w-\/]+)\/([\w\-]+)/;
@@ -286,6 +286,7 @@ sub disable_lines {
             $_ =~ /http:\/\/[^\/]+\/(.*)$/;
             my $file_line = join ' ', sort split /\s+/, $1;
             $sources{$key}{repo} = 'debian' if $sources{$key}{repo} eq 'neurodebian';
+            $sources{$key}{type} .= ' contrib' if ($key eq 'NeuroDebian|neurodebian|data' and !($sources{$key}{type} =~ /contrib/));
             my $source_line = join ' ', sort split /\s+/, "$sources{$key}{repo} $sources{$key}{archive} $sources{$key}{type}";
             if ($file_line eq $source_line) {
                 $found = 1;
