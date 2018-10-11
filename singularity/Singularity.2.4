@@ -17,9 +17,10 @@
 #
 # Changelog
 # ---------
-# 2.3
+# 2.4
 #  - fresh versions of the packages
-#  - freezing using WiP nd_freeze to the yesterday's day
+#  - freezing using WiP nd_freeze to the fixed day
+#  - bids-validator 0.27.8
 # 2.2
 #  - fresh annex with patched git to avoid "Out of memory, getdelim failed" bug
 #  - added some tools useful for debugging (gdb)
@@ -63,23 +64,39 @@ MirrorURL: http://http.debian.net/debian/
     sed -i -e 's, main$, main contrib non-free,g' /etc/apt/sources.list
     # For build-dep
     # sed -i -e 's,^deb \(.*\),deb \1\ndeb-src \1,g' /etc/apt/sources.list
-    apt-get update -q
+    apt-get update -q --no-allow-insecure-repositories
     apt-get -y install -q --no-install-recommends wget
-    wget -q -O /var/tmp/nd_freeze -nc https://raw.githubusercontent.com/neurodebian/neurodebian/2e1dab5cdf9021d59812d0fd00d4293e650c48e6/tools/nd_freeze
-    bash /var/tmp/nd_freeze 20180819T11:00:00Z
-    apt-get update -q
-    apt-get -y install eatmydata 
-    eatmydata apt-get -y install vim wget strace gdb valgrind time ncdu gnupg curl procps
+    TMPBINDIR=/var/tmp
+    mkdir -p $TMPBINDIR
     # eatmydata apt-get -y build-dep git
-    wget -q -O/tmp/nd-configurerepo https://raw.githubusercontent.com/neurodebian/neurodebian/4d26c8f30433145009aa3f74516da12f560a5a13/tools/nd-configurerepo
-    bash /tmp/nd-configurerepo
+    wget --no-check-certificate  -O $TMPBINDIR/nd-configurerepo -nc \
+      https://raw.githubusercontent.com/neurodebian/neurodebian/80f9bd9f59dde8538458fda7286e1fa28a37f6c7/tools/nd-configurerepo
+    bash $TMPBINDIR/nd-configurerepo --mirror=default --install 
     chmod a+r -R /etc/apt
+    # Makes sense only now after we enabled neurodebian
+    wget --no-check-certificate -O $TMPBINDIR/nd_freeze -nc \
+      https://raw.githubusercontent.com/neurodebian/neurodebian/538c3f646da21e5d1885ba77ae95ab260bc36f2f/tools/nd_freeze
+    bash $TMPBINDIR/nd_freeze 20180819T17:00:00Z
+    # TODO: migrate into nd_freeze as an option
+    # Needed for debian-security APT
+    echo 'Acquire::Check-Valid-Until "0";' > /etc/apt/apt.conf.d/10no--check-valid-until
+    # TODO: should be done in nd_freeze -- remove original sources
+    rm -f /etc/apt/sources.list /etc/apt/sources.list.d/neurodebian.sources.list
+    apt-get update --no-allow-insecure-repositories
+    exit 0
+    # TODO: add a check that no non-frozen sources present
+ 
+    # Main installations
+    apt-get -y install eatmydata 
+    eatmydata apt-get -y install vim strace gdb valgrind time ncdu gnupg curl procps
     eatmydata apt-get -y install git git-annex-standalone datalad python-nipype virtualenv dcm2niix python-dcmstack python-configparser python-funcsigs python-pytest connectome-workbench python-mvpa2 python-nilearn fsl-core fsl-atlases fsl-first-data mricron afni fsleyes ants convert3d heudiconv
+
+    # TODO: mrtrix3
 
     # for bids-validator
     curl -sL https://deb.nodesource.com/setup_6.x | bash - && \
        eatmydata apt-get install -y nodejs
-    npm install -g bids-validator@0.22.0
+    npm install -g bids-validator@0.27.8
     chmod a+rX -R /usr/lib/node_modules/
 
     chmod a+rX -R /etc/apt/sources.list.d
