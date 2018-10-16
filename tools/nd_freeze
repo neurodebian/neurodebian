@@ -3,6 +3,8 @@
 # Install access to the NeuroDebian snapshot repository that allows access
 # to old packages based on dates and version numbers.
 #
+# Usage: nd_freeze [--keep-original-apt-sources] date
+#
 # The UTC date/time format sent to NeuroDebian to get the repo info is in the
 # format yyyymmddThhmmssz or yyymmdd. However, the script will handle and
 # reformat a number of date/time formats. Quotes are required if there is a
@@ -23,24 +25,37 @@
 # previous and next available timestamped repos of the one you specified to make
 # available versions that may have been placed in the repo before your
 # selected time but after the previous snapshot.
+#
+# Setting the command line switch, --keep-original-apt-sources will leave
+# the original, non-snapshot source active so that up-to-date packages can
+# still be installed.
 
 require 5.002;
 use Socket;
 
 
-# Function returns the page contents of the provided URL. We use the Sockets
-# library because it has a high probability of being provided in the perl
-# installation for the environment and don't have to download any packages.
+# Function prints information to the screen.
 # 
 # Parameters
 # ----------
-# $url
-#     string : URL of web page of interest
+# $output
+#     string : Text to print to the screen.
 # 
+sub info {
+    my ($output) = @_;
+    print "I: ${output}\n";
+}
+
+# Function gets the page contents of the provided URL.
+#
+# Parameters
+# ----------
+# $url
+#     string : URL of page to retrieve
+#
 # Returns
 # -------
-# string : HTML page contents of URL
-# 
+# string : Contents of URL page 
 sub get_www_content {
     my ($url) = @_;
     $url =~ /http:\/\/([^\/:]+):?(\d+)*(.*)/;
@@ -65,12 +80,8 @@ sub get_www_content {
 
 # Function to run apt-get update
 sub run_apt_get_update {
-    print "Refreshing apt cache ...\n";
-    qx!apt-get --allow-original-apt-sources update 2> /dev/null!;
-    my $exitcode = $? >> 8;
-    if ($exitcode > 0) {
-        qx/apt-get update/;
-    }
+    info("Refreshing apt cache ...");
+    qx/apt-get update --no-allow-insecure-repositories/;
 }
 
 
@@ -86,7 +97,7 @@ sub get_user_timestamp {
 
     # Check for date command line argument
     if (!$user_date) {
-        print '
+        info '
 Script to enable a NeurDebian archived snapshot repository. Snapshot repositories
 provide previous releases of packages based on point-of-time archiving.
 
@@ -140,7 +151,7 @@ Synopsis
     }
 
     if (!$url_date) {
-        print '
+        info '
 ERROR: Invalid date
 
 Valid date formats include:
@@ -182,7 +193,7 @@ sub get_sources {
         run_apt_get_update();
         @lines = split /\n/, qx/apt-cache policy/;
     }
-    print "Discovering installed repository sources ...\n";
+    info "Discovering installed repository sources ...";
     for my $i (0 .. $#lines) {
         if ($lines[$i] =~ /(http\S+\/)([\w\-]+)\/?\s+(\S+)/) {
             my $url = $1;
@@ -193,9 +204,7 @@ sub get_sources {
             $lines[$i+1] =~ /o=(\w+),/;
             my $domain = $1;
             $repo = 'neurodebian' if ($domain eq 'NeuroDebian');
-            # Skip Ubuntu repos because there are not snapshots. Skip security
-            # and updates repos because they expire after a week and are inaccessible.
-            if ($domain ne "Ubuntu") {
+            if ($domain ne "Ubuntu") { # Skip Ubuntu repos because there are not snapshots.
                 my $key = "$domain|$repo|$archive";
                 if (exists $sources{$key}) {
                     $sources{$key}{type} .= " $type";
@@ -229,8 +238,9 @@ sub get_sources {
 #     hash : The sources retrieved from apt-cache policy that need to be written to the sources file.
 sub write_snapshot_sources {
     my ($snapshots_sources_file, $user_timestamp, %sources) = @_;
+    my $have_knocked = 0;
+    my $found_count = 0;
     open my $fp, '>', $snapshots_sources_file;
-    $have_knocked = 0;
     for my $key (keys %sources) {
         if ($sources{$key}{domain} eq 'NeuroDebian' and !$have_knocked) {
             # Knock on snapshot's door. This is temporarily necessary until the production
@@ -241,15 +251,29 @@ sub write_snapshot_sources {
         my $domain = 'snapshot-neuro.debian.net:5002';
         $domain = 'snapshot.debian.org' if ($sources{$key}{domain} eq 'Debian');
         $contents = get_www_content("http://${domain}/archive/${sources{$key}{repo}}/${user_timestamp}/");
+        # Handle 404 redirect page not found.
+        if ($contents =~ /HTTP\/1.1 404 Not Found/) {
+            info "Can't find snapshot for http://${domain}/archive/${sources{$key}{repo}}/${user_timestamp}";
+            next;
+        }
         # Handle 301 redirect from snapshot server if we get one.
         if ($contents =~ /The resource has been moved to http:\/\/[\S\-]+\/archive\/${sources{$key}{repo}}\/(\d{8}T\d{6}Z\/)/) {
             $contents = get_www_content("http://${domain}/archive/${sources{$key}{repo}}/${1}/");
         }
         # Scrape next timestamp from HTML returned from snapshot server.
         $contents =~ /\/archive\/${sources{$key}{repo}}\/([0-9TZ]+)\/">next</;
-        print $fp "deb http://${domain}/archive/${sources{$key}{repo}}/${1}/ ${sources{$key}{archive}} ${sources{$key}{type}}\n";
+        my $next_timestamp = $1;
+        $next_timestamp =~ tr/\///d;
+        if ($user_timestamp gt $next_timestamp) {
+            # Notify user that they have requested a date beyond the most recent snapshot.
+            info "User provided time (${user_timestamp}) later than latest snapshot available (${next_timestamp}).";
+            next;
+        }
+        print $fp "deb http://${domain}/archive/${sources{$key}{repo}}/${next_timestamp}/ ${sources{$key}{archive}} ${sources{$key}{type}}\n";
+        $found_count += 1;
     }
     close $fp;
+    return $found_count;
 }
 
 
@@ -306,12 +330,28 @@ sub disable_lines {
 
 ##### Program main
 
+# Parse command line options
+my $USER_DATE = "";
+my $KEEP_SOURCES = 0;
+if (scalar(@ARGV) == 1) {
+    $USER_DATE=$ARGV[0];
+}
+if (scalar(@ARGV) == 2 && $ARGV[0] eq "--keep-original-apt-sources") {
+    $USER_DATE = $ARGV[1];
+    $KEEP_SOURCES = 1;
+}
+if (!$USER_DATE) {
+    print "Invalid command parameters\n";
+    print "USAGE: nd_freeze [--keep-original-apt-sources] date\n";
+    exit 1;
+}
+
 # Set apt setting to allow "outdated" repositories.
 if (! -e '/etc/apt/apt.conf.d/10no--check-valid-until') {
     qx!echo 'Acquire::Check-Valid-Until "0";' > /etc/apt/apt.conf.d/10no--check-valid-until!;
 }
 
-my $user_timestamp = get_user_timestamp($ARGV[0]);
+my $user_timestamp = get_user_timestamp($USER_DATE);
 my $snapshots_sources_file = '/etc/apt/sources.list.d/snapshots.sources.list';
 my @sources_files = ('/etc/apt/sources.list', '/etc/apt/sources.list.d/neurodebian.sources.list');
 
@@ -325,10 +365,16 @@ if (-e $snapshots_sources_file) {
 }
 
 my %sources = get_sources();
-write_snapshot_sources($snapshots_sources_file, $user_timestamp, %sources);
-foreach my $sources_file (@sources_files) {
-    disable_lines($sources_file, %sources) if (-e $sources_file);
+if ((keys %sources) > 0) {
+    my $found_count = write_snapshot_sources($snapshots_sources_file, $user_timestamp, %sources);
+    if ($found_count > 0 and !$KEEP_SOURCES) {
+        foreach my $sources_file (@sources_files) {
+            disable_lines($sources_file, %sources) if (-e $sources_file);
+        }
+        run_apt_get_update();
+    }
+} else {
+    info "No valid sources found to get snapshots.";
 }
-run_apt_get_update();
 
 exit 0
