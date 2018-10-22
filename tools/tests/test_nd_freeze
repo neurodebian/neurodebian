@@ -88,7 +88,13 @@ function assert_line_in_file {
     if grep -Fq$match_param "$line" "$TMP_DIR/$file"; then
         echo "SUCCESS: line found"
     else
-        echo "FAIL: File $file did not contain: $line"
+        echo -n "FAIL: File $file did not contain: $line. "
+        if [ -e "$file" ]; then
+            echo "Full file content:"
+            cat "$file"
+        else
+            echo "File does not exist."
+        fi
         test_teardown
         exit 1
     fi
