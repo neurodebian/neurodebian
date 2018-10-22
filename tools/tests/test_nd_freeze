@@ -3,6 +3,7 @@
 # Temporary scratch directory to save generated files.
 TMP_DIR="tmp_$((1 + RANDOM % 10000))"
 
+echo "INFO: TMP_DIR=$TMP_DIR"
 # Run common commands for each test at start of tests
 #
 # Parameters
