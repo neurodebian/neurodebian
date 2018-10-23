@@ -99,7 +99,7 @@ function assert_line_in_file {
 
 echo "[ Test basic operation ]"
 test_setup "neurodebian" "jessie" "7/27/2017"
-assert_line_in_file "neurodebian.sources.list" "FOO# deb http://neuro.debian.net/debian jessie main"
+assert_line_in_file "neurodebian.sources.list" "# deb http://neuro.debian.net/debian jessie main"
 assert_line_in_file "neurodebian.sources.list" "# deb http://neuro.debian.net/debian data main"
 assert_line_in_file "neurodebian.sources.list.original" "deb http://neuro.debian.net/debian jessie main"
 assert_line_in_file "neurodebian.sources.list.original" "deb http://neuro.debian.net/debian data main"
