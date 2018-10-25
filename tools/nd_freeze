@@ -199,16 +199,18 @@ sub get_sources {
     }
     info "Discovering installed repository sources ...";
     for my $i (0 .. $#lines) {
-        if ($lines[$i] =~ /(http\S+\/)([\w\-]+)\/?\s+(\S+)/) {
+        if ($lines[$i] =~ /(http\S+)\s+([\w-\/]+)\/([\w\-]+)/) {
             my $url = $1;
-            my $repo = $2;
-            $3 =~ /([\w-\/]+)\/([\w\-]+)/;
-            my $archive = $1;
-            my $type = $2;
+            chop($url) if (substr($url, -1) eq '/');
+            my $repo = '';
+            my $archive = $2;
+            my $type = $3;
             $lines[$i+1] =~ /o=(\w+),/;
             my $domain = $1;
+            $repo = 'debian' if ($domain eq 'Debian');
+            $repo = 'debian-security' if ($domain eq 'Debian' && $url =~ 'security');
             $repo = 'neurodebian' if ($domain eq 'NeuroDebian');
-            if ($domain ne "Ubuntu") { # Skip Ubuntu repos because there are not snapshots.
+            if ($domain ne "Ubuntu") { # Skip Ubuntu repos because there are no snapshots available.
                 my $key = "$domain|$repo|$archive";
                 if (exists $sources{$key}) {
                     $sources{$key}{type} .= " $type";
@@ -218,6 +220,7 @@ sub get_sources {
                         repo => $repo,
                         archive => $archive,
                         type => $type,
+                        url => $url
                     );
                 }
             }
@@ -309,12 +312,11 @@ sub disable_lines {
         }
         my $found = 0;
         # Loop through the sources from apt-cache policy for each line in the
-        # sources file to determine if it is one we need to comment out. 
+        # sources file to determine if it is one we need to comment out.
         for my $key (keys %sources) {
-            $_ =~ /http:\/\/[^\/]+\/(.*)$/;
-            my $file_line = join ' ', sort split /\s+/, $1;
-            $sources{$key}{repo} = 'debian' if $sources{$key}{repo} eq 'neurodebian';
-            my $source_line = join ' ', sort split /\s+/, "$sources{$key}{repo} $sources{$key}{archive} $sources{$key}{type}";
+            $_ =~ /(http:\S+)(.*)$/;
+            my $file_line = $1 . join ' ', sort split /\s+/, $2;
+            my $source_line = $sources{$key}{url} . ' ' . join ' ', sort split /\s+/, "$sources{$key}{archive} $sources{$key}{type}";
             if ($file_line eq $source_line) {
                 $found = 1;
                 last;

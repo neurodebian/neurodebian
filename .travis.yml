@@ -4,6 +4,8 @@
 language: erlang
 cache:
   - apt
+services:
+  - docker
 script:
     # Test the ultimate one-liner setup for NeuroDebian repository
     - bash tools/neurodebian-travis.sh
