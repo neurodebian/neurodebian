@@ -5,6 +5,9 @@ TMP_DIR=""
 TOOLS_PATH="${PWD}/${0%/*}/.."
 EXIT_CODE=0
 
+# There is tee calls to log output, but if docker run fails, we need to know
+set -o pipefail
+
 # Run common commands for each test at start of tests
 #
 # Parameters
@@ -31,9 +34,11 @@ function test_setup {
     fi
 
     TMP_DIR=$(mktemp -d)
-    echo "INFO: TMP_DIR=$TMP_DIR"
+    echo "INFO: TMP_DIR=$TMP_DIR distro=$distro release=$release date=$date keep_sources=$keep_sources"
 
-    docker run -it --rm -v $TOOLS_PATH:/tests -v $TMP_DIR:/temp ${distro}:${release} /bin/bash -c "
+    docker pull ${distro}:${release}
+
+    cmd="docker run -it --rm -v $TOOLS_PATH:/tests -v $TMP_DIR:/temp ${distro}:${release} /bin/bash -c '
         /tests/nd_freeze $keep_sources_param $date
         if [ -f /etc/apt/sources.list ]; then
             cp /etc/apt/sources.list /temp/sources.list
@@ -50,7 +55,14 @@ function test_setup {
         if [ -f /etc/apt/sources.list.d/snapshots.sources.list ]; then
             cp /etc/apt/sources.list.d/snapshots.sources.list /temp/snapshots.sources.list
         fi
-    " | tee $TMP_DIR/stdout
+    '"
+    eval "$cmd" | tee $TMP_DIR/stdout
+    ret=$?
+    if [ "$ret" != "0" ]; then
+       echo "ERROR: docker run failed.  Exit code was $ret"
+       echo "Full command was: $cmd"
+       EXIT_CODE=$(($EXIT_CODE + 1))
+    fi
 }
 
 # Run commands that are run at the end of each test run.
@@ -93,7 +105,7 @@ function assert_line_in_file {
         else
             echo "File $filepath does not exist."
         fi
-        EXIT_CODE=1
+        EXIT_CODE=$(($EXIT_CODE + 1))
     fi
 }
 
