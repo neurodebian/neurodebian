@@ -153,7 +153,7 @@ assert_line_in_file "neurodebian.sources.list" "deb http://neuro.debian.net/debi
 assert_line_in_file "sources.list" "deb http://deb.debian.org/debian jessie main"
 assert_line_in_file "sources.list" "deb http://deb.debian.org/debian jessie-updates main"
 assert_line_in_file "sources.list" "deb http://security.debian.org" "partial_match"
-assert_line_in_file "stdout" 'I: WARNING: User specified time (20280827T000000Z) later than latest snapshot available' "partial_match"
+assert_line_in_file "stdout" 'INFO: WARNING: User specified time (20280827T000000Z) later than latest snapshot available' "partial_match"
 test_teardown
 
 echo "[ Test Ubuntu release ]"

@@ -43,7 +43,7 @@ use Socket;
 # 
 sub info {
     my ($output) = @_;
-    print "I: ${output}\n";
+    print "INFO: ${output}\n";
 }
 
 # Function gets the page contents of the provided URL.
@@ -80,7 +80,7 @@ sub get_www_content {
 
 # Function to run apt-get update
 sub run_apt_get_update {
-    info "Refreshing apt cache ...";
+    info "Refreshing apt cache";
     if (qx!grep ubuntu /etc/os-release!) {
         print qx/apt-get update --no-allow-insecure-repositories/;
     } else {
@@ -197,7 +197,7 @@ sub get_sources {
         run_apt_get_update();
         @lines = split /\n/, qx/apt-cache policy/;
     }
-    info "Discovering installed repository sources ...";
+    info "Discovering installed repository sources";
     for my $i (0 .. $#lines) {
         if ($lines[$i] =~ /(http\S+)\s+([\w-\/]+)\/([\w\-]+)/) {
             my $url = $1;
