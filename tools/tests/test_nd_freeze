@@ -1,0 +1,186 @@
+#!/bin/bash
+
+# Temporary scratch directory to save generated files.
+TMP_DIR=""
+TOOLS_PATH="${PWD}/${0%/*}/.."
+EXIT_CODE=0
+
+# There is tee calls to log output, but if docker run fails, we need to know
+set -o pipefail
+
+# Run common commands for each test at start of tests
+#
+# Parameters
+# ----------
+# distro : string
+#   Valid values are "debain" or "ubuntu"
+# release : string
+#   Code name for distro release. (e.g. jessie)
+# date : string
+#   Date at which the snapshot of the OS is wanted
+# keep_sources : string (Optional)
+#   Pass the string "KEEP_SOURCES" to run nd_freeze with the --keep-original-apt-sources switch
+#
+function test_setup {
+    distro=$1
+    release=$2
+    date=$3
+    keep_sources=${4:-no}
+
+    if [ "$keep_sources" = "no" ]; then
+        keep_sources_param=""
+    else
+        keep_sources_param="--keep-original-apt-sources"
+    fi
+
+    TMP_DIR=$(mktemp -d)
+    echo "INFO: TMP_DIR=$TMP_DIR distro=$distro release=$release date=$date keep_sources=$keep_sources"
+
+    docker pull ${distro}:${release}
+
+    cmd="docker run -it --rm -v $TOOLS_PATH:/tests -v $TMP_DIR:/temp ${distro}:${release} /bin/bash -c '
+        /tests/nd_freeze $keep_sources_param $date
+        if [ -f /etc/apt/sources.list ]; then
+            cp /etc/apt/sources.list /temp/sources.list
+        fi
+        if [ -f /etc/apt/sources.list.original ]; then
+            cp /etc/apt/sources.list.original /temp/sources.list.original
+        fi
+        if [ -f /etc/apt/sources.list.d/neurodebian.sources.list ]; then
+            cp /etc/apt/sources.list.d/neurodebian.sources.list /temp/neurodebian.sources.list
+        fi
+        if [ -f /etc/apt/sources.list.d/neurodebian.sources.list.original ]; then
+            cp /etc/apt/sources.list.d/neurodebian.sources.list.original /temp/neurodebian.sources.list.original
+        fi
+        if [ -f /etc/apt/sources.list.d/snapshots.sources.list ]; then
+            cp /etc/apt/sources.list.d/snapshots.sources.list /temp/snapshots.sources.list
+        fi
+    '"
+    eval "$cmd" | tee $TMP_DIR/stdout
+    ret=$?
+    if [ "$ret" != "0" ]; then
+       echo "ERROR: docker run failed.  Exit code was $ret"
+       echo "Full command was: $cmd"
+       EXIT_CODE=$(($EXIT_CODE + 1))
+    fi
+}
+
+# Run commands that are run at the end of each test run.
+function test_teardown {
+    echo "INFO: removing TMP_DIR: ${TMP_DIR}"
+    rm -rf $TMP_DIR
+}
+
+# Test to see if a line is in a given file.
+#
+# Parameters
+# ----------
+# file : string
+#   File to search for the given string
+#
+# line : string
+#   Line the we expect to be in the file.
+#
+# match_mode : string
+#   Enter "partial_match" if the line given is not a complete line but a line fragment
+#
+function assert_line_in_file {
+    file=$1
+    line=$2
+    match_mode=${3:-full}
+
+    if [ "$match_mode" = "full" ]; then
+        match_param="x"
+    else
+        match_param=""
+    fi
+    filepath="$TMP_DIR/$file"
+    if grep -Fq$match_param "$line" "$filepath"; then
+        echo "SUCCESS: line '$line' found"
+    else
+        echo -n "FAIL: File $filepath did not contain: $line. "
+        if [ -e "$filepath" ]; then
+            echo "Full file content:"
+            cat "$filepath"
+        else
+            echo "File $filepath does not exist."
+        fi
+        EXIT_CODE=$(($EXIT_CODE + 1))
+    fi
+}
+
+echo "[ Test basic operation ]"
+test_setup "neurodebian" "jessie" "7/27/2017"
+assert_line_in_file "neurodebian.sources.list" "# deb http://neuro.debian.net/debian jessie main"
+assert_line_in_file "neurodebian.sources.list" "# deb http://neuro.debian.net/debian data main"
+assert_line_in_file "neurodebian.sources.list.original" "deb http://neuro.debian.net/debian jessie main"
+assert_line_in_file "neurodebian.sources.list.original" "deb http://neuro.debian.net/debian data main"
+assert_line_in_file "snapshots.sources.list" "deb http://snapshot-neuro.debian.net:5002/archive/neurodebian/20170727T050508Z/ jessie main"
+assert_line_in_file "snapshots.sources.list" "deb http://snapshot.debian.org/archive/debian/20170727T040550Z/ jessie-updates main"
+assert_line_in_file "snapshots.sources.list" "deb http://snapshot-neuro.debian.net:5002/archive/neurodebian/20170727T050508Z/ data main"
+assert_line_in_file "snapshots.sources.list" "deb http://snapshot.debian.org/archive/debian/20170727T040550Z/ jessie main"
+assert_line_in_file "snapshots.sources.list" "deb http://snapshot.debian.org/archive/debian-security/20170727T203455Z/ jessie/updates main"
+assert_line_in_file "sources.list" "# deb http://deb.debian.org/debian jessie main"
+assert_line_in_file "sources.list" "# deb http://security.debian.org" "partial_match"
+assert_line_in_file "sources.list" "# deb http://deb.debian.org/debian jessie-updates main"
+assert_line_in_file "sources.list.original" "deb http://deb.debian.org/debian jessie main"
+assert_line_in_file "sources.list.original" "deb http://security.debian.org" "partial_match"
+assert_line_in_file "sources.list.original" "deb http://deb.debian.org/debian jessie-updates main"
+test_teardown
+
+echo "[ Test handling of a different release ]"
+test_setup "neurodebian" "wheezy" "1/2/2018"
+assert_line_in_file "neurodebian.sources.list" "# deb http://neuro.debian.net/debian wheezy main"
+assert_line_in_file "neurodebian.sources.list" "# deb http://neuro.debian.net/debian data main"
+assert_line_in_file "neurodebian.sources.list.original" "deb http://neuro.debian.net/debian wheezy main"
+assert_line_in_file "neurodebian.sources.list.original" "deb http://neuro.debian.net/debian data main"
+assert_line_in_file "snapshots.sources.list" "deb http://snapshot-neuro.debian.net:5002/archive/neurodebian/20180102T060503Z/ wheezy main"
+assert_line_in_file "snapshots.sources.list" "deb http://snapshot.debian.org/archive/debian/20180102T055258Z/ wheezy-updates main"
+assert_line_in_file "snapshots.sources.list" "deb http://snapshot-neuro.debian.net:5002/archive/neurodebian/20180102T060503Z/ data main"
+assert_line_in_file "snapshots.sources.list" "deb http://snapshot.debian.org/archive/debian/20180102T055258Z/ wheezy main"
+assert_line_in_file "snapshots.sources.list" "deb http://snapshot.debian.org/archive/debian-security/20180103T134828Z/ wheezy/updates main"
+assert_line_in_file "sources.list" "# deb http://deb.debian.org/debian wheezy main"
+assert_line_in_file "sources.list" "# deb http://deb.debian.org/debian wheezy-updates main"
+assert_line_in_file "sources.list" "# deb http://security.debian.org" "partial_match"
+assert_line_in_file "sources.list.original" "deb http://deb.debian.org/debian wheezy main"
+assert_line_in_file "sources.list.original" "deb http://deb.debian.org/debian wheezy-updates main"
+assert_line_in_file "sources.list.original" "deb http://security.debian.org" "partial_match"
+test_teardown
+
+echo "[ Test handling of request for a snapshot in the future ]"
+test_setup "neurodebian" "jessie" "20280827"
+assert_line_in_file "neurodebian.sources.list" "deb http://neuro.debian.net/debian jessie main"
+assert_line_in_file "sources.list" "deb http://deb.debian.org/debian jessie main"
+assert_line_in_file "sources.list" "deb http://deb.debian.org/debian jessie-updates main"
+assert_line_in_file "sources.list" "deb http://security.debian.org" "partial_match"
+assert_line_in_file "stdout" 'INFO: WARNING: User specified time (20280827T000000Z) later than latest snapshot available' "partial_match"
+test_teardown
+
+echo "[ Test Ubuntu release ]"
+test_setup "neurodebian" "xenial" "12/15/2017"
+assert_line_in_file "neurodebian.sources.list" "# deb http://neuro.debian.net/debian xenial main"
+assert_line_in_file "neurodebian.sources.list" "# deb http://neuro.debian.net/debian data main"
+assert_line_in_file "neurodebian.sources.list.original" "deb http://neuro.debian.net/debian xenial main"
+assert_line_in_file "neurodebian.sources.list.original" "deb http://neuro.debian.net/debian data main"
+assert_line_in_file "snapshots.sources.list" "deb http://snapshot-neuro.debian.net:5002/archive/neurodebian/20171215T060503Z/ xenial main"
+assert_line_in_file "snapshots.sources.list" "deb http://snapshot-neuro.debian.net:5002/archive/neurodebian/20171215T060503Z/ data main"
+assert_line_in_file "sources.list" "deb http://archive.ubuntu.com/ubuntu/ xenial main restricted"
+assert_line_in_file "sources.list" "deb http://archive.ubuntu.com/ubuntu/ xenial-updates main restricted"
+assert_line_in_file "sources.list" "deb http://security.ubuntu.com/ubuntu/ xenial-security universe"
+test_teardown
+
+echo "[ Test --keep-original-apt-sources switch ]"
+test_setup "neurodebian" "jessie" "7/27/2017" "KEEP_SOURCES"
+assert_line_in_file "neurodebian.sources.list" "deb http://neuro.debian.net/debian jessie main"
+assert_line_in_file "neurodebian.sources.list" "deb http://neuro.debian.net/debian data main"
+assert_line_in_file "snapshots.sources.list" "deb http://snapshot-neuro.debian.net:5002/archive/neurodebian/20170727T050508Z/ jessie main"
+assert_line_in_file "snapshots.sources.list" "deb http://snapshot.debian.org/archive/debian/20170727T040550Z/ jessie-updates main"
+assert_line_in_file "snapshots.sources.list" "deb http://snapshot-neuro.debian.net:5002/archive/neurodebian/20170727T050508Z/ data main"
+assert_line_in_file "snapshots.sources.list" "deb http://snapshot.debian.org/archive/debian/20170727T040550Z/ jessie main"
+assert_line_in_file "snapshots.sources.list" "deb http://snapshot.debian.org/archive/debian-security/20170727T203455Z/ jessie/updates main"
+assert_line_in_file "sources.list" "deb http://deb.debian.org/debian jessie main"
+assert_line_in_file "sources.list" "deb http://security.debian.org" "partial_match"
+assert_line_in_file "sources.list" "deb http://deb.debian.org/debian jessie-updates main"
+test_teardown
+
+exit $EXIT_CODE
