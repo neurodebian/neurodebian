@@ -8,6 +8,7 @@ neurodebian (0.38.0) unstable; urgency=medium
   * singularity/ - configuration(s) for Singularity images to be build on
     singularity-hub.org
   * Various updates to account for new Debian/Ubuntu releases
+  * debian/compat - boosted to 9 from 7
 
  -- Yaroslav Halchenko <debian@onerussian.com>  Wed, 07 Nov 2018 10:44:41 -0500
 
