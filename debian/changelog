@@ -1,3 +1,16 @@
+neurodebian (0.38.0) unstable; urgency=medium
+
+  * New features
+    - nd_freeze (alpha stage) script to be used to "freeze" Debian/NeuroDebian
+      APT sources to use Debian/NeuroDebian snapshots repository.
+      It is provided within minimal neurodebian-freeze package so it could
+      be installed by default on lean base Docker/Singularity images
+  * singularity/ - configuration(s) for Singularity images to be build on
+    singularity-hub.org
+  * Various updates to account for new Debian/Ubuntu releases
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Wed, 07 Nov 2018 10:44:41 -0500
+
 neurodebian (0.37.6) unstable; urgency=medium
 
   * Switch to use interest-noawait for neurodebian-desktop.trigger

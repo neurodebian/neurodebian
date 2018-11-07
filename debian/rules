@@ -34,6 +34,11 @@ override_dh_auto_install::
 
 override_dh_auto_test::
 
+override_dh_install::
+	dh_install $@
+	# shipped in a dedicated neurodebian-freeze package
+	rm -f  debian/neurodebian-dev/usr/bin/nd_freeze
+
 override_dh_clean:
 	debconf-updatepo
 	dh_clean

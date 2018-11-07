@@ -27,8 +27,10 @@ Description: neuroscience-oriented distribution - repository configuration
 Package: neurodebian-dev
 Architecture: all
 Depends: ${misc:Depends}, devscripts, neurodebian-archive-keyring
-Recommends: python, zerofree, moreutils, time, ubuntu-keyring, debian-archive-keyring, apt-utils, cowbuilder
-Suggests: virtualbox-ose, virtualbox-ose-fuse
+Recommends: python, zerofree, moreutils, time, ubuntu-keyring, 
+ debian-archive-keyring, apt-utils, cowbuilder,
+ neurodebian-freeze,
+Suggests: virtualbox-ose, virtualbox-ose-fuse, singularity-container
 Description: neuroscience-oriented distribution - development tools
  The NeuroDebian project integrates and maintains a variety of software
  projects within Debian that are useful for neuroscience (such as AFNI,
@@ -72,6 +74,22 @@ Description: neuroscience-oriented distribution - GnuPG archive keys
  .
  The NeuroDebian project digitally signs its Release files. This package
  contains the archive keys used for that.
+
+
+Package: neurodebian-freeze
+Architecture: all
+Depends: perl-base
+Description: nd_freeze tool to freeze APT sources to use snapshots
+ The NeuroDebian project integrates and maintains a variety of software
+ projects within Debian that are useful for neuroscience (such as AFNI,
+ FSL, PsychoPy, etc.) or generic computation (such as HTCondor,
+ pandas, etc.).
+ .
+ This minimalistic package provides nd_freeze script to be used in
+ rich or minimalistic environments (such as Docker or Singularity 
+ recipes) to freeze their APT sources.  Intended to assist making such
+ images reproducible.
+
 
 Package: neurodebian-popularity-contest
 Architecture: all
