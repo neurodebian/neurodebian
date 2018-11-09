@@ -364,6 +364,11 @@ if (! -e '/etc/apt/apt.conf.d/10no--check-valid-until') {
     qx!echo 'Acquire::Check-Valid-Until "0";' > /etc/apt/apt.conf.d/10no--check-valid-until!;
 }
 
+# So we later on could make a decision either we need to clean up after ourselves
+# Rely on having a Release file, since cannot be just * since there could be
+# empty partial/ directory
+my @apt_releases_list = </var/lib/apt/lists/*Release>;
+
 my $user_timestamp = get_user_timestamp($USER_DATE);
 my $snapshots_sources_file = '/etc/apt/sources.list.d/snapshots.sources.list';
 my @sources_files = ('/etc/apt/sources.list', '/etc/apt/sources.list.d/neurodebian.sources.list');
@@ -384,10 +389,15 @@ if ((keys %sources) > 0) {
         foreach my $sources_file (@sources_files) {
             disable_lines($sources_file, %sources) if (-e $sources_file);
         }
-        run_apt_get_update();
+        run_apt_get_update();  # run even only to check and then cleanup later on
     }
 } else {
     info "No valid sources found to get snapshots.";
+}
+
+if (scalar @apt_releases_list == 0) {
+	   info "Cleaning up APT lists because originally there were none";
+	   rm -rf /var/lib/apt/lists/*;
 }
 
 exit 0
