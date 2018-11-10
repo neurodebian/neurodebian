@@ -300,10 +300,10 @@ sub write_snapshot_sources {
 sub disable_lines {
     my ($sources_file, %sources) = @_;
 
-    qx/cp $sources_file ${sources_file}.original/ if (!-e "${sources_file}.original");
+    qx/cp $sources_file ${sources_file}.orig.disabled/ if (!-e "${sources_file}.orig.disabled");
 
-    open my $in, '<', "${sources_file}.original"
-        or die "Could not open file '${sources_file}.original' $!";
+    open my $in, '<', "${sources_file}.orig.disabled"
+        or die "Could not open file '${sources_file}.orig.disabled' $!";
     open my $out, '>', $sources_file
         or die "Could not open file '$sources_file' $!";
     my @lines = split /\n/, <$in>;
@@ -368,7 +368,7 @@ my @sources_files = ('/etc/apt/sources.list', '/etc/apt/sources.list.d/neurodebi
 
 # Restore original sources files and apt-cache if this is a rerun of the command.
 foreach my $sources_file (@sources_files) {
-    qx/cp ${sources_file}.original $sources_file/ if (-e "${sources_file}.original");
+    qx/cp ${sources_file}.orig.disabled $sources_file/ if (-e "${sources_file}.orig.disabled");
 }
 if (-e $snapshots_sources_file) {
     qx/rm $snapshots_sources_file/;
