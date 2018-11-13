@@ -1,4 +1,10 @@
-neurodebian (0.38.0) unstable; urgency=medium
+neurodebian (0.38.1) unstable; urgency=medium
+
+  * Make ubuntu-keyring only list in Ubuntu (and its derivatives
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Mon, 12 Nov 2018 23:50:07 -0500
+
+neurodebian (0.38.0) neurodebian; urgency=medium
 
   * New features
     - nd_freeze (alpha stage) script to be used to "freeze" Debian/NeuroDebian

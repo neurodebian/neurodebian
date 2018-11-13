@@ -2,9 +2,20 @@
 
 ICONS_SIZE=32
 
+ifeq ($(shell dpkg-vendor --derives-from Ubuntu && echo yes),yes)
+	KEYRING_PKG = -Vdist:Recommends="ubuntu-keyring"
+else
+	SUBSTVARS = -Vdist:Depends="bar"
+endif
+
 # one ring to rule them all ...
 %:
 	dh $@
+
+override_dh_gencontrol:
+	if dpkg-vendor --derives-from Ubuntu; then \
+		echo 'misc:Recommends=ubuntu-keyring' >> debian/neurodebian-dev.substvars; fi
+	dh_gencontrol
 
 override_dh_auto_configure:
 

@@ -26,7 +26,8 @@ Description: neuroscience-oriented distribution - repository configuration
 Package: neurodebian-dev
 Architecture: all
 Depends: ${misc:Depends}, devscripts, neurodebian-archive-keyring
-Recommends: python, zerofree, moreutils, time, ubuntu-keyring, 
+Recommends: ${misc:Recommends},
+ python, zerofree, moreutils, time,
  debian-archive-keyring, apt-utils, cowbuilder,
  neurodebian-freeze,
 Suggests: virtualbox-ose, virtualbox-ose-fuse, singularity-container
