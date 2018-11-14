@@ -43,7 +43,10 @@ use Socket;
 # 
 sub info {
     my ($output) = @_;
-    print "INFO: ${output}\n";
+    my @lines = split /\n/, $output;
+    foreach my $line (@lines) { 
+        print "INFO: ${line}\n";
+    }
 }
 
 # Function gets the page contents of the provided URL.
@@ -82,9 +85,9 @@ sub get_www_content {
 sub run_apt_get_update {
     info "Refreshing apt cache";
     if (qx!grep ubuntu /etc/os-release!) {
-        print qx/apt-get update --no-allow-insecure-repositories/;
+        info qx/apt-get update --no-allow-insecure-repositories/;
     } else {
-        print qx/apt-get update/;
+        info qx/apt-get update/;
     }
 }
 
@@ -339,6 +342,68 @@ sub disable_lines {
 }
 
 
+# Get a list of the installed packages
+# 
+# Returns
+# ----------
+# @packages
+#     array : Names of the installed packages
+#
+sub installed_packages {
+ 
+    info "Discovering installed packages for possible version downgrades";
+    my @packages = ();
+    my @lines = split /\n/, qx/dpkg -l/;
+    for my $i (0 .. $#lines) {
+        my @chunks = split /\s+/, $lines[$i];
+        push @packages, $chunks[1] if ($chunks[0] eq 'ii');
+    }
+
+    return @packages;
+}
+
+
+# Downgrade the installed packages to their snapshot versions
+#
+# Parameters
+# ----------
+# @packages
+#     array : List of installed packages
+#
+sub downgrade_packages {
+    my (@packages) = @_;
+
+    for my $package (@packages) {
+        info "Checking package '${package}' for an older snapshot version";
+        my $found = 0;
+        my $installed_version = '';
+        my $snapshot_version = '';
+        my @lines = split /\n/, qx/apt-cache policy $package/;
+        for my $i (0 .. $#lines) {
+            $installed_version = $1 if ($lines[$i] =~ /Installed:\s+(\S+)/);
+            if ($lines[$i] =~ /snapshot\.debian\.org|snapshot\-neuro\.debian\.net/) {
+                my @chunks = split /\s+/, $lines[$i-1];
+                $snapshot_version = $chunks[1];
+                $found = 1 if ($snapshot_version ne '***');
+                last;
+            }
+        }
+        if ($found) {
+            if ($package eq 'libc-bin' or $package =~ /gcc-[\d\.]+-base/) {
+                # TODO: Handle the very bad things that happen when these packages are downgraded.
+                info "SKIPPING downgrade of ${package} to version ${snapshot_version} due to technical difficulties."
+            }
+            else {
+                $pipe_command = "echo 'Yes, do as I say!' |";
+                info "DOWNGRADING '${package}=${installed_version}' to version '${snapshot_version}'";
+                info qx/${pipe_command} apt-get install --no-install-recommends --force-yes -y ${package}=${snapshot_version}/;
+            }
+        }
+    }
+
+}
+
+
 ##### Program main
 
 # Parse command line options
@@ -386,6 +451,14 @@ if ((keys %sources) > 0) {
     }
 } else {
     info "No valid sources found to get snapshots.";
+}
+
+if ($KEEP_SOURCES) {
+    info "Packages were not downgraded";
+}
+else {
+    my @packages = installed_packages();
+    downgrade_packages(@packages);
 }
 
 exit 0
