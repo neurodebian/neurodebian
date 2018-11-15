@@ -124,9 +124,9 @@ assert_line_in_file "snapshots.sources.list" "deb http://snapshot.debian.org/arc
 assert_line_in_file "sources.list" "# deb http://deb.debian.org/debian jessie main"
 assert_line_in_file "sources.list" "# deb http://security.debian.org" "partial_match"
 assert_line_in_file "sources.list" "# deb http://deb.debian.org/debian jessie-updates main"
-assert_line_in_file "sources.list.original" "deb http://deb.debian.org/debian jessie main"
-assert_line_in_file "sources.list.original" "deb http://security.debian.org" "partial_match"
-assert_line_in_file "sources.list.original" "deb http://deb.debian.org/debian jessie-updates main"
+assert_line_in_file "sources.list.orig.disabled" "deb http://deb.debian.org/debian jessie main"
+assert_line_in_file "sources.list.orig.disabled" "deb http://security.debian.org" "partial_match"
+assert_line_in_file "sources.list.orig.disabled" "deb http://deb.debian.org/debian jessie-updates main"
 assert_line_in_file "stdout" "INFO: Cleaning up APT lists because originally there were none" "partial_match"
 assert_line_in_file "lists_file_count" "1"
 test_teardown
