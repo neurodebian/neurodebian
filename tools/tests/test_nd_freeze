@@ -43,14 +43,14 @@ function test_setup {
         if [ -f /etc/apt/sources.list ]; then
             cp /etc/apt/sources.list /temp/sources.list
         fi
-        if [ -f /etc/apt/sources.list.original ]; then
-            cp /etc/apt/sources.list.original /temp/sources.list.original
+        if [ -f /etc/apt/sources.list.orig.disabled ]; then
+            cp /etc/apt/sources.list.orig.disabled /temp/sources.list.orig.disabled
         fi
         if [ -f /etc/apt/sources.list.d/neurodebian.sources.list ]; then
             cp /etc/apt/sources.list.d/neurodebian.sources.list /temp/neurodebian.sources.list
         fi
-        if [ -f /etc/apt/sources.list.d/neurodebian.sources.list.original ]; then
-            cp /etc/apt/sources.list.d/neurodebian.sources.list.original /temp/neurodebian.sources.list.original
+        if [ -f /etc/apt/sources.list.d/neurodebian.sources.list.orig.disabled ]; then
+            cp /etc/apt/sources.list.d/neurodebian.sources.list.orig.disabled /temp/neurodebian.sources.list.orig.disabled
         fi
         if [ -f /etc/apt/sources.list.d/snapshots.sources.list ]; then
             cp /etc/apt/sources.list.d/snapshots.sources.list /temp/snapshots.sources.list
@@ -114,8 +114,8 @@ echo "[ Test basic operation ]"
 test_setup "neurodebian" "jessie" "7/27/2017"
 assert_line_in_file "neurodebian.sources.list" "# deb http://neuro.debian.net/debian jessie main"
 assert_line_in_file "neurodebian.sources.list" "# deb http://neuro.debian.net/debian data main"
-assert_line_in_file "neurodebian.sources.list.original" "deb http://neuro.debian.net/debian jessie main"
-assert_line_in_file "neurodebian.sources.list.original" "deb http://neuro.debian.net/debian data main"
+assert_line_in_file "neurodebian.sources.list.orig.disabled" "deb http://neuro.debian.net/debian jessie main"
+assert_line_in_file "neurodebian.sources.list.orig.disabled" "deb http://neuro.debian.net/debian data main"
 assert_line_in_file "snapshots.sources.list" "deb http://snapshot-neuro.debian.net:5002/archive/neurodebian/20170727T050508Z/ jessie main"
 assert_line_in_file "snapshots.sources.list" "deb http://snapshot.debian.org/archive/debian/20170727T040550Z/ jessie-updates main"
 assert_line_in_file "snapshots.sources.list" "deb http://snapshot-neuro.debian.net:5002/archive/neurodebian/20170727T050508Z/ data main"
@@ -135,8 +135,8 @@ echo "[ Test handling of a different release ]"
 test_setup "neurodebian" "wheezy" "1/2/2018"
 assert_line_in_file "neurodebian.sources.list" "# deb http://neuro.debian.net/debian wheezy main"
 assert_line_in_file "neurodebian.sources.list" "# deb http://neuro.debian.net/debian data main"
-assert_line_in_file "neurodebian.sources.list.original" "deb http://neuro.debian.net/debian wheezy main"
-assert_line_in_file "neurodebian.sources.list.original" "deb http://neuro.debian.net/debian data main"
+assert_line_in_file "neurodebian.sources.list.orig.disabled" "deb http://neuro.debian.net/debian wheezy main"
+assert_line_in_file "neurodebian.sources.list.orig.disabled" "deb http://neuro.debian.net/debian data main"
 assert_line_in_file "snapshots.sources.list" "deb http://snapshot-neuro.debian.net:5002/archive/neurodebian/20180102T060503Z/ wheezy main"
 assert_line_in_file "snapshots.sources.list" "deb http://snapshot.debian.org/archive/debian/20180102T055258Z/ wheezy-updates main"
 assert_line_in_file "snapshots.sources.list" "deb http://snapshot-neuro.debian.net:5002/archive/neurodebian/20180102T060503Z/ data main"
@@ -145,9 +145,9 @@ assert_line_in_file "snapshots.sources.list" "deb http://snapshot.debian.org/arc
 assert_line_in_file "sources.list" "# deb http://deb.debian.org/debian wheezy main"
 assert_line_in_file "sources.list" "# deb http://deb.debian.org/debian wheezy-updates main"
 assert_line_in_file "sources.list" "# deb http://security.debian.org" "partial_match"
-assert_line_in_file "sources.list.original" "deb http://deb.debian.org/debian wheezy main"
-assert_line_in_file "sources.list.original" "deb http://deb.debian.org/debian wheezy-updates main"
-assert_line_in_file "sources.list.original" "deb http://security.debian.org" "partial_match"
+assert_line_in_file "sources.list.orig.disabled" "deb http://deb.debian.org/debian wheezy main"
+assert_line_in_file "sources.list.orig.disabled" "deb http://deb.debian.org/debian wheezy-updates main"
+assert_line_in_file "sources.list.orig.disabled" "deb http://security.debian.org" "partial_match"
 test_teardown
 
 echo "[ Test handling of request for a snapshot in the future ]"
@@ -163,8 +163,8 @@ echo "[ Test Ubuntu release ]"
 test_setup "neurodebian" "xenial" "12/15/2017"
 assert_line_in_file "neurodebian.sources.list" "# deb http://neuro.debian.net/debian xenial main"
 assert_line_in_file "neurodebian.sources.list" "# deb http://neuro.debian.net/debian data main"
-assert_line_in_file "neurodebian.sources.list.original" "deb http://neuro.debian.net/debian xenial main"
-assert_line_in_file "neurodebian.sources.list.original" "deb http://neuro.debian.net/debian data main"
+assert_line_in_file "neurodebian.sources.list.orig.disabled" "deb http://neuro.debian.net/debian xenial main"
+assert_line_in_file "neurodebian.sources.list.orig.disabled" "deb http://neuro.debian.net/debian data main"
 assert_line_in_file "snapshots.sources.list" "deb http://snapshot-neuro.debian.net:5002/archive/neurodebian/20171215T060503Z/ xenial main"
 assert_line_in_file "snapshots.sources.list" "deb http://snapshot-neuro.debian.net:5002/archive/neurodebian/20171215T060503Z/ data main"
 assert_line_in_file "sources.list" "deb http://archive.ubuntu.com/ubuntu/ xenial main restricted"
