@@ -396,8 +396,8 @@ if ((keys %sources) > 0) {
 }
 
 if (scalar @apt_releases_list == 0) {
-	   info "Cleaning up APT lists because originally there were none";
-	   rm -rf /var/lib/apt/lists/*;
+	info "Cleaning up APT lists because originally there were none";
+	qx!rm -rf /var/lib/apt/lists/*!;
 }
 
 exit 0
