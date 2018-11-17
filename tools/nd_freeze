@@ -3,7 +3,7 @@
 # Install access to the NeuroDebian snapshot repository that allows access
 # to old packages based on dates and version numbers.
 #
-# Usage: nd_freeze [--keep-original-apt-sources] date
+# Usage: nd_freeze [--keep-apt-sources|-k] [--no-downgrade|-n] date
 #
 # The UTC date/time format sent to NeuroDebian to get the repo info is in the
 # format yyyymmddThhmmssz or yyymmdd. However, the script will handle and
@@ -26,9 +26,12 @@
 # available versions that may have been placed in the repo before your
 # selected time but after the previous snapshot.
 #
-# Setting the command line switch, --keep-original-apt-sources will leave
+# Setting the command line switch, --keep-apt-sources or -k will leave
 # the original, non-snapshot source active so that up-to-date packages can
 # still be installed.
+#
+# Setting the command line switch, --no-downgrade or -n will skip the package
+# downgrade step leaving the system as is.
 
 require 5.002;
 use Socket;
@@ -58,7 +61,8 @@ sub info {
 #
 # Returns
 # -------
-# string : Contents of URL page 
+# string : Contents of URL page
+#
 sub get_www_content {
     my ($url) = @_;
     $url =~ /http:\/\/([^\/:]+):?(\d+)*(.*)/;
@@ -247,6 +251,7 @@ sub get_sources {
 #     string : Timestamp of freeze date provided by user at the command line.
 # %sources
 #     hash : The sources retrieved from apt-cache policy that need to be written to the sources file.
+#
 sub write_snapshot_sources {
     my ($snapshots_sources_file, $user_timestamp, %sources) = @_;
     my $have_knocked = 0;
@@ -372,6 +377,7 @@ sub installed_packages {
 #
 sub downgrade_packages {
     my (@packages) = @_;
+    my @downgrade_packages;
 
     for my $package (@packages) {
         info "Checking package '${package}' for an older snapshot version";
@@ -389,18 +395,15 @@ sub downgrade_packages {
             }
         }
         if ($found) {
-            if ($package eq 'libc-bin' or $package =~ /gcc-[\d\.]+-base/) {
-                # TODO: Handle the very bad things that happen when these packages are downgraded.
-                info "SKIPPING downgrade of ${package} to version ${snapshot_version} due to technical difficulties."
-            }
-            else {
-                $pipe_command = "echo 'Yes, do as I say!' |";
-                info "DOWNGRADING '${package}=${installed_version}' to version '${snapshot_version}'";
-                info qx/${pipe_command} apt-get install --no-install-recommends --force-yes -y ${package}=${snapshot_version}/;
-            }
+            info "Will DOWNGRADE '${package}=${installed_version}' to version '${snapshot_version}'";
+            push @downgrade_packages, "${package}=${snapshot_version}";
         }
     }
 
+    my $packages_to_downgrade = join " ", @downgrade_packages;
+    info "DOWNGRADING: ${packages_to_downgrade}";
+    my $output = info qx/export DEBIAN_FRONTEND=noninteractive; apt-get install --no-install-recommends --force-yes -y ${packages_to_downgrade}/;
+    info $output;
 }
 
 
@@ -409,18 +412,18 @@ sub downgrade_packages {
 # Parse command line options
 my $USER_DATE = "";
 my $KEEP_SOURCES = 0;
-if (scalar(@ARGV) == 1) {
-    $USER_DATE=$ARGV[0];
+my $DO_NOT_DOWNGRADE = 0;
+foreach(@ARGV) {
+    $KEEP_SOURCES = 1 if ($_ eq '--keep-apt-sources' or $_ eq '-k');
+    $DO_NOT_DOWNGRADE = 1 if ($_ eq '--no-downgrade' or $_ eq '-n');
 }
-if (scalar(@ARGV) == 2 && $ARGV[0] eq "--keep-original-apt-sources") {
-    $USER_DATE = $ARGV[1];
-    $KEEP_SOURCES = 1;
-}
-if (!$USER_DATE) {
+my $parameter_count = 1 + $KEEP_SOURCES + $DO_NOT_DOWNGRADE;
+if (scalar(@ARGV) != $parameter_count) {
     print "Invalid command parameters\n";
-    print "USAGE: nd_freeze [--keep-original-apt-sources] date\n";
+    print "USAGE: nd_freeze [--keep-apt-sources] [--no-downgrade] date\n";
     exit 1;
 }
+$USER_DATE = $ARGV[$parameter_count - 1];
 
 # Set apt setting to allow "outdated" repositories.
 if (! -e '/etc/apt/apt.conf.d/10no--check-valid-until') {
@@ -453,7 +456,7 @@ if ((keys %sources) > 0) {
     info "No valid sources found to get snapshots.";
 }
 
-if ($KEEP_SOURCES) {
+if ($DO_NOT_DOWNGRADE) {
     info "Packages were not downgraded";
 }
 else {
