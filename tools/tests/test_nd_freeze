@@ -55,6 +55,7 @@ function test_setup {
         if [ -f /etc/apt/sources.list.d/snapshots.sources.list ]; then
             cp /etc/apt/sources.list.d/snapshots.sources.list /temp/snapshots.sources.list
         fi
+        ls -l /var/lib/apt/lists | wc -l > /temp/lists_file_count
     '"
     eval "$cmd" | tee $TMP_DIR/stdout
     ret=$?
@@ -126,6 +127,8 @@ assert_line_in_file "sources.list" "# deb http://deb.debian.org/debian jessie-up
 assert_line_in_file "sources.list.orig.disabled" "deb http://deb.debian.org/debian jessie main"
 assert_line_in_file "sources.list.orig.disabled" "deb http://security.debian.org" "partial_match"
 assert_line_in_file "sources.list.orig.disabled" "deb http://deb.debian.org/debian jessie-updates main"
+assert_line_in_file "stdout" "INFO: Cleaning up APT lists because originally there were none" "partial_match"
+assert_line_in_file "lists_file_count" "1"
 test_teardown
 
 echo "[ Test handling of a different release ]"
