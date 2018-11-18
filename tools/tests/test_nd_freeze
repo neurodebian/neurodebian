@@ -30,7 +30,7 @@ function test_setup {
     if [ "$keep_sources" = "no" ]; then
         keep_sources_param=""
     else
-        keep_sources_param="--keep-original-apt-sources"
+        keep_sources_param="--keep-apt-sources"
     fi
 
     TMP_DIR=$(mktemp -d)
@@ -127,6 +127,8 @@ assert_line_in_file "sources.list" "# deb http://deb.debian.org/debian jessie-up
 assert_line_in_file "sources.list.orig.disabled" "deb http://deb.debian.org/debian jessie main"
 assert_line_in_file "sources.list.orig.disabled" "deb http://security.debian.org" "partial_match"
 assert_line_in_file "sources.list.orig.disabled" "deb http://deb.debian.org/debian jessie-updates main"
+assert_line_in_file "stdout" "INFO: Will DOWNGRADE 'gcc-4.9-base:amd64=4.9.2-10+deb8u1' to version '4.9.2-10'" "partial_match"
+assert_line_in_file "stdout" "INFO: Will DOWNGRADE 'ncurses-base=5.9+20140913-1+deb8u3' to version '5.9+20140913-1'" "partial_match"
 assert_line_in_file "stdout" "INFO: Cleaning up APT lists because originally there were none" "partial_match"
 assert_line_in_file "lists_file_count" "1"
 test_teardown
@@ -184,6 +186,7 @@ assert_line_in_file "snapshots.sources.list" "deb http://snapshot.debian.org/arc
 assert_line_in_file "sources.list" "deb http://deb.debian.org/debian jessie main"
 assert_line_in_file "sources.list" "deb http://security.debian.org" "partial_match"
 assert_line_in_file "sources.list" "deb http://deb.debian.org/debian jessie-updates main"
+# TODO: assert_line_in_file "stdout" "INFO: Packages were not downgraded" "partial_match"
 test_teardown
 
 exit $EXIT_CODE
