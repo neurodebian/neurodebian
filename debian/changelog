@@ -1,3 +1,13 @@
+neurodebian (0.38.2) unstable; urgency=medium
+
+  * nd_freeze:
+    - remove apt lists files if there were none to start with
+    - by default now would downgrade already installed packages to the state
+      of them in snapshots.  Use --no-downgrade or -n to disable
+    - --keep-apt-sources or -k  replaced longer --keep-original-apt-sources
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Sun, 18 Nov 2018 21:35:11 -0500
+
 neurodebian (0.38.1) unstable; urgency=medium
 
   * Make ubuntu-keyring only list in Ubuntu (and its derivatives
