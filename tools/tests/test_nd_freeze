@@ -25,21 +25,15 @@ function test_setup {
     distro=$1
     release=$2
     date=$3
-    keep_sources=${4:-no}
-
-    if [ "$keep_sources" = "no" ]; then
-        keep_sources_param=""
-    else
-        keep_sources_param="--keep-apt-sources"
-    fi
+    switches=$4
 
     TMP_DIR=$(mktemp -d)
-    echo "INFO: TMP_DIR=$TMP_DIR distro=$distro release=$release date=$date keep_sources=$keep_sources"
+    echo "INFO: TMP_DIR=$TMP_DIR distro=$distro release=$release date=$date switches=$switches"
 
     docker pull ${distro}:${release}
 
     cmd="docker run -it --rm -v $TOOLS_PATH:/tests -v $TMP_DIR:/temp ${distro}:${release} /bin/bash -c '
-        /tests/nd_freeze $keep_sources_param $date
+        /tests/nd_freeze $switches $date
         if [ -f /etc/apt/sources.list ]; then
             cp /etc/apt/sources.list /temp/sources.list
         fi
@@ -82,36 +76,50 @@ function test_teardown {
 # line : string
 #   Line the we expect to be in the file.
 #
-# match_mode : string
-#   Enter "partial_match" if the line given is not a complete line but a line fragment
+# negate : string
+#   Enter "TRUE" if the test is to NOT find a string in the file.
 #
 function assert_line_in_file {
     file=$1
     line=$2
-    match_mode=${3:-full}
+    negate=${3:-NULL}
 
-    if [ "$match_mode" = "full" ]; then
-        match_param="x"
-    else
-        match_param=""
-    fi
     filepath="$TMP_DIR/$file"
-    if grep -Fq$match_param "$line" "$filepath"; then
-        echo "SUCCESS: line '$line' found"
-    else
-        echo -n "FAIL: File $filepath did not contain: $line. "
-        if [ -e "$filepath" ]; then
-            echo "Full file content:"
-            cat "$filepath"
+    if grep -Fq "$line" "$filepath"; then
+        if [ "$negate" = "TRUE" ]; then
+            fail "$filepath did contain: $line." "$filepath"
         else
-            echo "File $filepath does not exist."
+            echo "SUCCESS: line '$line' found"
         fi
-        EXIT_CODE=$(($EXIT_CODE + 1))
+    else
+        if [ "$negate" = "TRUE" ]; then
+            echo "SUCCESS: line '$line' not found"
+        else
+            fail "$filepath did not contain: $line." "$filepath"
+        fi
     fi
 }
 
+function assert_line_NOT_in_file {
+    assert_line_in_file "$1" "$2" "TRUE"
+}
+
+function fail {
+    message=$1
+    filepath=$2
+
+    echo -n "FAIL: $message "
+    if [ -e "$filepath" ]; then
+        echo "Full file content:"
+        cat "$filepath"
+    else
+        echo "File $filepath does not exist."
+    fi
+    EXIT_CODE=$(($EXIT_CODE + 1))
+}
+
 echo "[ Test basic operation ]"
-test_setup "neurodebian" "jessie" "7/27/2017"
+test_setup "neurodebian" "jessie" "7/27/2017" ""
 assert_line_in_file "neurodebian.sources.list" "# deb http://neuro.debian.net/debian jessie main"
 assert_line_in_file "neurodebian.sources.list" "# deb http://neuro.debian.net/debian data main"
 assert_line_in_file "neurodebian.sources.list.orig.disabled" "deb http://neuro.debian.net/debian jessie main"
@@ -122,19 +130,19 @@ assert_line_in_file "snapshots.sources.list" "deb http://snapshot-neuro.debian.n
 assert_line_in_file "snapshots.sources.list" "deb http://snapshot.debian.org/archive/debian/20170727T040550Z/ jessie main"
 assert_line_in_file "snapshots.sources.list" "deb http://snapshot.debian.org/archive/debian-security/20170727T203455Z/ jessie/updates main"
 assert_line_in_file "sources.list" "# deb http://deb.debian.org/debian jessie main"
-assert_line_in_file "sources.list" "# deb http://security.debian.org" "partial_match"
+assert_line_in_file "sources.list" "# deb http://security.debian.org"
 assert_line_in_file "sources.list" "# deb http://deb.debian.org/debian jessie-updates main"
 assert_line_in_file "sources.list.orig.disabled" "deb http://deb.debian.org/debian jessie main"
-assert_line_in_file "sources.list.orig.disabled" "deb http://security.debian.org" "partial_match"
+assert_line_in_file "sources.list.orig.disabled" "deb http://security.debian.org"
 assert_line_in_file "sources.list.orig.disabled" "deb http://deb.debian.org/debian jessie-updates main"
-assert_line_in_file "stdout" "INFO: Will DOWNGRADE 'gcc-4.9-base:amd64=4.9.2-10+deb8u1' to version '4.9.2-10'" "partial_match"
-assert_line_in_file "stdout" "INFO: Will DOWNGRADE 'ncurses-base=5.9+20140913-1+deb8u3' to version '5.9+20140913-1'" "partial_match"
-assert_line_in_file "stdout" "INFO: Cleaning up APT lists because originally there were none" "partial_match"
+assert_line_in_file "stdout" "INFO: DOWNGRADING: base-files=8+deb8u9 gcc-4.9-base:amd64=4.9.2-10"
+assert_line_in_file "stdout" "INFO: Cleaning up APT lists because originally there were none"
+assert_line_NOT_in_file "stdout" "DEBUG:"
 assert_line_in_file "lists_file_count" "1"
 test_teardown
 
 echo "[ Test handling of a different release ]"
-test_setup "neurodebian" "wheezy" "1/2/2018"
+test_setup "neurodebian" "wheezy" "1/2/2018" ""
 assert_line_in_file "neurodebian.sources.list" "# deb http://neuro.debian.net/debian wheezy main"
 assert_line_in_file "neurodebian.sources.list" "# deb http://neuro.debian.net/debian data main"
 assert_line_in_file "neurodebian.sources.list.orig.disabled" "deb http://neuro.debian.net/debian wheezy main"
@@ -146,23 +154,23 @@ assert_line_in_file "snapshots.sources.list" "deb http://snapshot.debian.org/arc
 assert_line_in_file "snapshots.sources.list" "deb http://snapshot.debian.org/archive/debian-security/20180103T134828Z/ wheezy/updates main"
 assert_line_in_file "sources.list" "# deb http://deb.debian.org/debian wheezy main"
 assert_line_in_file "sources.list" "# deb http://deb.debian.org/debian wheezy-updates main"
-assert_line_in_file "sources.list" "# deb http://security.debian.org" "partial_match"
+assert_line_in_file "sources.list" "# deb http://security.debian.org"
 assert_line_in_file "sources.list.orig.disabled" "deb http://deb.debian.org/debian wheezy main"
 assert_line_in_file "sources.list.orig.disabled" "deb http://deb.debian.org/debian wheezy-updates main"
-assert_line_in_file "sources.list.orig.disabled" "deb http://security.debian.org" "partial_match"
+assert_line_in_file "sources.list.orig.disabled" "deb http://security.debian.org"
 test_teardown
 
 echo "[ Test handling of request for a snapshot in the future ]"
-test_setup "neurodebian" "jessie" "20280827"
+test_setup "neurodebian" "jessie" "20280827" ""
 assert_line_in_file "neurodebian.sources.list" "deb http://neuro.debian.net/debian jessie main"
 assert_line_in_file "sources.list" "deb http://deb.debian.org/debian jessie main"
 assert_line_in_file "sources.list" "deb http://deb.debian.org/debian jessie-updates main"
-assert_line_in_file "sources.list" "deb http://security.debian.org" "partial_match"
-assert_line_in_file "stdout" 'INFO: WARNING: User specified time (20280827T000000Z) later than latest snapshot available' "partial_match"
+assert_line_in_file "sources.list" "deb http://security.debian.org"
+assert_line_in_file "stdout" 'INFO: WARNING: User specified time (20280827T000000Z) later than latest snapshot available'
 test_teardown
 
 echo "[ Test Ubuntu release ]"
-test_setup "neurodebian" "xenial" "12/15/2017"
+test_setup "neurodebian" "xenial" "12/15/2017" ""
 assert_line_in_file "neurodebian.sources.list" "# deb http://neuro.debian.net/debian xenial main"
 assert_line_in_file "neurodebian.sources.list" "# deb http://neuro.debian.net/debian data main"
 assert_line_in_file "neurodebian.sources.list.orig.disabled" "deb http://neuro.debian.net/debian xenial main"
@@ -174,8 +182,8 @@ assert_line_in_file "sources.list" "deb http://archive.ubuntu.com/ubuntu/ xenial
 assert_line_in_file "sources.list" "deb http://security.ubuntu.com/ubuntu/ xenial-security universe"
 test_teardown
 
-echo "[ Test --keep-original-apt-sources switch ]"
-test_setup "neurodebian" "jessie" "7/27/2017" "KEEP_SOURCES"
+echo "[ Test with switches ]"
+test_setup "neurodebian" "jessie" "7/27/2017" "--keep-apt-sources --no-downgrade --debug"
 assert_line_in_file "neurodebian.sources.list" "deb http://neuro.debian.net/debian jessie main"
 assert_line_in_file "neurodebian.sources.list" "deb http://neuro.debian.net/debian data main"
 assert_line_in_file "snapshots.sources.list" "deb http://snapshot-neuro.debian.net:5002/archive/neurodebian/20170727T050508Z/ jessie main"
@@ -184,9 +192,11 @@ assert_line_in_file "snapshots.sources.list" "deb http://snapshot-neuro.debian.n
 assert_line_in_file "snapshots.sources.list" "deb http://snapshot.debian.org/archive/debian/20170727T040550Z/ jessie main"
 assert_line_in_file "snapshots.sources.list" "deb http://snapshot.debian.org/archive/debian-security/20170727T203455Z/ jessie/updates main"
 assert_line_in_file "sources.list" "deb http://deb.debian.org/debian jessie main"
-assert_line_in_file "sources.list" "deb http://security.debian.org" "partial_match"
+assert_line_in_file "sources.list" "deb http://security.debian.org"
 assert_line_in_file "sources.list" "deb http://deb.debian.org/debian jessie-updates main"
-# TODO: assert_line_in_file "stdout" "INFO: Packages were not downgraded" "partial_match"
+assert_line_in_file "stdout" "DEBUG: Get:1 http://neuro.debian.net jessie InRelease"
+assert_line_in_file "stdout" "DEBUG: Finding snapshot at http://snapshot.debian.org for 20170727T000000Z"
+assert_line_in_file "stdout" "INFO: Packages were not downgraded"
 test_teardown
 
 exit $EXIT_CODE
