@@ -28,29 +28,38 @@
 # available versions that may have been placed in the repo before your
 # selected time but after the previous snapshot.
 #
-# Setting the command line switch, --keep-apt-sources or -k will leave
+# Setting the command line switch --keep-apt-sources or -k will leave
 # the original, non-snapshot source active so that up-to-date packages can
 # still be installed.
 #
-# Setting the command line switch, --no-downgrade or -n will skip the package
+# Setting the command line switch --no-downgrade or -n will skip the package
 # downgrade step leaving the system as is.
+#
+# Setting the command line switch --debug or -d will display debugging info
+# to the screen.
 
 require 5.002;
 use Socket;
 
 
-# Function prints information to the screen.
+# Function prints information to the screen. "logg" with 2 g's because there
+# is a keyword 'log' (the math function)
 # 
 # Parameters
 # ----------
+# $label
+#     string : valid values: 'info', 'debug'
+#              debug values are only displayed when --debug switch set
 # $output
 #     string : Text to print to the screen.
 # 
-sub info {
-    my ($output) = @_;
-    my @lines = split /\n/, $output;
-    foreach my $line (@lines) { 
-        print "INFO: ${line}\n";
+sub logg {
+    my $label = shift(@_);
+    return if (!$DEBUG and $label eq 'debug');
+    $label = uc($label);
+    foreach my $line (@_) {
+        print "${label}: ${line}";
+        print "\n" if (!($line =~ /\n$/));
     }
 }
 
@@ -89,11 +98,11 @@ sub get_www_content {
 
 # Function to run apt-get update
 sub run_apt_get_update {
-    info "Refreshing apt cache";
+    logg("info", "Refreshing apt cache");
     if (qx!grep ubuntu /etc/os-release!) {
-        info qx/apt-get update --no-allow-insecure-repositories/;
+        logg("debug", qx/apt-get update --no-allow-insecure-repositories/);
     } else {
-        info qx/apt-get update/;
+        logg("debug", qx/apt-get update/);
     }
 }
 
@@ -110,7 +119,7 @@ sub get_user_timestamp {
 
     # Check for date command line argument
     if (!$user_date) {
-        info '
+        logg("info", '
 Script to enable a NeurDebian archived snapshot repository. Snapshot repositories
 provide previous releases of packages based on point-of-time archiving.
 
@@ -132,7 +141,7 @@ Synopsis
     "yyyy-mm-dd hh:mm:ss"
     "mm/dd/yy hh:mm:ss"
 
-';
+');
         exit 1;
     }
 
@@ -164,7 +173,7 @@ Synopsis
     }
 
     if (!$url_date) {
-        info '
+        logg("info", '
 ERROR: Invalid date
 
 Valid date formats include:
@@ -175,7 +184,7 @@ Valid date formats include:
   yyyymmddThh:mm
   "yyyy-mm-dd hh:mm:ss"
   "mm/dd/yy hh:mm:ss"
-';
+');
         exit 1;
     }
 
@@ -206,7 +215,7 @@ sub get_sources {
         run_apt_get_update();
         @lines = split /\n/, qx/apt-cache policy/;
     }
-    info "Discovering installed repository sources";
+    logg("info", "Discovering installed repository sources");
     for my $i (0 .. $#lines) {
         if ($lines[$i] =~ /(http\S+)\s+([\w-\/]+)\/([\w\-]+)/) {
             my $url = $1;
@@ -220,7 +229,7 @@ sub get_sources {
             $repo = 'debian-security' if ($domain eq 'Debian' && $url =~ 'security');
             $repo = 'neurodebian' if ($domain eq 'NeuroDebian');
             if ($domain ne "Ubuntu") { # Skip Ubuntu repos because there are no snapshots available.
-                info "Found $domain archive $archive at $url";
+                logg("debug", "Found $domain archive $archive at $url");
                 my $key = "$domain|$repo|$archive";
                 if (exists $sources{$key}) {
                     $sources{$key}{type} .= " $type";
@@ -268,11 +277,11 @@ sub write_snapshot_sources {
         }
         my $domain = 'snapshot-neuro.debian.net:5002';
         $domain = 'snapshot.debian.org' if ($sources{$key}{domain} eq 'Debian');
-        info "Finding snapshot at http://$domain for $user_timestamp";
+        logg("debug", "Finding snapshot at http://$domain for $user_timestamp");
         $contents = get_www_content("http://${domain}/archive/${sources{$key}{repo}}/${user_timestamp}/");
         # Handle 404 redirect page not found.
         if ($contents =~ /HTTP\/1.1 404 Not Found/) {
-            info "Can't find snapshot for http://${domain}/archive/${sources{$key}{repo}}/${user_timestamp}";
+            logg("info", "Can't find snapshot for http://${domain}/archive/${sources{$key}{repo}}/${user_timestamp}");
             next;
         }
         # Handle 301 redirect from snapshot server if we get one.
@@ -285,11 +294,11 @@ sub write_snapshot_sources {
         $next_timestamp =~ tr/\///d;
         if ($user_timestamp gt $next_timestamp) {
             # Notify user that they have requested a date beyond the most recent snapshot.
-            info "WARNING: User specified time (${user_timestamp}) later than latest snapshot available (${next_timestamp}). Skipping archive http://${domain}/archive/${sources{$key}{repo}}/${next_timestamp}/";
+            logg("info", "WARNING: User specified time (${user_timestamp}) later than latest snapshot available (${next_timestamp}). Skipping archive http://${domain}/archive/${sources{$key}{repo}}/${next_timestamp}/");
             next;
         }
         print $fp "deb http://${domain}/archive/${sources{$key}{repo}}/${next_timestamp}/ ${sources{$key}{archive}} ${sources{$key}{type}}\n";
-        info "Adding 'deb http://${domain}/archive/${sources{$key}{repo}}/${next_timestamp}/ ${sources{$key}{archive}} ${sources{$key}{type}}' to $snapshots_sources_file";
+        logg("debug", "Adding 'deb http://${domain}/archive/${sources{$key}{repo}}/${next_timestamp}/ ${sources{$key}{archive}} ${sources{$key}{type}}' to $snapshots_sources_file");
         $found_count += 1;
     }
     close $fp;
@@ -339,7 +348,7 @@ sub disable_lines {
         }
         if ($found) {
             print $out "# $_\n";
-            info "Disabling '$source_line' in $sources_file";
+            logg("debug", "Disabling '$source_line' in $sources_file");
         } else {
             print $out "$_\n";
         }
@@ -358,7 +367,7 @@ sub disable_lines {
 #
 sub installed_packages {
  
-    info "Discovering installed packages for possible version downgrades";
+    logg("info", "Discovering installed packages for possible version downgrades");
     my @packages = ();
     my @lines = split /\n/, qx/dpkg -l/;
     for my $i (0 .. $#lines) {
@@ -382,7 +391,7 @@ sub downgrade_packages {
     my @downgrade_packages;
 
     for my $package (@packages) {
-        info "Checking package '${package}' for an older snapshot version";
+        logg("debug", "Checking package '${package}' for an older snapshot version");
         my $found = 0;
         my $installed_version = '';
         my $snapshot_version = '';
@@ -397,32 +406,35 @@ sub downgrade_packages {
             }
         }
         if ($found) {
-            info "Will DOWNGRADE '${package}=${installed_version}' to version '${snapshot_version}'";
+            logg("debug", "Will DOWNGRADE '${package}=${installed_version}' to version '${snapshot_version}'");
             push @downgrade_packages, "${package}=${snapshot_version}";
         }
     }
 
     my $packages_to_downgrade = join " ", @downgrade_packages;
-    info "DOWNGRADING: ${packages_to_downgrade}";
-    my $output = info qx/export DEBIAN_FRONTEND=noninteractive; apt-get install --no-install-recommends --force-yes -y ${packages_to_downgrade}/;
-    info $output;
+    logg("info", "DOWNGRADING: ${packages_to_downgrade}");
+    logg("debug", qx/export DEBIAN_FRONTEND=noninteractive; apt-get install --no-install-recommends --force-yes -y ${packages_to_downgrade}/);
 }
 
 
 ##### Program main
 
+# Global vars
+$USER_DATE = "";
+$KEEP_SOURCES = 0;
+$DO_NOT_DOWNGRADE = 0;
+$DEBUG = 0;
+
 # Parse command line options
-my $USER_DATE = "";
-my $KEEP_SOURCES = 0;
-my $DO_NOT_DOWNGRADE = 0;
 foreach(@ARGV) {
     $KEEP_SOURCES = 1 if ($_ eq '--keep-apt-sources' or $_ eq '-k');
     $DO_NOT_DOWNGRADE = 1 if ($_ eq '--no-downgrade' or $_ eq '-n');
+    $DEBUG = 1 if ($_ eq '--debug' or $_ eq '-d');
 }
-my $parameter_count = 1 + $KEEP_SOURCES + $DO_NOT_DOWNGRADE;
+my $parameter_count = 1 + $KEEP_SOURCES + $DO_NOT_DOWNGRADE + $DEBUG;
 if (scalar(@ARGV) != $parameter_count) {
     print "Invalid command parameters\n";
-    print "USAGE: nd_freeze [--keep-apt-sources] [--no-downgrade] date\n";
+    print "USAGE: nd_freeze [--keep-apt-sources] [--no-downgrade] [--debug] date\n";
     exit 1;
 }
 $USER_DATE = $ARGV[$parameter_count - 1];
@@ -460,11 +472,11 @@ if ((keys %sources) > 0) {
         run_apt_get_update();  # run even only to check and then cleanup later on
     }
 } else {
-    info "No valid sources found to get snapshots.";
+    logg("info", "No valid sources found to get snapshots.");
 }
 
 if ($DO_NOT_DOWNGRADE) {
-    info "Packages were not downgraded";
+    logg("info", "Packages were not downgraded");
 }
 else {
     my @packages = installed_packages();
@@ -472,7 +484,7 @@ else {
 }
 
 if (scalar @apt_releases_list == 0) {
-	info "Cleaning up APT lists because originally there were none";
+	logg("info", "Cleaning up APT lists because originally there were none");
 	qx!rm -rf /var/lib/apt/lists/*!;
 }
 
