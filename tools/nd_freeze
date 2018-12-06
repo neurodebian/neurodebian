@@ -209,39 +209,33 @@ Valid date formats include:
 # 
 sub get_sources {
     my %sources;
-    my @lines = split /\n/, qx/apt-cache policy/;
-    # Check to see if we need to update the cache before checking the policy.
-    if ($#lines < 5) {
-        run_apt_get_update();
-        @lines = split /\n/, qx/apt-cache policy/;
-    }
     logg("info", "Discovering installed repository sources");
-    for my $i (0 .. $#lines) {
-        if ($lines[$i] =~ /(http\S+)\s+([\w-\/]+)\/([\w\-]+)/) {
-            my $url = $1;
-            chop($url) if (substr($url, -1) eq '/');
-            my $repo = '';
-            my $archive = $2;
-            my $type = $3;
-            $lines[$i+1] =~ /o=(\w+),/;
-            my $domain = $1;
-            $repo = 'debian' if ($domain eq 'Debian');
-            $repo = 'debian-security' if ($domain eq 'Debian' && $url =~ 'security');
-            $repo = 'neurodebian' if ($domain eq 'NeuroDebian');
-            if ($domain ne "Ubuntu") { # Skip Ubuntu repos because there are no snapshots available.
-                logg("debug", "Found $domain archive $archive at $url");
-                my $key = "$domain|$repo|$archive";
-                if (exists $sources{$key}) {
-                    $sources{$key}{type} .= " $type";
-                } else {
-                    %{$sources{$key}} = (
-                        domain => $domain,
-                        repo => $repo,
-                        archive => $archive,
-                        type => $type,
-                        url => $url
-                    );
+    run_apt_get_update();
+    my @files = glob("/var/lib/apt/lists/*Release");
+    for my $file (@files) {
+        my %source;
+        open my $fh, '<', $file or die "Could not open '$file' $!\n";
+        while (my $line = <$fh>) {
+            chomp $line;
+            if ($line =~ /^([a-zA-Z][^:]*):[\ ]+(\S.*)$/) {
+                $source{$1} = $2;
+            }
+        }
+        if ($source{Origin} eq "Debian" or $source{Origin} eq "NeuroDebian") {
+            logg("debug", "Found $source{Label} $source{Codename} with components $source{Components}");
+            for my $component (split(' ', $source{Components})) {
+                my $codename = $source{Codename};
+                if ($component =~ /(\S+)\/(\S+)/) {
+                    $codename = "${source{Codename}}/${1}";
+                    $component = $2;
                 }
+                my $key = "$source{Label}|$source{Codename}|$component";
+                %{$sources{$key}} = (
+                    Origin => $source{Origin},
+                    Label => $source{Label},
+                    Codename => $codename,
+                    Component => $component
+                );
             }
         }
     }
@@ -261,7 +255,8 @@ sub get_sources {
 # $user_timestamp
 #     string : Timestamp of freeze date provided by user at the command line.
 # %sources
-#     hash : The sources retrieved from apt-cache policy that need to be written to the sources file.
+#     hash : The sources retrieved from /var/lib/apt/lists/*Release policy that
+#            need to be written to the sources file.
 #
 sub write_snapshot_sources {
     my ($snapshots_sources_file, $user_timestamp, %sources) = @_;
@@ -269,36 +264,37 @@ sub write_snapshot_sources {
     my $found_count = 0;
     open my $fp, '>', $snapshots_sources_file;
     for my $key (keys %sources) {
-        if ($sources{$key}{domain} eq 'NeuroDebian' and !$have_knocked) {
+        if ($sources{$key}{Origin} eq 'NeuroDebian' and !$have_knocked) {
             # Knock on snapshot's door. This is temporarily necessary until the production
             # version of the site is made available.
             get_www_content('http://neuro.debian.net/_files/knock-snapshots');
             $have_knocked = 1;
         }
         my $domain = 'snapshot-neuro.debian.net:5002';
-        $domain = 'snapshot.debian.org' if ($sources{$key}{domain} eq 'Debian');
+        $domain = 'snapshot.debian.org' if ($sources{$key}{Origin} eq 'Debian');
+        my $label = lc($sources{$key}{Label});
         logg("debug", "Finding snapshot at http://$domain for $user_timestamp");
-        $contents = get_www_content("http://${domain}/archive/${sources{$key}{repo}}/${user_timestamp}/");
+        $contents = get_www_content("http://${domain}/archive/${label}/${user_timestamp}/");
         # Handle 404 redirect page not found.
         if ($contents =~ /HTTP\/1.1 404 Not Found/) {
-            logg("info", "Can't find snapshot for http://${domain}/archive/${sources{$key}{repo}}/${user_timestamp}");
+            logg("info", "Can't find snapshot for http://${domain}/archive/${label}/${user_timestamp}");
             next;
         }
         # Handle 301 redirect from snapshot server if we get one.
-        if ($contents =~ /The resource has been moved to http:\/\/[\S\-]+\/archive\/${sources{$key}{repo}}\/(\d{8}T\d{6}Z\/)/) {
-            $contents = get_www_content("http://${domain}/archive/${sources{$key}{repo}}/${1}/");
+        if ($contents =~ /The resource has been moved to http:\/\/[\S\-]+\/archive\/${label}\/(\d{8}T\d{6}Z\/)/) {
+            $contents = get_www_content("http://${domain}/archive/${label}/${1}/");
         }
         # Scrape next timestamp from HTML returned from snapshot server.
-        $contents =~ /\/archive\/${sources{$key}{repo}}\/([0-9TZ]+)\/">next</;
+        $contents =~ /\/archive\/${label}\/([0-9TZ]+)\/">next</;
         my $next_timestamp = $1;
         $next_timestamp =~ tr/\///d;
         if ($user_timestamp gt $next_timestamp) {
             # Notify user that they have requested a date beyond the most recent snapshot.
-            logg("info", "WARNING: User specified time (${user_timestamp}) later than latest snapshot available (${next_timestamp}). Skipping archive http://${domain}/archive/${sources{$key}{repo}}/${next_timestamp}/");
+            logg("info", "WARNING: User specified time (${user_timestamp}) later than latest snapshot available (${next_timestamp}). Skipping archive http://${domain}/archive/${label}/${next_timestamp}/");
             next;
         }
-        print $fp "deb http://${domain}/archive/${sources{$key}{repo}}/${next_timestamp}/ ${sources{$key}{archive}} ${sources{$key}{type}}\n";
-        logg("debug", "Adding 'deb http://${domain}/archive/${sources{$key}{repo}}/${next_timestamp}/ ${sources{$key}{archive}} ${sources{$key}{type}}' to $snapshots_sources_file");
+        print $fp "deb http://${domain}/archive/${label}/${next_timestamp}/ ${sources{$key}{Codename}} ${sources{$key}{Component}}\n";
+        logg("debug", "Adding 'deb http://${domain}/archive/${label}/${next_timestamp}/ ${sources{$key}{Codename}} ${sources{$key}{Component}}' to $snapshots_sources_file");
         $found_count += 1;
     }
     close $fp;
@@ -340,7 +336,17 @@ sub disable_lines {
         for my $key (keys %sources) {
             $_ =~ /(http:\S+)(.*)$/;
             $file_line = $1 . join ' ', sort split /\s+/, $2;
-            $source_line = $sources{$key}{url} . ' ' . join ' ', sort split /\s+/, "$sources{$key}{archive} $sources{$key}{type}";
+            my $url;
+            if ($sources{$key}{Label} eq "Debian") {
+                $url = "http://deb.debian.org/debian";
+            }
+            elsif ($sources{$key}{Label} eq "Debian-Security") {
+                $url = "http://security.debian.org/debian-security";
+            }
+            elsif ($sources{$key}{Label} eq "NeuroDebian") {
+                $url = "http://neuro.debian.net/debian";
+            }
+            $source_line = $url . ' ' . join ' ', sort split /\s+/, "$sources{$key}{Codename} $sources{$key}{Component}";
             if ($file_line eq $source_line) {
                 $found = 1;
                 last;
@@ -391,7 +397,6 @@ sub downgrade_packages {
     my @downgrade_packages;
 
     for my $package (@packages) {
-        logg("debug", "Checking package '${package}' for an older snapshot version");
         my $found = 0;
         my $installed_version = '';
         my $snapshot_version = '';
@@ -473,6 +478,7 @@ if ((keys %sources) > 0) {
     }
 } else {
     logg("info", "No valid sources found to get snapshots.");
+    exit 1;
 }
 
 if ($DO_NOT_DOWNGRADE) {
