@@ -195,7 +195,7 @@ assert_line_in_file "sources.list" "deb http://deb.debian.org/debian jessie main
 assert_line_in_file "sources.list" "deb http://security.debian.org"
 assert_line_in_file "sources.list" "deb http://deb.debian.org/debian jessie-updates main"
 assert_line_in_file "stdout" "DEBUG: Get:1 http://neuro.debian.net jessie InRelease"
-assert_line_in_file "stdout" "DEBUG: Finding snapshot at http://snapshot.debian.org for 20170727T000000Z"
+assert_line_in_file "stdout" "DEBUG: Found Debian-Security jessie"
 assert_line_in_file "stdout" "INFO: Packages were not downgraded"
 test_teardown
 
