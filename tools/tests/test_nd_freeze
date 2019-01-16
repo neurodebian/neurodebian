@@ -135,7 +135,7 @@ assert_line_in_file "sources.list" "# deb http://deb.debian.org/debian jessie-up
 assert_line_in_file "sources.list.orig.disabled" "deb http://deb.debian.org/debian jessie main"
 assert_line_in_file "sources.list.orig.disabled" "deb http://security.debian.org"
 assert_line_in_file "sources.list.orig.disabled" "deb http://deb.debian.org/debian jessie-updates main"
-assert_line_in_file "stdout" "INFO: DOWNGRADING: base-files=8+deb8u9 gcc-4.9-base:amd64=4.9.2-10"
+assert_line_in_file "stdout" "INFO: UPDATING: base-files=8+deb8u9 gcc-4.9-base:amd64=4.9.2-10"
 assert_line_in_file "stdout" "INFO: Cleaning up APT lists because originally there were none"
 assert_line_NOT_in_file "stdout" "DEBUG:"
 assert_line_in_file "lists_file_count" "1"
@@ -166,7 +166,7 @@ assert_line_in_file "neurodebian.sources.list" "deb http://neuro.debian.net/debi
 assert_line_in_file "sources.list" "deb http://deb.debian.org/debian jessie main"
 assert_line_in_file "sources.list" "deb http://deb.debian.org/debian jessie-updates main"
 assert_line_in_file "sources.list" "deb http://security.debian.org"
-assert_line_in_file "stdout" 'INFO: WARNING: User specified time (20280827T000000Z) later than latest snapshot available'
+assert_line_in_file "stdout" 'INFO: ERROR: User specified time (20280827T000000Z) later than latest snapshot available'
 test_teardown
 
 echo "[ Test Ubuntu release ]"
@@ -183,7 +183,7 @@ assert_line_in_file "sources.list" "deb http://security.ubuntu.com/ubuntu/ xenia
 test_teardown
 
 echo "[ Test with switches ]"
-test_setup "neurodebian" "jessie" "7/27/2017" "--keep-apt-sources --no-downgrade --debug"
+test_setup "neurodebian" "jessie" "7/27/2017" "--keep-apt-sources --no-updates --debug"
 assert_line_in_file "neurodebian.sources.list" "deb http://neuro.debian.net/debian jessie main"
 assert_line_in_file "neurodebian.sources.list" "deb http://neuro.debian.net/debian data main"
 assert_line_in_file "snapshots.sources.list" "deb http://snapshot-neuro.debian.net:5002/archive/neurodebian/20170727T050508Z/ jessie main"
@@ -196,7 +196,7 @@ assert_line_in_file "sources.list" "deb http://security.debian.org"
 assert_line_in_file "sources.list" "deb http://deb.debian.org/debian jessie-updates main"
 assert_line_in_file "stdout" "DEBUG: Get:1 http://neuro.debian.net jessie InRelease"
 assert_line_in_file "stdout" "DEBUG: Found Debian-Security jessie"
-assert_line_in_file "stdout" "INFO: Packages were not downgraded"
+assert_line_in_file "stdout" "INFO: Packages were not updated"
 test_teardown
 
 exit $EXIT_CODE
