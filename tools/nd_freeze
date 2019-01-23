@@ -2,45 +2,47 @@
 #emacs: -*- mode: shell-script; c-basic-offset: 4; tab-width: 4; indent-tabs-mode: t -*-
 #ex: set sts=4 ts=4 sw=4 noet:
 #
-# Install access to the NeuroDebian snapshot repository that allows access
-# to old packages based on dates and version numbers.
-#
-# Usage: nd_freeze [--keep-apt-sources --no-updates|-n] date
-#
-# The UTC date/time format sent to NeuroDebian to get the repo info is in the
-# format yyyymmddThhmmssz or yyymmdd. However, the script will handle and
-# reformat a number of date/time formats. Quotes are required if there is a
-# space between the date and time components:
-#
-#   yyyymmddThh:mm:ssZ
-#   yyyymmdd
-#   mm/dd/yyyy
-#   yyyy-mm-dd
-#   yyyymmddThh:mm
-#   "yyyy-mm-dd hh:mm:ss"
-#   "mm/dd/yy hh:mm:ss"
-#
-# Browse available snapshots here:
-# http://snapshot-neuro.debian.net:5002/archive/neurodebian/
-#
-# If there is no import at the exact time you specified you will get both the
-# previous and next available timestamped repos of the one you specified to make
-# available versions that may have been placed in the repo before your
-# selected time but after the previous snapshot.
-#
-# Setting the command line switch --keep-apt-sources or -k will leave
-# the original, non-snapshot source active so that up-to-date packages can
-# still be installed.
-#
-# Setting the command line switch --no-updates or -n will skip the package
-# update step, leaving the system as is.
-#
-# Setting the command line switch --debug or -d will display debugging info
-# to the screen.
-
 require 5.002;
 use Socket;
 
+my $INFO = <<'END_INFO';
+Usage: nd_freeze [--keep-apt-sources|-k] [--no-updates|-n] [--debug|-d] [--help|-h] date
+
+Install access to the NeuroDebian snapshot repository that allows installation
+of packages based on a given date.
+
+    -k, --keep-apt-sources  Leave the original, non-snapshot source active so
+                            that originally sourced packages can still be
+                            installed.
+
+    -n, --no-updates        Make the snapshot repositories available but skip
+                            the package update step, leaving the system as is.
+
+    -d, --debug             Display debugging info to the screen.
+
+    -h, --help              Display this help text and exit.
+
+The UTC date/time format sent to NeuroDebian to get the repo info is in the
+format yyyymmddThhmmssz or yyymmdd. However, the script will handle and
+reformat a number of date/time formats. Quotes are required if there is a
+space between the date and time components:
+
+  yyyymmddThh:mm:ssZ
+  yyyymmdd
+  mm/dd/yyyy
+  yyyy-mm-dd
+  yyyymmddThh:mm
+  "yyyy-mm-dd hh:mm:ss"
+  "mm/dd/yy hh:mm:ss"
+
+Browse available snapshots here:
+http://snapshot-neuro.debian.net:5002/archive/neurodebian/
+
+If there is no snapshot available at the exact time you specified you will get
+both the previous and next available timestamped repos of the one you specified
+to make available versions that may have been placed in the repo before your
+selected time but after the previous snapshot.
+END_INFO
 
 # Function prints information to the screen. "logg" with 2 g's because there
 # is a keyword 'log' (the math function)
@@ -308,7 +310,10 @@ sub write_snapshot_sources {
         $next_timestamp =~ tr/\///d;
         if ($user_timestamp gt $next_timestamp) {
             # Notify user that they have requested a date beyond the most recent snapshot.
-            logg("info", "ERROR: User specified time (${user_timestamp}) later than latest snapshot available (${next_timestamp}). Freeze failed.");
+            $last_available = $next_timestamp ? $next_timestamp : $user_timestamp;
+            logg("info", "ERROR: User specified time (${user_timestamp}) must predate the most recent snapshot timestamp (${last_available}). Freeze failed.");
+            close $fp;
+            unlink $snapshots_sources_file or warn "Could not delete $snapshots_sources_file: $!";
             exit(1);
         }
         # Hold off updating security archive until after the debian-archive-keyring package is updated.
@@ -479,18 +484,24 @@ $USER_DATE = "";
 $KEEP_SOURCES = 0;
 $DO_NOT_UPDATE = 0;
 $DEBUG = 0;
+$HELP = 0;
 
 # Parse command line options
 foreach(@ARGV) {
     $KEEP_SOURCES = 1 if ($_ eq '--keep-apt-sources' or $_ eq '-k');
     $DO_NOT_UPDATE = 1 if ($_ eq '--no-updates' or $_ eq '-n');
     $DEBUG = 1 if ($_ eq '--debug' or $_ eq '-d');
+    $HELP = 1 if ($_ eq '--help' or $_ eq '-h');
 }
 my $parameter_count = 1 + $KEEP_SOURCES + $DO_NOT_UPDATE + $DEBUG;
 if (scalar(@ARGV) != $parameter_count) {
     print "Invalid command parameters\n";
-    print "USAGE: nd_freeze [--keep-apt-sources] [--no-updates] [--debug] date\n";
+    print "USAGE: nd_freeze [--keep-apt-sources] [--no-updates] [--debug] [--help] date\n";
     exit 1;
+}
+if ($HELP) {
+    print $INFO;
+    exit(0);
 }
 $USER_DATE = $ARGV[$parameter_count - 1];
 

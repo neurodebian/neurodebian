@@ -18,8 +18,8 @@ set -o pipefail
 #   Code name for distro release. (e.g. jessie)
 # date : string
 #   Date at which the snapshot of the OS is wanted
-# keep_sources : string (Optional)
-#   Pass the string "KEEP_SOURCES" to run nd_freeze with the --keep-original-apt-sources switch
+# switches : string
+#   Pass a string of command switches (e.g. "-k, --debug")
 #
 function test_setup {
     distro=$1
@@ -197,6 +197,11 @@ assert_line_in_file "sources.list" "deb http://deb.debian.org/debian jessie-upda
 assert_line_in_file "stdout" "DEBUG: Get:1 http://neuro.debian.net jessie InRelease"
 assert_line_in_file "stdout" "DEBUG: Found Debian-Security jessie"
 assert_line_in_file "stdout" "INFO: Packages were not updated"
+test_teardown
+
+echo "[ Test help ]"
+test_setup "neurodebian" "jessie" " " "-h"
+assert_line_in_file "stdout" "Usage: nd_freeze"
 test_teardown
 
 exit $EXIT_CODE
