@@ -166,7 +166,7 @@ assert_line_in_file "neurodebian.sources.list" "deb http://neuro.debian.net/debi
 assert_line_in_file "sources.list" "deb http://deb.debian.org/debian jessie main"
 assert_line_in_file "sources.list" "deb http://deb.debian.org/debian jessie-updates main"
 assert_line_in_file "sources.list" "deb http://security.debian.org"
-assert_line_in_file "stdout" 'INFO: ERROR: User specified time (20280827T000000Z) later than latest snapshot available'
+assert_line_in_file "stdout" 'INFO: ERROR: User specified time (20280827T000000Z) must predate the most recent snapshot timestamp'
 test_teardown
 
 echo "[ Test Ubuntu release ]"
