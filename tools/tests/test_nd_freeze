@@ -135,7 +135,7 @@ assert_line_in_file "sources.list" "# deb http://deb.debian.org/debian jessie-up
 assert_line_in_file "sources.list.orig.disabled" "deb http://deb.debian.org/debian jessie main"
 assert_line_in_file "sources.list.orig.disabled" "deb http://security.debian.org"
 assert_line_in_file "sources.list.orig.disabled" "deb http://deb.debian.org/debian jessie-updates main"
-assert_line_in_file "stdout" "INFO: UPDATING: base-files=8+deb8u9 gcc-4.9-base:amd64=4.9.2-10"
+assert_line_in_file "stdout" "INFO: UPDATING: apt=1.0.9.8.4 base-files=8+deb8u9 gcc-4.9-base:amd64=4.9.2-10"
 assert_line_in_file "stdout" "INFO: Cleaning up APT lists because originally there were none"
 assert_line_NOT_in_file "stdout" "DEBUG:"
 assert_line_in_file "lists_file_count" "1"
