@@ -242,7 +242,7 @@ sub get_sources {
                 $source{$1} = $2;
             }
         }
-        if ($source{Origin} eq "Debian" or $source{Origin} eq "NeuroDebian") {
+        if ($source{Origin} eq "Debian" or $source{Origin} eq "NeuroDebian" or $source{Origin} eq "Debian Backports") {
             logg("debug", "Found $source{Label} $source{Codename} with components $source{Components}");
             for my $component (split(' ', $source{Components})) {
                 my $codename = $source{Codename};
@@ -292,8 +292,9 @@ sub write_snapshot_sources {
             $have_knocked = 1;
         }
         my $domain = 'snapshot-neuro.debian.net:5002';
-        $domain = 'snapshot.debian.org' if ($sources{$key}{Origin} eq 'Debian');
+        $domain = 'snapshot.debian.org' if ($sources{$key}{Origin} eq 'Debian' || $sources{$key}{Origin} eq 'Debian Backports');
         my $label = lc($sources{$key}{Label});
+        $label =~ tr/ /-/;
         $contents = get_www_content("http://${domain}/archive/${label}/${user_timestamp}/");
         # Handle 404 redirect page not found.
         if ($contents =~ /HTTP\/1.1 404 Not Found/) {
@@ -356,7 +357,7 @@ sub disable_lines {
             next;
         }
         my $found = 0;
-        # Loop through the sources from apt-cache policy for each line in the
+        # Loop through the sources from the Release files for each line in the
         # sources file to determine if it is one we need to comment out.
         my $file_line = '';
         my $source_line = '';
@@ -364,7 +365,7 @@ sub disable_lines {
             $_ =~ /(http:\S+)(.*)$/;
             $file_line = $1 . join ' ', sort split /\s+/, $2;
             my $url;
-            if ($sources{$key}{Label} eq "Debian") {
+            if ($sources{$key}{Label} eq "Debian" || $sources{$key}{Label} eq "Debian Backports") {
                 $url = "http://deb.debian.org/debian";
             }
             elsif ($sources{$key}{Label} eq "Debian-Security") {
@@ -517,7 +518,11 @@ my @apt_releases_list = </var/lib/apt/lists/*Release>;
 
 my $user_timestamp = get_user_timestamp($USER_DATE);
 my $snapshots_sources_file = '/etc/apt/sources.list.d/snapshots.sources.list';
-my @sources_files = ('/etc/apt/sources.list', '/etc/apt/sources.list.d/neurodebian.sources.list');
+my @sources_files = (
+    '/etc/apt/sources.list',
+    '/etc/apt/sources.list.d/neurodebian.sources.list',
+    '/etc/apt/sources.list.d/backports.list'
+);
 
 # Restore original sources files and apt-cache if this is a rerun of the command.
 foreach my $sources_file (@sources_files) {
