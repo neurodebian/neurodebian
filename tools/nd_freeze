@@ -2,45 +2,47 @@
 #emacs: -*- mode: shell-script; c-basic-offset: 4; tab-width: 4; indent-tabs-mode: t -*-
 #ex: set sts=4 ts=4 sw=4 noet:
 #
-# Install access to the NeuroDebian snapshot repository that allows access
-# to old packages based on dates and version numbers.
-#
-# Usage: nd_freeze [--keep-apt-sources|-k] [--no-downgrade|-n] date
-#
-# The UTC date/time format sent to NeuroDebian to get the repo info is in the
-# format yyyymmddThhmmssz or yyymmdd. However, the script will handle and
-# reformat a number of date/time formats. Quotes are required if there is a
-# space between the date and time components:
-#
-#   yyyymmddThh:mm:ssZ
-#   yyyymmdd
-#   mm/dd/yyyy
-#   yyyy-mm-dd
-#   yyyymmddThh:mm
-#   "yyyy-mm-dd hh:mm:ss"
-#   "mm/dd/yy hh:mm:ss"
-#
-# Browse available snapshots here:
-# http://snapshot-neuro.debian.net:5002/archive/neurodebian/
-#
-# If there is no import at the exact time you specified you will get both the
-# previous and next available timestamped repos of the one you specified to make
-# available versions that may have been placed in the repo before your
-# selected time but after the previous snapshot.
-#
-# Setting the command line switch --keep-apt-sources or -k will leave
-# the original, non-snapshot source active so that up-to-date packages can
-# still be installed.
-#
-# Setting the command line switch --no-downgrade or -n will skip the package
-# downgrade step leaving the system as is.
-#
-# Setting the command line switch --debug or -d will display debugging info
-# to the screen.
-
 require 5.002;
 use Socket;
 
+my $INFO = <<'END_INFO';
+Usage: nd_freeze [--keep-apt-sources|-k] [--no-updates|-n] [--debug|-d] [--help|-h] date
+
+Install access to the NeuroDebian snapshot repository that allows installation
+of packages based on a given date.
+
+    -k, --keep-apt-sources  Leave the original, non-snapshot source active so
+                            that originally sourced packages can still be
+                            installed.
+
+    -n, --no-updates        Make the snapshot repositories available but skip
+                            the package update step, leaving the system as is.
+
+    -d, --debug             Display debugging info to the screen.
+
+    -h, --help              Display this help text and exit.
+
+The UTC date/time format sent to NeuroDebian to get the repo info is in the
+format yyyymmddThhmmssz or yyymmdd. However, the script will handle and
+reformat a number of date/time formats. Quotes are required if there is a
+space between the date and time components:
+
+  yyyymmddThh:mm:ssZ
+  yyyymmdd
+  mm/dd/yyyy
+  yyyy-mm-dd
+  yyyymmddThh:mm
+  "yyyy-mm-dd hh:mm:ss"
+  "mm/dd/yy hh:mm:ss"
+
+Browse available snapshots here:
+http://snapshot-neuro.debian.net:5002/archive/neurodebian/
+
+If there is no snapshot available at the exact time you specified you will get
+both the previous and next available timestamped repos of the one you specified
+to make available versions that may have been placed in the repo before your
+selected time but after the previous snapshot.
+END_INFO
 
 # Function prints information to the screen. "logg" with 2 g's because there
 # is a keyword 'log' (the math function)
@@ -240,7 +242,7 @@ sub get_sources {
                 $source{$1} = $2;
             }
         }
-        if ($source{Origin} eq "Debian" or $source{Origin} eq "NeuroDebian") {
+        if ($source{Origin} eq "Debian" or $source{Origin} eq "NeuroDebian" or $source{Origin} eq "Debian Backports") {
             logg("debug", "Found $source{Label} $source{Codename} with components $source{Components}");
             for my $component (split(' ', $source{Components})) {
                 my $codename = $source{Codename};
@@ -290,8 +292,9 @@ sub write_snapshot_sources {
             $have_knocked = 1;
         }
         my $domain = 'snapshot-neuro.debian.net:5002';
-        $domain = 'snapshot.debian.org' if ($sources{$key}{Origin} eq 'Debian');
+        $domain = 'snapshot.debian.org' if ($sources{$key}{Origin} eq 'Debian' || $sources{$key}{Origin} eq 'Debian Backports');
         my $label = lc($sources{$key}{Label});
+        $label =~ tr/ /-/;
         $contents = get_www_content("http://${domain}/archive/${label}/${user_timestamp}/");
         # Handle 404 redirect page not found.
         if ($contents =~ /HTTP\/1.1 404 Not Found/) {
@@ -308,8 +311,11 @@ sub write_snapshot_sources {
         $next_timestamp =~ tr/\///d;
         if ($user_timestamp gt $next_timestamp) {
             # Notify user that they have requested a date beyond the most recent snapshot.
-            logg("info", "WARNING: User specified time (${user_timestamp}) later than latest snapshot available (${next_timestamp}). Skipping archive http://${domain}/archive/${label}/${next_timestamp}/");
-            next;
+            $last_available = $next_timestamp ? $next_timestamp : $user_timestamp;
+            logg("info", "ERROR: User specified time (${user_timestamp}) must predate the most recent snapshot timestamp (${last_available}). Freeze failed.");
+            close $fp;
+            unlink $snapshots_sources_file or warn "Could not delete $snapshots_sources_file: $!";
+            exit(1);
         }
         # Hold off updating security archive until after the debian-archive-keyring package is updated.
         my $line_prefix = "";
@@ -351,7 +357,7 @@ sub disable_lines {
             next;
         }
         my $found = 0;
-        # Loop through the sources from apt-cache policy for each line in the
+        # Loop through the sources from the Release files for each line in the
         # sources file to determine if it is one we need to comment out.
         my $file_line = '';
         my $source_line = '';
@@ -359,7 +365,7 @@ sub disable_lines {
             $_ =~ /(http:\S+)(.*)$/;
             $file_line = $1 . join ' ', sort split /\s+/, $2;
             my $url;
-            if ($sources{$key}{Label} eq "Debian") {
+            if ($sources{$key}{Label} eq "Debian" || $sources{$key}{Label} eq "Debian Backports") {
                 $url = "http://deb.debian.org/debian";
             }
             elsif ($sources{$key}{Label} eq "Debian-Security") {
@@ -395,7 +401,7 @@ sub disable_lines {
 #
 sub installed_packages {
  
-    logg("info", "Discovering installed packages for possible version downgrades");
+    logg("info", "Discovering installed packages for possible version updates");
     my @packages = ();
     my @lines = split /\n/, exec_shell("dpkg -l");
     for my $i (0 .. $#lines) {
@@ -407,16 +413,16 @@ sub installed_packages {
 }
 
 
-# Downgrade the installed packages to their snapshot versions
+# Update the installed packages to their snapshot versions
 #
 # Parameters
 # ----------
 # @packages
 #     array : List of installed packages
 #
-sub downgrade_packages {
+sub update_packages {
     my (@packages) = @_;
-    my @downgrade_packages;
+    my @update_packages;
 
     for my $package (@packages) {
         my $found = 0;
@@ -433,16 +439,21 @@ sub downgrade_packages {
             }
         }
         if ($found) {
-            logg("debug", "Will DOWNGRADE '${package}=${installed_version}' to version '${snapshot_version}'");
-            push @downgrade_packages, "${package}=${snapshot_version}";
+            my $version_test = exec_shell("dpkg --compare-versions ${snapshot_version} ge ${installed_version} && echo 1 || echo 0");
+            my $action = 'DOWNGRADE';
+            $action = 'UPGRADE' if ($version_test == 1);
+            logg("debug", "Will ${action} '${package}=${installed_version}' to version '${snapshot_version}'");
+            push @update_packages, "${package}=${snapshot_version}";
         }
     }
 
-    my $packages_to_downgrade = join " ", @downgrade_packages;
-    logg("info", "DOWNGRADING: ${packages_to_downgrade}");
-    my $downgrade_switch = "--force-yes";
-    $downgrade_switch = "--allow-downgrades" if (is_minimum_apt_version("1.1.57"));
-    exec_shell("export DEBIAN_FRONTEND=noninteractive; apt-get install --no-install-recommends $downgrade_switch -y ${packages_to_downgrade}");
+    if (scalar(@update_packages) > 0) {
+        my $packages_to_update = join " ", @update_packages;
+        logg("info", "UPDATING: ${packages_to_update}");
+        my $update_switch = "--force-yes";
+        $update_switch = "--allow-downgrades" if (is_minimum_apt_version("1.1.57"));
+        exec_shell("export DEBIAN_FRONTEND=noninteractive; apt-get install --no-install-recommends $update_switch -y ${packages_to_update}");
+    }
 }
 
 # Test system for minimum version of apt package
@@ -472,20 +483,26 @@ sub is_minimum_apt_version {
 # Global vars
 $USER_DATE = "";
 $KEEP_SOURCES = 0;
-$DO_NOT_DOWNGRADE = 0;
+$DO_NOT_UPDATE = 0;
 $DEBUG = 0;
+$HELP = 0;
 
 # Parse command line options
 foreach(@ARGV) {
     $KEEP_SOURCES = 1 if ($_ eq '--keep-apt-sources' or $_ eq '-k');
-    $DO_NOT_DOWNGRADE = 1 if ($_ eq '--no-downgrade' or $_ eq '-n');
+    $DO_NOT_UPDATE = 1 if ($_ eq '--no-updates' or $_ eq '-n');
     $DEBUG = 1 if ($_ eq '--debug' or $_ eq '-d');
+    $HELP = 1 if ($_ eq '--help' or $_ eq '-h');
 }
-my $parameter_count = 1 + $KEEP_SOURCES + $DO_NOT_DOWNGRADE + $DEBUG;
+my $parameter_count = 1 + $KEEP_SOURCES + $DO_NOT_UPDATE + $DEBUG;
 if (scalar(@ARGV) != $parameter_count) {
     print "Invalid command parameters\n";
-    print "USAGE: nd_freeze [--keep-apt-sources] [--no-downgrade] [--debug] date\n";
+    print "USAGE: nd_freeze [--keep-apt-sources] [--no-updates] [--debug] [--help] date\n";
     exit 1;
+}
+if ($HELP) {
+    print $INFO;
+    exit(0);
 }
 $USER_DATE = $ARGV[$parameter_count - 1];
 
@@ -501,7 +518,11 @@ my @apt_releases_list = </var/lib/apt/lists/*Release>;
 
 my $user_timestamp = get_user_timestamp($USER_DATE);
 my $snapshots_sources_file = '/etc/apt/sources.list.d/snapshots.sources.list';
-my @sources_files = ('/etc/apt/sources.list', '/etc/apt/sources.list.d/neurodebian.sources.list');
+my @sources_files = (
+    '/etc/apt/sources.list',
+    '/etc/apt/sources.list.d/neurodebian.sources.list',
+    '/etc/apt/sources.list.d/backports.list'
+);
 
 # Restore original sources files and apt-cache if this is a rerun of the command.
 foreach my $sources_file (@sources_files) {
@@ -526,20 +547,20 @@ if ((keys %sources) > 0) {
     exit 1;
 }
 
-if ($DO_NOT_DOWNGRADE) {
-    logg("info", "Packages were not downgraded");
+if ($DO_NOT_UPDATE) {
+    logg("info", "Packages were not updated");
     # Enable security archives
     exec_shell("sed -i 's:#::g' $snapshots_sources_file");
 }
 else {
     # Update debian-archive-keyring first
-    downgrade_packages(("debian-archive-keyring"));
+    update_packages(("debian-archive-keyring"));
     # Enable security archives
     exec_shell("sed -i 's:#::g' $snapshots_sources_file");
     run_apt_get_update();
-    # Downgrade all the packages
+    # Update all the packages
     my @packages = installed_packages();
-    downgrade_packages(@packages);
+    update_packages(@packages);
 }
 
 if (scalar @apt_releases_list == 0) {
