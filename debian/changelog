@@ -1,3 +1,13 @@
+neurodebian (0.38.3) unstable; urgency=medium
+
+  * nd_freeze:
+    - got -h|--help, --debug command line options
+    - improved information output about ongoing actions
+    - now handles backports correctly 
+    - switched sources discovery from apt-cache to analysis of *Release files
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Wed, 06 Feb 2019 20:37:10 -0500
+
 neurodebian (0.38.2) unstable; urgency=medium
 
   * nd_freeze:
