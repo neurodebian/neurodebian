@@ -36,7 +36,7 @@ space between the date and time components:
   "mm/dd/yy hh:mm:ss"
 
 Browse available snapshots here:
-http://snapshot-neuro.debian.net:5002/archive/neurodebian/
+http://snapshot-neuro.debian.net/archive/neurodebian/
 
 If there is no snapshot available at the exact time you specified you will get
 both the previous and next available timestamped repos of the one you specified
@@ -146,7 +146,7 @@ provide previous releases of packages based on point-of-time archiving.
 
 See:
     https://snapshot.debian.org/
-    http://snapshot-neuro.debian.net:5002/
+    http://snapshot-neuro.debian.net/
 
 Synopsis
 --------
@@ -291,7 +291,7 @@ sub write_snapshot_sources {
             get_www_content('http://neuro.debian.net/_files/knock-snapshots');
             $have_knocked = 1;
         }
-        my $domain = 'snapshot-neuro.debian.net:5002';
+        my $domain = 'snapshot-neuro.debian.net';
         $domain = 'snapshot.debian.org' if ($sources{$key}{Origin} eq 'Debian' || $sources{$key}{Origin} eq 'Debian Backports');
         my $label = lc($sources{$key}{Label});
         $label =~ tr/ /-/;
