@@ -69,7 +69,10 @@ to BASE_URL. Return the body of the result as HTML."""
     # want the <HEAD>: this breaks feed readers).
     body = dom.getElementsByTagName('body')[0]
     tree_walker = html5lib.treewalkers.getTreeWalker('dom')
-    html_serializer = html5lib.serializer.htmlserializer.HTMLSerializer()
+    try:
+        html_serializer = html5lib.serializer.htmlserializer.HTMLSerializer()
+    except AttributeError:
+        html_serializer = html5lib.serializer.HTMLSerializer()
     return u''.join(html_serializer.serialize(tree_walker(body)))
     
 
