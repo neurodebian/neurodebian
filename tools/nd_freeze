@@ -296,9 +296,10 @@ sub write_snapshot_sources {
         my $label = lc($sources{$key}{Label});
         $label =~ tr/ /-/;
         $contents = get_www_content("http://${domain}/archive/${label}/${user_timestamp}/");
-        # Handle 404 redirect page not found.
-        if ($contents =~ /HTTP\/1.1 404 Not Found/) {
-            logg("info", "Can't find snapshot for http://${domain}/archive/${label}/${user_timestamp}");
+        # Handle bad URL requests
+        if (!($contents =~ /^HTTP\/1.\d 200 OK/) and !($contents =~ /^HTTP\/1.\d 301 Moved Permanently/)) {
+            $contents =~ /^(.+)/;
+            logg("info", "Bad URL request http://${domain}/archive/${label}/${user_timestamp}: ${1}");
             next;
         }
         # Handle 301 redirect from snapshot server if we get one.
