@@ -281,23 +281,16 @@ sub get_sources {
 #
 sub write_snapshot_sources {
     my ($snapshots_sources_file, $user_timestamp, %sources) = @_;
-    my $have_knocked = 0;
     my $found_count = 0;
     open my $fp, '>', $snapshots_sources_file;
     for my $key (keys %sources) {
-        if ($sources{$key}{Origin} eq 'NeuroDebian' and !$have_knocked) {
-            # Knock on snapshot's door. This is temporarily necessary until the production
-            # version of the site is made available.
-            get_www_content('http://neuro.debian.net/_files/knock-snapshots');
-            $have_knocked = 1;
-        }
         my $domain = 'snapshot-neuro.debian.net';
         $domain = 'snapshot.debian.org' if ($sources{$key}{Origin} eq 'Debian' || $sources{$key}{Origin} eq 'Debian Backports');
         my $label = lc($sources{$key}{Label});
         $label =~ tr/ /-/;
         $contents = get_www_content("http://${domain}/archive/${label}/${user_timestamp}/");
         # Handle bad URL requests
-        if (!($contents =~ /^HTTP\/1.\d 200 OK/) and !($contents =~ /^HTTP\/1.\d 301 Moved Permanently/)) {
+        if (!($contents =~ /^HTTP\/\d+\.\d+ 200/) and !($contents =~ /^HTTP\/\d+\.\d+ 301/)) {
             $contents =~ /^(.+)/;
             logg("info", "Bad URL request http://${domain}/archive/${label}/${user_timestamp}: ${1}");
             next;
