@@ -18,7 +18,9 @@ releases = {
     'wheezy': 'Debian GNU/Linux 7.0 (wheezy)',
     'jessie': 'Debian GNU/Linux 8.0 (jessie)',
     'stretch': 'Debian GNU/Linux 9.0 (stretch)',
-    'buster': 'Debian testing (buster)',
+    'buster': 'Debian GNU/Linux 10.0 (buster)',
+    # according to https://en.wikipedia.org/wiki/Debian_version_history#Debian_11_(Bullseye)
+    'bullseye': 'Debian testing (bullseye)',
     'sid': 'Debian unstable (sid)',
     'hardy': 'Ubuntu 08.04 LTS "Hardy Heron" (hardy)',
     'jaunty': 'Ubuntu 09.04 "Jaunty Jackalope" (jaunty)',
@@ -39,6 +41,9 @@ releases = {
     'yakkety': 'Ubuntu 16.10 "Yakkety Yak" (yakkety)',
     'zesty': 'Ubuntu 17.04 "Zesty Zapus" (zesty)',
     'artful': 'Ubuntu 17.10 "Artful Aardvark" (artful)',
+    'bionic': 'Ubuntu 18.04 "Bionic Beaver (bionic)',
+    'cosmic': 'Ubuntu 18.10 "Cosmic Cuttlefish" (cosmic)',
+    'disco': 'Ubuntu 19.04 "Disco Dingo" (disco)',
 }
 
 
