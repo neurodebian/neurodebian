@@ -36,7 +36,7 @@ space between the date and time components:
   "mm/dd/yy hh:mm:ss"
 
 Browse available snapshots here:
-http://snapshot-neuro.debian.net:5002/archive/neurodebian/
+http://snapshot-neuro.debian.net/archive/neurodebian/
 
 If there is no snapshot available at the exact time you specified you will get
 both the previous and next available timestamped repos of the one you specified
@@ -91,7 +91,7 @@ sub get_www_content {
     my $old_fh = select(F);
     $| = 1;
     select($old_fh);
-    print F "GET $file HTTP/1.1\nHost: ${dest}\n\n";
+    print F "GET $file HTTP/1.1\r\nHost: ${dest}\r\n\r\n";
     $/ = undef;
     $contents = <F>;
     close(F);
@@ -146,7 +146,7 @@ provide previous releases of packages based on point-of-time archiving.
 
 See:
     https://snapshot.debian.org/
-    http://snapshot-neuro.debian.net:5002/
+    http://snapshot-neuro.debian.net/
 
 Synopsis
 --------
@@ -235,7 +235,7 @@ sub get_sources {
     my @files = glob("/var/lib/apt/lists/*Release");
     for my $file (@files) {
         my %source;
-        open my $fh, '<', $file or die "Could not open '$file' $!\n";
+        open my $fh, '<', $file or die "Could not open '$file' ${!}\n";
         while (my $line = <$fh>) {
             chomp $line;
             if ($line =~ /^([a-zA-Z][^:]*):[\ ]+(\S.*)$/) {
@@ -281,25 +281,18 @@ sub get_sources {
 #
 sub write_snapshot_sources {
     my ($snapshots_sources_file, $user_timestamp, %sources) = @_;
-    my $have_knocked = 0;
     my $found_count = 0;
     open my $fp, '>', $snapshots_sources_file;
     for my $key (keys %sources) {
-        if ($sources{$key}{Origin} eq 'NeuroDebian' and !$have_knocked) {
-            # Knock on snapshot's door. This is temporarily necessary until the production
-            # version of the site is made available.
-            get_www_content('http://neuro.debian.net/_files/knock-snapshots');
-            $have_knocked = 1;
-        }
-        my $domain = 'snapshot-neuro.debian.net:5002';
+        my $domain = 'snapshot-neuro.debian.net';
         $domain = 'snapshot.debian.org' if ($sources{$key}{Origin} eq 'Debian' || $sources{$key}{Origin} eq 'Debian Backports');
         my $label = lc($sources{$key}{Label});
         $label =~ tr/ /-/;
         $contents = get_www_content("http://${domain}/archive/${label}/${user_timestamp}/");
-        # Handle 404 redirect page not found.
-        if ($contents =~ /HTTP\/1.1 404 Not Found/) {
-            logg("info", "Can't find snapshot for http://${domain}/archive/${label}/${user_timestamp}");
-            next;
+        # Handle bad URL requests
+        if (!($contents =~ /^HTTP\/\d+\.\d+ 200/) and !($contents =~ /^HTTP\/\d+\.\d+ 301/)) {
+            $contents =~ /^(.+)/;
+            die "Bad URL request http://${domain}/archive/${label}/${user_timestamp}/: ${1}\n";
         }
         # Handle 301 redirect from snapshot server if we get one.
         if ($contents =~ /The resource has been moved to http:\/\/[\S\-]+\/archive\/${label}\/(\d{8}T\d{6}Z\/)/) {
@@ -346,9 +339,9 @@ sub disable_lines {
     exec_shell("cp $sources_file ${sources_file}.orig.disabled") if (!-e "${sources_file}.orig.disabled");
 
     open my $in, '<', "${sources_file}.orig.disabled"
-        or die "Could not open file '${sources_file}.orig.disabled' $!";
+        or die "Could not open file '${sources_file}.orig.disabled' ${!}\n";
     open my $out, '>', $sources_file
-        or die "Could not open file '$sources_file' $!";
+        or die "Could not open file '$sources_file' ${!}\n";
     my @lines = split /\n/, <$in>;
     foreach (@lines) {
         # Skip commented lines
