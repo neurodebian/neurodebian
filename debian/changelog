@@ -1,3 +1,15 @@
+neurodebian (0.39.0) unstable; urgency=medium
+
+  * nd_freeze:
+    - fix it up to work with the migrated snapshot-neuro.debian.net
+      (no custom port, no need for knocking)
+    - test fixed up to not use EOLed wheezey (use stretch instead)
+  * misc minor needed changes
+    - remove EOLed releases of Ubuntu
+    - fix up USTC mirror URL (was migrated years back)
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Mon, 22 Apr 2019 11:45:04 -0400
+
 neurodebian (0.38.3) unstable; urgency=medium
 
   * nd_freeze:
@@ -20,7 +32,7 @@ neurodebian (0.38.2) unstable; urgency=medium
 
 neurodebian (0.38.1) unstable; urgency=medium
 
-  * Make ubuntu-keyring only list in Ubuntu (and its derivatives
+  * Make ubuntu-keyring only list in Ubuntu (and its derivatives)
 
  -- Yaroslav Halchenko <debian@onerussian.com>  Mon, 12 Nov 2018 23:50:07 -0500
 
