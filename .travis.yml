@@ -4,6 +4,8 @@
 language: erlang
 cache:
   - apt
+services:
+  - docker
 script:
     # Test the ultimate one-liner setup for NeuroDebian repository
     - bash tools/neurodebian-travis.sh
@@ -21,6 +23,8 @@ script:
     - test -f /etc/apt/sources.list.d/neurodebian.sources.list
     # Verify that -dev installs nicely
     - sudo apt-get install -y neurodebian-dev
+    # Test nd_freeze
+    - bash tools/tests/test_nd_freeze
 after_failure:
     # Could happen if installation of neurodebian package kills APT repo so print policy
     - sudo apt-cache policy

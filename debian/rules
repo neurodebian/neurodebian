@@ -2,13 +2,24 @@
 
 ICONS_SIZE=32
 
+ifeq ($(shell dpkg-vendor --derives-from Ubuntu && echo yes),yes)
+	KEYRING_PKG = -Vdist:Recommends="ubuntu-keyring"
+else
+	SUBSTVARS = -Vdist:Depends="bar"
+endif
+
 # one ring to rule them all ...
 %:
 	dh $@
 
+override_dh_gencontrol:
+	if dpkg-vendor --derives-from Ubuntu; then \
+		echo 'misc:Recommends=ubuntu-keyring' >> debian/neurodebian-dev.substvars; fi
+	dh_gencontrol
+
 override_dh_auto_configure:
 
-override_dh_auto_build::
+override_dh_auto_build:
 	# wallpaper
 	[ ! -d build/wallpaper ] && mkdir -p build/wallpaper
 	xcf2png -o build/wallpaper/neurodebian.png artwork/wallpaper_hotbrain.xcf
@@ -30,9 +41,14 @@ override_dh_auto_build::
 	help2man --no-info tools/nd-configurerepo \
 		-n "configure APT to use NeuroDebian repository" > build/man/nd-configurerepo.1
 
-override_dh_auto_install::
+override_dh_auto_install:
 
-override_dh_auto_test::
+override_dh_auto_test:
+
+override_dh_install:
+	dh_install
+	# shipped in a dedicated neurodebian-freeze package
+	rm -f  debian/neurodebian-dev/usr/bin/nd_freeze
 
 override_dh_clean:
 	debconf-updatepo
