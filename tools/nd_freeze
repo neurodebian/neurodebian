@@ -314,9 +314,10 @@ sub write_snapshot_sources {
         my $line_prefix = "";
         $line_prefix = "#" if ($sources{$key}{Label} eq 'Debian-Security');
 
-        my $trusted_option = ( is_minimum_apt_version("0.9.40") ? "[trusted=yes]" : "" );
-        print $fp "${line_prefix}deb $trusted_option http://${domain}/archive/${label}/${next_timestamp}/ ${sources{$key}{Codename}} ${sources{$key}{Component}}\n";
-        logg("debug", "Adding 'deb $trusted_option http://${domain}/archive/${label}/${next_timestamp}/ ${sources{$key}{Codename}} ${sources{$key}{Component}}' to $snapshots_sources_file");
+        my $trusted_option = ( is_minimum_apt_version("0.9.0") ? "[trusted=yes]" : "" );
+        my $source_line = "deb $trusted_option http://${domain}/archive/${label}/${next_timestamp}/ ${sources{$key}{Codename}} ${sources{$key}{Component}}";
+        print $fp "${line_prefix}${source_line}\n";
+        logg("debug", "Adding '${source_line}' to $snapshots_sources_file");
         $found_count += 1;
     }
     close $fp;
