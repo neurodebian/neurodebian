@@ -26,7 +26,7 @@
 
 [NeuroDebian](http://neuro.debian.net) is a popular turnkey platform for
 Neuroscience, where software is integrated, tested, and delivered
-conviniently and reliably so you could concentrate on your research and
+conveniently and reliably so you could concentrate on your research and
 not on "system maintenance".  It provides a large collection of popular
 neuroscience research software for the Debian operating system as well
 as Ubuntu and other derivatives.  Please visit our
