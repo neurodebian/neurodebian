@@ -445,9 +445,11 @@ sub update_packages {
     if (scalar(@update_packages) > 0) {
         my $packages_to_update = join " ", @update_packages;
         logg("info", "UPDATING: ${packages_to_update}");
-        my $update_switch = "--force-yes";
-        $update_switch = "--allow-downgrades" if (is_minimum_apt_version("1.1.57"));
-        exec_shell("export DEBIAN_FRONTEND=noninteractive; apt-get install --no-install-recommends $update_switch -y ${packages_to_update}");
+        my $downgrade_switch = is_minimum_apt_version("1.1.57") ? "--allow-downgrades" : "";
+        my $remove_switch =  is_minimum_apt_version("1.1") ? "--allow-remove-essential" : "";
+        my $force_switch = ($downgrade_switch || $remove_switch) ? "" : "--force-yes";
+        exec_shell("apt install --fix-broken $force_switch $downgrade_switch $remove_switch -y");
+        exec_shell("export DEBIAN_FRONTEND=noninteractive; apt-get install --no-install-recommends $force_switch $downgrade_switch $remove_switch -y ${packages_to_update}");
     }
 }
 

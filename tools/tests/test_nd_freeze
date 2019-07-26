@@ -199,11 +199,11 @@ assert_line_in_file "stdout" "Usage: nd_freeze"
 test_teardown
 
 echo "[ Test unsigned repos ]"
-test_setup "neurodebian" "sid" "20140828" ""
-assert_line_in_file "stdout" "W: GPG error: http://snapshot-neuro.debian.net/archive/neurodebian/20140828T050524Z sid InRelease: The following signatures were invalid: DD95CC430502E37EF840ACEEA5D32F012649A5A9"
-assert_line_in_file "stdout" "W: GPG error: http://snapshot-neuro.debian.net/archive/neurodebian/20140828T050524Z data InRelease: The following signatures were invalid: DD95CC430502E37EF840ACEEA5D32F012649A5A9"
+test_setup "neurodebian" "jessie" "20140828" ""
+assert_line_in_file "stdout" "INFO: Discovering installed repository sources"
 assert_line_in_file "stdout" "INFO: Discovering installed packages for possible version updates"
-assert_line_in_file "stdout" "INFO: UPDATING:"
+assert_line_in_file "stdout" "INFO: UPDATING: acl=2.2.52-1 apt=1.0.6 base-files=7.5"
+assert_line_in_file "stdout" "INFO: Cleaning up APT lists because originally there were none"
 test_teardown
 
 exit $EXIT_CODE
