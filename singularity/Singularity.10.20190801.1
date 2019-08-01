@@ -71,7 +71,7 @@ MirrorURL: http://http.debian.net/debian/
     mkdir -p $TMPBINDIR
     # eatmydata apt-get -y build-dep git
     wget --no-check-certificate  -O $TMPBINDIR/nd-configurerepo -nc \
-      https://raw.githubusercontent.com/neurodebian/neurodebian/80f9bd9f59dde8538458fda7286e1fa28a37f6c7/tools/nd-configurerepo
+      https://raw.githubusercontent.com/neurodebian/neurodebian/073c52d55f294e9535d683a630de9805e261b13f/tools/nd-configurerepo
     bash $TMPBINDIR/nd-configurerepo --mirror=default --install 
     chmod a+r -R /etc/apt
     apt-get update -q --no-allow-insecure-repositories
@@ -84,7 +84,7 @@ MirrorURL: http://http.debian.net/debian/
     # Main installations
     apt-get -y install eatmydata 
     eatmydata apt-get -y install vim strace gdb valgrind time ncdu gnupg curl procps
-    bash -c 'eatmydata apt-get -y install git git-annex-standalone datalad python-{nipype,dipy} virtualenv dcm2niix python-dcmstack python-configparser python-funcsigs python-pytest connectome-workbench python-mvpa2 fsl-core fsl-atlases fsl-first-data mricron afni fsleyes ants convert3d heudiconv mrtrix3'
+    bash -c 'eatmydata apt-get -y install git git-annex-standalone datalad python-{nipype,dipy} virtualenv dcm2niix python-dcmstack python-configparser python-funcsigs python-pytest connectome-workbench python-mvpa2 fsl-core fsl-atlases fsl-first-data mricron afni fsleyes convert3d heudiconv mrtrix3'
     # Electrophys packages
     eatmydata apt-get -y install python-pynwb python-neo python-biosig sigviewer
     # TODO: nilearn
