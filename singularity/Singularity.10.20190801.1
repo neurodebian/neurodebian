@@ -1,4 +1,4 @@
-# Copyright (c) 2018, Yaroslav O. Halchenko. All rights reserved. MIT license
+# Copyright (c) 2018-2019, Yaroslav O. Halchenko. All rights reserved. MIT license
 #
 # The purpose of the Singularity environment is to provide a relatively full
 # suite of tools provided primarily by Debian/NeuroDebian for runnin various
@@ -17,11 +17,11 @@
 #
 # Changelog
 # ---------
-# 10.20190322.1
+# 10.20190801.1
 #  - fresh versions of the packages
-#  - base on buster (Debian 10)
-#  - freezing using WiP nd_freeze to the fixed day (2nd portion of the version)
-#  - bids-validator 1.2.2
+#  - base on recent Debian stable buster release (Debian 10)
+#  - freezing using nd_freeze to the fixed day (2nd portion of the version)
+#  - bids-validator 1.2.5
 # 2.2
 #  - fresh annex with patched git to avoid "Out of memory, getdelim failed" bug
 #  - added some tools useful for debugging (gdb)
@@ -76,7 +76,7 @@ MirrorURL: http://http.debian.net/debian/
     chmod a+r -R /etc/apt
     apt-get update -q --no-allow-insecure-repositories
     apt-get install -y neurodebian-freeze
-    nd_freeze 20190322
+    nd_freeze 20190801
     # Needed for debian-security APT
     # echo 'Acquire::Check-Valid-Until "0";' > /etc/apt/apt.conf.d/10no--check-valid-until
     apt-get update --no-allow-insecure-repositories
@@ -90,7 +90,7 @@ MirrorURL: http://http.debian.net/debian/
     # for bids-validator
     curl -sL https://deb.nodesource.com/setup_6.x | bash - && \
        eatmydata apt-get install -y nodejs
-    npm install -g bids-validator@1.2.2
+    npm install -g bids-validator@1.2.5
     chmod a+rX -R /usr/lib/node_modules/
 
     chmod a+rX -R /etc/apt/sources.list.d
