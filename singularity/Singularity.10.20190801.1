@@ -84,18 +84,18 @@ MirrorURL: http://http.debian.net/debian/
     # Main installations
     apt-get -y install eatmydata 
     eatmydata apt-get -y install vim strace gdb valgrind time ncdu gnupg curl procps
-    bash -c 'eatmydata apt-get -y install git git-annex-standalone datalad python-{nipype,dipy} virtualenv dcm2niix python-dcmstack python-configparser python-funcsigs python-pytest connectome-workbench python-mvpa2 fsl-core fsl-atlases fsl-first-data mricron afni fsleyes convert3d heudiconv mrtrix3'
+    bash -c 'eatmydata apt-get -y install git git-annex-standalone datalad python-{nipype,dipy} virtualenv dcm2niix python-dcmstack python-configparser python-funcsigs python-pytest connectome-workbench python-mvpa2 fsl-core fsl-atlases fsl-first-data mricron afni fsleyes heudiconv mrtrix3'
     # Electrophys packages
-    eatmydata apt-get -y install python-pynwb python-neo python-biosig sigviewer
+    eatmydata apt-get -y install python-pynwb python-biosig sigviewer
     # TODO: nilearn
 
     # for bids-validator
     curl -sL https://deb.nodesource.com/setup_6.x | bash - && \
-       eatmydata apt-get install -y nodejs
+       eatmydata apt-get install -y nodejs npm
     npm install -g bids-validator@1.2.5
-    chmod a+rX -R /usr/lib/node_modules/
+    chmod a+rX -R /usr/lib/node_modules/ || :
 
-    chmod a+rX -R /etc/apt/sources.list.d
+    chmod a+rX -R /etc/apt/sources.list.d || :
     # cleaning /tmp that thoroughly might have side effects 
     # rm -rf /tmp/* /var/tmp/*
     apt-get clean
