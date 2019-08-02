@@ -17,7 +17,7 @@
 #
 # Changelog
 # ---------
-# 10.20190801.1
+# 10.20190801
 #  - fresh versions of the packages
 #  - base on recent Debian stable buster release (Debian 10)
 #  - freezing using nd_freeze to the fixed day (2nd portion of the version)
