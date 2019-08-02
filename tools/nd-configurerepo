@@ -559,7 +559,7 @@ gpg --version | grep -q '^gpg (GnuPG) 1\.' || assure_command_from_package dirmng
 
 if LANG=C eval $ae_sudo apt-key export $nd_key_id 2>&1 1>/dev/null | grep -qe "nothing exported"; then
     print_verbose 1 "Fetching the key from the server"
-    eval_dry apt-key adv --recv-keys --keyserver pgp.mit.edu $nd_key_id
+    eval_dry apt-key adv --recv-keys --keyserver hkp://pool.sks-keyservers.net $nd_key_id
 fi
 
 
