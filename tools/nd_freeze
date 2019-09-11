@@ -6,7 +6,7 @@ require 5.002;
 use Socket;
 
 my $INFO = <<'END_INFO';
-Usage: nd_freeze [--keep-apt-sources|-k] [--no-updates|-n] [--debug|-d] [--help|-h] date
+Usage: nd_freeze [--keep-apt-sources|-k] [--no-updates|-n] [--debug|-d] [--help|-h] [--trust-repos|-t] date
 
 Install access to the NeuroDebian snapshot repository that allows installation
 of packages based on a given date.
@@ -21,6 +21,10 @@ of packages based on a given date.
     -d, --debug             Display debugging info to the screen.
 
     -h, --help              Display this help text and exit.
+
+    -t, --trust-repos       Update untrusted repos. For repos whose apt keys
+                            are invalid, go ahead and use the repo rather than
+                            failing by default. USE CAUTIOUSLY!
 
 The UTC date/time format sent to NeuroDebian to get the repo info is in the
 format yyyymmddThhmmssz or yyymmdd. However, the script will handle and
@@ -109,7 +113,7 @@ sub get_www_content {
 sub exec_shell {
     my $command = shift;
     logg("debug", "Executing shell command: '$command'");
-    my $stdout = qx!$command!;
+    my $stdout = qx!$command 2>&1!;
     if ($?) {
         logg("info", "Command '$command' failed.");
         exit $?;
@@ -124,7 +128,13 @@ sub run_apt_get_update {
     logg("info", "Refreshing apt cache");
     my $switch = "";
     $switch = "--no-allow-insecure-repositories" if (is_minimum_apt_version("1.4.8"));
-    exec_shell("apt-get update $switch");
+    my $stdout = exec_shell("apt-get update $switch");
+    if ($stdout =~ /NO_PUBKEY (\w+)/) {
+        logg("info", "Missing public key for $1, attempting to get key");
+        exec_shell("apt-key adv --recv-keys --keyserver pool.sks-keyservers.net 0x${1}");
+        logg("info", "Successfully retrieved public key, re-running apt update");
+        exec_shell("apt-get update $switch");
+    }
 }
 
 
@@ -314,8 +324,8 @@ sub write_snapshot_sources {
         my $line_prefix = "";
         $line_prefix = "#" if ($sources{$key}{Label} eq 'Debian-Security');
 
-        my $trusted_option = ( is_minimum_apt_version("0.9.0") ? "[trusted=yes]" : "" );
-        my $source_line = "deb $trusted_option http://${domain}/archive/${label}/${next_timestamp}/ ${sources{$key}{Codename}} ${sources{$key}{Component}}";
+        my $trusted_option = ( ($TRUST_REPOS and is_minimum_apt_version("0.9.0")) ? " [trusted=yes]" : "" );
+        my $source_line = "deb$trusted_option http://${domain}/archive/${label}/${next_timestamp}/ ${sources{$key}{Codename}} ${sources{$key}{Component}}";
         print $fp "${line_prefix}${source_line}\n";
         logg("debug", "Adding '${source_line}' to $snapshots_sources_file");
         $found_count += 1;
@@ -483,6 +493,7 @@ $KEEP_SOURCES = 0;
 $DO_NOT_UPDATE = 0;
 $DEBUG = 0;
 $HELP = 0;
+$TRUST_REPOS = 0;
 
 # Parse command line options
 foreach(@ARGV) {
@@ -490,8 +501,9 @@ foreach(@ARGV) {
     $DO_NOT_UPDATE = 1 if ($_ eq '--no-updates' or $_ eq '-n');
     $DEBUG = 1 if ($_ eq '--debug' or $_ eq '-d');
     $HELP = 1 if ($_ eq '--help' or $_ eq '-h');
+    $TRUST_REPOS = 1 if ($_ eq '--trust-repos' or $_ eq '-t');
 }
-my $parameter_count = 1 + $KEEP_SOURCES + $DO_NOT_UPDATE + $DEBUG;
+my $parameter_count = 1 + $KEEP_SOURCES + $DO_NOT_UPDATE + $DEBUG + $TRUST_REPOS;
 if (scalar(@ARGV) != $parameter_count) {
     print "Invalid command parameters\n";
     print "USAGE: nd_freeze [--keep-apt-sources] [--no-updates] [--debug] [--help] date\n";
