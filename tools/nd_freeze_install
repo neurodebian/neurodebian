@@ -6,17 +6,9 @@ require 5.002;
 use Socket;
 
 my $INFO = <<'END_INFO';
-Usage: nd_freeze [--keep-apt-sources|-k] [--no-updates|-n] [--debug|-d] [--help|-h] [--trust-repos|-t] date
+Usage: nd_freeze_install [--debug|-d] [--help|-h] [--trust-repos|-t] package1=version1 [...]
 
-Install access to the NeuroDebian snapshot repository that allows installation
-of packages based on a given date.
-
-    -k, --keep-apt-sources  Leave the original, non-snapshot source active so
-                            that originally sourced packages can still be
-                            installed.
-
-    -n, --no-updates        Make the snapshot repositories available but skip
-                            the package update step, leaving the system as is.
+Install a past version of a package.
 
     -d, --debug             Display debugging info to the screen.
 
@@ -26,26 +18,9 @@ of packages based on a given date.
                             are invalid, go ahead and use the repo rather than
                             failing by default. USE CAUTIOUSLY!
 
-The UTC date/time format sent to NeuroDebian to get the repo info is in the
-format yyyymmddThhmmssz or yyymmdd. However, the script will handle and
-reformat a number of date/time formats. Quotes are required if there is a
-space between the date and time components:
-
-  yyyymmddThh:mm:ssZ
-  yyyymmdd
-  mm/dd/yyyy
-  yyyy-mm-dd
-  yyyymmddThh:mm
-  "yyyy-mm-dd hh:mm:ss"
-  "mm/dd/yy hh:mm:ss"
-
 Browse available snapshots here:
 http://snapshot-neuro.debian.net/archive/neurodebian/
 
-If there is no snapshot available at the exact time you specified you will get
-both the previous and next available timestamped repos of the one you specified
-to make available versions that may have been placed in the repo before your
-selected time but after the previous snapshot.
 END_INFO
 
 # Function prints information to the screen. "logg" with 2 g's because there
@@ -449,7 +424,6 @@ sub get_timestamp {
 ##### Program main
 
 # Global vars
-$DO_NOT_UPDATE = 0;
 $DEBUG = 0;
 $HELP = 0;
 $TRUST_REPOS = 0;
