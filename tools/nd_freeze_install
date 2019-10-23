@@ -214,81 +214,6 @@ def write_snapshot_sources(snapshot_sources_file, repo_url, sources):
                     snapshot_sources_file))
 
 
-# Function comments out the lines in the debian and neurodebian sources files
-# that we are replacing with our snapshot sources.
-#
-# Parameters
-# ----------
-# sources_file
-#     string : Path to sources file to update.
-# sources
-#     dict : The sources retrieved from apt-cache policy that need to be
-#               written to the sources file.
-#
-# def disable_lines(source_file, sources):
-
-#     if not os.path.exists("{}.orig.disabled".format(source_file)):
-#         exec_shell("cp {} {}.orig.disabled".format(source_file))
-
-#     with open("{}.orig.disabled".format(source_file), "r") as file_in, \
-#             open(source_file, "w") as file_out:
-
-#         for line in file_in.readlines():
-#             if line[0] == "#":
-#                 continue
-
-#             found = False
-#             # Loop through the sources from the Release files for each line in
-#             # the sources file to determine if it is one we need to comment out
-#             file_line = ""
-#             source_line = ""
-#             for key in sources.keys():
-#                 matches = re.findall(r'(http:\S+)(.*)$', line)
-#                 file_line = ""
-#                 if len(matches) > 0:
-#                     file_line = matches[0][0] + ' '.join(
-#                         matches[0][1].split().sort())
-#                 url = ""
-#                 if sources[key]["Label"] == "Debian" or \
-#                         sources[key]["Label"] == "Debian Backports":
-#                     url = "http://deb.debian.org/debian "
-#                 elif sources[key]["Label"] == "Debian-Security":
-#                     url = "http://security.debian.org/debian-security "
-#                 elif sources[key]["Label"] == "NeuroDebian":
-#                     url = "http://neuro.debian.net/debian "
-
-#                 source_params = "{Codename} {Component}".format(sources[key])
-#                 source_line = url + ' '.join(source_params.split().sort())
-#                 if file_line == source_line:
-#                     found = True
-#                     break
-
-#             if found:
-#                 file_out.write("# {}\n".format(line))
-#                 logging.debug("Disabling '{}' in {}".format(source_line,
-#                     source_file))
-#             else:
-#                 file_out.write("{}\n".format(line))
-
-
-# Get a list of the installed packages
-#
-# Returns
-# ----------
-# @packages
-#     array : Names of the installed packages
-#
-# def installed_packages():
-#     logging.info("Discovering installed packages for possible version updates")
-#     packages = []
-#     lines = exec_shell("dpkg -l").split("\n")
-#     for line in lines:
-#         chunks = line.split()
-#         if chunks[0] == "ii":
-#             packages.append(chunks[1])
-#     return packages
-
-
 # Update the installed packages to their snapshot versions
 #
 # Parameters
@@ -414,6 +339,3 @@ if __name__ == '__main__':
         exec_shell("rm -rf /var/lib/apt/lists/*")
 
     exit(0)
-
-# ./matt -d git=1:2.1.3-1 ants=2.2.0-1~nd+1
-# https://snapshot.debian.org/archive/debian/20180206T100448Z/pool/main/g/git/git_2.16.1-1_amd64.deb
