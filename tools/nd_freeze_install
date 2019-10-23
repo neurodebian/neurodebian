@@ -1,204 +1,173 @@
-#!/usr/bin/perl
-#emacs: -*- mode: shell-script; c-basic-offset: 4; tab-width: 4; indent-tabs-mode: t -*-
-#ex: set sts=4 ts=4 sw=4 noet:
+#!/usr/bin/python
+# emacs: -*- mode: python; py-indent-offset: 4; indent-tabs-mode: nil -*-
+# vi: set ft=python sts=4 ts=4 sw=4 et:
 #
-require 5.002;
-use Socket;
+import argparse
+import glob
+import logging
+import os
+import re
+import requests
+import subprocess
 
-my $INFO = <<'END_INFO';
-Usage: nd_freeze_install [--debug|-d] [--help|-h] [--trust-repos|-t] package1=version1 [...]
+parser = argparse.ArgumentParser()
+parser.add_argument(
+    "packages",
+    help="package and version to install (e.g. git=2.17.1)",
+    nargs="+",
+    metavar="package=version"
+)
+parser.add_argument(
+    "-n, --no-updates",
+    help=("Make the snapshot repositories available but skip"
+        "the package update step, leaving the system as is."),
+    action="store_true",
+    dest="no_updates"
+)
+parser.add_argument(
+    "-d, --debug",
+    help="print debugging informaiton to the screen",
+    action="store_true",
+    dest="debug"
+)
+parser.add_argument(
+    "-t, --trust-repos",
+    help=("Update untrusted repos. For repos whose apt keys are invalid, "
+        "go ahead and use the repo rather thanfailing by default. "
+        "USE CAUTIOUSLY!"),
+    action="store_true",
+    dest="trust_repos"
+)
+args = parser.parse_args()
 
-Install a past version of a package.
-
-    -d, --debug             Display debugging info to the screen.
-
-    -h, --help              Display this help text and exit.
-
-    -t, --trust-repos       Update untrusted repos. For repos whose apt keys
-                            are invalid, go ahead and use the repo rather than
-                            failing by default. USE CAUTIOUSLY!
-
-Browse available snapshots here:
-http://snapshot-neuro.debian.net/archive/neurodebian/
-
-END_INFO
-
-# Function prints information to the screen. "logg" with 2 g's because there
-# is a keyword 'log' (the math function)
-# 
-# Parameters
-# ----------
-# $label
-#     string : valid values: 'info', 'debug'
-#              debug values are only displayed when --debug switch set
-# $output
-#     string : Text to print to the screen.
-# 
-sub logg {
-    my $label = shift(@_);
-    return if (!$DEBUG and $label eq 'debug');
-    $label = uc($label);
-    foreach my $line (@_) {
-        print "${label}: ${line}";
-        print "\n" if (!($line =~ /\n$/));
-    }
-}
-
-
-# Function gets the page contents of the provided URL.
-#
-# Parameters
-# ----------
-# $url
-#     string : URL of page to retrieve
-#
-# Returns
-# -------
-# string : Contents of URL page
-#
-sub get_www_content {
-    my ($url) = @_;
-    $url =~ /http:\/\/([^\/:]+):?(\d+)*(.*)/;
-    my $dest = $1;
-    my $port = $2;
-    my $file = $3;
-    $port = 80 if (!$port);
-    my $proto = getprotobyname('tcp');
-    socket(F, PF_INET, SOCK_STREAM, $proto);
-    my $sin = sockaddr_in($port,inet_aton($dest));
-    connect(F, $sin) || return undef;
-    my $old_fh = select(F);
-    $| = 1;
-    select($old_fh);
-    print F "GET $file HTTP/1.1\r\nHost: ${dest}\r\n\r\n";
-    $/ = undef;
-    $contents = <F>;
-    close(F);
-    return $contents;
-}
+if (args.debug):
+    logging.basicConfig(level=logging.DEBUG)
+else:
+    logging.basicConfig(level=logging.INFO)
 
 
 # Run a shell command
 #
 # Parameters
 # ----------
-# $command
+# command
 #   string : command to run in shell
 #
-sub exec_shell {
-    my $command = shift;
-    logg("debug", "Executing shell command: '$command'");
-    my $stdout = qx!$command 2>&1!;
-    if ($?) {
-        logg("info", "Command '$command' failed.");
-        exit $?;
-    }
-    logg("debug", split(/\n/, $stdout));
-    return $stdout;
-}
-
-
-# Function to run apt-get update
-sub run_apt_get_update {
-    logg("info", "Refreshing apt cache");
-    my $switch = "";
-    $switch = "--no-allow-insecure-repositories" if (is_minimum_apt_version("1.4.8"));
-    my $stdout = exec_shell("apt-get update $switch");
-    if ($stdout =~ /NO_PUBKEY (\w+)/) {
-        logg("info", "Missing public key for $1, attempting to get key");
-        exec_shell("apt-key adv --recv-keys --keyserver pool.sks-keyservers.net 0x${1}");
-        logg("info", "Successfully retrieved public key, re-running apt update");
-        exec_shell("apt-get update $switch");
-    }
-}
-
-
-# Function validates and then returns the user provided freeze date in the
-# format yyyymmddThh:mm:ssZ.
-# 
 # Returns
 # -------
-# string : User date in format yyyymmddThh:mm:ssZ
-# 
-sub get_repo_urls {
-    my (@packages) = @_;
-    @urls;
+# string : STDOUT
+#
+def exec_shell(command):
+    logging.debug("Executing shell command: '{}'".format(command))
+    s = subprocess.Popen(command.split(), stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT)
+    stdout, stderr = s.communicate()
+    logging.debug("Command STDOUT: {}".format(stdout))
+    logging.debug("Command STDERR: {}".format(stderr))
+    return stdout
 
-    foreach (@packages) {
 
-        my @parts = split(/=/, $_);
-        my $package = $parts[0];
-        my $version = $parts[1];
+# Run apt-get update command
+#
+def run_apt_get_update():
+    logging.info("Refreshing apt cache")
+    switch = ""
+    if (is_minimum_apt_version("1.4.8")):
+        switch = "--no-allow-insecure-repositories"
+    stdout = exec_shell("apt-get update {}".format(switch))
+    missing_key = re.findall(r'NO_PUBKEY (\w+)', stdout)
+    if (len(missing_key) > 0):
+        logging.info("Missing public key for {}, attempting to get key".format(
+            missing_key[0]))
+        exec_shell(("apt-key adv --recv-keys --keyserver "
+            "pool.sks-keyservers.net 0x{}").format(missing_key[0]))
+        logging.info("Successfully retrieved public key, re-running apt update")
+        exec_shell("apt-get update {}".format(switch))
+
+
+# Scrape the appropriate snapshot timestamps from the repo websites based on
+# the package name and version
+#
+# Parameters
+# ----------
+# packages
+#   list : list of packages to get timestamps
+#
+# Returns
+# -------
+# list : snapshot repo urls that go /etc/apt/sources.list.d
+#
+def get_repo_urls(packages):
+    urls = []
+    url_template = "http://{}/archive/{}/{}/"
+
+    for p in packages:
+
+        (package, version) = p.split("=")
 
         # First check, neurodebian
-        my $domain = "snapshot-neuro.debian.net";
-        my $repo = "neurodebian";
-        my $timestamp = get_timestamp($domain, $repo, $package, $version);
-        if ($timestamp) {
-            push(@urls, "http://${domain}/archive/${repo}/${timestamp}/");
-        }
+        domain = "snapshot-neuro.debian.net"
+        repo = "neurodebian"
+        timestamp = get_timestamp(domain, repo, package, version)
+        if timestamp:
+            urls.append(url_template.format(domain, repo, timestamp))
 
         # If not found in NeuroDebian snapshot, try Debian
-        if (not $timestamp) {
-            $domain = "snapshot.debian.org";
-            $repo = "debian";
-            $timestamp = get_timestamp($domain, $repo, $package, $version);
-            if ($timestamp) {
-                push(@urls, "http://${domain}/archive/${repo}/${timestamp}/");
-            }
-        }
+        if not timestamp:
+            domain = "snapshot.debian.org"
+            repo = "debian"
+            timestamp = get_timestamp(domain, repo, package, version)
+            if timestamp:
+                urls.append(url_template.format(domain, repo, timestamp))
 
         # No repo found so complain
-        if (not $timestamp) {
-            logg("info", "No snapshot repository found for $_");
-        }
-    }
-    return @urls;
-}
+        if not timestamp:
+            logging.info("No snapshot repository found for {}".format(p))
+
+    return urls
 
 
 # Function returns a hash of information for each source that we want
-# to replace with a snapshot.
-# 
+# to include as a snapshot repo.
+#
 # Returns
 # -------
-# %sources
-#     hash : The sources retrieved from apt-cache policy that need to be written to the sources file.
-# 
-sub get_sources {
-    my %sources;
-    logg("info", "Discovering installed repository sources");
-    run_apt_get_update();
-    my @files = glob("/var/lib/apt/lists/*Release");
-    for my $file (@files) {
-        my %source;
-        open my $fh, '<', $file or die "Could not open '$file' ${!}\n";
-        foreach my $line (split("\n", <$fh>)) {
-            chomp $line;
-            if ($line =~ /^([a-zA-Z][^:]*):[\ ]+(\S.*)$/) {
-                $source{$1} = $2;
-            }
-        }
-        if ($source{Origin} eq "Debian" or $source{Origin} eq "NeuroDebian" or $source{Origin} eq "Debian Backports") {
-            logg("debug", "Found $source{Label} $source{Codename} with components $source{Components}");
-            for my $component (split(' ', $source{Components})) {
-                my $codename = $source{Codename};
-                if ($component =~ /(\S+)\/(\S+)/) {
-                    $codename = "${source{Codename}}/${1}";
-                    $component = $2;
+# sources
+#     dict : The sources retrieved from apt-cache policy that need to be
+#       written to the sources file.
+#
+def get_sources():
+    sources = {}
+
+    logging.info("Discovering installed repository sources")
+    run_apt_get_update()
+    files = glob.glob("/var/lib/apt/lists/*Release")
+    for file in files:
+        source = {}
+        with open(file, "r") as f:
+            lines = f.readlines()
+        for line in lines:
+            matches = re.findall(r'^([a-zA-Z][^:]*):[\ ]+(\S.*)$', line)
+            if len(matches) > 0:
+                source[matches[0][0]] = matches[0][1]
+        if source["Origin"] in ["Debian", "NeuroDebian", "Debian Backports"]:
+            msg = "Found {Label} {Codename} with components {Components}"
+            logging.debug(msg.format(**source))
+            for component in source["Components"].split():
+                codename = source["Codename"]
+                matches = re.findall(r'(\S+)\/(\S+)', component)
+                if len(matches) > 0:
+                    codename = "{}/{}".format(source["Codename"], matches[0][0])
+                    component = matches[0][1]
+                key = "{}|{}|{}".format(source["Label"], source["Codename"],
+                    component)
+                sources[key] = {
+                    "Origin": source["Origin"],
+                    "Label": source["Label"],
+                    "Codename": codename,
+                    "Component": component
                 }
-                my $key = "$source{Label}|$source{Codename}|$component";
-                %{$sources{$key}} = (
-                    Origin => $source{Origin},
-                    Label => $source{Label},
-                    Codename => $codename,
-                    Component => $component
-                );
-            }
-        }
-    }
-    return %sources;
-}
+    return sources
 
 
 # Function writes out the necessary lines to the /etc/apt/sources.list.d/snapshot.sources.list
@@ -208,307 +177,243 @@ sub get_sources {
 #
 # Parameters
 # ----------
-# $snapshots_sources_file
+# snapshots_sources_file
 #     string : Path to snapshot sources file.
-# $user_timestamp
-#     string : Timestamp of freeze date provided by user at the command line.
-# %sources
-#     hash : The sources retrieved from /var/lib/apt/lists/*Release policy that
+# repo_url
+#     string : Sources url for the snapshot repo.
+# sources
+#     dict : The sources retrieved from /var/lib/apt/lists/*Release policy that
 #            need to be written to the sources file.
 #
-sub write_snapshot_sources {
-    my ($snapshots_sources_file, $repo_url, %sources) = @_;
+def write_snapshot_sources(snapshot_sources_file, repo_url, sources):
+    trusted_option = ""
+    if args.trust_repos and is_minimum_apt_version("0.9.0"):
+        trusted_option = " [trusted=yes]"
+    with open(snapshot_sources_file, "a+") as f:
+        for key in sources.keys():
+            if ("snapshot-neuro.debian.net" in repo_url
+                    and sources[key]["Label"] == "NeuroDebian") \
+                    or ("snapshot.debian.org" in repo_url
+                    and sources[key]["Label"] == "Debian") \
+                    or (sources[key]["Label"] == "Debian-Security"):
 
-    my $trusted_option = ( ($TRUST_REPOS and is_minimum_apt_version("0.9.0")) ? " [trusted=yes]" : "" );
-    open my $fp, '>>', $snapshots_sources_file;
-    for my $key (keys %sources) {
-        if (($repo_url =~ /snapshot-neuro\.debian\.net/ && $sources{$key}{Label} eq "NeuroDebian") ||
-            ($repo_url =~ /snapshot\.debian\.org/ && ($sources{$key}{Label} eq "Debian" ||
-            $sources{$key}{Label} eq "Debian-Security"))) {
+                # Hold off updating security archive until after the
+                # debian-archive-keyring package is updated.
+                line_prefix = ""
+                if sources[key]["Label"] == "Debian-Security":
+                    line_prefix = "#"
 
-            # Hold off updating security archive until after the debian-archive-keyring package is updated.
-            my $line_prefix = "";
-            $line_prefix = "#" if ($sources{$key}{Label} eq 'Debian-Security');
-
-            my $source_line = "deb$trusted_option $repo_url ${sources{$key}{Codename}} ${sources{$key}{Component}}";
-            print $fp "${line_prefix}${source_line}\n";
-            logg("debug", "Adding '${source_line}' to $snapshots_sources_file");
-        }
-    }
-    close $fp;
-}
+                source_line = "deb{} {} {} {}".format(
+                    trusted_option,
+                    repo_url,
+                    sources[key]["Codename"],
+                    sources[key]["Component"]
+                )
+                f.write("{}{}\n".format(line_prefix, source_line))
+                logging.debug("Adding '{}' to {}".format(source_line,
+                    snapshot_sources_file))
 
 
 # Function comments out the lines in the debian and neurodebian sources files
 # that we are replacing with our snapshot sources.
-# 
+#
 # Parameters
 # ----------
-# $sources_file
+# sources_file
 #     string : Path to sources file to update.
-# %sources
-#     hash : The sources retrieved from apt-cache policy that need to be written to the sources file.
-# 
-sub disable_lines {
-    my ($sources_file, %sources) = @_;
+# sources
+#     dict : The sources retrieved from apt-cache policy that need to be
+#               written to the sources file.
+#
+# def disable_lines(source_file, sources):
 
-    exec_shell("cp $sources_file ${sources_file}.orig.disabled") if (!-e "${sources_file}.orig.disabled");
+#     if not os.path.exists("{}.orig.disabled".format(source_file)):
+#         exec_shell("cp {} {}.orig.disabled".format(source_file))
 
-    open my $in, '<', "${sources_file}.orig.disabled"
-        or die "Could not open file '${sources_file}.orig.disabled' ${!}\n";
-    open my $out, '>', $sources_file
-        or die "Could not open file '$sources_file' ${!}\n";
-    my @lines = split /\n/, <$in>;
-    foreach (@lines) {
-        # Skip commented lines
-        if (/^#/) {
-            print $out "$_\n";
-            next;
-        }
-        my $found = 0;
-        # Loop through the sources from the Release files for each line in the
-        # sources file to determine if it is one we need to comment out.
-        my $file_line = '';
-        my $source_line = '';
-        for my $key (keys %sources) {
-            $_ =~ /(http:\S+)(.*)$/;
-            $file_line = $1 . join ' ', sort split /\s+/, $2;
-            my $url;
-            if ($sources{$key}{Label} eq "Debian" || $sources{$key}{Label} eq "Debian Backports") {
-                $url = "http://deb.debian.org/debian";
-            }
-            elsif ($sources{$key}{Label} eq "Debian-Security") {
-                $url = "http://security.debian.org/debian-security";
-            }
-            elsif ($sources{$key}{Label} eq "NeuroDebian") {
-                $url = "http://neuro.debian.net/debian";
-            }
-            $source_line = $url . ' ' . join ' ', sort split /\s+/, "$sources{$key}{Codename} $sources{$key}{Component}";
-            if ($file_line eq $source_line) {
-                $found = 1;
-                last;
-            }
-        }
-        if ($found) {
-            print $out "# $_\n";
-            logg("debug", "Disabling '$source_line' in $sources_file");
-        } else {
-            print $out "$_\n";
-        }
-    }
-    close $in;
-    close $out;
-}
+#     with open("{}.orig.disabled".format(source_file), "r") as file_in, \
+#             open(source_file, "w") as file_out:
+
+#         for line in file_in.readlines():
+#             if line[0] == "#":
+#                 continue
+
+#             found = False
+#             # Loop through the sources from the Release files for each line in
+#             # the sources file to determine if it is one we need to comment out
+#             file_line = ""
+#             source_line = ""
+#             for key in sources.keys():
+#                 matches = re.findall(r'(http:\S+)(.*)$', line)
+#                 file_line = ""
+#                 if len(matches) > 0:
+#                     file_line = matches[0][0] + ' '.join(
+#                         matches[0][1].split().sort())
+#                 url = ""
+#                 if sources[key]["Label"] == "Debian" or \
+#                         sources[key]["Label"] == "Debian Backports":
+#                     url = "http://deb.debian.org/debian "
+#                 elif sources[key]["Label"] == "Debian-Security":
+#                     url = "http://security.debian.org/debian-security "
+#                 elif sources[key]["Label"] == "NeuroDebian":
+#                     url = "http://neuro.debian.net/debian "
+
+#                 source_params = "{Codename} {Component}".format(sources[key])
+#                 source_line = url + ' '.join(source_params.split().sort())
+#                 if file_line == source_line:
+#                     found = True
+#                     break
+
+#             if found:
+#                 file_out.write("# {}\n".format(line))
+#                 logging.debug("Disabling '{}' in {}".format(source_line,
+#                     source_file))
+#             else:
+#                 file_out.write("{}\n".format(line))
 
 
 # Get a list of the installed packages
-# 
+#
 # Returns
 # ----------
 # @packages
 #     array : Names of the installed packages
 #
-sub installed_packages {
- 
-    logg("info", "Discovering installed packages for possible version updates");
-    my @packages = ();
-    my @lines = split /\n/, exec_shell("dpkg -l");
-    for my $i (0 .. $#lines) {
-        my @chunks = split /\s+/, $lines[$i];
-        push @packages, $chunks[1] if ($chunks[0] eq 'ii');
-    }
-
-    return @packages;
-}
+# def installed_packages():
+#     logging.info("Discovering installed packages for possible version updates")
+#     packages = []
+#     lines = exec_shell("dpkg -l").split("\n")
+#     for line in lines:
+#         chunks = line.split()
+#         if chunks[0] == "ii":
+#             packages.append(chunks[1])
+#     return packages
 
 
 # Update the installed packages to their snapshot versions
 #
 # Parameters
 # ----------
-# @packages
-#     array : List of installed packages
+# packages
+#     list : List of installed packages
 #
-sub update_packages {
-    my (@packages) = @_;
-    # my @update_packages;
+def update_packages(packages):
+    if len(packages) > 0:
+        packages_to_update = " ".join(packages)
+        logging.info("UPDATING: {}".format(packages_to_update))
+        downgrade_switch = "--allow-downgrades" if is_minimum_apt_version("1.1.57") else ""
+        remove_switch = "--allow-remove-essential" if is_minimum_apt_version("1.1") else ""
+        force_switch = "" if downgrade_switch or remove_switch else "--force-yes"
+        params = [
+            force_switch,
+            downgrade_switch,
+            remove_switch,
+            packages_to_update
+        ]
+        exec_shell("apt install --fix-broken {} {} {} -y".format(*params))
+        exec_shell(("export DEBIAN_FRONTEND=noninteractive; apt-get install" +
+            " --no-install-recommends {} {} {} -y {}").format(*params))
 
-    # for my $package (@packages) {
-    #     my $found = 0;
-    #     my $installed_version = '';
-    #     my $snapshot_version = '';
-    #     my @lines = split /\n/, exec_shell("apt-cache policy $package");
-    #     for my $i (0 .. $#lines) {
-    #         $installed_version = $1 if ($lines[$i] =~ /Installed:\s+(\S+)/);
-    #         if ($lines[$i] =~ /snapshot\.debian\.org|snapshot\-neuro\.debian\.net/) {
-    #             my @chunks = split /\s+/, $lines[$i-1];
-    #             $snapshot_version = $chunks[1];
-    #             $found = 1 if ($snapshot_version ne '***');
-    #             last;
-    #         }
-    #     }
-    #     if ($found) {
-    #         my $version_test = exec_shell("dpkg --compare-versions ${snapshot_version} ge ${installed_version} && echo 1 || echo 0");
-    #         my $action = 'DOWNGRADE';
-    #         $action = 'UPGRADE' if ($version_test == 1);
-    #         logg("debug", "Will ${action} '${package}=${installed_version}' to version '${snapshot_version}'");
-    #         push @update_packages, "${package}=${snapshot_version}";
-    #     }
-    # }
-
-    if (scalar(@packages) > 0) {
-        my $packages_to_update = join " ", @packages;
-        logg("info", "UPDATING: ${packages_to_update}");
-        my $downgrade_switch = is_minimum_apt_version("1.1.57") ? "--allow-downgrades" : "";
-        my $remove_switch =  is_minimum_apt_version("1.1") ? "--allow-remove-essential" : "";
-        my $force_switch = ($downgrade_switch || $remove_switch) ? "" : "--force-yes";
-        exec_shell("apt install --fix-broken $force_switch $downgrade_switch $remove_switch -y");
-        exec_shell("export DEBIAN_FRONTEND=noninteractive; apt-get install --no-install-recommends $force_switch $downgrade_switch $remove_switch -y ${packages_to_update}");
-    }
-}
 
 # Test system for minimum version of apt package
 #
 # Parameters
 # ----------
-# $version
-#     string : version number to test
+# version
+#     string : apt version number to test
 #
 # Returns
 # -------
 # boolean : true if system version is >= to the parameter version
 #
-sub is_minimum_apt_version {
-    my $version = shift;
-    my $result = exec_shell("dpkg -l apt");
-    $result =~ /ii\s+apt\s+(\S+)/;
-    logg("debug", "Found apt version $1");
-    my $version_test = exec_shell("dpkg --compare-versions $1 ge $version && echo 1 || echo 0");
-    $version_test =~ /(\d+)/;
-    return $1;
-}
+def is_minimum_apt_version(version):
+    result = exec_shell("dpkg -l apt")
+    matches = re.findall(r'ii\s+apt\s+(\S+)', result)
+    if len(matches) > 0:
+        logging.debug("Found apt version {}".format(matches[0]))
+        command = ["dpkg", "--compare-versions", matches[0], "ge", version]
+        try:
+            result = subprocess.check_call(command)
+            if result == 0:
+                return True
+        except subprocess.CalledProcessError:
+            pass
+    return False
 
 
 # Scrape the snapshot timestamp from the web for a given package version
 #
 # Parameters
 # ----------
-# $domain
+# domain
 #     string : URL domain of snapshot website
-# $repo
+# repo
 #     string : "neurodebian" or "debian"
-# $package
+# package
 #     string : package name
-# $version
+# version
 #     string : package version
 #
 # Returns
 # -------
-# string : timestamp of snapshot repo if found. Otherwise empty.
+# string : timestamp of snapshot repo if found. Otherwise None
 #
-sub get_timestamp {
-    my $domain = shift;
-    my $repo = shift;
-    my $package = shift;
-    my $version = shift;
-
-    my $url = "http://${domain}/package/${package}/${version}/";
-    logg("debug", "Scraping $url for ${package}=${version}");
-    $contents = get_www_content("http://${domain}/package/${package}/${version}/");
-    $contents =~ /\/archive\/${repo}\/([0-9TZ]+)\/pool\/main\/[a-z]\/${package}\//;
-    logg("debug", "Scraped timestamp: $1") if ($1);
-    return $1;
-}
+def get_timestamp(domain, repo, package, version):
+    url = "http://{}/package/{}/{}/".format(domain, package, version)
+    logging.debug("Scraping {} for {}={}".format(url, package, version))
+    response = requests.get(url)
+    if response.status_code == 200:
+        pattern = "/archive/{}/([0-9TZ]+)/pool/main/[a-z]/{}/".format(repo,
+            package)
+        matches = re.findall(pattern, response.text)
+        if len(matches) > 0:
+            logging.debug("Scraped timestamp: {}".format(matches[0]))
+            return matches[0]
 
 
-##### Program main
+if __name__ == '__main__':
 
-# Global vars
-$DEBUG = 0;
-$HELP = 0;
-$TRUST_REPOS = 0;
+    # Set apt setting to allow "outdated" repositories.
+    if not os.path.exists("/etc/apt/apt.conf.d/10no--check-valid-until"):
+        exec_shell("echo 'Acquire::Check-Valid-Until \"0\";' > /etc/apt/apt.conf.d/10no--check-valid-until")
 
+    # So we later on could make a decision either we need to clean up after ourselves
+    # Rely on having a Release file, since cannot be just * since there could be
+    # empty partial/ directory
+    apt_release_list = glob.glob("/var/lib/apt/lists/*Release")
 
-# Parse command line options
-foreach(@ARGV) {
-    if ($_ eq '--debug' or $_ eq '-d') {
-        $DEBUG = 1;
-    }
-    elsif ($_ eq '--help' or $_ eq '-h') {
-        $HELP = 1;
-    }
-    elsif ($_ eq '--trust-repos' or $_ eq '-t') {
-        $TRUST_REPOS = 1;
-    }
-    else {
-        push(@packages, $_);
-    }
-}
+    snapshots_sources_file = '/etc/apt/sources.list.d/snapshots.sources.list'
 
-if ($HELP) {
-    print $INFO;
-    exit(0);
-}
+    if os.path.exists(snapshots_sources_file):
+        exec_shell("rm {}".format(snapshots_sources_file))
+        run_apt_get_update()
 
-# Set apt setting to allow "outdated" repositories.
-if (! -e '/etc/apt/apt.conf.d/10no--check-valid-until') {
-    exec_shell("echo 'Acquire::Check-Valid-Until \"0\";' > /etc/apt/apt.conf.d/10no--check-valid-until");
-}
+    repo_urls = get_repo_urls(args.packages)
+    sources = get_sources()
+    if sources:
+        for repo_url in repo_urls:
+            write_snapshot_sources(snapshots_sources_file, repo_url, sources)
+    else:
+        logging.info("No valid sources found to get snapshots.")
+        exit(1)
 
-# So we later on could make a decision either we need to clean up after ourselves
-# Rely on having a Release file, since cannot be just * since there could be
-# empty partial/ directory
-my @apt_releases_list = </var/lib/apt/lists/*Release>;
+    if args.no_updates:
+        logging.info("Packages were not updated")
+        # Enable security archives
+        exec_shell("sed -i 's:#::g' {}".format(snapshots_sources_file))
+    else:
+        # Update debian-archive-keyring first
+        update_packages(["debian-archive-keyring"])
+        # Enable security archives
+        exec_shell("sed -i 's:#::g' {}".format(snapshots_sources_file))
+        run_apt_get_update()
+        # Update all the packages
+        update_packages(args.packages)
 
-my $snapshots_sources_file = '/etc/apt/sources.list.d/snapshots.sources.list';
-# my @sources_files = (
-#     '/etc/apt/sources.list',
-#     '/etc/apt/sources.list.d/neurodebian.sources.list',
-#     '/etc/apt/sources.list.d/backports.list'
-# );
+    if len(apt_release_list) > 0:
+        logging.info("Cleaning up APT lists because originally there were none")
+        exec_shell("rm -rf /var/lib/apt/lists/*")
 
-# Restore original sources files and apt-cache if this is a rerun of the command.
-# foreach my $sources_file (@sources_files) {
-#     exec_shell("cp ${sources_file}.orig.disabled $sources_file") if (-e "${sources_file}.orig.disabled");
-# }
-if (-e $snapshots_sources_file) {
-    exec_shell("rm $snapshots_sources_file");
-    run_apt_get_update();
-}
-
-my @repo_urls = get_repo_urls(@packages);
-my %sources = get_sources();
-if ((keys %sources) > 0) {
-    foreach my $repo_url (@repo_urls) {
-        write_snapshot_sources($snapshots_sources_file, $repo_url, %sources);
-    }
-} else {
-    logg("info", "No valid sources found to get snapshots.");
-    exit 1;
-}
-
-if ($DO_NOT_UPDATE) {
-    logg("info", "Packages were not updated");
-    # Enable security archives
-    # exec_shell("sed -i 's:#::g' $snapshots_sources_file");
-}
-else {
-    # Update debian-archive-keyring first
-    update_packages(("debian-archive-keyring"));
-    # Enable security archives
-    exec_shell("sed -i 's:#::g' $snapshots_sources_file");
-    run_apt_get_update();
-    # Update all the packages
-    # my @packages = installed_packages();
-    update_packages(@packages);
-}
-
-if (scalar @apt_releases_list == 0) {
-	logg("info", "Cleaning up APT lists because originally there were none");
-	exec_shell("rm -rf /var/lib/apt/lists/*");
-}
-
-exit 0
+    exit(0)
 
 # ./matt -d git=1:2.1.3-1 ants=2.2.0-1~nd+1
 # https://snapshot.debian.org/archive/debian/20180206T100448Z/pool/main/g/git/git_2.16.1-1_amd64.deb
