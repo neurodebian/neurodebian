@@ -57,10 +57,13 @@ else:
 # -------
 # string : STDOUT
 #
-def exec_shell(command):
+def exec_shell(command, env=None):
     logging.debug("Executing shell command: '{}'".format(command))
+    if env:
+        command_env = os.environ.copy()
+        command_env.update(env)
     s = subprocess.Popen(command.split(), stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT)
+        stderr=subprocess.STDOUT, env=env)
     stdout, stderr = s.communicate()
     logging.debug("Command STDOUT: {}".format(stdout))
     logging.debug("Command STDERR: {}".format(stderr))
@@ -234,9 +237,10 @@ def update_packages(packages):
             remove_switch,
             packages_to_update
         ]
-        exec_shell("apt install --fix-broken {} {} {} -y".format(*params))
-        exec_shell(("export DEBIAN_FRONTEND=noninteractive; apt-get install" +
-            " --no-install-recommends {} {} {} -y {}").format(*params))
+        exec_shell("apt install --fix-broken {} {} {} -y".format(*params[:3]))
+        exec_shell(("apt-get install --no-install-recommends {} {} {} -y {}"
+                    ).format(*params),
+                    env=dict(DEBIAN_FRONTEND="noninteractive"))
 
 
 # Test system for minimum version of apt package
@@ -295,11 +299,29 @@ def get_timestamp(domain, repo, package, version):
             return matches[0]
 
 
+# Scrape the snapshot timestamp from the web for a given package version
+#
+# Parameters
+# ----------
+# file
+#     string : Full path to file
+#
+def uncomment_lines_in_file(file):
+    with open(file, "r") as fp:
+        lines = fp.readlines()
+    with open(file, "w") as fp:
+        for line in lines:
+            if line.startswith("#"):
+                line = line[1:]
+            fp.write(line)
+
+
 if __name__ == '__main__':
 
     # Set apt setting to allow "outdated" repositories.
     if not os.path.exists("/etc/apt/apt.conf.d/10no--check-valid-until"):
-        exec_shell("echo 'Acquire::Check-Valid-Until \"0\";' > /etc/apt/apt.conf.d/10no--check-valid-until")
+        with open("/etc/apt/apt.conf.d/10no--check-valid-until", "w") as fp:
+            fp.write('Acquire::Check-Valid-Until "0";')
 
     # So we later on could make a decision either we need to clean up after ourselves
     # Rely on having a Release file, since cannot be just * since there could be
@@ -309,7 +331,7 @@ if __name__ == '__main__':
     snapshots_sources_file = '/etc/apt/sources.list.d/snapshots.sources.list'
 
     if os.path.exists(snapshots_sources_file):
-        exec_shell("rm {}".format(snapshots_sources_file))
+        os.remove(snapshots_sources_file)
         run_apt_get_update()
 
     repo_urls = get_repo_urls(args.packages)
@@ -324,18 +346,22 @@ if __name__ == '__main__':
     if args.no_updates:
         logging.info("Packages were not updated")
         # Enable security archives
-        exec_shell("sed -i 's:#::g' {}".format(snapshots_sources_file))
+        uncomment_lines_in_file(snapshots_sources_file)
     else:
         # Update debian-archive-keyring first
         update_packages(["debian-archive-keyring"])
         # Enable security archives
-        exec_shell("sed -i 's:#::g' {}".format(snapshots_sources_file))
+        uncomment_lines_in_file(snapshots_sources_file)
         run_apt_get_update()
         # Update all the packages
         update_packages(args.packages)
 
     if len(apt_release_list) > 0:
         logging.info("Cleaning up APT lists because originally there were none")
-        exec_shell("rm -rf /var/lib/apt/lists/*")
+        apt_release_list = glob.glob("/var/lib/apt/lists/*Release")
+        for file in apt_release_list:
+            os.remove(file)
 
     exit(0)
+
+# ./nd_freeze_install -d git=1:2.1.3-1 ants=2.2.0-1~nd+1
