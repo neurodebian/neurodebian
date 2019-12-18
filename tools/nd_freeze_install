@@ -125,7 +125,7 @@ def get_repo_urls(packages):
 
         # No repo found so complain
         if not timestamp:
-            logging.info("No snapshot repository found for {}".format(p))
+            logging.error("No snapshot repository found for {}".format(p))
 
     return urls
 
@@ -336,11 +336,11 @@ if __name__ == '__main__':
 
     repo_urls = get_repo_urls(args.packages)
     sources = get_sources()
-    if sources:
+    if sources and repo_urls:
         for repo_url in repo_urls:
             write_snapshot_sources(snapshots_sources_file, repo_url, sources)
     else:
-        logging.info("No valid sources found to get snapshots.")
+        logging.error("No valid snapshot repo sources found for any packages.")
         exit(1)
 
     if args.no_updates:
@@ -364,4 +364,3 @@ if __name__ == '__main__':
 
     exit(0)
 
-# ./nd_freeze_install -d git=1:2.1.3-1 ants=2.2.0-1~nd+1
