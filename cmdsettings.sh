@@ -7,8 +7,8 @@ buildplace="${cowbuilderroot}/build"
 
 # all currently supported dists
 allnddists="nd+debian-jessie nd+debian-stretch nd+debian-buster nd+debian-bullseye nd+debian-sid \
-            nd+ubuntu-trusty nd+ubuntu-xenial nd+ubuntu-bionic nd+ubuntu-cosmic nd+ubuntu-disco"
-alldists="$allnddists debian-jessie debian-stretch debian-buster debian-sid"
+            nd+ubuntu-trusty nd+ubuntu-xenial nd+ubuntu-bionic nd+ubuntu-disco"
+alldists="$allnddists debian-jessie debian-stretch debian-buster debian-bullseye debian-sid"
 
 # default is debian
 aptcache="${cowbuilderroot}/debian_aptcache"
