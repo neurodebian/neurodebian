@@ -19,7 +19,7 @@ parser.add_argument(
 )
 parser.add_argument(
     "-n, --no-updates",
-    help=("Make the snapshot repositories available but skip"
+    help=("Make the snapshot repositories available but skip "
         "the package update step, leaving the system as is."),
     action="store_true",
     dest="no_updates"
@@ -37,6 +37,14 @@ parser.add_argument(
         "USE CAUTIOUSLY!"),
     action="store_true",
     dest="trust_repos"
+)
+parser.add_argument(
+    "-a, --architecture",
+    help=("Choose the architecture of the package to install. "
+        "Defaults to amd64."),
+    action="store_true",
+    dest="architecture",
+    default="amd64"
 )
 args = parser.parse_args()
 
@@ -287,16 +295,26 @@ def is_minimum_apt_version(version):
 # string : timestamp of snapshot repo if found. Otherwise None
 #
 def get_timestamp(domain, repo, package, version):
-    url = "http://{}/package/{}/{}/".format(domain, package, version)
-    logging.debug("Scraping {} for {}={}".format(url, package, version))
+    url = "http://{}/mr/binary/{}/{}/binfiles".format(domain, package, version)
+    logging.debug("GET package files from {}".format(url))
     response = requests.get(url)
     if response.status_code == 200:
-        pattern = "/archive/{}/([0-9TZ]+)/pool/main/[a-z]/{}/".format(repo,
-            package)
-        matches = re.findall(pattern, response.text)
-        if len(matches) > 0:
-            logging.debug("Scraped timestamp: {}".format(matches[0]))
-            return matches[0]
+        data = response.json()
+        files = [d for d in data['result'] if d['architecture'] == 
+            args.architecture]
+        if len(files) == 0:
+            logging.error("Package bin files not found at {}".format(url))
+            return None
+        url = "http://{}/mr/file/{}/info".format(domain, files[0]['hash'])
+        logging.debug("GET package file timestamp from {}".format(url))
+        response = requests.get(url)
+        if response.status_code == 200:
+            data = response.json()
+            timestamp = data['result'][0]['first_seen']
+            logging.debug("FOUND timestamp {} for package {}".format(timestamp,
+                package))
+            return timestamp
+    return None
 
 
 # Scrape the snapshot timestamp from the web for a given package version
@@ -364,3 +382,5 @@ if __name__ == '__main__':
 
     exit(0)
 
+# apt-get update && apt-get install -y python python-pip && pip install requests
+# ./nd_freeze_install libcudart9.1=9.1.85-3
