@@ -1,7 +1,11 @@
 # vim ft=yaml
 # travis-ci.org definition to provide minimalistic testing of NeuroDebian
 # setup and tools
-language: erlang
+language: python
+
+python:
+  - 3.5
+
 cache:
   - apt
 services:
