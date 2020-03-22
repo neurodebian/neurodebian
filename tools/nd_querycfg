@@ -1,15 +1,16 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 """
 Dead simple script to query the NeuroDebian dev config (or any other Python config file)
 """
+from __future__ import print_function
 
 import os, sys
 
-from ConfigParser import SafeConfigParser
+from configparser import ConfigParser
 from optparse import OptionParser
 
 __prog__ = os.path.basename(sys.argv[0])
-__version__ = '0.0.2'
+__version__ = '0.1.0'
 
 if __name__ == '__main__':
     parser = OptionParser(
@@ -30,14 +31,14 @@ if __name__ == '__main__':
         sys.stderr.write("ERROR: File %s does not exist\n" % opts.config_file)
         sys.exit(1)
 
-    cfg = SafeConfigParser()
+    cfg = ConfigParser()
     cfg.read(opts.config_file)
     if len(argv) == 2:
-        print cfg.get(argv[0], argv[1])
+        print(cfg.get(argv[0], argv[1]))
     elif len(argv) == 1:
         # Print values of the section, =-separate key from value
-        print '\n'.join([opts.value_separator.join(x)
-                         for x in cfg.items(argv[0])])
+        print('\n'.join([opts.value_separator.join(x)
+                         for x in cfg.items(argv[0])]))
     else:
         # Print section names
-        print '\n'.join(cfg.sections())
+        print('\n'.join(cfg.sections()))
