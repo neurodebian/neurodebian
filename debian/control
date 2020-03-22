@@ -9,7 +9,7 @@ Build-Depends: debhelper (>= 9~),
                help2man,
                inkscape,
                imagemagick,
-               python-html5lib,
+               python3-html5lib,
                po-debconf
 Standards-Version: 4.5.0
 Vcs-Browser: https://salsa.debian.org/neurodebian-team/neurodebian
@@ -18,7 +18,7 @@ Homepage: http://neuro.debian.net
 
 Package: neurodebian
 Architecture: all
-Depends: python,
+Depends: python3,
          wget,
          neurodebian-archive-keyring,
          ${misc:Depends}
@@ -40,7 +40,7 @@ Depends: ${misc:Depends},
          devscripts,
          neurodebian-archive-keyring
 Recommends: ${misc:Recommends},
-            python,
+            python3,
             zerofree,
             moreutils,
             time,
