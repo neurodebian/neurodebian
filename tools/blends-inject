@@ -225,15 +225,15 @@ def parse_debian_blends(f='debian/blends'):
             pkg = new_pkg(pkg, v, source, tasks)
             newtasks = False
         else:
-			if pkg is None:
-				# So we had just source?
-				if source is None:
-					error("No package or source is known where to add %s" % (k,), 1)
-					# TODO: just deduce source from DebianMaterials
-				pkg = new_pkg(pkg, source, source, tasks)
-				# Since only source is available, it should be only Suggest:-ed
-				pkg['Suggests'] = source.lower()
-				newtasks = False
+            if pkg is None:
+                # So we had just source?
+                if source is None:
+                    error("No package or source is known where to add %s" % (k,), 1)
+                    # TODO: just deduce source from DebianMaterials
+                pkg = new_pkg(pkg, source, source, tasks)
+                # Since only source is available, it should be only Suggest:-ed
+                pkg['Suggests'] = source.lower()
+                newtasks = False
 
             if newtasks:
                 # Add customization
@@ -667,8 +667,8 @@ def main():
     (options, infiles) = p.parse_args()
     global verbosity; verbosity = options.verbosity
 
-	if options.wnpp and options.wnpp_mode is None:
-	     options.wnpp_mode = 'ITP'
+    if options.wnpp and options.wnpp_mode is None:
+         options.wnpp_mode = 'ITP'
 
     # Load configuration
     config = ConfigParser(defaults={'skip': '.*[~#]$'})
@@ -703,14 +703,14 @@ def main():
         else:
             topdir = options.topdir
 
-		expand_pkgs(pkgs, topdir=topdir)
+        expand_pkgs(pkgs, topdir=topdir)
 
         pkgs = [p for p in pkgs if not is_template(p)]
         if not len(pkgs):
             verbose(2, "W: Skipping since seems to contain templates only")
             continue
         if options.wnpp_mode is not None:
-		    print_wnpp(pkgs, config, options.wnpp_mode)
+            print_wnpp(pkgs, config, options.wnpp_mode)
         else:
             # by default -- operate on blends/tasks files
             tasks = group_packages_into_tasks(pkgs)
