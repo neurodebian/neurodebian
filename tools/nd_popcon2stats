@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # emacs: -*- mode: python; py-indent-offset: 4; indent-tabs-mode: nil -*-
 # vi: set ft=python sts=4 ts=4 sw=4 et:
 #
@@ -58,6 +58,8 @@ def read_popcon_stats(filename, read_packages=True):
                  vendor = {})
 
     for line in fileinput.FileInput(filename, openhook=fileinput.hook_compressed):
+        if not isinstance(line, str):
+            line = line.decode()
         key, values = [x.strip().lower() for x in line.split(':', 1)]
         if key == 'package':          # most probable
             if not read_packages:
@@ -101,21 +103,21 @@ if __name__ == '__main__':
         # but not later than today
         date_int = min((date_int//coarsen + 1)*coarsen,
                        time.time()*1000)
-        for version, count in entry['release'].iteritems():
+        for version, count in entry['release'].items():
             if not version in popcon_versions:
                 popcon_versions[version] = {}
             popcon_ = popcon_versions[version]
             popcon_[date_int] = count + popcon_.get(date_int, 0)
             timestamps.add(date_int)
 
-    versions = sorted([x for x in popcon_versions.keys() if not 'ubuntu' in x]) + \
-               sorted([x for x in popcon_versions.keys() if     'ubuntu' in x])
+    versions = sorted([x for x in list(popcon_versions.keys()) if not 'ubuntu' in x]) + \
+               sorted([x for x in list(popcon_versions.keys()) if     'ubuntu' in x])
 
     # we need to make sure that for every date we have an entry for
     # every version, otherwise d3 pukes because of ... d3.v2.js:expand
     export = [{'key': k,
-               'values': [[date, popcon_versions[k].get(date, 0)/coarsen_days]
+               'values': [[date, (popcon_versions[k].get(date, 0)//coarsen_days)]
                           for date in sorted(list(timestamps))]}
               for k in versions]
-    print json.dumps(export)
+    print(json.dumps(export))
 
