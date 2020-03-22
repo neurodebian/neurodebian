@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 #emacs: -*- mode: python-mode; py-indent-offset: 4; tab-width: 4; indent-tabs-mode: nil -*-
 #ex: set sts=4 ts=4 sw=4 noet:
 """Script to help maintaining package definitions within Debian blends
@@ -112,7 +112,6 @@ Remove: python-brian-doc
  ;
 
 """
-from __future__ import print_function
 
 
 from past.builtins import cmp
@@ -691,7 +690,7 @@ def main():
     if not len(infiles):
         infiles = [join(options.topdir or './', 'debian/blends')]     #  default one
 
-    skip_re = re.compile(config.get('paths', 'skip', None))
+    skip_re = re.compile(config.get('paths', 'skip'))
 
     for blends_file in infiles:
         verbose(1, "Processing %s" % blends_file)
