@@ -112,12 +112,19 @@ Remove: python-brian-doc
  ;
 
 """
+from __future__ import print_function
 
 
+from past.builtins import cmp
+from future import standard_library
+from functools import reduce
+standard_library.install_aliases()
+from builtins import str
+from builtins import object
 import re, os, sys, tempfile, glob
 from os.path import join, exists, expanduser, dirname, basename
 
-from ConfigParser import ConfigParser
+from configparser import ConfigParser
 from optparse import OptionParser, Option
 
 from copy import deepcopy
@@ -176,7 +183,7 @@ def parse_debian_blends(f='debian/blends'):
     # Linearize all the paragraphs since we are not using them
     items = []
     for p in deb822.Deb822.iter_paragraphs(open(f)):
-        items += p.items()
+        items += list(p.items())
 
     verbose(6, "Got items %s" % items)
     # Traverse and collect things
@@ -321,12 +328,12 @@ def group_packages_into_tasks(pkgs):
     tasks = {}
     for pkg in pkgs:
         # Lets just create deepcopies with tune-ups for each task
-        for itask, (task, fields) in enumerate(pkg.tasks.iteritems()):
+        for itask, (task, fields) in enumerate(pkg.tasks.items()):
             pkg_ = deepcopy(pkg)
             pkg_.update(fields)
 
             # Perform string completions and removals
-            for k,v in pkg_.iteritems():
+            for k,v in pkg_.items():
                 pkg_[k] = v % pkg_
                 if v is None or not len(v.strip()):
                     pkg_.pop(k)
@@ -335,7 +342,7 @@ def group_packages_into_tasks(pkgs):
             # silly Deb822* cannot create from list of tuples, so will do
             # manually
             pkg__ = deb822.Deb822()
-            for k,v in sorted(pkg_.items(),
+            for k,v in sorted(list(pkg_.items()),
                               cmp=lambda x, y:
                               key_prefix_compare(x, y, order=FIELDS_ORDER)):
                 pkg__[k] = v
@@ -351,12 +358,12 @@ def group_packages_into_tasks(pkgs):
 
             tasks[task] = tasks.get(task, []) + [pkg__]
     verbose(4, "Grouped %d packages into %d tasks: %s" %
-            (len(pkgs), len(tasks), ', '.join(tasks.keys())))
+            (len(pkgs), len(tasks), ', '.join(list(tasks.keys()))))
     return tasks
 
 def inject_tasks(tasks, config):
     # Now go through task files and replace/add entries
-    for task, pkgs in tasks.iteritems():
+    for task, pkgs in tasks.items():
         verbose(2, "Task %s with %d packages" % (task, len(pkgs)))
         blend, puretask = task.split('/')
         taskfile = expanduser(join(config.get(blend, 'path'), 'tasks', puretask))
@@ -408,7 +415,7 @@ def inject_tasks(tasks, config):
                 try:
                     while entries[istart+icount].strip() != '':
                         icount += 1
-                except IndexError, e:
+                except IndexError as e:
                     pass                # if we go beyond
 
                 # Lets not change file without necessity, if entry is identical --
@@ -493,7 +500,7 @@ class DebianMaterials(object):
         try:
             control = deb822.Deb822.iter_paragraphs(
                 open(self.fpath('control')))
-        except Exception, e:
+        except Exception as e:
             raise RuntimeError(
                   "Cannot parse %s file necessary for the %s package entry. Error: %s"
                   % (control_file, pkg['Pkg-Name'], str(e)))
@@ -532,7 +539,7 @@ class DebianMaterials(object):
                     licenses.append(l)
                     if first_only:
                         break
-        except Exception, e:
+        except Exception as e:
             # print e
             return None
         return ', '.join(licenses)
@@ -553,7 +560,7 @@ class DebianMaterials(object):
 
     def get_vcsfields(self):
         vcs = deb822.Deb822()
-        for f,v in self._source.iteritems():
+        for f,v in self._source.items():
             if f.lower().startswith('vcs-'):
                 vcs[f] = v
         return vcs
@@ -568,7 +575,7 @@ class DebianMaterials(object):
         if pkg_name in self.binaries:
             pass
         elif pkg_name.lower() == self.source['Source'].lower():
-            pkg_name = self.binaries.keys()[0]
+            pkg_name = list(self.binaries.keys())[0]
         else:
             error("Name %s does not match any binary, nor source package in %s"
                   % (pkg_name, self))
@@ -581,7 +588,7 @@ def print_wnpp(pkgs, config, wnpp_type="ITP"):
     """
 
     pkg = pkgs[0]                       # everything is based on the 1st one
-    opts = dict(pkg.items())
+    opts = dict(list(pkg.items()))
     opts['WNPP-Type'] = wnpp_type.upper()
     opts['Pkg-Description-Short'] = re.sub('\n.*', '', pkg['Pkg-Description'])
 
@@ -608,7 +615,7 @@ def print_wnpp(pkgs, config, wnpp_type="ITP"):
         verbose(2, "Running %s" %cmd)
         os.system(cmd)
     else:
-        print "Subject: %s\n\n%s" % (subject, body)
+        print("Subject: %s\n\n%s" % (subject, body))
 
 
 def is_template(p):
