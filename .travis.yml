@@ -8,8 +8,10 @@ python:
 
 cache:
   - apt
+
 services:
   - docker
+
 script:
     # Test the ultimate one-liner setup for NeuroDebian repository
     - bash tools/neurodebian-travis.sh
@@ -29,6 +31,7 @@ script:
     - sudo apt-get install -y neurodebian-dev
     # Test nd_freeze
     - bash tools/tests/test_nd_freeze
+
 after_failure:
     # Could happen if installation of neurodebian package kills APT repo so print policy
     - sudo apt-cache policy
