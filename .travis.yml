@@ -23,6 +23,8 @@ script:
     # enable it via our tool
     - NEURODEBIAN_ENABLE=1 NEURODEBIAN_UPDATE=1 sudo nd-configurerepo
     - grep "\sxenial\s" /etc/apt/sources.list.d/neurodebian.sources.list
+    # and update was ran which fetched listings
+    - /bin/ls /var/lib/apt/lists/neuro*
     # Verify that it is still present
     # TODO: for some reason disables it again :-/  Need to get something going already, disabled for now
     #- NEURODEBIAN_ENABLE=1 NEURODEBIAN_VERBOSE=10 sudo apt-get install -y --reinstall neurodebian
