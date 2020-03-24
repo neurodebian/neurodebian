@@ -121,7 +121,7 @@ function fail {
     echo -n "FAIL: $message "
     if [ -e "$filepath" ]; then
         echo "Full file content:"
-        cat "$filepath"
+        cat "$filepath" | sed -e 's,^,| ,g'
     else
         echo "File $filepath does not exist."
     fi
