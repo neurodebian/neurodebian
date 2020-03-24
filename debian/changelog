@@ -1,8 +1,12 @@
-neurodebian (0.40.0) UNRELEASED; urgency=medium
+neurodebian (0.40.0) unstable; urgency=medium
 
+  * Tests of nd_freeze got fixed up to account for changes in
+    current state of stable distributions
+  * Elderly survey/ was removed
+  * All Python scripts migrated to python3 (only)
   * debian/control: depend/recommend python3 instead of python
 
- --
+ -- Yaroslav Halchenko <debian@onerussian.com>  Mon, 23 Mar 2020 23:17:45 -0400
 
 neurodebian (0.39.0) unstable; urgency=medium
 
