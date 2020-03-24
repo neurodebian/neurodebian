@@ -229,8 +229,8 @@ query_cfg_section()
     config_file="$1"
     section="$2"
     print_verbose 3 "Querying config $config_file section $section"
-    assure_command_from_package python python-minimal 1
-    python -c "from ConfigParser import SafeConfigParser as SP; cfg = SP(); cfg.read('$config_file'); print('\n'.join([' '.join(x) for x in cfg.items('$section')]))"
+    assure_command_from_package python3 python3-minimal 1
+    python3 -c "from configparser import ConfigParser as SP; cfg = SP(); cfg.read('$config_file'); print('\n'.join([' '.join(x) for x in cfg.items('$section')]))"
 }
 
 get_mirrors()

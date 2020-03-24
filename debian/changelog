@@ -1,3 +1,9 @@
+neurodebian (0.40.0) UNRELEASED; urgency=medium
+
+  * debian/control: depend/recommend python3 instead of python
+
+ --
+
 neurodebian (0.39.0) unstable; urgency=medium
 
   * nd_freeze:

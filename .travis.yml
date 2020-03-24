@@ -1,11 +1,17 @@
 # vim ft=yaml
 # travis-ci.org definition to provide minimalistic testing of NeuroDebian
 # setup and tools
-language: erlang
+language: python
+
+python:
+  - 3.5
+
 cache:
   - apt
+
 services:
   - docker
+
 script:
     # Test the ultimate one-liner setup for NeuroDebian repository
     - bash tools/neurodebian-travis.sh
@@ -16,7 +22,9 @@ script:
     - test \! -f /etc/apt/sources.list.d/neurodebian.sources.list
     # enable it via our tool
     - NEURODEBIAN_ENABLE=1 NEURODEBIAN_UPDATE=1 sudo nd-configurerepo
-    - grep "\strusty\s" /etc/apt/sources.list.d/neurodebian.sources.list
+    - grep "\sxenial\s" /etc/apt/sources.list.d/neurodebian.sources.list
+    # and update was ran which fetched listings
+    - /bin/ls /var/lib/apt/lists/neuro*
     # Verify that it is still present
     # TODO: for some reason disables it again :-/  Need to get something going already, disabled for now
     #- NEURODEBIAN_ENABLE=1 NEURODEBIAN_VERBOSE=10 sudo apt-get install -y --reinstall neurodebian
@@ -25,6 +33,7 @@ script:
     - sudo apt-get install -y neurodebian-dev
     # Test nd_freeze
     - bash tools/tests/test_nd_freeze
+
 after_failure:
     # Could happen if installation of neurodebian package kills APT repo so print policy
     - sudo apt-cache policy
