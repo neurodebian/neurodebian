@@ -1,14 +1,23 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # emacs: -*- mode: python; py-indent-offset: 4; indent-tabs-mode: nil -*-
 # vi: set ft=python sts=4 ts=4 sw=4 et:
 #
+# Script to install older packages based on version number.
+#
+# If running this in a stripped down environment such as a docker container,
+# install python dependencies with this command:
+#
+# apt-get update && apt-get install -y python3 python3-pip && pip3 install requests bs4
+#
 import argparse
 import glob
+import gzip
 import logging
 import os
 import re
 import requests
 import subprocess
+from bs4 import BeautifulSoup
 
 parser = argparse.ArgumentParser()
 parser.add_argument(
@@ -18,20 +27,20 @@ parser.add_argument(
     metavar="package=version"
 )
 parser.add_argument(
-    "-n, --no-updates",
+    "-n", "--no-updates",
     help=("Make the snapshot repositories available but skip "
         "the package update step, leaving the system as is."),
     action="store_true",
     dest="no_updates"
 )
 parser.add_argument(
-    "-d, --debug",
+    "-d", "--debug",
     help="print debugging informaiton to the screen",
     action="store_true",
     dest="debug"
 )
 parser.add_argument(
-    "-t, --trust-repos",
+    "-t", "--trust-repos",
     help=("Update untrusted repos. For repos whose apt keys are invalid, "
         "go ahead and use the repo rather thanfailing by default. "
         "USE CAUTIOUSLY!"),
@@ -39,7 +48,7 @@ parser.add_argument(
     dest="trust_repos"
 )
 parser.add_argument(
-    "-a, --architecture",
+    "-a", "--architecture",
     help=("Choose the architecture of the package to install. "
         "Defaults to amd64."),
     action="store_true",
@@ -60,6 +69,8 @@ else:
 # ----------
 # command
 #   string : command to run in shell
+# env
+#   string : hash of environment variables to pass to command environment
 #
 # Returns
 # -------
@@ -73,12 +84,20 @@ def exec_shell(command, env=None):
     s = subprocess.Popen(command.split(), stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT, env=env)
     stdout, stderr = s.communicate()
+    if stdout:
+        stdout = stdout.decode('utf-8')
+    if stderr:
+        stderr = stderr.decode('utf-8')
     logging.debug("Command STDOUT: {}".format(stdout))
     logging.debug("Command STDERR: {}".format(stderr))
     return stdout
 
 
 # Run apt-get update command
+#
+# Returns
+# -------
+# None
 #
 def run_apt_get_update():
     logging.info("Refreshing apt cache")
@@ -92,137 +111,184 @@ def run_apt_get_update():
             missing_key[0]))
         exec_shell(("apt-key adv --recv-keys --keyserver "
             "pool.sks-keyservers.net 0x{}").format(missing_key[0]))
-        logging.info("Successfully retrieved public key, re-running apt update")
+        logging.info(
+            "Successfully retrieved public key, re-running apt update")
         exec_shell("apt-get update {}".format(switch))
 
 
-# Scrape the appropriate snapshot timestamps from the repo websites based on
-# the package name and version
+# Retrieve the snapshot timestamp and repo component for a package version
 #
 # Parameters
 # ----------
-# packages
-#   list : list of packages to get timestamps
+# domain
+#   string : repo URL domain
+# package
+#   string : name of package
+# version
+#   string : version of package
 #
 # Returns
 # -------
-# list : snapshot repo urls that go /etc/apt/sources.list.d
+# string : snapshot timestamp
+# string : repo component where package is located
 #
-def get_repo_urls(packages):
-    urls = []
+def get_file_info(domain, package, version):
+    url = "http://{}/mr/binary/{}/{}/binfiles".format(domain, package, version)
+    logging.debug("Retrieving file hashes for package: {}".format(url))
+    response = requests.get(url)
+    if response.status_code == 200:
+        data = response.json()
+        files = [d for d in data['result']
+            if d['architecture'] == args.architecture]
+        if len(files) == 0:
+            return (None, None)
+        url = "http://{}/mr/file/{}/info".format(domain, files[0]['hash'])
+        logging.debug(("Retrieving snapshot timestamp and repo component: "
+            "{}").format(url))
+        response = requests.get(url)
+        if response.status_code == 200:
+            data = response.json()
+            timestamp = data['result'][0]['first_seen']
+            component = data['result'][0]['path'].split('/')[2]
+            logging.debug("Found timestamp '{}' and component '{}' for "
+                "package '{}={}'".format(timestamp, component, package,
+                version))
+            return (timestamp, component)
+    return (None, None)
+
+
+# Retrieve snapshot repo information
+#
+# Parameters
+# ----------
+# package
+#   string : name of package
+# version
+#   string : version of package
+#
+# Returns
+# -------
+# hash : contains snapshot URL and repo component where package is located
+#
+def get_repo_info(package, version):
     url_template = "http://{}/archive/{}/{}/"
 
-    for p in packages:
+    # First check, neurodebian
+    domain = "snapshot-neuro.debian.net"
+    repo = "neurodebian"
+    (timestamp, component) = get_file_info(domain, package, version)
+    if timestamp and component:
+        return {
+            'url': url_template.format(domain, repo, timestamp),
+            'component': component
+        }
 
-        (package, version) = p.split("=")
+    # If not found in NeuroDebian snapshot, try Debian
+    domain = "snapshot.debian.org"
+    repo = "debian"
+    (timestamp, component) = get_file_info(domain, package, version)
+    if timestamp and component:
+        return {
+            'url': url_template.format(domain, repo, timestamp),
+            'component': component
+        }
 
-        # First check, neurodebian
-        domain = "snapshot-neuro.debian.net"
-        repo = "neurodebian"
-        timestamp = get_timestamp(domain, repo, package, version)
-        if timestamp:
-            urls.append(url_template.format(domain, repo, timestamp))
-
-        # If not found in NeuroDebian snapshot, try Debian
-        if not timestamp:
-            domain = "snapshot.debian.org"
-            repo = "debian"
-            timestamp = get_timestamp(domain, repo, package, version)
-            if timestamp:
-                urls.append(url_template.format(domain, repo, timestamp))
-
-        # No repo found so complain
-        if not timestamp:
-            logging.error("No snapshot repository found for {}".format(p))
-
-    return urls
+    return None
 
 
-# Function returns a hash of information for each source that we want
-# to include as a snapshot repo.
+# Retrieve snapshot repo information
+#
+# Parameters
+# ----------
+# snapshot_url
+#   string : base URL of snapshot with timestamp
 #
 # Returns
 # -------
-# sources
-#     dict : The sources retrieved from apt-cache policy that need to be
-#       written to the sources file.
+# list : all the repo codenames located at a particular snapshot location
 #
-def get_sources():
-    sources = {}
+def get_possible_codenames(snapshot_url):
+    # Page scrape snapshot page to get list of available codenames.
+    logging.debug("Getting codenames at snapshot: {}".format(snapshot_url))
+    page = requests.get(snapshot_url + '/dists/')
+    soup = BeautifulSoup(page.content, 'html.parser')
+    results = soup.find('table', class_='readdir')
 
-    logging.info("Discovering installed repository sources")
-    run_apt_get_update()
-    files = glob.glob("/var/lib/apt/lists/*Release")
-    for file in files:
-        source = {}
-        with open(file, "r") as f:
-            lines = f.readlines()
-        for line in lines:
-            matches = re.findall(r'^([a-zA-Z][^:]*):[\ ]+(\S.*)$', line)
-            if len(matches) > 0:
-                source[matches[0][0]] = matches[0][1]
-        if source["Origin"] in ["Debian", "NeuroDebian", "Debian Backports"]:
-            msg = "Found {Label} {Codename} with components {Components}"
-            logging.debug(msg.format(**source))
-            for component in source["Components"].split():
-                codename = source["Codename"]
-                matches = re.findall(r'(\S+)\/(\S+)', component)
-                if len(matches) > 0:
-                    codename = "{}/{}".format(source["Codename"], matches[0][0])
-                    component = matches[0][1]
-                key = "{}|{}|{}".format(source["Label"], source["Codename"],
-                    component)
-                sources[key] = {
-                    "Origin": source["Origin"],
-                    "Label": source["Label"],
-                    "Codename": codename,
-                    "Component": component
-                }
-    return sources
+    job_elems = results.find_all('tr')
+    codenames = []
+    for job_elem in job_elems:
+        elem = job_elem.find('td', text='d')
+        if elem:
+            codename = elem.find_next_sibling('td').text
+            if codename != '../' and codename != 'experimental/':
+                codenames.append(elem.find_next_sibling('td').text[:-1])
+    logging.debug("Found {} codenames: {}".format(len(codenames),
+        ', '.join(codenames)))
+
+    return codenames
 
 
-# Function writes out the necessary lines to the /etc/apt/sources.list.d/snapshot.sources.list
-# file. The source written to the sources file is pointed to the next snapshot
-# taken after the date provided by the user. To get the "next" snapshot timestamp
-# we pull the HTML file of the current snapshot and scrape the next timestamp.
+# Retrieve snapshot repo information
+#
+# Parameters
+# ----------
+# snapshot_url
+#   string : base URL of snapshot with timestamp
+#
+# Returns
+# -------
+# list : all the repo codenames located at a particular snapshot location
+#
+def get_package_codename(repo_info, package):
+    snapshot_url = repo_info['url']
+    component = repo_info['component']
+    codenames = get_possible_codenames(snapshot_url)
+    for codename in codenames:
+        download_url = "{}dists/{}/{}/binary-{}/Packages.gz".format(
+            snapshot_url, codename, component, args.architecture)
+        logging.debug("Checking Release file at {} for package '{}'".format(
+            download_url, package))
+        r = requests.get(download_url)
+        if r.status_code == 200:
+            data = gzip.decompress(r.content).decode('utf-8')
+            if re.search(r"Package: {}[\s\n\w\-:]*Version: {}".format(package,
+                    version), data):
+                logging.debug("Identified codename '{}' for package: "
+                    "{}".format(codename, package))
+                return codename
+    return None
+
+
+# Write out the snapshot repo source line to the
+# /etc/apt/sources.list.d/snapshot.sources.list file.
 #
 # Parameters
 # ----------
 # snapshots_sources_file
 #     string : Path to snapshot sources file.
-# repo_url
-#     string : Sources url for the snapshot repo.
-# sources
-#     dict : The sources retrieved from /var/lib/apt/lists/*Release policy that
-#            need to be written to the sources file.
+# repo_info
+#     hash : snapshot url and component
+# codename
+#     string : repo codename where package exists in snapshot
 #
-def write_snapshot_sources(snapshot_sources_file, repo_url, sources):
+# Returns
+# -------
+# None
+#
+def write_snapshot_source(snapshots_sources_file, repo_info, codename):
     trusted_option = ""
     if args.trust_repos and is_minimum_apt_version("0.9.0"):
         trusted_option = " [trusted=yes]"
-    with open(snapshot_sources_file, "a+") as f:
-        for key in sources.keys():
-            if ("snapshot-neuro.debian.net" in repo_url
-                    and sources[key]["Label"] == "NeuroDebian") \
-                    or ("snapshot.debian.org" in repo_url
-                    and sources[key]["Label"] == "Debian") \
-                    or (sources[key]["Label"] == "Debian-Security"):
-
-                # Hold off updating security archive until after the
-                # debian-archive-keyring package is updated.
-                line_prefix = ""
-                if sources[key]["Label"] == "Debian-Security":
-                    line_prefix = "#"
-
-                source_line = "deb{} {} {} {}".format(
-                    trusted_option,
-                    repo_url,
-                    sources[key]["Codename"],
-                    sources[key]["Component"]
-                )
-                f.write("{}{}\n".format(line_prefix, source_line))
-                logging.debug("Adding '{}' to {}".format(source_line,
-                    snapshot_sources_file))
+    with open(snapshots_sources_file, "a+") as f:
+        source_line = "deb{} {} {} {}".format(
+            trusted_option,
+            repo_info['url'],
+            codename,
+            repo_info['component']
+        )
+        f.write("{}\n".format(source_line))
+        logging.info("Adding line '{}' to {}".format(source_line,
+            snapshots_sources_file))
 
 
 # Update the installed packages to their snapshot versions
@@ -277,63 +343,6 @@ def is_minimum_apt_version(version):
     return False
 
 
-# Scrape the snapshot timestamp from the web for a given package version
-#
-# Parameters
-# ----------
-# domain
-#     string : URL domain of snapshot website
-# repo
-#     string : "neurodebian" or "debian"
-# package
-#     string : package name
-# version
-#     string : package version
-#
-# Returns
-# -------
-# string : timestamp of snapshot repo if found. Otherwise None
-#
-def get_timestamp(domain, repo, package, version):
-    url = "http://{}/mr/binary/{}/{}/binfiles".format(domain, package, version)
-    logging.debug("GET package files from {}".format(url))
-    response = requests.get(url)
-    if response.status_code == 200:
-        data = response.json()
-        files = [d for d in data['result'] if d['architecture'] == 
-            args.architecture]
-        if len(files) == 0:
-            logging.error("Package bin files not found at {}".format(url))
-            return None
-        url = "http://{}/mr/file/{}/info".format(domain, files[0]['hash'])
-        logging.debug("GET package file timestamp from {}".format(url))
-        response = requests.get(url)
-        if response.status_code == 200:
-            data = response.json()
-            timestamp = data['result'][0]['first_seen']
-            logging.debug("FOUND timestamp {} for package {}".format(timestamp,
-                package))
-            return timestamp
-    return None
-
-
-# Scrape the snapshot timestamp from the web for a given package version
-#
-# Parameters
-# ----------
-# file
-#     string : Full path to file
-#
-def uncomment_lines_in_file(file):
-    with open(file, "r") as fp:
-        lines = fp.readlines()
-    with open(file, "w") as fp:
-        for line in lines:
-            if line.startswith("#"):
-                line = line[1:]
-            fp.write(line)
-
-
 if __name__ == '__main__':
 
     # Set apt setting to allow "outdated" repositories.
@@ -341,37 +350,35 @@ if __name__ == '__main__':
         with open("/etc/apt/apt.conf.d/10no--check-valid-until", "w") as fp:
             fp.write('Acquire::Check-Valid-Until "0";')
 
-    # So we later on could make a decision either we need to clean up after ourselves
-    # Rely on having a Release file, since cannot be just * since there could be
-    # empty partial/ directory
+    # So we later on could make a decision either we need to clean up after
+    # ourselves. Rely on having a Release file, since cannot be just * since
+    # there could be empty partial/ directory
     apt_release_list = glob.glob("/var/lib/apt/lists/*Release")
 
     snapshots_sources_file = '/etc/apt/sources.list.d/snapshots.sources.list'
 
-    if os.path.exists(snapshots_sources_file):
-        os.remove(snapshots_sources_file)
-        run_apt_get_update()
+    for p in args.packages:
+        (package, version) = p.split('=')
 
-    repo_urls = get_repo_urls(args.packages)
-    sources = get_sources()
-    if sources and repo_urls:
-        for repo_url in repo_urls:
-            write_snapshot_sources(snapshots_sources_file, repo_url, sources)
-    else:
-        logging.error("No valid snapshot repo sources found for any packages.")
-        exit(1)
+        repo_info = get_repo_info(package, version)
+        codename = get_package_codename(repo_info, package)
+
+        if codename:
+            logging.info("Found package {}={} in {} {}".format(package,
+                version, codename, repo_info['component']))
+        else:
+            logging.info(("Failed to find codename for package {}={} in "
+                "snapshot '{}'").format(package, version, repo_info['url']))
+            exit(1)
+
+        write_snapshot_source(snapshots_sources_file, repo_info, codename)
 
     if args.no_updates:
         logging.info("Packages were not updated")
-        # Enable security archives
-        uncomment_lines_in_file(snapshots_sources_file)
     else:
         # Update debian-archive-keyring first
         update_packages(["debian-archive-keyring"])
-        # Enable security archives
-        uncomment_lines_in_file(snapshots_sources_file)
         run_apt_get_update()
-        # Update all the packages
         update_packages(args.packages)
 
     if len(apt_release_list) > 0:
@@ -381,6 +388,3 @@ if __name__ == '__main__':
             os.remove(file)
 
     exit(0)
-
-# apt-get update && apt-get install -y python python-pip && pip install requests
-# ./nd_freeze_install libcudart9.1=9.1.85-3
