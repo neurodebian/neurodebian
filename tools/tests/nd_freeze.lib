@@ -1,0 +1,80 @@
+
+# Shared library of functions for nd_freeze* tests
+
+# Test to see if a line is in a given file.
+#
+# Parameters
+# ----------
+# file : string
+#   File to search for the given string
+#
+# line : string
+#   Line the we expect to be in the file.
+#
+# negate : string
+#   Enter "TRUE" if the test is to NOT find a string in the file.
+#
+function assert_line_in_file {
+    file=$1
+    line=$2
+    negate=${3:-NULL}
+
+    filepath="$TMP_DIR/$file"
+    if grep -Fq "$line" "$filepath"; then
+        if [ "$negate" = "TRUE" ]; then
+            fail "$filepath did contain: $line." "$filepath"
+        else
+            echo "SUCCESS: line '$line' found"
+        fi
+    else
+        if [ "$negate" = "TRUE" ]; then
+            echo "SUCCESS: line '$line' not found"
+        else
+            fail "$filepath did not contain: $line." "$filepath"
+        fi
+    fi
+}
+
+# Test to see if a line is NOT in a given file.
+#
+# Parameters
+# ----------
+# file : string
+#   File to search for the given string
+#
+# line : string
+#   Line the we expect to be in the file.
+#
+function assert_line_NOT_in_file {
+    assert_line_in_file "$1" "$2" "TRUE"
+}
+
+# Run commands that are run at the end of each test run.
+function test_teardown {
+    echo "INFO: removing TMP_DIR: ${TMP_DIR}"
+    rm -rf $TMP_DIR
+}
+
+# Handle the fail of a test
+#
+# Parameters
+# ----------
+# file : string
+#   Message to display to user
+#
+# line : string
+#   File the failed test was looking into
+#
+function fail {
+    message=$1
+    filepath=$2
+
+    echo -n "FAIL: $message "
+    if [ -e "$filepath" ]; then
+        echo "Full file content:"
+        cat "$filepath"
+    else
+        echo "File $filepath does not exist."
+    fi
+    EXIT_CODE=$(($EXIT_CODE + 1))
+}
