@@ -50,10 +50,8 @@ parser.add_argument(
 parser.add_argument(
     "-a", "--architecture",
     help=("Choose the architecture of the package to install. "
-        "Defaults to amd64."),
-    action="store_true",
-    dest="architecture",
-    default="amd64"
+        "Defaults to host architecture."),
+    dest="architecture"
 )
 args = parser.parse_args()
 
@@ -344,6 +342,10 @@ def is_minimum_apt_version(version):
 
 
 if __name__ == '__main__':
+
+    # Determine default architecture if none provided by user
+    if (not args.architecture):
+        args.architecture = exec_shell("dpkg --print-architecture").strip("\n")
 
     # Set apt setting to allow "outdated" repositories.
     if not os.path.exists("/etc/apt/apt.conf.d/10no--check-valid-until"):
