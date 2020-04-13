@@ -32,7 +32,7 @@ neuroscience research software for the Debian operating system as well
 as Ubuntu and other derivatives.  Please visit our
 [main website](http://neuro.debian.net) to discover more.
 
-[![Travis tests status](https://secure.travis-ci.org/neurodebian/neurodebian.png?branch=master)](https://travis-ci.org/datalad/datalad)
+[![Travis tests status](https://secure.travis-ci.org/neurodebian/neurodebian.png?branch=master)](https://travis-ci.org/neurodebian/neurodebian)
 [![Docker](http://dockeri.co/image/_/neurodebian)](https://hub.docker.com/_/neurodebian/)
 [![https://www.singularity-hub.org/static/img/hosted-singularity--hub-%23e32929.svg](https://www.singularity-hub.org/static/img/hosted-singularity--hub-%23e32929.svg)](https://singularity-hub.org/collections/209)
 

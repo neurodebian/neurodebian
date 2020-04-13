@@ -14,13 +14,17 @@
 # negate : string
 #   Enter "TRUE" if the test is to NOT find a string in the file.
 #
-function assert_line_in_file {
+# opts : string
+#   Options to pass to grep
+#
+function assert_regex_in_file {
     file=$1
     line=$2
     negate=${3:-NULL}
+    opts=${4:-}
 
     filepath="$TMP_DIR/$file"
-    if grep -Fq "$line" "$filepath"; then
+    if grep $opts -q "$line" "$filepath"; then
         if [ "$negate" = "TRUE" ]; then
             fail "$filepath did contain: $line." "$filepath"
         else
@@ -33,6 +37,23 @@ function assert_line_in_file {
             fail "$filepath did not contain: $line." "$filepath"
         fi
     fi
+}
+
+# Test to see if a line is in a given file.
+#
+# Parameters
+# ----------
+# file : string
+#   File to search for the given string
+#
+# line : string
+#   Line the we expect to be in the file.
+#
+# negate : string
+#   Enter "TRUE" if the test is to NOT find a string in the file.
+#
+function assert_line_in_file {
+    assert_regex_in_file "$1" "$2" "${3:-NULL}" "-F"
 }
 
 # Test to see if a line is NOT in a given file.

@@ -78,7 +78,7 @@ assert_line_in_file "sources.list" "# deb http://deb.debian.org/debian jessie ma
 assert_line_in_file "sources.list" "# deb http://security.debian.org"
 assert_line_in_file "sources.list.orig.disabled" "deb http://deb.debian.org/debian jessie main"
 assert_line_in_file "sources.list.orig.disabled" "deb http://security.debian.org"
-assert_line_in_file "stdout" "INFO: UPDATING: apt=1.0.9.8.4 base-files=8+deb8u9 bash=4.3-11+deb8u1 gcc-4.9-base:amd64=4.9.2-10"
+assert_regex_in_file "stdout" "INFO: UPDATING: apt=1.0.9.8.4 .*base-files=8+deb8u9 .*bash=4.3-11+deb8u1 .*gcc-4.9-base:amd64=4.9.2-10"
 assert_line_in_file "stdout" "INFO: Cleaning up APT lists because originally there were none"
 assert_line_NOT_in_file "stdout" "DEBUG:"
 assert_line_in_file "lists_file_count" "1"
@@ -134,7 +134,7 @@ assert_line_in_file "snapshots.sources.list" "deb [trusted=yes] http://snapshot.
 assert_line_in_file "snapshots.sources.list" "deb [trusted=yes] http://snapshot.debian.org/archive/debian-security/20170727T203455Z/ jessie/updates main"
 assert_line_in_file "sources.list" "deb http://deb.debian.org/debian jessie main"
 assert_line_in_file "sources.list" "deb http://security.debian.org"
-assert_line_in_file "stdout" "DEBUG: Get:1 http://neuro.debian.net jessie InRelease"
+assert_regex_in_file "stdout" "DEBUG: Get:[0-9]* http://neuro.debian.net jessie InRelease"
 assert_line_in_file "stdout" "DEBUG: Found Debian-Security jessie"
 assert_line_in_file "stdout" "INFO: Packages were not updated"
 test_teardown
@@ -148,7 +148,7 @@ echo "[ Test unsigned repos ]"
 test_setup "neurodebian" "jessie" "20140828" "" ""
 assert_line_in_file "stdout" "INFO: Discovering installed repository sources"
 assert_line_in_file "stdout" "INFO: Discovering installed packages for possible version updates"
-assert_line_in_file "stdout" "INFO: UPDATING: acl=2.2.52-1 apt=1.0.6 base-files=7.5"
+assert_regex_in_file "stdout" "INFO: UPDATING: acl=2.2.52-1 .*apt=1.0.6 .*base-files=7.5"
 assert_line_in_file "stdout" "INFO: Cleaning up APT lists because originally there were none"
 test_teardown
 
