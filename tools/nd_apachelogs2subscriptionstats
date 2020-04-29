@@ -44,6 +44,8 @@ releases = {
     'bionic': 'Ubuntu 18.04 "Bionic Beaver (bionic)',
     'cosmic': 'Ubuntu 18.10 "Cosmic Cuttlefish" (cosmic)',
     'disco': 'Ubuntu 19.04 "Disco Dingo" (disco)',
+    'eoan': 'Ubuntu 19.10 "Eoan Ermin" (eoan)',
+    'focal': 'Ubuntu 20.04 "Focal Fossa" (focal)',
 }
 
 
