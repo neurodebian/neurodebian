@@ -1,6 +1,8 @@
 #!/usr/bin/make -f
 
 ICONS_SIZE=32
+INKSCAPE_VER=$(shell dpkg -l inkscape | awk '/^ii/{print $$3;}')
+INKSCAPE_OUT_OPT=$(shell dpkg --compare-versions "$(INKSCAPE_VER)" lt "1.0~rc1"  && echo "-e" || echo "-o")
 
 ifeq ($(shell dpkg-vendor --derives-from Ubuntu && echo yes),yes)
 	KEYRING_PKG = -Vdist:Recommends="ubuntu-keyring"
@@ -21,19 +23,19 @@ override_dh_auto_configure:
 
 override_dh_auto_build:
 	# wallpaper
-	[ ! -d build/wallpaper ] && mkdir -p build/wallpaper
+	mkdir -p build/wallpaper
 	xcf2png -o build/wallpaper/neurodebian.png artwork/wallpaper_hotbrain.xcf
 	# icons
-	[ ! -d build/icons ] && mkdir -p build/icons
+	mkdir -p build/icons
 	inkscape artwork/icon.svg -w $(ICONS_SIZE) -h $(ICONS_SIZE) \
-		-e build/icons/neurodebian.png
+		$(INKSCAPE_OUT_OPT) build/icons/neurodebian.png
 	for d in electrophysiology psychophysics; do \
 		inkscape artwork/$$d.svg -w $(ICONS_SIZE) -h $(ICONS_SIZE) \
-			-e build/icons/neurodebian-$$d.png; done
+			$(INKSCAPE_OUT_OPT) build/icons/neurodebian-$$d.png; done
 	cp artwork/icon.svg build/icons/neurodebian.svg
 	convert -geometry $(ICONS_SIZE)x$(ICONS_SIZE) artwork/mri.png build/icons/neurodebian-imaging.png
 	# manpages
-	[ ! -d build/man ] && mkdir -p build/man
+	mkdir -p build/man
 	help2man -h '--verbose-help' --no-info tools/backport-dsc \
 		-n "backport Debian source packages" > build/man/backport-dsc.1
 	help2man --no-info tools/nd-autoinstall \

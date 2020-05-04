@@ -1,3 +1,10 @@
+neurodebian (0.40.1) unstable; urgency=medium
+
+  * Be compatible with inkscape >= 1.0~rc1 which changed -e into -o.
+    (Closes: #959575)
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Mon, 04 May 2020 11:07:11 -0400
+
 neurodebian (0.40.0) unstable; urgency=medium
 
   * Tests of nd_freeze got fixed up to account for changes in
