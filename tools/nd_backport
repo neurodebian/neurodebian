@@ -32,7 +32,7 @@ if echo "$release" | grep -q "^ndall.*"; then
    echo "I: backporting to be uploaded for all releases"
    if [ "$release" = ndall ]; then
       # TODO: move to configuration
-      release=stretch  # current stable
+      release=buster  # current stable
    else
       release=${release##*-}
    fi
