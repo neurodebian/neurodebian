@@ -1,0 +1,62 @@
+#!/bin/bash
+
+# Temporary scratch directory to save generated files.
+TMP_DIR=""
+TOOLS_PATH="${PWD}/${0%/*}/.."
+EXIT_CODE=0
+
+source ${TOOLS_PATH}/tests/nd_freeze.lib
+
+# There is tee calls to log output, but if docker run fails, we need to know
+set -o pipefail
+
+# Run common commands for each test at start of tests
+#
+# Parameters
+# ----------
+# distro : string
+#   Valid values are "debain" or "ubuntu"
+# release : string
+#   Code name for distro release. (e.g. jessie)
+# package : string
+#   Package to install in the format package=version
+# switches : string
+#   Pass a string of command switches (e.g. "-k, --debug")
+#
+function test_setup {
+    distro=$1
+    release=$2
+    package=$3
+    switches=$4
+    prep_command=$5
+
+    TMP_DIR=$(mktemp -d)
+    echo "INFO: TMP_DIR=$TMP_DIR distro=$distro release=$release package=$package switches=$switches prep_command=$prep_command"
+
+    docker pull ${distro}:${release}
+
+    cmd="docker run -it --rm -v $TOOLS_PATH:/tests -v $TMP_DIR:/temp ${distro}:${release} /bin/bash -c '
+        apt-get update && apt-get install -y python3 python3-pip && pip3 install requests bs4
+        $prep_command
+        /tests/nd_freeze_install $switches $package
+        if [ -f /etc/apt/sources.list.d/snapshots.sources.list ]; then
+            cp /etc/apt/sources.list.d/snapshots.sources.list /temp/snapshots.sources.list
+        fi
+    '"
+    eval "$cmd" | tee $TMP_DIR/stdout
+    ret=$?
+    if [ "$ret" != "0" ]; then
+       echo "ERROR: docker run failed.  Exit code was $ret"
+       echo "Full command was: $cmd"
+       EXIT_CODE=$(($EXIT_CODE + 1))
+    fi
+}
+
+echo "[ Test basic operation ]"
+test_setup "neurodebian" "buster" "libcudart9.1=9.1.85-3" "--debug" ""
+assert_line_in_file "snapshots.sources.list" "deb http://snapshot.debian.org/archive/debian/20180312T232337Z/ sid non-free"
+assert_line_in_file "stdout" "INFO:root:Found package libcudart9.1=9.1.85-3 in sid non-free"
+assert_line_in_file "stdout" "INFO:root:Adding line 'deb http://snapshot.debian.org/archive/debian/20180312T232337Z/ sid non-free' to /etc/apt/sources.list.d/snapshots.sources.list"
+test_teardown
+
+exit $EXIT_CODE

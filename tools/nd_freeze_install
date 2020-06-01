@@ -1,0 +1,392 @@
+#!/usr/bin/python3
+# emacs: -*- mode: python; py-indent-offset: 4; indent-tabs-mode: nil -*-
+# vi: set ft=python sts=4 ts=4 sw=4 et:
+#
+# Script to install older packages based on version number.
+#
+# If running this in a stripped down environment such as a docker container,
+# install python dependencies with this command:
+#
+# apt-get update && apt-get install -y python3 python3-pip && pip3 install requests bs4
+#
+import argparse
+import glob
+import gzip
+import logging
+import os
+import re
+import requests
+import subprocess
+from bs4 import BeautifulSoup
+
+parser = argparse.ArgumentParser()
+parser.add_argument(
+    "packages",
+    help="package and version to install (e.g. git=2.17.1)",
+    nargs="+",
+    metavar="package=version"
+)
+parser.add_argument(
+    "-n", "--no-updates",
+    help=("Make the snapshot repositories available but skip "
+        "the package update step, leaving the system as is."),
+    action="store_true",
+    dest="no_updates"
+)
+parser.add_argument(
+    "-d", "--debug",
+    help="print debugging informaiton to the screen",
+    action="store_true",
+    dest="debug"
+)
+parser.add_argument(
+    "-t", "--trust-repos",
+    help=("Update untrusted repos. For repos whose apt keys are invalid, "
+        "go ahead and use the repo rather thanfailing by default. "
+        "USE CAUTIOUSLY!"),
+    action="store_true",
+    dest="trust_repos"
+)
+parser.add_argument(
+    "-a", "--architecture",
+    help=("Choose the architecture of the package to install. "
+        "Defaults to host architecture."),
+    dest="architecture"
+)
+args = parser.parse_args()
+
+if (args.debug):
+    logging.basicConfig(level=logging.DEBUG)
+else:
+    logging.basicConfig(level=logging.INFO)
+
+
+# Run a shell command
+#
+# Parameters
+# ----------
+# command
+#   string : command to run in shell
+# env
+#   string : hash of environment variables to pass to command environment
+#
+# Returns
+# -------
+# string : STDOUT
+#
+def exec_shell(command, env=None):
+    logging.debug("Executing shell command: '{}'".format(command))
+    if env:
+        command_env = os.environ.copy()
+        command_env.update(env)
+    s = subprocess.Popen(command.split(), stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT, env=env)
+    stdout, stderr = s.communicate()
+    if stdout:
+        stdout = stdout.decode('utf-8')
+    if stderr:
+        stderr = stderr.decode('utf-8')
+    logging.debug("Command STDOUT: {}".format(stdout))
+    logging.debug("Command STDERR: {}".format(stderr))
+    return stdout
+
+
+# Run apt-get update command
+#
+# Returns
+# -------
+# None
+#
+def run_apt_get_update():
+    logging.info("Refreshing apt cache")
+    switch = ""
+    if (is_minimum_apt_version("1.4.8")):
+        switch = "--no-allow-insecure-repositories"
+    stdout = exec_shell("apt-get update {}".format(switch))
+    missing_key = re.findall(r'NO_PUBKEY (\w+)', stdout)
+    if (len(missing_key) > 0):
+        logging.info("Missing public key for {}, attempting to get key".format(
+            missing_key[0]))
+        exec_shell(("apt-key adv --recv-keys --keyserver "
+            "pool.sks-keyservers.net 0x{}").format(missing_key[0]))
+        logging.info(
+            "Successfully retrieved public key, re-running apt update")
+        exec_shell("apt-get update {}".format(switch))
+
+
+# Retrieve the snapshot timestamp and repo component for a package version
+#
+# Parameters
+# ----------
+# domain
+#   string : repo URL domain
+# package
+#   string : name of package
+# version
+#   string : version of package
+#
+# Returns
+# -------
+# string : snapshot timestamp
+# string : repo component where package is located
+#
+def get_file_info(domain, package, version):
+    url = "http://{}/mr/binary/{}/{}/binfiles".format(domain, package, version)
+    logging.debug("Retrieving file hashes for package: {}".format(url))
+    response = requests.get(url)
+    if response.status_code == 200:
+        data = response.json()
+        files = [d for d in data['result']
+            if d['architecture'] == args.architecture]
+        if len(files) == 0:
+            return (None, None)
+        url = "http://{}/mr/file/{}/info".format(domain, files[0]['hash'])
+        logging.debug(("Retrieving snapshot timestamp and repo component: "
+            "{}").format(url))
+        response = requests.get(url)
+        if response.status_code == 200:
+            data = response.json()
+            timestamp = data['result'][0]['first_seen']
+            component = data['result'][0]['path'].split('/')[2]
+            logging.debug("Found timestamp '{}' and component '{}' for "
+                "package '{}={}'".format(timestamp, component, package,
+                version))
+            return (timestamp, component)
+    return (None, None)
+
+
+# Retrieve snapshot repo information
+#
+# Parameters
+# ----------
+# package
+#   string : name of package
+# version
+#   string : version of package
+#
+# Returns
+# -------
+# hash : contains snapshot URL and repo component where package is located
+#
+def get_repo_info(package, version):
+    url_template = "http://{}/archive/{}/{}/"
+
+    # First check, neurodebian
+    domain = "snapshot-neuro.debian.net"
+    repo = "neurodebian"
+    (timestamp, component) = get_file_info(domain, package, version)
+    if timestamp and component:
+        return {
+            'url': url_template.format(domain, repo, timestamp),
+            'component': component
+        }
+
+    # If not found in NeuroDebian snapshot, try Debian
+    domain = "snapshot.debian.org"
+    repo = "debian"
+    (timestamp, component) = get_file_info(domain, package, version)
+    if timestamp and component:
+        return {
+            'url': url_template.format(domain, repo, timestamp),
+            'component': component
+        }
+
+    return None
+
+
+# Retrieve snapshot repo information
+#
+# Parameters
+# ----------
+# snapshot_url
+#   string : base URL of snapshot with timestamp
+#
+# Returns
+# -------
+# list : all the repo codenames located at a particular snapshot location
+#
+def get_possible_codenames(snapshot_url):
+    # Page scrape snapshot page to get list of available codenames.
+    logging.debug("Getting codenames at snapshot: {}".format(snapshot_url))
+    page = requests.get(snapshot_url + '/dists/')
+    soup = BeautifulSoup(page.content, 'html.parser')
+    results = soup.find('table', class_='readdir')
+
+    job_elems = results.find_all('tr')
+    codenames = []
+    for job_elem in job_elems:
+        elem = job_elem.find('td', text='d')
+        if elem:
+            codename = elem.find_next_sibling('td').text
+            if codename != '../' and codename != 'experimental/':
+                codenames.append(elem.find_next_sibling('td').text[:-1])
+    logging.debug("Found {} codenames: {}".format(len(codenames),
+        ', '.join(codenames)))
+
+    return codenames
+
+
+# Retrieve snapshot repo information
+#
+# Parameters
+# ----------
+# snapshot_url
+#   string : base URL of snapshot with timestamp
+#
+# Returns
+# -------
+# list : all the repo codenames located at a particular snapshot location
+#
+def get_package_codename(repo_info, package):
+    snapshot_url = repo_info['url']
+    component = repo_info['component']
+    codenames = get_possible_codenames(snapshot_url)
+    for codename in codenames:
+        download_url = "{}dists/{}/{}/binary-{}/Packages.gz".format(
+            snapshot_url, codename, component, args.architecture)
+        logging.debug("Checking Release file at {} for package '{}'".format(
+            download_url, package))
+        r = requests.get(download_url)
+        if r.status_code == 200:
+            data = gzip.decompress(r.content).decode('utf-8')
+            if re.search(r"Package: {}[\s\n\w\-:]*Version: {}".format(package,
+                    version), data):
+                logging.debug("Identified codename '{}' for package: "
+                    "{}".format(codename, package))
+                return codename
+    return None
+
+
+# Write out the snapshot repo source line to the
+# /etc/apt/sources.list.d/snapshot.sources.list file.
+#
+# Parameters
+# ----------
+# snapshots_sources_file
+#     string : Path to snapshot sources file.
+# repo_info
+#     hash : snapshot url and component
+# codename
+#     string : repo codename where package exists in snapshot
+#
+# Returns
+# -------
+# None
+#
+def write_snapshot_source(snapshots_sources_file, repo_info, codename):
+    trusted_option = ""
+    if args.trust_repos and is_minimum_apt_version("0.9.0"):
+        trusted_option = " [trusted=yes]"
+    with open(snapshots_sources_file, "a+") as f:
+        source_line = "deb{} {} {} {}".format(
+            trusted_option,
+            repo_info['url'],
+            codename,
+            repo_info['component']
+        )
+        f.write("{}\n".format(source_line))
+        logging.info("Adding line '{}' to {}".format(source_line,
+            snapshots_sources_file))
+
+
+# Update the installed packages to their snapshot versions
+#
+# Parameters
+# ----------
+# packages
+#     list : List of installed packages
+#
+def update_packages(packages):
+    if len(packages) > 0:
+        packages_to_update = " ".join(packages)
+        logging.info("UPDATING: {}".format(packages_to_update))
+        downgrade_switch = "--allow-downgrades" if is_minimum_apt_version("1.1.57") else ""
+        remove_switch = "--allow-remove-essential" if is_minimum_apt_version("1.1") else ""
+        force_switch = "" if downgrade_switch or remove_switch else "--force-yes"
+        params = [
+            force_switch,
+            downgrade_switch,
+            remove_switch,
+            packages_to_update
+        ]
+        exec_shell("apt install --fix-broken {} {} {} -y".format(*params[:3]))
+        exec_shell(("apt-get install --no-install-recommends {} {} {} -y {}"
+                    ).format(*params),
+                    env=dict(DEBIAN_FRONTEND="noninteractive"))
+
+
+# Test system for minimum version of apt package
+#
+# Parameters
+# ----------
+# version
+#     string : apt version number to test
+#
+# Returns
+# -------
+# boolean : true if system version is >= to the parameter version
+#
+def is_minimum_apt_version(version):
+    result = exec_shell("dpkg -l apt")
+    matches = re.findall(r'ii\s+apt\s+(\S+)', result)
+    if len(matches) > 0:
+        logging.debug("Found apt version {}".format(matches[0]))
+        command = ["dpkg", "--compare-versions", matches[0], "ge", version]
+        try:
+            result = subprocess.check_call(command)
+            if result == 0:
+                return True
+        except subprocess.CalledProcessError:
+            pass
+    return False
+
+
+if __name__ == '__main__':
+
+    # Determine default architecture if none provided by user
+    if (not args.architecture):
+        args.architecture = exec_shell("dpkg --print-architecture").strip("\n")
+
+    # Set apt setting to allow "outdated" repositories.
+    if not os.path.exists("/etc/apt/apt.conf.d/10no--check-valid-until"):
+        with open("/etc/apt/apt.conf.d/10no--check-valid-until", "w") as fp:
+            fp.write('Acquire::Check-Valid-Until "0";')
+
+    # So we later on could make a decision either we need to clean up after
+    # ourselves. Rely on having a Release file, since cannot be just * since
+    # there could be empty partial/ directory
+    apt_release_list = glob.glob("/var/lib/apt/lists/*Release")
+
+    snapshots_sources_file = '/etc/apt/sources.list.d/snapshots.sources.list'
+
+    for p in args.packages:
+        (package, version) = p.split('=')
+
+        repo_info = get_repo_info(package, version)
+        codename = get_package_codename(repo_info, package)
+
+        if codename:
+            logging.info("Found package {}={} in {} {}".format(package,
+                version, codename, repo_info['component']))
+        else:
+            logging.info(("Failed to find codename for package {}={} in "
+                "snapshot '{}'").format(package, version, repo_info['url']))
+            exit(1)
+
+        write_snapshot_source(snapshots_sources_file, repo_info, codename)
+
+    if args.no_updates:
+        logging.info("Packages were not updated")
+    else:
+        # Update debian-archive-keyring first
+        update_packages(["debian-archive-keyring"])
+        run_apt_get_update()
+        update_packages(args.packages)
+
+    if len(apt_release_list) > 0:
+        logging.info("Cleaning up APT lists because originally there were none")
+        apt_release_list = glob.glob("/var/lib/apt/lists/*Release")
+        for file in apt_release_list:
+            os.remove(file)
+
+    exit(0)

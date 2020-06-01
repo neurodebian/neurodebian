@@ -5,6 +5,8 @@ TMP_DIR=""
 TOOLS_PATH="${PWD}/${0%/*}/.."
 EXIT_CODE=0
 
+source ${TOOLS_PATH}/tests/nd_freeze.lib
+
 # There is tee calls to log output, but if docker run fails, we need to know
 set -o pipefail
 
@@ -60,72 +62,6 @@ function test_setup {
        echo "Full command was: $cmd"
        EXIT_CODE=$(($EXIT_CODE + 1))
     fi
-}
-
-# Run commands that are run at the end of each test run.
-function test_teardown {
-    echo "INFO: removing TMP_DIR: ${TMP_DIR}"
-    rm -rf $TMP_DIR
-}
-
-# Test to see if a line is in a given file.
-#
-# Parameters
-# ----------
-# file : string
-#   File to search for the given string
-#
-# line : string
-#   Line the we expect to be in the file.
-#
-# negate : string
-#   Enter "TRUE" if the test is to NOT find a string in the file.
-#
-# opts : string
-#   Options to pass to grep
-#
-function assert_regex_in_file {
-    file=$1
-    line=$2
-    negate=${3:-NULL}
-    opts=${4:-}
-
-    filepath="$TMP_DIR/$file"
-    if grep $opts -q "$line" "$filepath"; then
-        if [ "$negate" = "TRUE" ]; then
-            fail "$filepath did contain: $line." "$filepath"
-        else
-            echo "SUCCESS: line '$line' found"
-        fi
-    else
-        if [ "$negate" = "TRUE" ]; then
-            echo "SUCCESS: line '$line' not found"
-        else
-            fail "$filepath did not contain: $line." "$filepath"
-        fi
-    fi
-}
-
-function assert_line_in_file {
-    assert_regex_in_file "$1" "$2" "${3:-NULL}" "-F"
-}
-
-function assert_line_NOT_in_file {
-    assert_line_in_file "$1" "$2" "TRUE"
-}
-
-function fail {
-    message=$1
-    filepath=$2
-
-    echo -n "FAIL: $message "
-    if [ -e "$filepath" ]; then
-        echo "Full file content:"
-        cat "$filepath" | sed -e 's,^,| ,g'
-    else
-        echo "File $filepath does not exist."
-    fi
-    EXIT_CODE=$(($EXIT_CODE + 1))
 }
 
 echo "[ Test basic operation ]"
