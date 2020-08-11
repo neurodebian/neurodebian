@@ -8,7 +8,7 @@ set -eu
 build_dir=$PWD/build
 dist_dir=$PWD/dist
 vendor="NeuroDebian"
-vm_version="8.2.0.20151023"
+vm_version="10.5.0.20200811"
 vm_ostype=Debian
 vendor_url="http://neuro.debian.net"
 product_url="${vendor_url}/vm.html"
@@ -81,7 +81,7 @@ python3 -c "open('$di_preseed', 'w').write(open('$di_preseed_in').read() % {'DI_
 # TODO: might need to make more robust?
 vm_arch=i386
 vm_arch_name=" (32bit)"
-if file $di_cd | grep -q ' amd64 '; then
+if file $di_cd | grep -q 'amd64'; then
     vm_arch=amd64
     vm_ostype+="_64"
     vm_arch_name=" (64bit)"
@@ -127,7 +127,7 @@ mkdir -p $build_dir
 
 _info Create HardDisk for the VM
 VBoxManage createhd --filename $vm_disk \
-    --size 40960 --format VDI
+    --size 80960 --format VDI
   # documented but not implemented:
   #  --comment "Drive for NeuroDebian VM installer"
 
@@ -176,6 +176,8 @@ VBoxManage storageattach  "${vm_name}" \
 
 VBoxManage showvminfo  "${vm_name}"
 
+PS4='> '
+set -x
 _info "Run Debian Installer"
 # When boot menu appears you will have to
 # press Esc
@@ -202,7 +204,9 @@ sleep 5                         # give some time to make sure we get to menu
 #    01 81 \
 #    1e 9e 16 96 14 94 18 98 39 b9 16 96 13 93 26 a6 0d 8d 23 a3 15 95 20 a0 13 93 1e 9e \
 #    1c 9c # ESCAPE, auto url=hydra, ENTER
-echo "typeGuest \"${vm_name}\" \"&ESC;Wauto url=${di_host}|;${di_port}/$(basename ${di_preseed})&ENTER;\"" | /usr/lib/virtualbox/vboxshell.py
+echo "typeGuest \"${vm_name}\" \"&ESC;Wauto url=${di_host}|;${di_port}/$(basename ${di_preseed})&ENTER;\"" \
+    | PYTHONPATH=/usr/lib/python3/dist-packages/:/usr/lib/virtualbox:/usr/lib/virtualbox/sdk/bindings/xpcom/python \
+                python3.8 /usr/lib/virtualbox/vboxshell.py
 
 # wait for it to finish! -- found no cleaner way :-/
 sleep 10
