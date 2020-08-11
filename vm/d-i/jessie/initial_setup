@@ -65,8 +65,8 @@ apt-get update -y
 # Backports' Release files signed with both ftpmaster and old backports keys
 # That causes APT to spit out a warning, but to not confuse users, lets simply
 # obtain that key if possible
-gpg --keyserver hkp://subkeys.pgp.net --recv-keys 16BA136C && \
-        gpg --export 16BA136C | apt-key add - || :
+gpg --keyserver hkp://subkeys.pgp.net --recv-keys 0xEA8E8B2116BA136C && \
+        gpg --export 0xEA8E8B2116BA136C | apt-key add - || :
 
 apt-get install -y --allow-unauthenticated neurodebian-archive-keyring
 apt-get update -y

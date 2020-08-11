@@ -1,0 +1,112 @@
+# Copyright (c) 2018-2019, Yaroslav O. Halchenko. All rights reserved. MIT license
+#
+# The purpose of the Singularity environment is to provide a relatively full
+# suite of tools provided primarily by Debian/NeuroDebian for runnin various
+# neuroimaging analyses.
+#
+# Notes:
+#  - Due to  https://github.com/singularityware/singularity/issues/471
+#    bootstrapping leads to non-usable/non-removable-without-reboot
+#    image due to some rogue run away processes.
+#    This line could help to kill them but should be used with caution
+#    since could kill other unrelated processes
+#
+#      grep -l loop /proc/*/mountinfo | sed -e 's,/proc/\(.*\)/.*,\1,g' | while read pid; do sudo kill $pid; done
+#
+# Set size to be 12000 on singularity-hub
+#
+# Changelog
+# ---------
+# 10.20190801
+#  - fresh versions of the packages
+#  - base on recent Debian stable buster release (Debian 10)
+#  - freezing using nd_freeze to the fixed day (2nd portion of the version)
+#  - bids-validator 1.2.5
+# 2.2
+#  - fresh annex with patched git to avoid "Out of memory, getdelim failed" bug
+#  - added some tools useful for debugging (gdb)
+#  - additional mountpoints (/scratch)
+#  - (note) pip is not installed on purpose, use the one within virtualenv(s)
+# 2.x
+#  - switch to stretch
+#  - TODO make reproducible
+#  - bids-validator from 0.22
+#  - Added ants, convert3d
+#
+# TODOs
+# -----
+# - package bids-validator
+
+BootStrap: debootstrap
+OSVersion: buster
+MirrorURL: http://http.debian.net/debian/
+#MirrorURL: http://smaug.datalad.org:3142/debian/
+
+# so if image is executed we just enter the environment
+%runscript
+    v=`python -c "import json; f='/.singularity.d/labels.json'; print(json.load(open(f)).get('SINGULARITY_IMAGE_VERSION', '0.0.unknown'))"`; \
+      echo "Welcome to the NeuroDebian v $v (Debian stretch) environment"
+    echo "Please source /etc/fsl/fsl.sh if you need FSL, /etc/afni/afni.sh if you need AFNI"
+    /bin/bash
+
+%setup
+    set -eu
+    export | grep SING
+    echo "Setting up the environment"
+    #apt-get update
+    #apt-get -y install python 
+
+    v=`git describe --tags --match sing-\* | sed -e 's,^sing-,,g'`; \
+      python -c "import json, os; f='$SINGULARITY_ROOTFS/.singularity.d/labels.json'; j=json.load(open(f)) if os.path.exists(f) else {}; j['SINGULARITY_IMAGE_VERSION']='$v' or '0.0.unknown'; json.dump(j, open(f,'w'),indent=2)"
+    chmod a+r "$SINGULARITY_ROOTFS/.singularity.d/labels.json"
+
+%post
+    echo "Configuring the environment"
+    sed -i -e 's, main$, main contrib non-free,g' /etc/apt/sources.list
+    # For build-dep
+    # sed -i -e 's,^deb \(.*\),deb \1\ndeb-src \1,g' /etc/apt/sources.list
+    apt-get update -q --no-allow-insecure-repositories
+    apt-get -y install -q --no-install-recommends wget
+    TMPBINDIR=/var/tmp
+    mkdir -p $TMPBINDIR
+    # eatmydata apt-get -y build-dep git
+    wget --no-check-certificate  -O $TMPBINDIR/nd-configurerepo -nc \
+      https://raw.githubusercontent.com/neurodebian/neurodebian/073c52d55f294e9535d683a630de9805e261b13f/tools/nd-configurerepo
+    bash $TMPBINDIR/nd-configurerepo --mirror=default --install 
+    chmod a+r -R /etc/apt
+    apt-get update -q --no-allow-insecure-repositories
+    apt-get install -y neurodebian-freeze
+    nd_freeze 20190801
+    # Needed for debian-security APT
+    # echo 'Acquire::Check-Valid-Until "0";' > /etc/apt/apt.conf.d/10no--check-valid-until
+    apt-get update --no-allow-insecure-repositories
+ 
+    # Main installations
+    apt-get -y install eatmydata 
+    eatmydata apt-get -y install vim strace gdb time ncdu gnupg curl procps debian-goodies man-db
+    bash -c 'eatmydata apt-get -y install git git-annex-standalone datalad python-{nipype,dipy} virtualenv dcm2niix python-dcmstack python-configparser python-funcsigs python-pytest connectome-workbench python-mvpa2 fsl-core fsl-atlases fsl-first-data mricron afni fsleyes heudiconv mrtrix3'
+    # Electrophys packages
+    eatmydata apt-get -y install python-pynwb python-biosig sigviewer
+    # TODO: nilearn
+
+    # for bids-validator
+    curl -sL https://deb.nodesource.com/setup_6.x | bash - && \
+       eatmydata apt-get install -y nodejs npm
+    npm install -g bids-validator@1.2.5
+    chmod a+rX -R /usr/lib/node_modules/ || :
+
+    chmod a+rX -R /etc/apt/sources.list.d || :
+    # cleaning /tmp that thoroughly might have side effects 
+    # rm -rf /tmp/* /var/tmp/*
+    apt-get clean
+    rm -rf /tmp/npm-* /tmp/nd-config* /tmp/startup* /var/tmp/npm-* /var/lib/apt/lists/*
+
+    # and wipe out apt lists since not to be used RW for further tuning
+    # find /var/lib/apt/lists/ -type f -delete
+    # /usr/bin/find /var/lib/apt/lists/ -type f -name \*Packages\* -o -name \*Contents\*
+    # complicates later interrogation - thus disabled
+
+    # Create some additional bind mount directories present on various compute boxes we have
+    # access to, to ease deployment
+    mkdir -p /afs /inbox /ihome /opt /data /backup /apps /srv /scratch /idata
+    chmod a+rX /afs /inbox /ihome /opt /data /backup /apps /srv /scratch /idata

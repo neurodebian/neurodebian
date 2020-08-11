@@ -1,0 +1,225 @@
+#!/bin/bash
+
+# Temporary scratch directory to save generated files.
+TMP_DIR=""
+TOOLS_PATH="${PWD}/${0%/*}/.."
+EXIT_CODE=0
+
+# There is tee calls to log output, but if docker run fails, we need to know
+set -o pipefail
+
+# Run common commands for each test at start of tests
+#
+# Parameters
+# ----------
+# distro : string
+#   Valid values are "debain" or "ubuntu"
+# release : string
+#   Code name for distro release. (e.g. jessie)
+# date : string
+#   Date at which the snapshot of the OS is wanted
+# switches : string
+#   Pass a string of command switches (e.g. "-k, --debug")
+#
+function test_setup {
+    distro=$1
+    release=$2
+    date=$3
+    switches=$4
+    prep_command=$5
+
+    TMP_DIR=$(mktemp -d)
+    echo "INFO: TMP_DIR=$TMP_DIR distro=$distro release=$release date=$date switches=$switches prep_command=$prep_command"
+
+    docker pull ${distro}:${release}
+
+    cmd="docker run -it --rm -v $TOOLS_PATH:/tests -v $TMP_DIR:/temp ${distro}:${release} /bin/bash -c '
+        $prep_command
+        /tests/nd_freeze $switches $date
+        if [ -f /etc/apt/sources.list ]; then
+            cp /etc/apt/sources.list /temp/sources.list
+        fi
+        if [ -f /etc/apt/sources.list.orig.disabled ]; then
+            cp /etc/apt/sources.list.orig.disabled /temp/sources.list.orig.disabled
+        fi
+        if [ -f /etc/apt/sources.list.d/neurodebian.sources.list ]; then
+            cp /etc/apt/sources.list.d/neurodebian.sources.list /temp/neurodebian.sources.list
+        fi
+        if [ -f /etc/apt/sources.list.d/neurodebian.sources.list.orig.disabled ]; then
+            cp /etc/apt/sources.list.d/neurodebian.sources.list.orig.disabled /temp/neurodebian.sources.list.orig.disabled
+        fi
+        if [ -f /etc/apt/sources.list.d/snapshots.sources.list ]; then
+            cp /etc/apt/sources.list.d/snapshots.sources.list /temp/snapshots.sources.list
+        fi
+        ls -l /var/lib/apt/lists | wc -l > /temp/lists_file_count
+    '"
+    eval "$cmd" | tee $TMP_DIR/stdout
+    ret=$?
+    if [ "$ret" != "0" ]; then
+       echo "ERROR: docker run failed.  Exit code was $ret"
+       echo "Full command was: $cmd"
+       EXIT_CODE=$(($EXIT_CODE + 1))
+    fi
+}
+
+# Run commands that are run at the end of each test run.
+function test_teardown {
+    echo "INFO: removing TMP_DIR: ${TMP_DIR}"
+    rm -rf $TMP_DIR
+}
+
+# Test to see if a line is in a given file.
+#
+# Parameters
+# ----------
+# file : string
+#   File to search for the given string
+#
+# line : string
+#   Line the we expect to be in the file.
+#
+# negate : string
+#   Enter "TRUE" if the test is to NOT find a string in the file.
+#
+# opts : string
+#   Options to pass to grep
+#
+function assert_regex_in_file {
+    file=$1
+    line=$2
+    negate=${3:-NULL}
+    opts=${4:-}
+
+    filepath="$TMP_DIR/$file"
+    if grep $opts -q "$line" "$filepath"; then
+        if [ "$negate" = "TRUE" ]; then
+            fail "$filepath did contain: $line." "$filepath"
+        else
+            echo "SUCCESS: line '$line' found"
+        fi
+    else
+        if [ "$negate" = "TRUE" ]; then
+            echo "SUCCESS: line '$line' not found"
+        else
+            fail "$filepath did not contain: $line." "$filepath"
+        fi
+    fi
+}
+
+function assert_line_in_file {
+    assert_regex_in_file "$1" "$2" "${3:-NULL}" "-F"
+}
+
+function assert_line_NOT_in_file {
+    assert_line_in_file "$1" "$2" "TRUE"
+}
+
+function fail {
+    message=$1
+    filepath=$2
+
+    echo -n "FAIL: $message "
+    if [ -e "$filepath" ]; then
+        echo "Full file content:"
+        cat "$filepath" | sed -e 's,^,| ,g'
+    else
+        echo "File $filepath does not exist."
+    fi
+    EXIT_CODE=$(($EXIT_CODE + 1))
+}
+
+echo "[ Test basic operation ]"
+test_setup "neurodebian" "jessie" "7/27/2017" "" ""
+assert_line_in_file "neurodebian.sources.list" "# deb http://neuro.debian.net/debian jessie main"
+assert_line_in_file "neurodebian.sources.list" "# deb http://neuro.debian.net/debian data main"
+assert_line_in_file "neurodebian.sources.list.orig.disabled" "deb http://neuro.debian.net/debian jessie main"
+assert_line_in_file "neurodebian.sources.list.orig.disabled" "deb http://neuro.debian.net/debian data main"
+assert_line_in_file "snapshots.sources.list" "deb http://snapshot-neuro.debian.net/archive/neurodebian/20170727T050508Z/ jessie main"
+assert_line_in_file "snapshots.sources.list" "deb http://snapshot-neuro.debian.net/archive/neurodebian/20170727T050508Z/ data main"
+assert_line_in_file "snapshots.sources.list" "deb http://snapshot.debian.org/archive/debian/20170727T040550Z/ jessie main"
+assert_line_in_file "snapshots.sources.list" "deb http://snapshot.debian.org/archive/debian-security/20170727T203455Z/ jessie/updates main"
+assert_line_in_file "sources.list" "# deb http://deb.debian.org/debian jessie main"
+assert_line_in_file "sources.list" "# deb http://security.debian.org"
+assert_line_in_file "sources.list.orig.disabled" "deb http://deb.debian.org/debian jessie main"
+assert_line_in_file "sources.list.orig.disabled" "deb http://security.debian.org"
+assert_regex_in_file "stdout" "INFO: UPDATING: apt=1.0.9.8.4 .*base-files=8+deb8u9 .*bash=4.3-11+deb8u1 .*gcc-4.9-base:amd64=4.9.2-10"
+assert_line_in_file "stdout" "INFO: Cleaning up APT lists because originally there were none"
+assert_line_NOT_in_file "stdout" "DEBUG:"
+assert_line_in_file "lists_file_count" "1"
+test_teardown
+
+echo "[ Test handling of a different release ]"
+test_setup "neurodebian" "stretch" "1/2/2018" "" ""
+assert_line_in_file "neurodebian.sources.list" "# deb http://neuro.debian.net/debian stretch main"
+assert_line_in_file "neurodebian.sources.list" "# deb http://neuro.debian.net/debian data main"
+assert_line_in_file "neurodebian.sources.list.orig.disabled" "deb http://neuro.debian.net/debian stretch main"
+assert_line_in_file "neurodebian.sources.list.orig.disabled" "deb http://neuro.debian.net/debian data main"
+assert_line_in_file "snapshots.sources.list" "deb http://snapshot-neuro.debian.net/archive/neurodebian/20180102T060503Z/ stretch main"
+assert_line_in_file "snapshots.sources.list" "deb http://snapshot.debian.org/archive/debian/20180102T055258Z/ stretch-updates main"
+assert_line_in_file "snapshots.sources.list" "deb http://snapshot-neuro.debian.net/archive/neurodebian/20180102T060503Z/ data main"
+assert_line_in_file "snapshots.sources.list" "deb http://snapshot.debian.org/archive/debian/20180102T055258Z/ stretch main"
+assert_line_in_file "snapshots.sources.list" "deb http://snapshot.debian.org/archive/debian-security/20180103T134828Z/ stretch/updates main"
+assert_line_in_file "sources.list" "# deb http://deb.debian.org/debian stretch main"
+assert_line_in_file "sources.list" "# deb http://deb.debian.org/debian stretch-updates main"
+assert_line_in_file "sources.list" "# deb http://security.debian.org"
+assert_line_in_file "sources.list.orig.disabled" "deb http://deb.debian.org/debian stretch main"
+assert_line_in_file "sources.list.orig.disabled" "deb http://deb.debian.org/debian stretch-updates main"
+assert_line_in_file "sources.list.orig.disabled" "deb http://security.debian.org"
+test_teardown
+
+echo "[ Test handling of request for a snapshot in the future ]"
+test_setup "neurodebian" "jessie" "20280827" "" ""
+assert_line_in_file "neurodebian.sources.list" "deb http://neuro.debian.net/debian jessie main"
+assert_line_in_file "sources.list" "deb http://deb.debian.org/debian jessie main"
+assert_line_in_file "sources.list" "deb http://security.debian.org"
+assert_line_in_file "stdout" 'INFO: ERROR: User specified time (20280827T000000Z) must predate the most recent snapshot timestamp'
+test_teardown
+
+echo "[ Test Ubuntu release ]"
+test_setup "neurodebian" "xenial" "12/15/2017" "" ""
+assert_line_in_file "neurodebian.sources.list" "# deb http://neuro.debian.net/debian xenial main"
+assert_line_in_file "neurodebian.sources.list" "# deb http://neuro.debian.net/debian data main"
+assert_line_in_file "neurodebian.sources.list.orig.disabled" "deb http://neuro.debian.net/debian xenial main"
+assert_line_in_file "neurodebian.sources.list.orig.disabled" "deb http://neuro.debian.net/debian data main"
+assert_line_in_file "snapshots.sources.list" "deb http://snapshot-neuro.debian.net/archive/neurodebian/20171215T060503Z/ xenial main"
+assert_line_in_file "snapshots.sources.list" "deb http://snapshot-neuro.debian.net/archive/neurodebian/20171215T060503Z/ data main"
+assert_line_in_file "sources.list" "deb http://archive.ubuntu.com/ubuntu/ xenial main restricted"
+assert_line_in_file "sources.list" "deb http://archive.ubuntu.com/ubuntu/ xenial-updates main restricted"
+assert_line_in_file "sources.list" "deb http://security.ubuntu.com/ubuntu/ xenial-security universe"
+test_teardown
+
+echo "[ Test with switches ]"
+test_setup "neurodebian" "jessie" "7/27/2017" "--keep-apt-sources --no-updates --debug --trust-repos" ""
+assert_line_in_file "neurodebian.sources.list" "deb http://neuro.debian.net/debian jessie main"
+assert_line_in_file "neurodebian.sources.list" "deb http://neuro.debian.net/debian data main"
+assert_line_in_file "snapshots.sources.list" "deb [trusted=yes] http://snapshot-neuro.debian.net/archive/neurodebian/20170727T050508Z/ jessie main"
+assert_line_in_file "snapshots.sources.list" "deb [trusted=yes] http://snapshot-neuro.debian.net/archive/neurodebian/20170727T050508Z/ data main"
+assert_line_in_file "snapshots.sources.list" "deb [trusted=yes] http://snapshot.debian.org/archive/debian/20170727T040550Z/ jessie main"
+assert_line_in_file "snapshots.sources.list" "deb [trusted=yes] http://snapshot.debian.org/archive/debian-security/20170727T203455Z/ jessie/updates main"
+assert_line_in_file "sources.list" "deb http://deb.debian.org/debian jessie main"
+assert_line_in_file "sources.list" "deb http://security.debian.org"
+assert_regex_in_file "stdout" "DEBUG: Get:[0-9]* http://neuro.debian.net jessie InRelease"
+assert_line_in_file "stdout" "DEBUG: Found Debian-Security jessie"
+assert_line_in_file "stdout" "INFO: Packages were not updated"
+test_teardown
+
+echo "[ Test help ]"
+test_setup "neurodebian" "jessie" " " "-h" ""
+assert_line_in_file "stdout" "Usage: nd_freeze"
+test_teardown
+
+echo "[ Test unsigned repos ]"
+test_setup "neurodebian" "jessie" "20140828" "" ""
+assert_line_in_file "stdout" "INFO: Discovering installed repository sources"
+assert_line_in_file "stdout" "INFO: Discovering installed packages for possible version updates"
+assert_regex_in_file "stdout" "INFO: UPDATING: acl=2.2.52-1 .*apt=1.0.6 .*base-files=7.5"
+assert_line_in_file "stdout" "INFO: Cleaning up APT lists because originally there were none"
+test_teardown
+
+echo "[ Test missing public key handling ]"
+test_setup "neurodebian" "jessie" "20140808" "-n" "rm /etc/apt/trusted.gpg.d/neurodebian.gpg"
+assert_line_in_file "stdout" "INFO: Missing public key"
+assert_line_in_file "stdout" "INFO: Successfully retrieved public key, re-running apt update"
+test_teardown
+
+exit $EXIT_CODE

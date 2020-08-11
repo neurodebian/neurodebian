@@ -139,7 +139,7 @@ additional components will be installed." \
 FALSE "Emacs" "emacs" \
 FALSE "Graphics (e.g. GIMP, Inscape)" "gimp,inkscape,svgtune,xzgv,vym" \
 FALSE "Octave" "qtoctave" \
-FALSE "OpenOffice.org" "openoffice.org" \
+FALSE "LibreOffice" "libreoffice" \
 FALSE "PyMVPA Tutorial" "$ipython,python-mvpa2,python-mvpa2-doc,python-mvpa2-tutorialdata,spyder" \
 FALSE "Python: Electrophysiology & Modeling" "python-brian,python-pynn,python-pyentropy,stimfit" \
 FALSE "Python: Neuroimaging" "$ipython,spyder,nipy-suite,python-mvpa2" \

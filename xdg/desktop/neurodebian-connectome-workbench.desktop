@@ -1,0 +1,9 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Connectome Workbench
+GenericName=Human Connectome Project Viewing and Analysis Tools
+Exec=nd-autoinstall -p connectome-workbench wb_view %F
+Icon=connectome-workbench
+Terminal=false
+Type=Application
+Categories=Education;Graphics;Science;DataVisualization;MedicalSoftware;Qt;Viewer;X-NeuroDebian-MedicalImaging

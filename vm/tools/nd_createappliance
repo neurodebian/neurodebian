@@ -75,7 +75,7 @@ di_host=`ip addr show dev $eth | sed -ne '/inet /s, *inet \([0-9.]*\)/.*,\1,gp'`
 # Generate preseed file
 # yoh could not escape Python here
 di_preseed=${di_preseed_in%.in}
-python -c "open('$di_preseed', 'w').write(open('$di_preseed_in').read() % {'DI_HTTP_HOSTNAME': '$di_host:$di_port', 'MIRROR_HTTP_HOSTNAME': '$mirror_host', 'TIME_ZONE': '$di_tz'})"
+python3 -c "open('$di_preseed', 'w').write(open('$di_preseed_in').read() % {'DI_HTTP_HOSTNAME': '$di_host:$di_port', 'MIRROR_HTTP_HOSTNAME': '$mirror_host', 'TIME_ZONE': '$di_tz'})"
 
 # By default 32bit unless installer image has amd64
 # TODO: might need to make more robust?
@@ -184,7 +184,7 @@ _info "Run Debian Installer"
 
 # start local web server to serve preseed file
 builtin cd $(dirname ${di_preseed})
-python -m SimpleHTTPServer ${di_port} >&/dev/null &
+python3 -m SimpleHTTPServer ${di_port} >&/dev/null &
 di_pid=$!
 builtin cd -
 

@@ -28,6 +28,19 @@ fi
 
 set -u
 
+if echo "$release" | grep -q "^ndall.*"; then
+   echo "I: backporting to be uploaded for all releases"
+   if [ "$release" = ndall ]; then
+      # TODO: move to configuration
+      release=buster  # current stable
+   else
+      release=${release##*-}
+   fi
+   version_suffix=ndall
+else
+   version_suffix=$(nd_querycfg "release backport ids" "$release")
+fi
+
 upstream_name=${dscfile%%_*}
 
 # To overcome bash desire to claim empty array unbound under 'set -u'
@@ -43,6 +56,6 @@ backport-dsc \
 	--maint-name "NeuroDebian Maintainers" \
 	--maint-email "team@neuro.debian.net" \
 	--target-distribution "$release" \
-	--version-suffix "$(nd_querycfg "release backport ids" "$release")" \
+	--version-suffix "$version_suffix" \
 	--mod-control "$mod_control" \
 	"$dscfile"

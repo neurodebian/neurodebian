@@ -28,8 +28,8 @@ source /etc/lsb-release
 
 # Fetch the apt sources for the currently preferred mirror
 wget -O- http://neuro.debian.net/lists/${DISTRIB_CODENAME}.us-nh.full | sudo tee /etc/apt/sources.list.d/neurodebian.sources.list
-wget -O- http://neuro.debian.net/lists/${DISTRIB_CODENAME}.de-md.full | sudo tee -a /etc/apt/sources.list.d/neurodebian.sources.list
-sudo apt-key adv --recv-keys --keyserver pgp.mit.edu 2649A5A9 \
+#wget -O- http://neuro.debian.net/lists/${DISTRIB_CODENAME}.de-md.full | sudo tee -a /etc/apt/sources.list.d/neurodebian.sources.list
+sudo apt-key adv --recv-keys --keyserver pool.sks-keyservers.net 0xA5D32F012649A5A9 \
  || { wget -q -O- http://neuro.debian.net/_static/neuro.debian.net.asc | sudo apt-key add -; }
 sudo apt-get update -qq
 

@@ -2,9 +2,9 @@
 Encoding=UTF-8
 GenericName=Software Collection for (f)MRI Data Analysis
 GenericName[de]=Software-Kollektion zur (f)MRT-Daten Analyse
-Name=FSL 4.1
-Exec=nd-autoinstall -p fsl-4.1 fsl4.1-fsl
-Icon=fsl-4.1.xpm
+Name=FSL 5.0
+Exec=nd-autoinstall -p fsl-5.0-core fsl5.0-fsl
+Icon=fsl-5.0.xpm
 Type=Application
 Terminal=false
 Categories=X-NeuroDebian-MedicalImaging

@@ -2,7 +2,11 @@
 #emacs: -*- mode: shell-script; c-basic-offset: 4; tab-width: 4; indent-tabs-mode: nil -*-
 #ex: set sts=4 ts=4 sw=4 et:
 
-# Depends:    apt (assumed to be present), python, wget
+# Depends:
+#   assumes to be present:
+#     apt
+#   installs if needed if NEURODEBIAN_INSTALL=1:
+#     python, wget, gnupg, dirmngr (when older gnupg)
 # Recommends: netselect
 
 # play safe
@@ -225,8 +229,8 @@ query_cfg_section()
     config_file="$1"
     section="$2"
     print_verbose 3 "Querying config $config_file section $section"
-    assure_command_from_package python python-minimal 1
-    python -c "from ConfigParser import SafeConfigParser as SP; cfg = SP(); cfg.read('$config_file'); print('\n'.join([' '.join(x) for x in cfg.items('$section')]))"
+    assure_command_from_package python3 python3-minimal 1
+    python3 -c "from configparser import ConfigParser as SP; cfg = SP(); cfg.read('$config_file'); print('\n'.join([' '.join(x) for x in cfg.items('$section')]))"
 }
 
 get_mirrors()
@@ -545,9 +549,17 @@ fi
 
 # Figure out if key needs to be imported (if ran within package,
 # should already be there due to neurodebian-archive-keyring package)
+
+# Ideas taken from neurodebian-docker setup to guarantee correct apt-key functioning
+# gnupg needed by apt-key might not yet be installed
+assure_command_from_package gpg gnupg 1
+# Ubuntu includes "gnupg" (not "gnupg2", but still 2.x), but not dirmngr, and gnupg 2.x requires dirmngr
+# so, if we're not running gnupg 1.x, explicitly install dirmngr too
+gpg --version | grep -q '^gpg (GnuPG) 1\.' || assure_command_from_package dirmngr dirmngr 1
+
 if LANG=C eval $ae_sudo apt-key export $nd_key_id 2>&1 1>/dev/null | grep -qe "nothing exported"; then
     print_verbose 1 "Fetching the key from the server"
-    eval_dry apt-key adv --recv-keys --keyserver pgp.mit.edu $nd_key_id
+    eval_dry apt-key adv --recv-keys --keyserver hkp://pool.sks-keyservers.net $nd_key_id
 fi
 
 
@@ -573,7 +585,7 @@ if [ "$ae_update" = "1" ]; then
                  error 5 "Update failed with exit code $?."
                  }
     else
-        eval_dry apt-get update
+        eval_dry apt-get update # --no-allow-insecure-repositories
     fi
 else
     print_verbose 1 "apt-get update  was not run. Please run to take an effect of changes"

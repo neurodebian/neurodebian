@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # emacs: -*- mode: python; py-indent-offset: 4; indent-tabs-mode: nil -*-
 # vi: set ft=python sts=4 ts=4 sw=4 et:
 #
@@ -16,7 +16,11 @@ releases = {
     'lenny': 'Debian GNU/Linux 5.0 (lenny)',
     'squeeze': 'Debian GNU/Linux 6.0 (squeeze)',
     'wheezy': 'Debian GNU/Linux 7.0 (wheezy)',
-    'jessie': 'Debian testing (jessie)',
+    'jessie': 'Debian GNU/Linux 8.0 (jessie)',
+    'stretch': 'Debian GNU/Linux 9.0 (stretch)',
+    'buster': 'Debian GNU/Linux 10.0 (buster)',
+    # according to https://en.wikipedia.org/wiki/Debian_version_history#Debian_11_(Bullseye)
+    'bullseye': 'Debian testing (bullseye)',
     'sid': 'Debian unstable (sid)',
     'hardy': 'Ubuntu 08.04 LTS "Hardy Heron" (hardy)',
     'jaunty': 'Ubuntu 09.04 "Jaunty Jackalope" (jaunty)',
@@ -30,6 +34,18 @@ releases = {
     'raring': 'Ubuntu 13.04 "Raring Ringtail" (raring)',
     'saucy': 'Ubuntu 13.10 "Saucy Salamander" (saucy)',
     'trusty': 'Ubuntu 14.04 "Trusty Tahr" (trusty)',
+    'utopic': 'Ubuntu 14.10 "Utopic Unicorn" (utopic)',
+    'vivid': 'Ubuntu 15.04 "Vivid Vervet" (vivid)',
+    'wily': 'Ubuntu 15.10 "Wily Werewolf" (wily)',
+    'xenial': 'Ubuntu 16.04 "Xenial Xerus" (xenial)',
+    'yakkety': 'Ubuntu 16.10 "Yakkety Yak" (yakkety)',
+    'zesty': 'Ubuntu 17.04 "Zesty Zapus" (zesty)',
+    'artful': 'Ubuntu 17.10 "Artful Aardvark" (artful)',
+    'bionic': 'Ubuntu 18.04 "Bionic Beaver (bionic)',
+    'cosmic': 'Ubuntu 18.10 "Cosmic Cuttlefish" (cosmic)',
+    'disco': 'Ubuntu 19.04 "Disco Dingo" (disco)',
+    'eoan': 'Ubuntu 19.10 "Eoan Ermin" (eoan)',
+    'focal': 'Ubuntu 20.04 "Focal Fossa" (focal)',
 }
 
 
@@ -39,6 +55,8 @@ if __name__ == '__main__':
     # the date is truncated to a month/year combo
     listget = re.compile(r'^([0-9.:]*) .*\[([^:]*).*GET /lists/([a-z]*)')
     for line in fileinput.FileInput(openhook=fileinput.hook_compressed):
+        if isinstance(line, bytes):
+            line = line.decode()
         match = listget.match(line)
         if not match:
             continue
@@ -49,10 +67,10 @@ if __name__ == '__main__':
         date = datetime.strptime(date, '%d/%b/%Y')
         # truncate to a week
         try:
-            date = datetime(date.year, date.month, date.day / 7 * 7 + 1)
+            date = datetime(date.year, date.month, (date.day//7) * 7 + 1)
         except ValueError:
             # only on Feb28...
-            date = datetime(date.year, date.month, date.day / 7 * 7)
+            date = datetime(date.year, date.month, (date.day//7) * 7)
         # microseconds since epoch
         date = int(time.mktime(date.timetuple()) * 1000)
         rstats = data.setdefault(releases[release], {})
@@ -62,10 +80,10 @@ if __name__ == '__main__':
         data[releases[release]] = rstats
     # determine the union of all timestamps
     timestamps = set()
-    for codename, stats in data.iteritems():
-        timestamps.update(stats.keys())
+    for codename, stats in data.items():
+        timestamps.update(list(stats.keys()))
     export = [{'key': release,
                'values': [[ts, float(data[release].setdefault(ts, 0)) / 7]
                         for ts in sorted(timestamps)]}
                                     for release in sorted(data)]
-    print json.dumps(export)
+    print(json.dumps(export))

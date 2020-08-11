@@ -1,20 +1,18 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 #emacs: -*- mode: python-mode; py-indent-offset: 4; tab-width: 4; indent-tabs-mode: nil -*-
 #ex: set sts=4 ts=4 sw=4 noet:
 """Script to do rudimentary checks of NeuroDebian mirrors to verify they are in good shape
 """
-
-
 import sys
-from urllib import urlopen
-from ConfigParser import SafeConfigParser
+from urllib.request import urlopen
+from configparser import ConfigParser
 
 #cfg_path="/etc/neurodebian/neurodebian.cfg"
 cfg_path="./neurodebian.cfg"
 main_mirror='us-nh'
 
 # read configuration
-cfg = SafeConfigParser()
+cfg = ConfigParser()
 cfg.read(cfg_path)
 
 # load information about mirrors
@@ -30,7 +28,7 @@ def fetch_listing(url):
     TODO: eventually use scrapy, but stable one has only 0.8 while
     0.16 is out... so -- later
     """
-    print url
+    print(url)
     #url = 'http://neuro.debian.net/debian/dists/dapper/'
     #url = "http://mirror.aarnet.edu.au/pub/neurodebian/dists/dapper/"
     parser = etree.HTMLParser()
@@ -64,14 +62,14 @@ def fetch_listing(url):
                       )) ]
 
     for p, isdir, a, _, name, _ in links:
-        print name
+        print(name)
         if isdir:
             fetch_listing('%s/%s' %
                           (url, name))
 
 if False:
-    for m, url in urls.iteritems():
-        print "Mirror %s" % m
+    for m, url in urls.items():
+        print("Mirror %s" % m)
         fetch_listing(url + '/dists/dapper')
 else:
     fetch_listing(urls[main_mirror] + '/dists/dapper')
