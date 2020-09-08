@@ -8,7 +8,7 @@ BIGMESS_OPTS = -c neurodebian.cfg
 BIGMESS_CMD = PYTHONPATH=.:3rd/bigmess:$(PYTHONPATH) 3rd/bigmess/bin/bigmess
 BIGMESS = $(BIGMESS_CMD) $(BIGMESS_OPTS)
 
-# Lentghy one due to updatedb
+# Lengthy one due to updatedb
 all: updatedb upload-website mirmon
 # Quick one -- just rebuilds html if new changes and adjusts the status of the mirrors
 refresh: upload-website-stamp mirmon
@@ -78,7 +78,7 @@ upload-website: html
 	: # Touch stamp here so we get it updated on every upload
 	touch $@-stamp
 
-# call upload iff .git/index was modified, i.e. new changes got pulled in
+# call upload if .git/index was modified, i.e. new changes got pulled in
 upload-website-stamp: .git/index
 	$(MAKE) upload-website
 
