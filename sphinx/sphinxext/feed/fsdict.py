@@ -1,5 +1,5 @@
 # −*− coding: UTF−8 −*−
-from path import path
+from .path import path
 import os
 import pickle
 """
@@ -43,37 +43,37 @@ class FSDict(dict):
         """
         a hardline list of everything in the dict. may be long.
         """
-        return repr(dict([(k, v) for k, v in self.iteritems()]))
+        return repr(dict([(k, v) for k, v in self.items()]))
         
     def __str__(self):
         """
         str is truncated somewhat.
         """
-        if len(self.keys()):
-            return '{' + repr(self.keys()[0]) + ':' + repr(self[self.keys()[0]]) + ', ...'
+        if len(list(self.keys())):
+            return '{' + repr(list(self.keys())[0]) + ':' + repr(self[list(self.keys())[0]]) + ', ...'
         else:
             return super(FSDict, self).__str__()
     
     def keys(self, *args, **kwargs):
-        return [key for key in self.iterkeys()]
+        return [key for key in self.keys()]
     
     def iterkeys(self, *args, **kwargs):
         for f in self.work_dir.files():
             yield str(self.work_dir.relpathto(f))
         
     def iteritems(self):
-        for key in self.iterkeys():
+        for key in self.keys():
             yield key, self[key]
             
     def itervalues(self):
-        for key in self.iterkeys():
+        for key in self.keys():
             yield self[key]
             
     def __delitem__(self, key, *args, **kwargs):
         (self.work_dir/key).unlink()
     
     def values(self, *args, **kwargs):
-        return [self[key] for key in self.keys()]
+        return [self[key] for key in list(self.keys())]
         
     def cleanup(self):
         self.work_dir.rmtree()
@@ -90,7 +90,7 @@ class FSDict(dict):
         
         try:
             self.work_dir.move(new_dir)
-        except Exception, e:
+        except Exception as e:
             raise
         else:
             self.work_dir = new_dir
@@ -105,6 +105,6 @@ class FSDict(dict):
         #OK, it's a dict-ish thing
         try:
             return all([self[key]==other[key] for key in other]) and \
-              len(self.keys())==len(other.keys())
+              len(list(self.keys()))==len(list(other.keys()))
         except KeyError:
             return False

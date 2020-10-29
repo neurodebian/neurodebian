@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-from fsdict import FSDict
-import feedgenerator
-from urllib import quote_plus
+from .fsdict import FSDict
+from . import feedgenerator
+from urllib.parse import quote_plus
 import os.path
 import re
 
@@ -68,7 +68,7 @@ def create_feed_item(app, pagename, templatename, ctx, doctree):
     We also inject useful metadata into the context here.
     """
     global feed_entries
-    from absolutify_urls import absolutify
+    from .absolutify_urls import absolutify
     metadata = app.builder.env.metadata.get(pagename, {})
     
     if 'date' not in metadata:
@@ -76,7 +76,7 @@ def create_feed_item(app, pagename, templatename, ctx, doctree):
     try:
         pub_date = parse_date(metadata['date'])
         app.builder.env.metadata.get(pagename, {})
-    except ValueError, exc:
+    except ValueError as exc:
         #probably a nonsensical date
         app.builder.warn('date parse error: ' + str(exc) + ' in ' + pagename)
         return
@@ -150,7 +150,7 @@ def emit_feed(app, exc):
     if app.config.copyright:
         feed_dict['feed_copyright'] = app.config.copyright
     # sort items
-    ordered_keys = feed_entries.keys()
+    ordered_keys = list(feed_entries.keys())
     ordered_keys.sort(reverse=True)
     # loop over all feed variants
     for feedvar in app.config.feed_variants:
