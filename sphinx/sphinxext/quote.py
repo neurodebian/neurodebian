@@ -40,7 +40,13 @@ from docutils.parsers.rst import directives, Directive
 from docutils.parsers.rst.directives import body
 
 from sphinx.environment import NoUri
-from sphinx.util.compat import Directive, make_admonition
+from sphinx.util.docutils import SphinxDirective
+
+# DeprecationWarning: make_admonition is deprecated, use docutils.parsers.rst.directives.admonitions.BaseAdmonition instead
+try:
+    from sphinx.util.compat import make_admonition
+except ImportError:
+    from docutils.parsers.rst.directives.admonitions import BaseAdmonition as make_admonition
 
 
 class quote_node(nodes.Body, nodes.Element): pass
@@ -56,7 +62,7 @@ def _prep_tags(options):
                            for x in
                            options.get('tags', '').split(',')))
 
-class Quote(Directive):
+class Quote(SphinxDirective):
     """
     A quote entry, displayed (if configured) in the form of an admonition.
     """
@@ -139,7 +145,7 @@ def process_quotes(app, doctree):
         })
 
 
-class Quotes(Directive):
+class Quotes(SphinxDirective):
     """
     A list of all quote entries.
     """
