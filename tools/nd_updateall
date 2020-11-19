@@ -3,7 +3,7 @@
 . /etc/neurodebian/cmdsettings.sh
 
 if [ -z "$SERIAL" ]; then
-    parallel nd_updatedist -- $alldists
+    parallel nd_updatedist ::: $alldists
 else
     # Original serial version, we might want to switch between the two
     # upon -j
