@@ -38,7 +38,7 @@ as Ubuntu and other derivatives.  Please visit our
 
 # Related projects from the NeuroDebian authors
 
-- [Open Brain Constent](http://open-brain-consent.readthedocs.io) - samples
+- [Open Brain Consent](http://open-brain-consent.readthedocs.io) - samples
   and an ultimate wording for experiment participant consent forms to make
   open data sharing possible
 - [DataLad](http://datalad.org) - a data distribution and management
