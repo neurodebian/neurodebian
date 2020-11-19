@@ -30,9 +30,12 @@ if echo $family | grep -q debian; then
     # Use debian keyring since otherwise debootstrap would fail (on Ubuntu)
     opts+=" --debootstrapopts --keyring=/usr/share/keyrings/debian-archive-keyring.gpg"
 fi
+# opts+=" --debootstrapopts --keyring=/etc/apt/trusted.gpg.d/neurodebian-archive-keyring.gpg"
+opts+=" --keyring=/etc/apt/trusted.gpg.d/neurodebian-archive-keyring.gpg"
 
 mkdir -p ${cowbuilderroot}/cow
 
+# no cowdancer in nd20.04 (focal) - so removed manually to build
 for a in i386 amd64; do
   echo "Building $a base path..."
   cow="${cowbuilderroot}/cow/${family}-${dist}-${a}.cow"
@@ -41,7 +44,7 @@ for a in i386 amd64; do
     continue
   fi
   if [ "${family:0:3}" = "nd+" ]; then
-  echo "Including NeuroDebian repository..."
+    echo "Including NeuroDebian repository..."
     # If it has updates -- enable them
     if wget -q -O/dev/null $mirror/dists/$dist-updates; then
       updates_apt="deb $mirror $dist-updates $components |"
@@ -53,7 +56,10 @@ for a in i386 amd64; do
                --components "$components" \
                --mirror "$mirror" \
                --debootstrapopts --arch=$a \
-               --othermirror "${updates_apt}deb http://neuro.debian.net/debian $dist main contrib non-free | deb http://neuro.debian.net/debian data main contrib non-free"
+               --othermirror "${updates_apt}deb http://neuro.debian.net/debian $dist main contrib non-free | deb http://neuro.debian.net/debian data main contrib non-free" \
+	       --keyring=/etc/apt/trusted.gpg.d/neurodebian-archive-keyring.gpg
+    # --debootstrapopts --no-check-gpg
+
     # deploy our key manually since archive with package is not yet
     # available at this point
     mkdir -p ${cow}/etc/apt/trusted.gpg.d
