@@ -33,5 +33,5 @@ fi
 
 for a in $arch; do
   echo "Updating arch $a..."
-  cowbuilder --update --basepath ${cowbuilderroot}/cow/${family}-${dist}-${a}.cow $opts
+  cowbuilder --update --basepath ${cowbuilderroot}/cow/${family}-${dist}-${a}.cow $opts || echo "failed to update for $arch"
 done
