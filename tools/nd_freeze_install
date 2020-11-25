@@ -42,7 +42,7 @@ parser.add_argument(
 parser.add_argument(
     "-t", "--trust-repos",
     help=("Update untrusted repos. For repos whose apt keys are invalid, "
-        "go ahead and use the repo rather thanfailing by default. "
+        "go ahead and use the repo rather than failing by default. "
         "USE CAUTIOUSLY!"),
     action="store_true",
     dest="trust_repos"
@@ -87,7 +87,7 @@ def exec_shell(command, env=None):
     if stderr:
         stderr = stderr.decode('utf-8')
     logging.debug("Command STDOUT: {}".format(stdout))
-    logging.debug("Command STDERR: {}".format(stderr))
+    logging.debug("Command STDERR: %s", stderr)
     return stdout
 
 
