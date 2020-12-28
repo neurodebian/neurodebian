@@ -34,7 +34,7 @@ class FSDict(dict):
         super(FSDict, self).__init__(*args, **kwargs)
     
     def __setitem__(self, key, val, *args, **kwargs):
-        pickle.dump(val, open(self.work_dir/key, 'w'))
+        pickle.dump(val, open(self.work_dir/key, 'wb'))
     
     def __getitem__(self, key, *args, **kwargs):
         return pickle.load(open(self.work_dir/key, 'r'))
@@ -53,9 +53,9 @@ class FSDict(dict):
             return '{' + repr(list(self.keys())[0]) + ':' + repr(self[list(self.keys())[0]]) + ', ...'
         else:
             return super(FSDict, self).__str__()
-    
+
     def keys(self, *args, **kwargs):
-        return [key for key in self.keys()]
+        return list(dict.keys(self))
     
     def iterkeys(self, *args, **kwargs):
         for f in self.work_dir.files():

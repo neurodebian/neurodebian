@@ -41,6 +41,7 @@ from docutils.parsers.rst.directives import body
 
 from sphinx.environment import NoUri
 from sphinx.util.docutils import SphinxDirective
+from functools import reduce
 
 # DeprecationWarning: make_admonition is deprecated, use docutils.parsers.rst.directives.admonitions.BaseAdmonition instead
 try:

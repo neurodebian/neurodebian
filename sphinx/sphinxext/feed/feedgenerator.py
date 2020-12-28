@@ -204,7 +204,7 @@ class RssFeed(SyndicationFeed):
             handler.addQuickElement("category", cat)
         if self.feed['feed_copyright'] is not None:
             handler.addQuickElement("copyright", self.feed['feed_copyright'])
-        handler.addQuickElement("lastBuildDate", rfc2822_date(self.latest_post_date()).decode('utf-8'))
+        handler.addQuickElement("lastBuildDate", rfc2822_date(self.latest_post_date()))
         if self.feed['ttl'] is not None:
             handler.addQuickElement("ttl", self.feed['ttl'])
 
@@ -238,7 +238,7 @@ class Rss201rev2Feed(RssFeed):
             handler.addQuickElement("dc:creator", item["author_name"], {"xmlns:dc": "http://purl.org/dc/elements/1.1/"})
 
         if item['pubdate'] is not None:
-            handler.addQuickElement("pubDate", rfc2822_date(item['pubdate']).decode('utf-8'))
+            handler.addQuickElement("pubDate", rfc2822_date(item['pubdate']))
         if item['comments'] is not None:
             handler.addQuickElement("comments", item['comments'])
         if item['unique_id'] is not None:
@@ -281,7 +281,7 @@ class Atom1Feed(SyndicationFeed):
         if self.feed['feed_url'] is not None:
             handler.addQuickElement("link", "", {"rel": "self", "href": self.feed['feed_url']})
         handler.addQuickElement("id", self.feed['id'])
-        handler.addQuickElement("updated", rfc3339_date(self.latest_post_date()).decode('utf-8'))
+        handler.addQuickElement("updated", rfc3339_date(self.latest_post_date()))
         if self.feed['author_name'] is not None:
             handler.startElement("author", {})
             handler.addQuickElement("name", self.feed['author_name'])
@@ -307,7 +307,7 @@ class Atom1Feed(SyndicationFeed):
         handler.addQuickElement("title", item['title'])
         handler.addQuickElement("link", "", {"href": item['link'], "rel": "alternate"})
         if item['pubdate'] is not None:
-            handler.addQuickElement("updated", rfc3339_date(item['pubdate']).decode('utf-8'))
+            handler.addQuickElement("updated", rfc3339_date(item['pubdate']))
 
         # Author information.
         if item['author_name'] is not None:

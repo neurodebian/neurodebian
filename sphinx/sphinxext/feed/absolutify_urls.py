@@ -4,7 +4,7 @@
 import html5lib
 import html5lib.serializer
 import html5lib.treewalkers
-import urlparse
+import urllib.parse
 
 # List of (ELEMENT, ATTRIBUTE) for HTML5 attributes which contain URLs.
 # Based on the list at http://www.feedparser.org/docs/resolving-relative-links.html
@@ -50,7 +50,7 @@ to BASE_URL. Return the body of the result as HTML."""
     for b in head.getElementsByTagName('base'):
         u = b.getAttribute('href')
         if u:
-            base_url = urlparse.urljoin(base_url, u)
+            base_url = urllib.parse.urljoin(base_url, u)
             # HTML5 4.2.3 "if there are multiple base elements with href
             # attributes, all but the first are ignored."
             break
@@ -63,7 +63,7 @@ to BASE_URL. Return the body of the result as HTML."""
         for e in dom.getElementsByTagName(tag):
             u = e.getAttribute(attr)
             if u:
-                e.setAttribute(attr, urlparse.urljoin(base_url, u))
+                e.setAttribute(attr, urllib.parse.urljoin(base_url, u))
 
     # Return the HTML5 serialization of the <BODY> of the result (we don't
     # want the <HEAD>: this breaks feed readers).
@@ -73,7 +73,7 @@ to BASE_URL. Return the body of the result as HTML."""
         html_serializer = html5lib.serializer.htmlserializer.HTMLSerializer()
     except AttributeError:
         html_serializer = html5lib.serializer.HTMLSerializer()
-    return u''.join(html_serializer.serialize(tree_walker(body)))
+    return ''.join(html_serializer.serialize(tree_walker(body)))
     
 
 # Alternative option, from http://stackoverflow.com/questions/589833/how-to-find-a-relative-url-and-translate-it-to-an-absolute-url-in-python/589939#589939
