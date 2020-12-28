@@ -256,7 +256,7 @@ What has changed
     * VM appliance based on the official wheezy point release 7.2.
     * Ships with updated neurodebian-* packages:
       - installs ipython notebook and qtconsole for "Scientific Python"
-		and "PyMVPA tutorial" welcome wizard choices.
+        and "PyMVPA tutorial" welcome wizard choices.
 
   7.0.0 -- 15 May 2013
     * VM appliance based on the official wheezy release.
