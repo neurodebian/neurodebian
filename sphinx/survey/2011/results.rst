@@ -10,8 +10,6 @@
      </_files/HankeHalchenko_FrontiersInNeuroinformatics2011.pdf>`_.
      *Frontiers in Neuroinformatics, 5:8*.
 
-.. include:: figures/stats.txt
-
 Submitter background
 --------------------
 
