@@ -24,7 +24,7 @@ override_dh_auto_configure:
 override_dh_auto_build:
 	# wallpaper
 	mkdir -p build/wallpaper
-	xcf2png -o build/wallpaper/neurodebian.png artwork/wallpaper_hotbrain.xcf
+	convert -layers merge artwork/wallpaper_hotbrain.xcf build/wallpaper/neurodebian.png
 	# icons
 	mkdir -p build/icons
 	inkscape artwork/icon.svg -w $(ICONS_SIZE) -h $(ICONS_SIZE) \
