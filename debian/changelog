@@ -9,6 +9,7 @@ neurodebian (0.40.2) unstable; urgency=medium
   * Fixed up elderly sphinx/blog/2011/2011-12-12_schroot_fslview.rst to
     point to squeeze not stable. Thanks Paul Wise for the attention to detail
     (Closes: #972742)
+  * debian/po/sv.po - minor updates. Thanks Jonatan Nyberg (Closes: #855392)
 
  -- Yaroslav Halchenko <debian@onerussian.com>  Mon, 15 Feb 2021 21:50:42 -0500
 
