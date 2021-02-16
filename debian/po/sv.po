@@ -8,45 +8,45 @@ msgstr ""
 "Project-Id-Version: neurodebian\n"
 "Report-Msgid-Bugs-To: neurodebian@packages.debian.org\n"
 "POT-Creation-Date: 2015-06-23 18:57+0200\n"
-"PO-Revision-Date: 2017-02-17 13:28+0100\n"
-"Last-Translator: Jonatan Nyberg <jonatan@autistici.org>\n"
+"PO-Revision-Date: 2019-03-25 21:01+0100\n"
+"Last-Translator: Jonatan Nyberg <jonatan.nyberg.karl@gmail.com>\n"
 "Language: sv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.8.11\n"
+"X-Generator: Poedit 2.2.1\n"
 "Language-Team: \n"
 
 #. Type: title
 #. Description
 #: ../neurodebian.templates:2001
 msgid "NeuroDebian APT repository installer"
-msgstr "NeuroDebian APT-förråd installerare"
+msgstr "NeuroDebian APT förråd-installerare"
 
 #. Type: boolean
 #. Description
 #: ../neurodebian.templates:3001
 msgid "Enable the NeuroDebian package repository?"
-msgstr "Aktivera NeuroDebian-paketsförråd?"
+msgstr "Aktivera NeuroDebian-paketsförrådet?"
 
 #. Type: boolean
 #. Description
 #: ../neurodebian.templates:3001
 msgid "The NeuroDebian project provides a separate APT repository with software that is not available in Debian, including datasets and backported new releases."
-msgstr "NeuroDebian-projektet tillhandahåller ett separat APT-förråd med programvara som inte finns i Debian, inklusive datamaterial och nya utgåvor för backportar."
+msgstr "NeuroDebian-projektet tillhandahåller ett separat APT-förråd med programvara som inte är tillgänglig i Debian, inklusive datauppsättningar och bakåtporterade nya utgåvor."
 
 #. Type: boolean
 #. Description
 #: ../neurodebian.templates:3001
 msgid "If you choose this option, these packages will be available for installation and upgrades."
-msgstr "Om du väljer det här alternativet, kommer dessa paket att vara tillgängliga för installation och uppgraderingar."
+msgstr "Om du väljer det här alternativet kommer dessa paket att vara tillgängliga för installation och uppgraderingar."
 
 #. Type: boolean
 #. Description
 #: ../neurodebian.templates:3001
 msgid "Even though these packages are closely maintained by the NeuroDebian team, enabling this additional archive may compromise the integrity of the system."
-msgstr "Även om dessa paket noga underhålls av NeuroDebian, kan aktiveringen av ytterligare detta arkiv äventyra integriteten av systemet."
+msgstr "Även om dessa paket är nära underhållna av NeuroDebian-teamet, kan aktivering av ytterligare detta förråd äventyra systemets integritet."
 
 #. Type: select
 #. Choices
@@ -64,19 +64,19 @@ msgstr "${releases}"
 #. Description
 #: ../neurodebian.templates:4002
 msgid "Release name of the base system:"
-msgstr "Utgåvans namn på bassystemet:"
+msgstr "Bassystemets utgivningsnamn:"
 
 #. Type: select
 #. Description
 #: ../neurodebian.templates:4002
 msgid "Please specify the appropriate Debian or Ubuntu release codename (for instance \"stretch\" or \"trusty\")."
-msgstr "Ange lämpliga Debian eller Ubuntu utgåvans kodnamn (till exempel \"stretch\" eller \"trusty\")."
+msgstr "Ange lämpligt Debian eller Ubuntu kodnamn (till exempel \"stretch\" eller \"trusty\")."
 
 #. Type: select
 #. Description
 #: ../neurodebian.templates:4002
 msgid "If this is set to \"automatic\"', the release name is chosen according to the output of \"apt-cache policy\". If the release name for this system is not \"${release}\", you should choose the specific one which matches best."
-msgstr "Om detta är inställt på \"automatisk\"' väljs utgåvans namn enligt utmatningen av \"apt-cache policy\". Om utgåvans namn för detta system inte är \"${release}\", bör du välja den som specifikt passar bäst."
+msgstr "Om detta är inställt på \"automatisk\" väljs utgivningsnamnet enligt utdata från \"apt-cache policy\". Om utgivningsnamnet för det här systemet inte är \"${release}\", bör du välja den specifika som matchar bäst."
 
 #. Type: select
 #. Description
@@ -88,13 +88,13 @@ msgstr "NeuroDebian-spegel att använda:"
 #. Description
 #: ../neurodebian.templates:5001
 msgid "The NeuroDebian project has a number of community-maintained mirrors around the globe."
-msgstr "NeuroDebian-projektet har ett antal gemensamt-underhållna speglar runt om i världen."
+msgstr "NeuroDebian-projektet har ett antal gemensamt underhållna speglar runt om i världen."
 
 #. Type: select
 #. Description
 #: ../neurodebian.templates:5001
 msgid "If you do not know which mirror URL to choose, select one of:"
-msgstr "Om du inte vet vilken spegel-URL att välja, välj en av:"
+msgstr "Om du inte vet vilken spegelwebbadress att välja, välj en av:"
 
 #. Type: select
 #. Description
@@ -106,9 +106,9 @@ msgid ""
 "   configuration of the firewall. If netselect is not available, the\n"
 "   default mirror will be used."
 msgstr ""
-"* origin: det ursprungliga NeuroDebian-förrådet;\n"
-"* best: kommer att försöka använda netselect för att välja \"närmaste\" spegel.\n"
-"   Detta kan misslyckas beroende på befintliga spegelinställningar och\n"
+"* ursprung: det ursprungliga NeuroDebian förrådet;\n"
+"* bäst: kommer att försöka använda netselect att välja \"närmaste\" spegel.\n"
+".   Detta kan misslyckas beroende på nuvarande spegel-inställningar och\n"
 "   konfiguration av brandväggen. Om netselect inte är tillgänglig\n"
 "   kommer standard spegel att användas."
 
@@ -122,7 +122,7 @@ msgstr "NeuroDebian-flavor att använda:"
 #. Description
 #: ../neurodebian.templates:6001
 msgid "The NeuroDebian project adheres to the Debian Free Software Guidelines, and offers three packages areas, classified by license, for all suites/releases:"
-msgstr "NeuroDebian-projektet följer Debians riktlinjer för fri programvara, och erbjuder tre paket-områden, som klassificeras av licens, för alla sviter/utgåvor:"
+msgstr "NeuroDebian-projektet följer Debians riktlinjer för fri programvara, och erbjuder tre paket områden, som klassificeras av licens, för alla sviter/utgåvor:"
 
 #. Type: select
 #. Description
@@ -139,9 +139,9 @@ msgstr ""
 "libre\n"
 "  DFSG-kompatibelt material endast\n"
 "hela\n"
-"  alla tre områden (main, contrib, non-free)\n"
+"  alla tre områden (main, contrib non-free)\n"
 "auto\n"
-"  plockas från utmatningen av \"apt-cache policy\"\n"
+"  plockas från utgången av \"apt-cache policy\"\n"
 "  (för denna maskin: \"${flavor}\")."
 
 #. Type: multiselect
@@ -171,13 +171,13 @@ msgid ""
 "  required by other packages. This should usually be enabled."
 msgstr ""
 "programvara\n"
-"  Paket som innehåller programvara, ofta backports av stabil programvara\n"
-"  utgåvor för tidigare Debian/Ubuntu utgåvor;\n"
+"  Förpackningar som innehåller programvara, ofta backports av stabil programvara\n"
+"  versioner för tidigare Debian/Ubuntu utgåvor;\n"
 "devel\n"
-"  Ytterligare \"bleeding edge\" programvarupaket (likt de i Debian\n"
-"  experimental), som kanske inte är säkra att aktivera som standard.\n"
+"  Ytterligare \"bleeding edge\" programvarupaket (som de i Debian\n"
+"  experimental), som det kanske inte är säkert att göra möjliga som standard.\n"
 "data\n"
-"  Förpackningar som innehåller data (t.ex. atlases eller provdatamaterial), ofta\n"
+"  Förpackningar som innehåller data (t.ex. atlaser eller provdatamaterial), ofta\n"
 "  krävda av andra paket. Detta bör normalt vara aktiverat."
 
 #. Type: boolean
@@ -190,7 +190,7 @@ msgstr "Skriv över den befintliga NeuroDebian APT-filen?"
 #. Description
 #: ../neurodebian.templates:8001
 msgid "If an APT sources.list file already exists for NeuroDebian, this package will fail to configure unless given permission to overwrite it."
-msgstr "Om en APT sources.list fil redan existerar för NeuroDebian, kommer det här paketet inte kunna konfigureras om det inte har behörighet att skriva över den."
+msgstr "Om en APT-sources.list-fil redan finns för NeuroDebian, kommer det här paketet inte konfigureras om du inte ges tillstånd att skriva över den."
 
 #. Type: string
 #. Description
@@ -214,13 +214,13 @@ msgstr "Detta bör vanligtvis lämnas tomt."
 #. Description
 #: ../neurodebian.templates:10001
 msgid "APT update required"
-msgstr "APT uppdatering krävs"
+msgstr "APT-uppdatering krävs"
 
 #. Type: note
 #. Description
 #: ../neurodebian.templates:10001
 msgid "For the installation (or removal) of a NeuroDebian sources.list file to take effect, APT's packages list needs to be updated. Please manually run \"apt-get update\" after the neurodebian package has been installed or reconfigured."
-msgstr "För att en installation (eller borttagning) av en NeuroDebian sources.list fil ska träda i kraft måste APT-paketlistan uppdateras. Kör manuellt \"apt-get update\" efter att neurodebian-paketet har installerats eller konfigurerats."
+msgstr "För installation (eller borttagning) av en NeuroDebian sources.list-fil ska träda i kraft måste APT-paketlistan uppdateras. Kör manuellt \"apt-get update\" efter att neurodebian-paketet har installerats eller konfigurerats."
 
 #. Type: error
 #. Description
@@ -242,7 +242,7 @@ msgstr "\"netselect\"-verktyget hittades inte. Du behöver antagligen installera
 #. Description
 #: ../neurodebian.templates:11001
 msgid "Alternatively, you can manually select the mirror to use."
-msgstr "Alternativt kan du manuellt välja spegeln som ska användas."
+msgstr "Alternativt kan du manuellt välja den spegel som ska användas."
 
 #. Type: error
 #. Description
