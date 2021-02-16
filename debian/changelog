@@ -1,4 +1,4 @@
-neurodebian (0.40.2) unstable; urgency=medium
+neurodebian (0.41.0) unstable; urgency=medium
 
   [ Juhani Numminen ]
   * Replace xcf2png (xcftools) with convert (imagemagick). (Closes: #982503)
@@ -11,7 +11,7 @@ neurodebian (0.40.2) unstable; urgency=medium
   * debian/po/sv.po - minor updates. Thanks Jonatan Nyberg
     (Closes: #855392, #925492) - took version of #925492
 
- -- Yaroslav Halchenko <debian@onerussian.com>  Mon, 15 Feb 2021 21:50:42 -0500
+ -- Yaroslav Halchenko <debian@onerussian.com>  Mon, 15 Feb 2021 22:04:45 -0500
 
 neurodebian (0.40.1) unstable; urgency=medium
 
