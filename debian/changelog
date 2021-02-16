@@ -1,9 +1,16 @@
-neurodebian (0.40.1+nmu1) unstable; urgency=medium
+neurodebian (0.40.2) unstable; urgency=medium
 
+  [ Juhani Numminen ]
   * Non-maintainer upload.
   * Replace xcf2png (xcftools) with convert (imagemagick). (Closes: #982503)
 
- -- Juhani Numminen <juhaninumminen0@gmail.com>  Sat, 13 Feb 2021 11:38:02 +0200
+  [ Yaroslav Halchenko ]
+  * Python3 and recent sphinx compatibility fixes throughout helper scripts
+  * Fixed up elderly sphinx/blog/2011/2011-12-12_schroot_fslview.rst to
+    point to squeeze not stable. Thanks Paul Wise for the attention to detail
+    (Closes: #972742)
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Mon, 15 Feb 2021 21:50:42 -0500
 
 neurodebian (0.40.1) unstable; urgency=medium
 

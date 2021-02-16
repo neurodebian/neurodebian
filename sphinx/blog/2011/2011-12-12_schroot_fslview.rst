@@ -172,7 +172,7 @@ So here are recommended optional additions:
 - **chroot-root**: Enable security and functionality updates::
 
    sed -e 's,squeeze,squeeze-updates,g' /etc/apt/sources.list > /etc/apt/sources.list.d/updates.list
-   echo 'deb http://security.debian.org/ stable/updates main' > /etc/apt/sources.list.d/security.list
+   echo 'deb http://security.debian.org/ squeeze/updates main' > /etc/apt/sources.list.d/security.list
    apt-get update
    apt-get upgrade
 
