@@ -5,7 +5,6 @@ Uploaders: Michael Hanke <mih@debian.org>,
 Section: science
 Priority: optional
 Build-Depends: debhelper (>= 9~),
-               xcftools,
                help2man,
                inkscape,
                imagemagick,
