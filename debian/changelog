@@ -1,3 +1,10 @@
+neurodebian (0.40.1+nmu1) unstable; urgency=medium
+
+  * Non-maintainer upload.
+  * Replace xcf2png (xcftools) with convert (imagemagick). (Closes: #982503)
+
+ -- Juhani Numminen <juhaninumminen0@gmail.com>  Sat, 13 Feb 2021 11:38:02 +0200
+
 neurodebian (0.40.1) unstable; urgency=medium
 
   * Be compatible with inkscape >= 1.0~rc1 which changed -e into -o.

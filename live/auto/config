@@ -13,7 +13,7 @@ deb_mirror="http://debproxy:9999"
 if [ ! -e neurodebian-splash.png ]; then
     # For Grub2 it should be .tga;
 	# NOTE: RLE compression is not supported by imagemagick for write
-	xcf2png -o neurodebian-splash-big.png ../artwork/wallpaper_hotbrain.xcf
+	convert -layers merge ../artwork/wallpaper_hotbrain.xcf neurodebian-splash-big.png
 	convert neurodebian-splash-big.png -crop 1400x1050+280 -geometry 640x480 \
 		neurodebian-splash.png
 fi
