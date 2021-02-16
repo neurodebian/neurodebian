@@ -1,7 +1,6 @@
 neurodebian (0.40.2) unstable; urgency=medium
 
   [ Juhani Numminen ]
-  * Non-maintainer upload.
   * Replace xcf2png (xcftools) with convert (imagemagick). (Closes: #982503)
 
   [ Yaroslav Halchenko ]
