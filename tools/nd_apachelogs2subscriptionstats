@@ -47,6 +47,7 @@ releases = {
     'eoan': 'Ubuntu 19.10 "Eoan Ermin" (eoan)',
     'focal': 'Ubuntu 20.04 "Focal Fossa" (focal)',
     'groovy': 'Ubuntu 20.10 "Groovy Gorilla" (groovy)',
+    'hirsute': 'Ubuntu 21.04 "Hirsute Hippo" (hirsute)',
 }
 
 
