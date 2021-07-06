@@ -131,7 +131,7 @@ sub run_apt_get_update {
     my $stdout = exec_shell("apt-get update $switch");
     if ($stdout =~ /NO_PUBKEY (\w+)/) {
         logg("info", "Missing public key for $1, attempting to get key");
-        exec_shell("apt-key adv --recv-keys --keyserver pool.sks-keyservers.net 0x${1}");
+        exec_shell("apt-key adv --recv-keys --keyserver hkps://keyserver.ubuntu.com 0x${1}");
         logg("info", "Successfully retrieved public key, re-running apt update");
         exec_shell("apt-get update $switch");
     }
