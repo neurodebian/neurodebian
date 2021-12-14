@@ -19,8 +19,8 @@ releases = {
     'jessie': 'Debian GNU/Linux 8.0 (jessie)',
     'stretch': 'Debian GNU/Linux 9.0 (stretch)',
     'buster': 'Debian GNU/Linux 10.0 (buster)',
-    # according to https://en.wikipedia.org/wiki/Debian_version_history#Debian_11_(Bullseye)
-    'bullseye': 'Debian testing (bullseye)',
+    'bullseye': 'Debian GNU/Linux 11.0 (bullseye)',
+    'bookworm': 'Debian testing (bookworm)',
     'sid': 'Debian unstable (sid)',
     'hardy': 'Ubuntu 08.04 LTS "Hardy Heron" (hardy)',
     'jaunty': 'Ubuntu 09.04 "Jaunty Jackalope" (jaunty)',
@@ -48,6 +48,7 @@ releases = {
     'focal': 'Ubuntu 20.04 "Focal Fossa" (focal)',
     'groovy': 'Ubuntu 20.10 "Groovy Gorilla" (groovy)',
     'hirsute': 'Ubuntu 21.04 "Hirsute Hippo" (hirsute)',
+    'impish': 'Ubuntu 21.10 "Impish Indri" (impish)',
 }
 
 
