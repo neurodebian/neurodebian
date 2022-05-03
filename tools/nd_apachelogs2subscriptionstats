@@ -49,6 +49,7 @@ releases = {
     'groovy': 'Ubuntu 20.10 "Groovy Gorilla" (groovy)',
     'hirsute': 'Ubuntu 21.04 "Hirsute Hippo" (hirsute)',
     'impish': 'Ubuntu 21.10 "Impish Indri" (impish)',
+    'jammy': 'Ubuntu 22.04 "Jammy Jellyfish" (jammy)',
 }
 
 
