@@ -1,3 +1,12 @@
+neurodebian (0.41.1) unstable; urgency=medium
+
+  * Minor changes: use another gpg server, update for EOLed releases.
+  * Release prompted by adding arm64 architecture to NeuroDebian archive
+    and building docker images for it
+    (https://github.com/docker-library/official-images/pull/12820)
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Tue, 19 Jul 2022 16:34:28 -0400
+
 neurodebian (0.41.0) unstable; urgency=medium
 
   [ Juhani Numminen ]
