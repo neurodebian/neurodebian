@@ -20,4 +20,4 @@ dscfile=$1
 shift;
 
 nd_updatedist debian sid amd64
-nd_build debian sid amd64 $dscfile "$@"
+nd_build debian sid amd64 $dscfile --debbuildopts=--changes-option=-S "$@"
