@@ -1,6 +1,6 @@
 #!/usr/bin/perl
-#emacs: -*- mode: shell-script; c-basic-offset: 4; tab-width: 4; indent-tabs-mode: t -*-
-#ex: set sts=4 ts=4 sw=4 noet:
+#emacs: -*- mode: shell-script; c-basic-offset: 4; tab-width: 4; indent-tabs-mode: nil -*-
+#ex: set sts=4 ts=4 sw=4 et:
 #
 require 5.002;
 use Socket;
@@ -577,8 +577,8 @@ else {
 }
 
 if (scalar @apt_releases_list == 0) {
-	logg("info", "Cleaning up APT lists because originally there were none");
-	exec_shell("rm -rf /var/lib/apt/lists/*");
+    logg("info", "Cleaning up APT lists because originally there were none");
+    exec_shell("rm -rf /var/lib/apt/lists/*");
 }
 
 exit 0
