@@ -300,12 +300,16 @@ sub write_snapshot_sources {
         $label =~ tr/ /-/;
         $contents = get_www_content("http://${domain}/archive/${label}/${user_timestamp}/");
         # Handle bad URL requests
-        if (!($contents =~ /^HTTP\/\d+\.\d+ 200/) and !($contents =~ /^HTTP\/\d+\.\d+ 301/)) {
+        if (!($contents =~ /^HTTP\/\d+\.\d+ 200/) and !($contents =~ /^HTTP\/\d+\.\d+ 30[12]/)) {
             $contents =~ /^(.+)/;
             die "Bad URL request http://${domain}/archive/${label}/${user_timestamp}/: ${1}\n";
         }
         # Handle 301 redirect from snapshot server if we get one.
         if ($contents =~ /The resource has been moved to http:\/\/[\S\-]+\/archive\/${label}\/(\d{8}T\d{6}Z\/)/) {
+            $contents = get_www_content("http://${domain}/archive/${label}/${1}/");
+        }
+		# It later became 302 with a different msg and only relative href
+        if ($contents =~ /You should be redirected automatically to target URL: .*\/archive\/${label}\/(\d{8}T\d{6}Z\/)<.*/) {
             $contents = get_www_content("http://${domain}/archive/${label}/${1}/");
         }
         # Scrape next timestamp from HTML returned from snapshot server.
