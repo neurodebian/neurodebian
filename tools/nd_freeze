@@ -440,9 +440,15 @@ sub update_packages {
         my @lines = split /\n/, exec_shell("apt-cache policy $package");
         for my $i (0 .. $#lines) {
             $installed_version = $1 if ($lines[$i] =~ /Installed:\s+(\S+)/);
+            my @chunks = split /\s+/, $lines[$i];
+            # match by ensuring we deal with line having weight at the end
+            if ((($#chunks == 2)
+                 or ($#chunks == 3) && ($chunks[1] == '***'))
+                && ($chunks[-1] =~ /^[0-9]*$/)) {
+                   $snapshot_version = $chunks[1];
+            }
             if ($lines[$i] =~ /snapshot\.debian\.org|snapshot\-neuro\.debian\.net/) {
-                my @chunks = split /\s+/, $lines[$i-1];
-                $snapshot_version = $chunks[1];
+                # if already *** -- installed, not needed to upgrade/downgrade
                 $found = 1 if ($snapshot_version ne '***');
                 last;
             }
