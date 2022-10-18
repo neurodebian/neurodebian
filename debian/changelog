@@ -2,10 +2,17 @@ neurodebian (0.41.2) unstable; urgency=medium
 
   * Minor fixs to nd_freeze:
     - handle 302 from archive, not only 301
-    - to operate correctly whenever package is available also from main 
+    - to operate correctly whenever package is available also from main
       repository not only snapshots
 
  -- Yaroslav Halchenko <debian@onerussian.com>  Mon, 17 Oct 2022 19:38:15 -0400
+
+neurodebian (0.41.1+nmu1) unstable; urgency=medium
+
+  * Non-maintainer upload.
+  * source only upload to enable migration (Closes: #1020306)
+
+ -- Paul Gevers <elbrus@debian.org>  Mon, 19 Sep 2022 21:00:44 +0200
 
 neurodebian (0.41.1) unstable; urgency=medium
 
