@@ -1,3 +1,12 @@
+neurodebian (0.41.2+nmu1) unstable; urgency=medium
+
+  * Non-maintainer upload.
+  * Add debconf translators to debian/copyright.
+  * Add Spanish Debconf translations.
+    Thanks Camaleón. (Closes: #987476)
+
+ -- Helge Kreutzmann <debian@helgefjell.de>  Fri, 24 Feb 2023 17:12:31 +0100
+
 neurodebian (0.41.2) unstable; urgency=medium
 
   * Minor fixs to nd_freeze:

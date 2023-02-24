@@ -16,6 +16,46 @@ Copyright: 2010, Yaroslav O. Halchenko
            2007-2010, Sphinx team
 License: BSD-2
 
+Files: debian/po/cs.po
+Copyright: 2015 Michal Simunek <michal.simunek@gmail.com>
+License: GPL-3+
+
+Files: debian/po/da.po
+Copyright: 2015 Joe Hansen <joedalton2@yahoo.dk>
+License: GPL-3+
+
+Files: debian/po/de.po
+Copyright: 2009-2014 NeuroDebian Team
+           2015 Chris Leick <c.leick@vollbio.de>
+License: GPL-3+
+
+Files: debian/po/es.po
+Copyright: 2021 Camaleón <noelamac@gmail.com>
+License: GPL-3+
+
+Files: debian/po/fr.po
+Copyright: 2015 Julien Patriarca <leatherface@debian.org>
+License: GPL-3+
+
+Files: debian/po/nl.po
+Copyright: 2015 Frans Spiesschaert <Frans.Spiesschaert@yucom.be>
+License: GPL-3+
+
+Files: debian/po/pt_BR.po
+Copyright: 2015 Adriano Rafael Gomes <adrianorg@arg.eti.br>
+License: GPL-3+
+
+Files: debian/po/pt.po
+Copyright: 2015 Américo Monteiro <a_monteiro@gmx.com>
+License: GPL-3+
+
+Files: debian/po/ru.po
+Copyright: 2015 Yuri Kozlov <yuray@komyakino.ru>
+License: GPL-3+
+
+Files: debian/po/sv.po
+Copyright: 2019 Jonatan Nyberg <jonatan.nyberg.karl@gmail.com>
+License: GPL-3+
 
 License: GPL-3+
  This program is free software: you can redistribute it and/or modify
@@ -80,4 +120,3 @@ License: BSD-2
  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
