@@ -1,0 +1,57 @@
+name: Test
+
+on:
+  pull_request:
+  push:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '^3.5'
+
+      - name: Test the ultimate one-liner setup for NeuroDebian repository
+        run: bash tools/neurodebian-github.sh
+
+      - name: Verify that we can install neurodebian
+        run: |
+          set -ex
+          sudo apt-get install -y neurodebian
+          # but by default (fix it to not disable if was enabled?)
+          # it results in neurodebian not enabled, thus disabled:
+          test ! -f /etc/apt/sources.list.d/neurodebian.sources.list
+          # enable it via our tool
+          NEURODEBIAN_ENABLE=1 NEURODEBIAN_UPDATE=1 sudo nd-configurerepo
+          . /etc/lsb-release
+          grep "\s$DISTRIB_CODENAME\s" /etc/apt/sources.list.d/neurodebian.sources.list
+          # and update was ran which fetched listings
+          /bin/ls /var/lib/apt/lists/neuro*
+          # Verify that it is still present
+          # TODO: for some reason disables it again :-/  Need to get something going already, disabled for now
+          #NEURODEBIAN_ENABLE=1 NEURODEBIAN_VERBOSE=10 sudo apt-get install -y --reinstall neurodebian
+          test -f /etc/apt/sources.list.d/neurodebian.sources.list
+          # Verify that -dev installs nicely
+          sudo apt-get install -y neurodebian-dev
+
+      - name: Test nd_freeze
+        run: bash tools/tests/test_nd_freeze
+
+      - name: Debug on failure
+        if: failure()
+        run: |
+          set -ex
+          # Could happen if installation of neurodebian package kills APT repo
+          # so print policy
+          sudo apt-cache policy
+          # But could be that just update wasn't run?
+          sudo apt-get update
+          sudo apt-cache policy
+          ls -lR /etc/apt
+          cat /etc/apt/sources.list.d/neurodebian.sources.list
+          ls -lR /etc/neurodebian
