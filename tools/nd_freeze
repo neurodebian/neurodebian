@@ -416,7 +416,11 @@ sub disable_lines {
                 $url = "http://neuro.debian.net/debian";
             }
             $source_line = $url . ' ' . join ' ', sort split /\s+/, "$sources{$key}{Codename} $sources{$key}{Component}";
-            if ($file_line eq $source_line) {
+            # {codename}-security/updates is a symlink to {codename}-security, so we need to
+            # match both in such cases.  A little of code duplication and did not make it pretty
+            if ( ($file_line eq $source_line ||
+                ($sources{$key}{Codename} =~ /-security\/updates$/
+                && $file_line eq ($url . ' ' . join ' ', sort split /\s+/, (substr $sources{$key}{Codename}, 0, -8) . " $sources{$key}{Component}")))) {
                 $found = 1;
                 last;
             }
