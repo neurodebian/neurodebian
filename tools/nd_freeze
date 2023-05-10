@@ -328,6 +328,10 @@ sub write_snapshot_sources {
         $domain = 'snapshot.debian.org' if ($sources{$key}{Origin} eq 'Debian' || $sources{$key}{Origin} eq 'Debian Backports');
         my $label = lc($sources{$key}{Label});
         $label =~ tr/ /-/;
+        # some moved to the base "debian/" location
+        if (($label eq "debian-backports") && (${user_timestamp} gt "20160313T092344Z")) {
+           $label = "debian";
+        }
         my $url = "http://${domain}/archive/${label}/${user_timestamp}/";
         my ($headers, $contents, $final_url) = get_www_content($url);
         # Handle bad URL requests
