@@ -532,14 +532,14 @@ $TRUST_REPOS = 0;
 foreach(@ARGV) {
     $KEEP_SOURCES = 1 if ($_ eq '--keep-apt-sources' or $_ eq '-k');
     $DO_NOT_UPDATE = 1 if ($_ eq '--no-updates' or $_ eq '-n');
+    $TRUST_REPOS = 1 if ($_ eq '--trust-repos' or $_ eq '-t');
     $DEBUG = 1 if ($_ eq '--debug' or $_ eq '-d');
     $HELP = 1 if ($_ eq '--help' or $_ eq '-h');
-    $TRUST_REPOS = 1 if ($_ eq '--trust-repos' or $_ eq '-t');
 }
 my $parameter_count = 1 + $KEEP_SOURCES + $DO_NOT_UPDATE + $DEBUG + $TRUST_REPOS;
 if (scalar(@ARGV) != $parameter_count) {
     print "Invalid command parameters\n";
-    print "USAGE: nd_freeze [--keep-apt-sources] [--no-updates] [--debug] [--help] date\n";
+    print "USAGE: nd_freeze [--keep-apt-sources] [--no-updates] [--trust-repos] [--debug] [--help] date\n";
     exit 1;
 }
 if ($HELP) {
