@@ -297,6 +297,12 @@ sub get_sources {
     return %sources;
 }
 
+sub get_url_timestamp {
+    my ($url) = @_;
+    my ($final_timestamp) = ($url =~ /\/([0-9TZ]+)\/*$/);
+    return $final_timestamp;
+}
+
 
 # Function writes out the necessary lines to the /etc/apt/sources.list.d/snapshot.sources.list
 # file. The source written to the sources file is pointed to the next snapshot
@@ -329,20 +335,19 @@ sub write_snapshot_sources {
             die "Bad URL request http://${domain}/archive/${label}/${user_timestamp}/: ${final_url} had ${headers}\n";
         }
         my $final_timestamp = undef;
-        if ($url != $final_url) {
-            $final_url =! /\/([0-9TZ]+)\/?/;
-            $final_timestamp = $1;
-            $final_timestamp =~ tr/\///d;
+        if ($url ne $final_url) {
+            $final_timestamp = get_url_timestamp($final_url);
         }
         # Scrape next timestamp from HTML returned from snapshot server.
         $contents =~ /\/archive\/${label}\/([0-9TZ]+)\/">next</;
         my $next_timestamp = $1;
         $next_timestamp =~ tr/\///d;
         # if (defined $next_timestamp) {
+        logg("debug", "user_timestamp=${user_timestamp}, next_timestamp=${next_timestamp} final_timestamp=${final_timestamp} for ${key} while accessing ${url} which ended up at ${final_url}.");
         if ($user_timestamp gt $next_timestamp) {
             # Notify user that they have requested a date beyond the most recent snapshot.
-            $last_available = $next_timestamp ? $next_timestamp : $user_timestamp;
-            logg("info", "ERROR: User specified time (${user_timestamp}) must predate the most recent snapshot timestamp (${last_available}). Freeze failed.");
+            $last_available = $next_timestamp ? $next_timestamp : $final_timestamp;
+            logg("info", "ERROR: User specified time (${user_timestamp}) must predate the most recent snapshot timestamp (${last_available}) for ${key} while accessing ${url} which ended up at ${final_url}. Freeze failed.");
             close $fp;
             unlink $snapshots_sources_file or warn "Could not delete $snapshots_sources_file: $!";
             exit(1);
