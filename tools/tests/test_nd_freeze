@@ -25,7 +25,7 @@ function test_setup {
     distro=$1
     release=$2
     date=$3
-    switches="$4 --debug"
+    switches=$4
     prep_command=$5
 
     TMP_DIR=$(mktemp -d)
