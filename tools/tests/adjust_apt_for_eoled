@@ -1,0 +1,13 @@
+#!/bin/bash
+#
+# A helper to adjust given distro environment APT configuration to reflect that APT
+# repositories have moved to archive.debian.org whenever that release is not longer
+# supported.
+#
+
+set -eu
+
+sed -i \
+	-e 's,deb http://\(deb\|security\).debian.org,deb http://archive.debian.org,g' \
+	-e '/ jessie-updates /d' \
+	/etc/apt/sources.list
