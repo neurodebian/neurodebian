@@ -36,7 +36,7 @@ opts+=" --keyring=/etc/apt/trusted.gpg.d/neurodebian-archive-keyring.gpg"
 mkdir -p ${cowbuilderroot}/cow
 
 # no cowdancer in nd20.04 (focal) - so removed manually to build
-for a in i386 amd64; do
+for a in amd64 i386; do
   echo "Building $a base path..."
   cow="${cowbuilderroot}/cow/${family}-${dist}-${a}.cow"
   if [ -d "$cow" ]; then
