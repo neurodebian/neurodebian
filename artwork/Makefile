@@ -20,15 +20,18 @@ ignore-%:
 
 %.pdf: %.svg ignore-%.pdf
 	@echo "Rendering $@"
-	@inkscape -z -f "$<" -A "$@"
+	# @inkscape -z -f "$<" -A "$@"
+	@inkscape "$<" --export-filename="$@"
 
 %.png: %.svg ignore-%.png
 	@echo "Rendering $@"
-	@inkscape -z -f "$<" -e "$@" -d 150
+	# @inkscape -z -f "$<" -e "$@" -d 150
+	@inkscape "$<" --export-filename="$@" --export-dpi=150
 
 %_w200.png: %.svg ignore-%_w200.png
 	@echo "Rendering $@"
-	@inkscape -z -f "$<" -e "$@" -w 200
+	# @inkscape -z -f "$<" -e "$@" -w 200
+	@inkscape "$<" --export-filename="$@" -w 200
 
 # icon sized versions
 %_h50.png: %.png ignore-%_h50.png
