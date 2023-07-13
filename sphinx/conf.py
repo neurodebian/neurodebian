@@ -78,7 +78,7 @@ release = ''
 # Monkey patch "English" language regular expression so we could
 # search for package names as well
 import re
-word_re = re.compile(r'[-.\w]+(?u)')
+word_re = re.compile(r'[-.\w]+')
 
 import sphinx.search
 # older versions (before 1.1.3, 1.0.7 for sure) had no language

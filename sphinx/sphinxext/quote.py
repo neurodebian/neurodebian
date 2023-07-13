@@ -39,7 +39,7 @@ from docutils import nodes
 from docutils.parsers.rst import directives, Directive
 from docutils.parsers.rst.directives import body
 
-from sphinx.environment import NoUri
+from sphinx.errors import NoUri
 from sphinx.util.docutils import SphinxDirective
 from functools import reduce
 
