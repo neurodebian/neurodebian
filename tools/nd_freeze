@@ -2,6 +2,10 @@
 #emacs: -*- mode: perl; c-basic-offset: 4; tab-width: 4; indent-tabs-mode: nil -*-
 #ex: set sts=4 ts=4 sw=4 et:
 #
+# Hint: to debug in minimal env do first
+#
+#   apt get update; apt-get install -y --force-yes perl-modules libterm-readline-gnu-perl
+#
 require 5.002;
 use Socket;
 
@@ -260,8 +264,13 @@ Valid date formats include:
 # Returns
 # -------
 # %sources
-#     hash : The sources retrieved from apt-cache policy that need to be written to the sources file.
-# 
+#     hash : The sources retrieved from *Release files that need to be written to the sources file.
+#
+# Originally was based on apt-cache policy output but then redone based on *Release files in
+# d367302c2e463f62a0260a29bea42c1c4aff5f66 (https://github.com/neurodebian/neurodebian/pull/50)
+# to fix https://github.com/neurodebian/neurodebian/issues/46 where security archive was not listed.
+# Underlying issue is (still open as of May 2023): https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=913913
+# in that we do not get listing of APT repo if it has no binary packages ATM.
 sub get_sources {
     my %sources;
     logg("info", "Discovering installed repository sources");
@@ -292,6 +301,20 @@ sub get_sources {
                     Component => $component
                 );
             }
+        }
+        # TODO: add APT repo URLs from apt-cache policy output in addition to adding "stock" ones
+        # Complication is described in the comment above function - policy might not output all.
+        if ($source{Label} eq "Debian" || $source{Label} eq "Debian Backports") {
+            $source{URLS} = ["http://deb.debian.org/debian", "http://archive.debian.org/debian"]
+        }
+        elsif ($source{Label} eq "Debian-Security") {
+            $source{URLS} = ["http://security.debian.org/debian-security", "http://archive.debian.org/debian-security"]
+        }
+        elsif ($sources{$key}{Label} eq "NeuroDebian") {
+            $source{URLS} = ["http://neuro.debian.net/debian"]
+        }
+        else {
+            $source{URLS} = []
         }
     }
     return %sources;
@@ -396,19 +419,15 @@ sub disable_lines {
         for my $key (keys %sources) {
             $_ =~ /(http:\S+)(.*)$/;
             $file_line = $1 . join ' ', sort split /\s+/, $2;
-            my $url;
-            if ($sources{$key}{Label} eq "Debian" || $sources{$key}{Label} eq "Debian Backports") {
-                $url = "http://deb.debian.org/debian";
+            for my $url (keys %{ $sources{$key}{URLS} }) {
+            # for my $url (@( $sources{$key}{URLS})) {
+                $source_line = $url . ' ' . join ' ', sort split /\s+/, "$sources{$key}{Codename} $sources{$key}{Component}";
+                if ($file_line eq $source_line) {
+                    $found = 1;
+                    last;
+                }
             }
-            elsif ($sources{$key}{Label} eq "Debian-Security") {
-                $url = "http://security.debian.org/debian-security";
-            }
-            elsif ($sources{$key}{Label} eq "NeuroDebian") {
-                $url = "http://neuro.debian.net/debian";
-            }
-            $source_line = $url . ' ' . join ' ', sort split /\s+/, "$sources{$key}{Codename} $sources{$key}{Component}";
-            if ($file_line eq $source_line) {
-                $found = 1;
+            if ($found) {
                 last;
             }
         }

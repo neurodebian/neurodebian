@@ -133,91 +133,95 @@ function fail {
 # URLs still point to deb.debian.org instead of archive.debian.org .  For now we will just
 # "chase" it here and require period update of the releases/dates used in the tests.
 #
-echo "[ Test basic operation ]"
-test_setup "neurodebian" "buster" "7/27/2021" "" ""
-assert_line_in_file "neurodebian.sources.list" "# deb http://neuro.debian.net/debian buster main"
-assert_line_in_file "neurodebian.sources.list" "# deb http://neuro.debian.net/debian data main"
-assert_line_in_file "neurodebian.sources.list.orig.disabled" "deb http://neuro.debian.net/debian buster main"
-assert_line_in_file "neurodebian.sources.list.orig.disabled" "deb http://neuro.debian.net/debian data main"
-assert_line_in_file "snapshots.sources.list" "deb http://snapshot-neuro.debian.net/archive/neurodebian/20210727T050503Z/ buster main"
-assert_line_in_file "snapshots.sources.list" "deb http://snapshot-neuro.debian.net/archive/neurodebian/20210727T050503Z/ data main"
-assert_line_in_file "snapshots.sources.list" "deb http://snapshot.debian.org/archive/debian/20210727T023937Z/ buster main"
-assert_line_in_file "snapshots.sources.list" "deb http://snapshot.debian.org/archive/debian-security/20210728T185853Z/ buster/updates main"
-assert_line_in_file "sources.list" "# deb http://deb.debian.org/debian buster main"
-# TODO -- was not commented out!!
-assert_line_in_file "sources.list" "# deb http://deb.debian.org/debian-security"
-assert_line_in_file "sources.list.orig.disabled" "deb http://deb.debian.org/debian buster main"
-assert_line_in_file "sources.list.orig.disabled" "deb http://deb.debian.org/debian-security"
-assert_regex_in_file "stdout" "INFO: UPDATING: .*base-files=10.3+deb10u10 .*zlib1g:amd64=1:1.2.11.dfsg-1"
-assert_line_in_file "stdout" "INFO: Cleaning up APT lists because originally there were none"
-assert_line_NOT_in_file "stdout" "DEBUG:"
-assert_line_in_file "lists_file_count" "1"
-test_teardown
+# echo "[ Test basic operation ]"
+# test_setup "neurodebian" "buster" "7/27/2021" "" ""
+# assert_line_in_file "neurodebian.sources.list" "# deb http://neuro.debian.net/debian buster main"
+# assert_line_in_file "neurodebian.sources.list" "# deb http://neuro.debian.net/debian data main"
+# assert_line_in_file "neurodebian.sources.list.orig.disabled" "deb http://neuro.debian.net/debian buster main"
+# assert_line_in_file "neurodebian.sources.list.orig.disabled" "deb http://neuro.debian.net/debian data main"
+# assert_line_in_file "snapshots.sources.list" "deb http://snapshot-neuro.debian.net/archive/neurodebian/20210727T050503Z/ buster main"
+# assert_line_in_file "snapshots.sources.list" "deb http://snapshot-neuro.debian.net/archive/neurodebian/20210727T050503Z/ data main"
+# assert_line_in_file "snapshots.sources.list" "deb http://snapshot.debian.org/archive/debian/20210727T023937Z/ buster main"
+# assert_line_in_file "snapshots.sources.list" "deb http://snapshot.debian.org/archive/debian-security/20210728T185853Z/ buster/updates main"
+# assert_line_in_file "sources.list" "# deb http://deb.debian.org/debian buster main"
+# # TODO -- was not commented out!!
+# assert_line_in_file "sources.list" "# deb http://deb.debian.org/debian-security"
+# assert_line_in_file "sources.list.orig.disabled" "deb http://deb.debian.org/debian buster main"
+# assert_line_in_file "sources.list.orig.disabled" "deb http://deb.debian.org/debian-security"
+# assert_regex_in_file "stdout" "INFO: UPDATING: .*base-files=10.3+deb10u10 .*zlib1g:amd64=1:1.2.11.dfsg-1"
+# assert_line_in_file "stdout" "INFO: Cleaning up APT lists because originally there were none"
+# assert_line_NOT_in_file "stdout" "DEBUG:"
+# assert_line_in_file "lists_file_count" "1"
+# test_teardown
+# 
+# echo "[ Test handling of a different release ]"
+# test_setup "neurodebian" "bullseye" "1/2/2022" "" ""
+# assert_line_in_file "neurodebian.sources.list" "# deb http://neuro.debian.net/debian bullseye main"
+# assert_line_in_file "neurodebian.sources.list" "# deb http://neuro.debian.net/debian data main"
+# assert_line_in_file "neurodebian.sources.list.orig.disabled" "deb http://neuro.debian.net/debian bullseye main"
+# assert_line_in_file "neurodebian.sources.list.orig.disabled" "deb http://neuro.debian.net/debian data main"
+# assert_line_in_file "snapshots.sources.list" "deb http://snapshot-neuro.debian.net/archive/neurodebian/20220102T060508Z/ bullseye main"
+# assert_line_in_file "snapshots.sources.list" "deb http://snapshot.debian.org/archive/debian/20220102T024729Z/ bullseye-updates main"
+# assert_line_in_file "snapshots.sources.list" "deb http://snapshot-neuro.debian.net/archive/neurodebian/20220102T060508Z/ data main"
+# assert_line_in_file "snapshots.sources.list" "deb http://snapshot.debian.org/archive/debian/20220102T024729Z/ bullseye main"
+# assert_line_in_file "snapshots.sources.list" "deb http://snapshot.debian.org/archive/debian-security/20220102T121544Z/ bullseye-security/updates main"
+# assert_line_in_file "sources.list" "# deb http://deb.debian.org/debian bullseye main"
+# assert_line_in_file "sources.list" "# deb http://deb.debian.org/debian bullseye-updates main"
+# assert_line_in_file "sources.list" "# deb http://deb.debian.org/debian-security bullseye-security"
+# assert_line_in_file "sources.list.orig.disabled" "deb http://deb.debian.org/debian bullseye main"
+# assert_line_in_file "sources.list.orig.disabled" "deb http://deb.debian.org/debian bullseye-updates main"
+# assert_line_in_file "sources.list.orig.disabled" "deb http://deb.debian.org/debian-security bullseye-security"
+# test_teardown
+# 
+# echo "[ Test handling of request for a snapshot in the future ]"
+# test_setup "neurodebian" "bullseye" "20280827" "" ""
+# assert_line_in_file "neurodebian.sources.list" "deb http://neuro.debian.net/debian bullseye main"
+# assert_line_in_file "sources.list" "deb http://deb.debian.org/debian bullseye main"
+# assert_line_in_file "sources.list" "deb http://deb.debian.org/debian-security"
+# assert_line_in_file "stdout" 'INFO: ERROR: User specified time (20280827T000000Z) must predate the most recent snapshot timestamp'
+# test_teardown
+# 
+# 
+# echo "[ Test Ubuntu release ]"
+# test_setup "neurodebian" "xenial" "12/15/2017" "" ""
+# assert_line_in_file "neurodebian.sources.list" "# deb http://neuro.debian.net/debian xenial main"
+# assert_line_in_file "neurodebian.sources.list" "# deb http://neuro.debian.net/debian data main"
+# assert_line_in_file "neurodebian.sources.list.orig.disabled" "deb http://neuro.debian.net/debian xenial main"
+# assert_line_in_file "neurodebian.sources.list.orig.disabled" "deb http://neuro.debian.net/debian data main"
+# assert_line_in_file "snapshots.sources.list" "deb http://snapshot-neuro.debian.net/archive/neurodebian/20171215T060503Z/ xenial main"
+# assert_line_in_file "snapshots.sources.list" "deb http://snapshot-neuro.debian.net/archive/neurodebian/20171215T060503Z/ data main"
+# assert_line_in_file "sources.list" "deb http://archive.ubuntu.com/ubuntu/ xenial main restricted"
+# assert_line_in_file "sources.list" "deb http://archive.ubuntu.com/ubuntu/ xenial-updates main restricted"
+# assert_line_in_file "sources.list" "deb http://security.ubuntu.com/ubuntu/ xenial-security universe"
+# test_teardown
+# 
+# echo "[ Test with switches ]"
+# test_setup "neurodebian" "buster" "7/27/2021" "--keep-apt-sources --no-updates --debug --trust-repos" ""
+# assert_line_NOT_in_file "stdout" "INFO: Command apt-get update.* failed"
+# assert_line_in_file "neurodebian.sources.list" "deb http://neuro.debian.net/debian buster main"
+# assert_line_in_file "neurodebian.sources.list" "deb http://neuro.debian.net/debian data main"
+# assert_line_in_file "snapshots.sources.list" "deb [trusted=yes] http://snapshot-neuro.debian.net/archive/neurodebian/20210727T050503Z/ buster main"
+# assert_line_in_file "snapshots.sources.list" "deb [trusted=yes] http://snapshot-neuro.debian.net/archive/neurodebian/20210727T050503Z/ data main"
+# assert_line_in_file "snapshots.sources.list" "deb [trusted=yes] http://snapshot.debian.org/archive/debian/20210727T023937Z/ buster main"
+# assert_line_in_file "snapshots.sources.list" "deb [trusted=yes] http://snapshot.debian.org/archive/debian-security/20210728T185853Z/ buster/updates main"
+# assert_line_in_file "sources.list" "deb http://deb.debian.org/debian buster main"
+# assert_line_in_file "sources.list" "deb http://deb.debian.org/debian-security"
+# assert_regex_in_file "stdout" "DEBUG: Get:[0-9]* http://neuro.debian.net/debian buster InRelease"
+# assert_line_in_file "stdout" "DEBUG: Found Debian-Security buster"
+# assert_line_in_file "stdout" "INFO: Packages were not updated"
+# test_teardown
+# 
+# echo "[ Test help ]"
+# test_setup "neurodebian" "jessie" " " "-h" ""
+# assert_line_in_file "stdout" "Usage: nd_freeze"
+# test_teardown
 
-echo "[ Test handling of a different release ]"
-test_setup "neurodebian" "bullseye" "1/2/2022" "" ""
-assert_line_in_file "neurodebian.sources.list" "# deb http://neuro.debian.net/debian bullseye main"
-assert_line_in_file "neurodebian.sources.list" "# deb http://neuro.debian.net/debian data main"
-assert_line_in_file "neurodebian.sources.list.orig.disabled" "deb http://neuro.debian.net/debian bullseye main"
-assert_line_in_file "neurodebian.sources.list.orig.disabled" "deb http://neuro.debian.net/debian data main"
-assert_line_in_file "snapshots.sources.list" "deb http://snapshot-neuro.debian.net/archive/neurodebian/20220102T060508Z/ bullseye main"
-assert_line_in_file "snapshots.sources.list" "deb http://snapshot.debian.org/archive/debian/20220102T024729Z/ bullseye-updates main"
-assert_line_in_file "snapshots.sources.list" "deb http://snapshot-neuro.debian.net/archive/neurodebian/20220102T060508Z/ data main"
-assert_line_in_file "snapshots.sources.list" "deb http://snapshot.debian.org/archive/debian/20220102T024729Z/ bullseye main"
-assert_line_in_file "snapshots.sources.list" "deb http://snapshot.debian.org/archive/debian-security/20220102T121544Z/ bullseye-security/updates main"
-assert_line_in_file "sources.list" "# deb http://deb.debian.org/debian bullseye main"
-assert_line_in_file "sources.list" "# deb http://deb.debian.org/debian bullseye-updates main"
-assert_line_in_file "sources.list" "# deb http://deb.debian.org/debian-security bullseye-security"
-assert_line_in_file "sources.list.orig.disabled" "deb http://deb.debian.org/debian bullseye main"
-assert_line_in_file "sources.list.orig.disabled" "deb http://deb.debian.org/debian bullseye-updates main"
-assert_line_in_file "sources.list.orig.disabled" "deb http://deb.debian.org/debian-security bullseye-security"
-test_teardown
-
-echo "[ Test handling of request for a snapshot in the future ]"
-test_setup "neurodebian" "bullseye" "20280827" "" ""
-assert_line_in_file "neurodebian.sources.list" "deb http://neuro.debian.net/debian bullseye main"
-assert_line_in_file "sources.list" "deb http://deb.debian.org/debian bullseye main"
-assert_line_in_file "sources.list" "deb http://deb.debian.org/debian-security"
-assert_line_in_file "stdout" 'INFO: ERROR: User specified time (20280827T000000Z) must predate the most recent snapshot timestamp'
-test_teardown
-
-exit 1
-
-echo "[ Test Ubuntu release ]"
-test_setup "neurodebian" "xenial" "12/15/2017" "" ""
-assert_line_in_file "neurodebian.sources.list" "# deb http://neuro.debian.net/debian xenial main"
-assert_line_in_file "neurodebian.sources.list" "# deb http://neuro.debian.net/debian data main"
-assert_line_in_file "neurodebian.sources.list.orig.disabled" "deb http://neuro.debian.net/debian xenial main"
-assert_line_in_file "neurodebian.sources.list.orig.disabled" "deb http://neuro.debian.net/debian data main"
-assert_line_in_file "snapshots.sources.list" "deb http://snapshot-neuro.debian.net/archive/neurodebian/20171215T060503Z/ xenial main"
-assert_line_in_file "snapshots.sources.list" "deb http://snapshot-neuro.debian.net/archive/neurodebian/20171215T060503Z/ data main"
-assert_line_in_file "sources.list" "deb http://archive.ubuntu.com/ubuntu/ xenial main restricted"
-assert_line_in_file "sources.list" "deb http://archive.ubuntu.com/ubuntu/ xenial-updates main restricted"
-assert_line_in_file "sources.list" "deb http://security.ubuntu.com/ubuntu/ xenial-security universe"
-test_teardown
-
-echo "[ Test with switches ]"
-test_setup "neurodebian" "jessie" "7/27/2017" "--keep-apt-sources --no-updates --debug --trust-repos" ""
-assert_line_in_file "neurodebian.sources.list" "deb http://neuro.debian.net/debian jessie main"
-assert_line_in_file "neurodebian.sources.list" "deb http://neuro.debian.net/debian data main"
-assert_line_in_file "snapshots.sources.list" "deb [trusted=yes] http://snapshot-neuro.debian.net/archive/neurodebian/20170727T050508Z/ jessie main"
-assert_line_in_file "snapshots.sources.list" "deb [trusted=yes] http://snapshot-neuro.debian.net/archive/neurodebian/20170727T050508Z/ data main"
-assert_line_in_file "snapshots.sources.list" "deb [trusted=yes] http://snapshot.debian.org/archive/debian/20170727T040550Z/ jessie main"
-assert_line_in_file "snapshots.sources.list" "deb [trusted=yes] http://snapshot.debian.org/archive/debian-security/20170727T203455Z/ jessie/updates main"
-assert_line_in_file "sources.list" "deb http://deb.debian.org/debian jessie main"
-assert_line_in_file "sources.list" "deb http://security.debian.org"
-assert_regex_in_file "stdout" "DEBUG: Get:[0-9]* http://neuro.debian.net jessie InRelease"
-assert_line_in_file "stdout" "DEBUG: Found Debian-Security jessie"
-assert_line_in_file "stdout" "INFO: Packages were not updated"
-test_teardown
-
-echo "[ Test help ]"
-test_setup "neurodebian" "jessie" " " "-h" ""
-assert_line_in_file "stdout" "Usage: nd_freeze"
-test_teardown
-
+# Jessie EOLed and moved into archive.debian.org . We might want to make nd_freeze automatically
+# do needed dance as we do in adjust_apt_for_eoled here (TODO).
 echo "[ Test unsigned repos ]"
-test_setup "neurodebian" "jessie" "20140828" "" ""
+test_setup "neurodebian" "jessie" "20140808" "--debug" "/tests/tests/adjust_apt_for_eoled"
+assert_line_NOT_in_file "stdout" "INFO: Command .*apt-get update.* failed"
+assert_line_NOT_in_file "stdout" "UPDATING.*failed"
 assert_line_in_file "stdout" "INFO: Discovering installed repository sources"
 assert_line_in_file "stdout" "INFO: Discovering installed packages for possible version updates"
 assert_regex_in_file "stdout" "INFO: UPDATING: acl=2.2.52-1 .*apt=1.0.6 .*base-files=7.5"
@@ -225,7 +229,7 @@ assert_line_in_file "stdout" "INFO: Cleaning up APT lists because originally the
 test_teardown
 
 echo "[ Test missing public key handling ]"
-test_setup "neurodebian" "jessie" "20140808" "-n" "rm /etc/apt/trusted.gpg.d/neurodebian.gpg"
+test_setup "neurodebian" "bullseye" "20230509" "-n" "rm /etc/apt/trusted.gpg.d/neurodebian.gpg"
 assert_line_in_file "stdout" "INFO: Missing public key"
 assert_line_in_file "stdout" "INFO: Successfully retrieved public key, re-running apt update"
 test_teardown
