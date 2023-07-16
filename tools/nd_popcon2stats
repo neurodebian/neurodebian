@@ -29,7 +29,7 @@ def read_popcon_stats(filename, read_packages=True):
                  architecture = {},
                  vendor = {})
 
-    for line in fileinput.FileInput(filename, openhook=fileinput.hook_compressed):
+    for line in fileinput.FileInput(filename, openhook=fileinput.hook_compressed, errors='replace'):
         if not isinstance(line, str):
             line = line.decode()
         key, values = [x.strip().lower() for x in line.split(':', 1)]
@@ -63,7 +63,11 @@ if __name__ == '__main__':
             continue
 
         date = time.strptime(file_reg.groups()[0], '%Y-%m-%d')
-        entry = read_popcon_stats(f, read_packages=False)
+        try:
+            entry = read_popcon_stats(f, read_packages=False)
+        except UnicodeDecodeError as exc:
+            error(f"Failed to read - skipping {f}: {exc}")
+            continue
 
         date_int = int(time.mktime(date)*1000)
         # Let's coarsen a bit -- to a week which makes sense anyways
