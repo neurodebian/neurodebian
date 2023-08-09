@@ -9,6 +9,7 @@
 
 # for the protocol
 set -xe
+set -o pipefail
 
 # Update packaging
 sudo apt-get update -qq
