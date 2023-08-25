@@ -82,7 +82,7 @@ print_version()
     cat << EOT
 nd-configurerepo $nd_aptenable_version
 
-Copyright (C) 2014 Yaroslav Halchenko <debian@onerussian.com>
+Copyright (C) 2014-2023 Yaroslav Halchenko <debian@onerussian.com>
 
 Licensed under GNU Public License version 3 or later.
 This is free software; see the source for copying conditions.  There is NO
@@ -429,10 +429,16 @@ fi
 
 ae_output_file=/etc/apt/sources.list.d/neurodebian.sources${ae_suffix}.list
 
-apt_policy=$(get_apt_policy "Debian,Ubuntu" )
+# microsoft-ubuntu is the one since ~Aug 2023 is on GitHub actions, looks like
+#   500 https://packages.microsoft.com/ubuntu/22.04/prod jammy/main all Packages
+#       release o=microsoft-ubuntu-jammy-prod jammy,a=jammy,n=jammy,l=microsoft-ubuntu-jammy-prod jammy,c=main,b=all
+apt_policy=$(get_apt_policy "Debian,Ubuntu,microsoft-ubuntu" )
 
 if [ -z "$ae_release" ]; then
     ae_release=$(echo "$apt_policy" | head -1 | sed -e 's/.*,n=\([^,]*\),.*/\1/g')
+    if [ -z "$ae_release" ]; then
+        error 10 "Could not determine release from the following filtered apt policy output:\n$apt_policy"
+    fi
     if [ ! -z "$do_print_release" ]; then
         echo $ae_release
         exit 0
