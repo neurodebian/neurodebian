@@ -1,3 +1,14 @@
+neurodebian (0.42.0) unstable; urgency=medium
+
+  * Add new Debian and Ubuntu releases into the registry of "known"
+  * Fix ups to Makefile and various configs etc for changes in Python
+    libraries, sphinx, and inkscape CLI.
+  * Fixed up nd-configurerepo for operating on GitHub actions after
+    they switched to some custom rebuild of ubuntu archive labeled as
+    microsoft-ubuntu-jammy-prod
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Fri, 25 Aug 2023 19:09:45 -0400
+
 neurodebian (0.41.2) unstable; urgency=medium
 
   * Minor fixs to nd_freeze:
