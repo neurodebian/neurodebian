@@ -32,15 +32,15 @@ jobs:
         if: failure()
         run: |
           set -ex
+          ls -lR /etc/apt || :
+          cat /etc/apt/sources.list.d/neurodebian.sources.list || :
+          ls -lR /etc/neurodebian || :
           # Could happen if installation of neurodebian package kills APT repo
           # so print policy
           sudo apt-cache policy
           # But could be that just update wasn't run?
           sudo apt-get update
           sudo apt-cache policy
-          ls -lR /etc/apt
-          cat /etc/apt/sources.list.d/neurodebian.sources.list
-          ls -lR /etc/neurodebian
 
   test-oneliner:
     runs-on: ubuntu-latest
@@ -85,12 +85,12 @@ jobs:
         if: failure()
         run: |
           set -ex
+          ls -lR /etc/apt || :
+          cat /etc/apt/sources.list.d/neurodebian.sources.list || :
+          ls -lR /etc/neurodebian || :
           # Could happen if installation of neurodebian package kills APT repo
           # so print policy
           sudo apt-cache policy
           # But could be that just update wasn't run?
           sudo apt-get update
           sudo apt-cache policy
-          ls -lR /etc/apt
-          cat /etc/apt/sources.list.d/neurodebian.sources.list
-          ls -lR /etc/neurodebian
