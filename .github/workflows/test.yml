@@ -42,6 +42,15 @@ jobs:
           cat /etc/apt/sources.list.d/neurodebian.sources.list
           ls -lR /etc/neurodebian
 
+  test-oneliner:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Test the ultimate one-liner setup for NeuroDebian repository
+        run: bash tools/neurodebian-github.sh
+
   test:
     runs-on: ubuntu-latest
     steps:
@@ -53,9 +62,6 @@ jobs:
         with:
           python-version: '^3.5'
 
-      - name: Test the ultimate one-liner setup for NeuroDebian repository
-        run: bash tools/neurodebian-github.sh
-      
       - name: Verify that we can install neurodebian using our tool
         run: |
           set -ex
