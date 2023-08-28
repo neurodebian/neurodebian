@@ -437,12 +437,39 @@ apt_policy=$(get_apt_policy "Debian,Ubuntu,microsoft-ubuntu" )
 if [ -z "$ae_release" ]; then
     ae_release=$(echo "$apt_policy" | head -1 | sed -e 's/.*,n=\([^,]*\),.*/\1/g')
     if [ -z "$ae_release" ]; then
-        error 10 "Could not determine release from the following filtered apt policy output:\n$apt_policy"
+        print_verbose 1 "Could not determine release from the following filtered apt policy output:\n$apt_policy"
+    else
+        print_verbose 2 "Obtained release from apt policy output: $ae_release"
     fi
-    if [ ! -z "$do_print_release" ]; then
-        echo $ae_release
-        exit 0
+fi
+
+if [ -z "$ae_release" ] && [ -e /etc/os-release ]; then
+    ae_release=$( . /etc/os-release; echo "${VERSION_CODENAME:-}" )
+    if [ -z "$ae_release" ]; then
+        print_verbose 1 "Could not determine release from the /etc/os-release file:\n$(cat /etc/os-release)"
+    else
+        print_verbose 2 "Obtained release from /etc/os-release file: $ae_release"
     fi
+fi
+
+
+if [ -z "$ae_release" ] && hash lsb_release 2>/dev/null ; then
+    lsb_release=$( lsb_release -c 2>/dev/null )
+    ae_release=$( echo "$lsb_release" | awk  '/Codename/{print $2;}' ||  : )
+    if [ -z "$ae_release" ]; then
+        print_verbose 1 "Could not determine release from the lsb_release -c: $lsb_release"
+    else
+        print_verbose 2 "Obtained release from lsb_release: $ae_release"
+    fi
+fi
+
+if [ -z "$ae_release" ]; then
+    error 10 "Could not determine release using any known method"
+fi
+
+if [ -n "$do_print_release" ]; then
+    echo "$ae_release"
+    exit 0
 fi
 
 if [ -z "$ae_flavor" ]; then
