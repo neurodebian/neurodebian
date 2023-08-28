@@ -34,6 +34,7 @@ jobs:
           set -ex
           ls -lR /etc/apt || :
           cat /etc/apt/sources.list.d/neurodebian.sources.list || :
+          cat /etc/os-release || :
           ls -lR /etc/neurodebian || :
           # Could happen if installation of neurodebian package kills APT repo
           # so print policy
@@ -87,6 +88,7 @@ jobs:
           set -ex
           ls -lR /etc/apt || :
           cat /etc/apt/sources.list.d/neurodebian.sources.list || :
+          cat /etc/os-release || :
           ls -lR /etc/neurodebian || :
           # Could happen if installation of neurodebian package kills APT repo
           # so print policy
