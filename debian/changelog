@@ -13,6 +13,7 @@ neurodebian (0.42.1) unstable; urgency=medium
   * d/control
     - switch VCS fields to point to github since that is where we primarily
       keep it under VCS
+    - boost debhelper compat from 9 to 12 (did not change anything)
 
  -- Yaroslav Halchenko <debian@onerussian.com>  Fri, 01 Sep 2023 13:26:50 -0400
 

@@ -4,7 +4,7 @@ Uploaders: Michael Hanke <mih@debian.org>,
            Yaroslav Halchenko <debian@onerussian.com>
 Section: science
 Priority: optional
-Build-Depends: debhelper (>= 9~),
+Build-Depends: debhelper (>= 12~),
                help2man,
                inkscape,
                imagemagick,
