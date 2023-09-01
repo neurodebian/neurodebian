@@ -6,8 +6,12 @@ neurodebian (0.42.1) unstable; urgency=medium
   * nd-configurerepo would also try now to deduce release from
     os-release and lsb_release -- could robustify operation even further
     on derivatives and APT "forks".
+  * popcon: do not augment popcon variables in
+    /etc/popularity-contest.d/neurodebian.conf
+    if .gpg key for popcon is not found, as in the case when package was
+    removed but not purged (Closes: #1031781)
 
- -- Yaroslav Halchenko <debian@onerussian.com>  Fri, 01 Sep 2023 12:55:21 -0400
+ -- Yaroslav Halchenko <debian@onerussian.com>  Fri, 01 Sep 2023 13:26:50 -0400
 
 neurodebian (0.42.0) unstable; urgency=medium
 
