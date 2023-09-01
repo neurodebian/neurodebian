@@ -1,3 +1,14 @@
+neurodebian (0.42.1) unstable; urgency=medium
+
+  * Re-introduced changes/changelog of 0.41.2+nmu1 which was "overriden".
+    Thanks Camaleón for that contribution and the buzz about my unfortunate
+    removal of that NMU (Closes: #987476)
+  * nd-configurerepo would also try now to deduce release from
+    os-release and lsb_release -- could robustify operation even further
+    on derivatives and APT "forks".
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Fri, 01 Sep 2023 12:55:21 -0400
+
 neurodebian (0.42.0) unstable; urgency=medium
 
   * Add new Debian and Ubuntu releases into the registry of "known"
