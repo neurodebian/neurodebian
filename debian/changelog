@@ -10,6 +10,9 @@ neurodebian (0.42.1) unstable; urgency=medium
     /etc/popularity-contest.d/neurodebian.conf
     if .gpg key for popcon is not found, as in the case when package was
     removed but not purged (Closes: #1031781)
+  * d/control
+    - switch VCS fields to point to github since that is where we primarily
+      keep it under VCS
 
  -- Yaroslav Halchenko <debian@onerussian.com>  Fri, 01 Sep 2023 13:26:50 -0400
 

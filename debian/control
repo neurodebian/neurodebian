@@ -11,8 +11,8 @@ Build-Depends: debhelper (>= 9~),
                python3-html5lib,
                po-debconf
 Standards-Version: 4.5.0
-Vcs-Browser: https://salsa.debian.org/neurodebian-team/neurodebian
-Vcs-Git: https://salsa.debian.org/neurodebian-team/neurodebian.git
+Vcs-Browser: http://github.com/neurodebian/neurodebian
+Vcs-Git: http://github.com/neurodebian/neurodebian
 Homepage: http://neuro.debian.net
 
 Package: neurodebian
