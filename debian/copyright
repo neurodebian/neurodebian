@@ -1,7 +1,7 @@
 Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: NeuroDebian
 Upstream-Contact: NeuroDebian team <team@neuro.debian.net>
-Source-Location: http://git.debian.org/?p=pkg-exppsy/neurodebian.git
+Source-Location: http://github.com/neurodebian/neurodebian
 
 Files: *
 Copyright: 2009-2014 NeuroDebian Team (Yaroslav Halchenko, Michael Hanke, et al.)
