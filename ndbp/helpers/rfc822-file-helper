@@ -1,0 +1,127 @@
+#!/bin/sh
+
+#
+# The helper script to parse RFC822 configuration files
+#
+# Copyright: 2024, The NeuroDebian Team <team@neuro.debian.net>
+#            2024, Vasyl Gello <vasek.gello@gmail.com>
+#
+
+# Required tools: sh
+
+REQUIRED_TOOLS=""
+
+for _TEMP in ${REQUIRED_TOOLS}; do
+	if ! command -v "${_TEMP}" 1>/dev/null 2>&1; then
+		echo "ERROR: Required tool ${_TEMP} not found!" >&2
+		return 1
+	fi
+done
+
+unset _TEMP
+
+# Replace all occurrences of char sequence with another one in input string
+#
+# Args:
+# ${2} - (required) string to operate on
+# ${2} - (required) char sequence to seek
+# ${3} - (required) char sequence to replace with
+#
+# Returns 0 on success
+#
+
+# Newline to make shellcheck(1) happy
+
+export NEWLINE='
+'
+
+replace_all() (
+	RIGHT="${1}"
+	R=
+
+	while [ -n "${RIGHT}" ]; do
+		LEFT="${RIGHT%%"${2}"*}"
+
+		if [ "${LEFT}" = "${RIGHT}" ]; then
+			echo "$R$RIGHT"
+			return 0
+		fi
+
+		R="$R$LEFT$3"
+		RIGHT="${RIGHT#*"${2}"}"
+	done
+)
+
+# Extract value from rfc822 file
+#
+# Args:
+# ${1} - (required) file name to parse (string)
+# ${2} - (required) value name (string)
+# ${3} - (optional) whether to split the retrieved value and print one-per-line (true/false)
+# ${4} - (optional) whether to suppress error messages on stdout (true/false)
+#
+# Returns 0 on success or:
+# - 1 on empty file to read from
+# - 2 on empty value requested
+# - 3 on no config file
+# - 4 on value not present in config file
+#
+
+rfc822_get_value() (
+	FILENAME="${1}"
+	KEYNAME="${2}"
+	SPLIT="${3}"
+	SUPPRESS_ERRORS="${4}"
+
+	if [ -z "${FILENAME}" ]; then
+		if [ ! "${SUPPRESS_ERRORS}" = "true" ]; then
+			echo "ERROR: Config file name can not be empty!" >&2
+		fi
+		return 1
+	fi
+
+	if [ -z "${KEYNAME}" ]; then
+		if [ ! "${SUPPRESS_ERRORS}" = "true" ]; then
+			echo "ERROR: Value name can not be empty!" >&2
+		fi
+		return 2
+	fi
+
+	if [ ! -f "${FILENAME}" ]; then
+		if [ ! "${SUPPRESS_ERRORS}" = "true" ]; then
+			echo "ERROR: Can not find config file '${FILENAME}'!" >&2
+		fi
+		return 3
+	fi
+
+	while read -r _KEY _VALUE; do
+		case "${_KEY}" in
+		\#*)
+			continue
+			;;
+		*)
+			[ -z "${_KEY}" ] && continue
+
+			if [ "${_KEY}" = "${KEYNAME}:" ]; then
+				if [ "${SPLIT}" = "true" ]; then
+					replace_all "${_VALUE}" ' ' "${NEWLINE}" |
+						while read -r _1; do
+							[ -z "${_1}" ] && continue
+							echo "${_1}"
+						done
+				else
+					echo "${_VALUE}"
+				fi
+
+				return 0
+			fi
+			;;
+		esac
+	done 0<"${FILENAME}"
+
+	if [ ! "${SUPPRESS_ERRORS}" = "true" ]; then
+		echo "ERROR: Value '${KEYNAME}' is not found!" >&2
+	fi
+
+	return 4
+)

@@ -1,0 +1,327 @@
+#!/bin/sh
+
+#
+# The helper script to parse NeuroDebian distribution info files
+#
+# Copyright: 2024, The NeuroDebian Team <team@neuro.debian.net>
+#            2024, Vasyl Gello <vasek.gello@gmail.com>
+#
+
+# Required tools: sh, cat
+
+REQUIRED_TOOLS="cat"
+
+for _TEMP in ${REQUIRED_TOOLS}; do
+	if ! command -v "${_TEMP}" 1>/dev/null 2>&1; then
+		echo "ERROR: Required tool ${_TEMP} not found!" >&2
+		return 1
+	fi
+done
+
+unset _TEMP
+
+# Check if NeuroDebian tooling location is overridden via
+# NEURODEBIAN_TOOLING_PATH environment variable.
+
+if [ -z "${NEURODEBIAN_TOOLING_PATH}" ]; then
+	NEURODEBIAN_TOOLING_PATH="/usr/share/neurodebian"
+fi
+
+export NEURODEBIAN_TOOLING_PATH
+
+# Warn if NeuroDebian tooling is not present
+
+if [ ! -d "${NEURODEBIAN_TOOLING_PATH}" ]; then
+	cat >&2 0<<.a
+
+ERROR: Can not find NeuroDebian tooling!
+ERROR: Paths searched:
+ERROR:  - system: /usr/share/neurodebian
+ERROR:  - user: ${NEURODEBIAN_TOOLING_PATH}
+
+.a
+	return 1
+fi
+
+# Include rfc822 helper
+
+if [ ! -f "${NEURODEBIAN_TOOLING_PATH}/ndbp/helpers/rfc822-file-helper" ]; then
+	echo "ERROR: Can not find rfc822 file helper!" >&2
+	return 1
+fi
+
+. "${NEURODEBIAN_TOOLING_PATH}/ndbp/helpers/rfc822-file-helper"
+
+# Start of functions
+
+# Print all supported vendors from distinfos
+#
+# Args:
+#
+# Returns 0 on success or 1 on failure
+
+distinfo_find_supported_vendors() (
+	# Move to distinfo directory
+
+	if ! cd "${NEURODEBIAN_TOOLING_PATH}/ndbp/distinfo"; then
+		echo "ERROR: Weird NeuroDebian tooling: where is distinfo?" >&2
+		return 1
+	fi
+
+	for _1 in *; do
+		echo "${_1}"
+	done
+
+	return 0
+)
+
+# Print all supported distributions by VENDOR from distinfos
+#
+# Args:
+# ${1} - (required) vendor to check distinfos for
+#
+# Returns 0 on success or 1 on failure
+
+distinfo_find_supported_distributions() (
+	VENDOR="${1}"
+
+	# Check if VENDOR is not empty and starts with alphanumeric
+
+	if [ -z "${VENDOR}" ]; then
+		echo "ERROR: Vendor can not be empty!" >&2
+		return 1
+	fi
+
+	case "${VENDOR}" in
+	[A-Za-z0-9]*)
+		;;
+	*)
+		echo "ERROR: Vendor is not alphanumeric string!" >&2
+		return 1
+		;;
+	esac
+
+	# Move to vendor distinfo directory
+
+	if ! cd "${NEURODEBIAN_TOOLING_PATH}/ndbp/distinfo/${VENDOR}"; then
+		echo "ERROR: Weird NeuroDebian tooling: where is distinfo?" >&2
+		return 1
+	fi
+
+	for _1 in *; do
+		_VAL="$(rfc822_get_value "${_1}" "supported" false true)" &&
+			[ "${_VAL}" = "true" ] &&
+			echo "${_1}"
+	done
+
+	return 0
+)
+
+# Extract value from distinfo by name
+#
+# Args:
+# ${1} - (required) distinfo name (string)
+# ${2} - (required) value name (string)
+# ${3} - (optional) whether to split the retrieved value and print one-per-line (true/false)
+#
+# Returns 0 on success or:
+# - 1 on empty file to read from
+# - 2 on empty value requested
+# - 3 on no config file
+# - 4 on value not present in config file
+#
+
+distinfo_get_value() (
+	FILENAME="${1}"
+	KEYNAME="${2}"
+	SPLIT="${3}"
+
+	# Validate distinfo name: not empty and matches pattern
+
+	if [ -z "${FILENAME}" ]; then
+		echo "ERROR: Distinfo can not be empty!" >&2
+		return 1
+	fi
+
+	if [ "${FILENAME%%/*}" != "${FILENAME}" ]; then
+		echo "ERROR: Weird distinfo name: '${FILENAME}' !" >&2
+		return 1
+	fi
+
+	while IFS='-' read -r VENDOR DIST _GARBAGE; do
+		break
+	done 0<<.a
+${FILENAME}
+.a
+
+	if [ -n "${GARBAGE}" ]; then
+		echo "ERROR: Weird distinfo name: '${FILENAME}' !" >&2
+		return 1
+	fi
+
+	case "${VENDOR}" in
+	[A-Za-z0-9]*)
+		;;
+	*)
+		echo "ERROR: Vendor is not alphanumeric string!" >&2
+		return 1
+		;;
+	esac
+
+	case "${DIST}" in
+	[A-Za-z0-9]*)
+		;;
+	*)
+		echo "ERROR: Distribution is not alphanumeric string!" >&2
+		return 1
+		;;
+	esac
+
+	# Also key name
+
+	if [ -z "${KEYNAME}" ]; then
+		echo "ERROR: Value name can not be empty!" >&2
+		return 1
+	fi
+
+	if ! cd "${NEURODEBIAN_TOOLING_PATH}/ndbp/distinfo"; then
+		echo "ERROR: Weird NeuroDebian tooling: where is distinfo?" >&2
+		return 1
+	fi
+
+	rfc822_get_value "${VENDOR}/${DIST}" "${KEYNAME}" "${SPLIT}"
+)
+
+# Get architectures supported by distinfo
+#
+# Args:
+# ${1} - (required) distinfo name (string)
+# ${2} - (optional) whether to split the retrieved value and print one-per-line (true/false)
+#
+# Returns 0 on success or:
+# - 1 on empty file to read from
+# - 2 on empty value requested
+# - 3 on no config file
+# - 4 on value not present in config file
+#
+
+distinfo_get_architectures() (
+	FILENAME="${1}"
+	SPLIT="${2}"
+
+	distinfo_get_value "${FILENAME}" "architectures" "${SPLIT}"
+)
+
+# Get distribution name for d/changelog
+#
+# Args:
+# ${1} - (required) distinfo name (string)
+#
+# Returns 0 on success or:
+# - 1 on empty file to read from
+# - 2 on empty value requested
+# - 3 on no config file
+# - 4 on value not present in config file
+#
+
+distinfo_get_distname() (
+	FILENAME="${1}"
+
+	distinfo_get_value "${FILENAME}" "distribution"
+)
+
+# Get release suffix for d/changelog
+#
+# Args:
+# ${1} - (required) distinfo name (string)
+#
+# Returns 0 on success or:
+# - 1 on absent required input parameters
+# - 2 on no config file
+# - 3 on value not present in config file
+#
+
+distinfo_get_relsuffix() (
+	FILENAME="${1}"
+
+	distinfo_get_value "${FILENAME}" "release-suffix"
+)
+
+# Get Git packaging branch for d/changelog
+#
+# Args:
+# ${1} - (required) distinfo name (string)
+#
+# Returns 0 on success or:
+# - 1 on empty file to read from
+# - 2 on empty value requested
+# - 3 on no config file
+# - 4 on value not present in config file
+#
+
+distinfo_get_pkgbranch() (
+	FILENAME="${1}"
+
+	distinfo_get_value "${FILENAME}" "packaging-branch"
+)
+
+# Get vendor of base image used to assemble build container images
+#
+# Args:
+# ${1} - (required) distinfo name (string)
+#
+# Returns 0 on success or:
+# - 1 on empty file to read from
+# - 2 on empty value requested
+# - 3 on no config file
+# - 4 on value not present in config file
+#
+
+distinfo_get_build_container_image_vendor() (
+	FILENAME="${1}"
+
+	distinfo_get_value "${FILENAME}" "build.container-image.vendor"
+)
+
+# Get distribution of base image used to assemble build container images
+#
+# Args:
+# ${1} - (required) distinfo name (string)
+#
+# Returns 0 on success or:
+# - 1 on empty file to read from
+# - 2 on empty value requested
+# - 3 on no config file
+# - 4 on value not present in config file
+#
+
+distinfo_get_build_container_image_distribution() (
+	FILENAME="${1}"
+
+	distinfo_get_value "${FILENAME}" "build.container-image.distribution"
+)
+
+# Should the distribution run lintian or autopkgtest?
+#
+# Args:
+# ${1} - (required) distinfo name (string)
+#
+# Returns 0 on success or 1 on failure
+
+distinfo_is_lintable() (
+	FILENAME="${1}"
+
+	VAL="$(distinfo_get_value "${FILENAME}" "run-lintian")" ||
+		return 1
+
+	[ "$VAL" = "true" ] && return 0 || return 1
+)
+
+distinfo_is_autopkgtestable() (
+	FILENAME="${1}"
+
+	VAL="$(distinfo_get_value "${FILENAME}" "run-autopkgtest")" ||
+		return 1
+
+	[ "$VAL" = "true" ] && return 0 || return 1
+)
