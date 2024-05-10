@@ -1,0 +1,279 @@
+#!/bin/sh
+
+# Version of this script
+VERSION=1.0
+
+# Start of functions
+
+# Usage
+
+print_version() {
+	cat <<EOT
+ndbp-clone $VERSION
+
+Copyright: 2024, The NeuroDebian Team <team@neuro.debian.net>
+           2024, Vasyl Gello <vasek.gello@gmail.com>
+
+
+Licensed under GNU Public License version 3 or later.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+EOT
+}
+
+print_usage() (
+	cat 0<<.a
+Usage:
+    ndbp-clone [gbp-clone options...]
+
+Clones the remote Git repository containing Debian packaging.
+
+This script is simple wrapper around git-clone(1) so all command-line options
+from the tool apply to this one as well.
+
+The extra steps ndbp-clone(1) performs after git-clone(1) are:
+
+  * Setting 'user.name' and 'user.email' from environment variables or
+    NeuroDebian configuration files ( '~/ndbp.conf', '/etc/neurodebian/ndbp.conf')
+
+  * Checking out all remotely-tracked branches
+
+This script is part of NeuroDebian tooling available as NeuroDebian package
+'neurodebian-dev' or the upstream repository on Github:
+
+<https://github.com/neurodebian/neurodebian>
+
+To use the newest version of NeuroDebian tooling, please point the environment
+variable 'NEURODEBIAN_TOOLING_PATH' to it and add the tools to PATH:
+
+export NEURODEBIAN_TOOLING_PATH="\${PWD}"
+export PATH="\${NEURODEBIAN_TOOLING_PATH}:\${PATH}"
+
+.a
+)
+
+# Start of script
+
+# Parse command-line options
+
+# Flag to pass through current _ARG if 1
+
+_MOREARG=0
+
+for _ARG; do
+	shift
+
+	if [ "${_MOREARG}" -eq 1 ]; then
+		_MOREARG=0
+		set -- "$@" "${_ARG}"
+		continue
+	fi
+
+	case "${_ARG}" in
+	# Help
+	-h | --help)
+		print_usage
+		print_footer
+		exit 0
+		;;
+	--verbose-help)
+		print_usage
+		print_man
+		print_footer
+		exit 0
+		;;
+	-v | --version)
+		print_version
+		exit 0
+		;;
+	# Pass git-clone(1) options through
+	# the options below accept two forms: '--opt=val' and '--opt val'
+	# this means that we need to filter out two consecutive args if
+	# the delimiter is space ...
+	-b | -c | -o | -u)
+		_MOREARG=1
+		;;
+	--branch | --depth | --jobs | --origin | --upload-pack)
+		_MOREARG=1
+		;;
+	-l | -n | -q | -s) ;;
+
+	# ... but only one arg is delimiter is '=' or just a single option
+	--*) ;;
+
+	# Fill positional arguments
+	*)
+		if [ -z "${REPO_URL}" ]; then
+			# Repository URL
+
+			if [ -z "${_ARG}" ]; then
+				echo "ERROR: Repository URL can not be empty"! >&2
+				exit 1
+			fi
+
+			REPO_URL="${_ARG}"
+		elif [ -z "${REPO_DIR}" ]; then
+			# Repository local dir
+
+			if [ -n "${_ARG}" ]; then
+				REPO_DIR="${_ARG}"
+			fi
+		fi
+		;;
+	esac
+
+	set -- "$@" "${_ARG}"
+done
+
+# Check if repo directory is set
+
+if [ -z "${REPO_DIR}" ]; then
+	REPO_DIR="${REPO_URL##*/}"
+else
+	REPO_DIR="${REPO_URL##*/}"
+fi
+
+# Required tools: sh, git
+
+REQUIRED_TOOLS="git"
+
+for _TEMP in ${REQUIRED_TOOLS}; do
+	if ! command -v "${_TEMP}" 1>/dev/null 2>&1; then
+		echo "ERROR: Required tool ${_TEMP} not found!" >&2
+		return 1
+	fi
+done
+
+unset _TEMP
+
+# Check if NeuroDebian tooling location is overridden via
+# NEURODEBIAN_TOOLING_PATH environment variable.
+
+if [ -z "${NEURODEBIAN_TOOLING_PATH}" ]; then
+	NEURODEBIAN_TOOLING_PATH="/usr/share/neurodebian"
+fi
+
+export NEURODEBIAN_TOOLING_PATH
+
+# Warn if NeuroDebian tooling is not present
+
+if [ ! -d "${NEURODEBIAN_TOOLING_PATH}" ]; then
+	cat >&2 0<<.a
+
+ERROR: Can not find NeuroDebian tooling!
+ERROR: Paths searched:
+ERROR:  - system: /usr/share/neurodebian
+ERROR:  - user: ${NEURODEBIAN_TOOLING_PATH}
+
+.a
+	return 1
+fi
+
+# Include ndbp.conf(5) helper
+
+if [ ! -f "${NEURODEBIAN_TOOLING_PATH}/ndbp/helpers/ndbp-conf-file-helper" ]; then
+	echo "ERROR: Can not find ndbp.conf file helper!" >&2
+	return 1
+fi
+
+. "${NEURODEBIAN_TOOLING_PATH}/ndbp/helpers/ndbp-conf-file-helper"
+
+# Bit of sanity check: try to et 'EMAIL', 'DEBEMAIL', 'DEBFULLNAME'
+# environment variables from environment, ndbp.conf, git configs and
+# exit if none is set
+
+if [ -z "${DEBEMAIL}" ] && [ -z "${DEBFULLNAME}" ]; then
+	DEBFULLNAME="$(ndbp_get_debfullname)"
+	DEBEMAIL="$(ndbp_get_debemail)"
+fi
+
+if [ -z "${DEBEMAIL}" ] && [ -z "${DEBFULLNAME}" ]; then
+	DEBFULLNAME="$(git config user.name)"
+	DEBEMAIL="$(git config user.email)"
+fi
+
+if [ -z "${DEBEMAIL}" ] && [ -z "${DEBFULLNAME}" ]; then
+	DEBFULLNAME="$(git config --global user.name)"
+	DEBEMAIL="$(git config --global user.email)"
+fi
+
+if [ -z "${DEBEMAIL}" ] && [ -z "${DEBFULLNAME}" ] && [ -n "${EMAIL}" ]; then
+	DEBFULLNAME="${EMAIL}"
+	DEBEMAIL="${EMAIL}"
+	unset EMAIL
+fi
+
+if [ -z "${DEBEMAIL}" ] && [ -z "${DEBFULLNAME}" ]; then
+	echo "ERROR: None of environment variables 'EMAIL', 'DEBEMAIL' and 'DEBFULLNAME' are set!" >&2
+	exit 1
+fi
+
+export DEBFULLNAME DEBEMAIL
+
+# Now clone the repo
+
+if ! git clone "$@"; then
+	cat >&2 0<<.a
+
+ERROR: Cloning of repository failed!
+ERROR: Please see error messages above!
+
+.a
+	exit 1
+fi
+
+# Change directory to newly-cloned repository
+
+if ! cd "${REPO_DIR}"; then
+	echo "ERROR: Can not change directory to '${REPO_DIR}'!" >&2
+	exit 1
+fi
+
+# Remember the default branch
+
+if ! DEFAULT_BRANCH="$(git symbolic-ref --short HEAD)"; then
+	echo "ERROR: Can not save the commit at HEAD!" >&2
+	exit 1
+fi
+
+# Set git repo user.name and user.email
+
+if [ -z "$(git config user.name)" ]; then
+	git config user.name "${DEBFULLNAME}"
+fi
+
+if [ -z "$(git config user.email)" ]; then
+	git config user.email "${DEBEMAIL}"
+fi
+
+# Fetch all remote branches and track them
+
+while read -r _1 _REF; do
+	REF="${_REF##refs/heads/}"
+	echo "Checking out branch '${REF}' ..."
+
+	if ! git checkout "${REF}" 1>/dev/null; then
+		cat >&2 0<<.a
+
+ERROR: Fetching branch '${REF}' failed!
+ERROR: Please see error messages above!
+
+.a
+
+		return 1
+	fi
+done 0<<.a
+$(git ls-remote --refs --heads)
+.a
+
+# Check out default branch again
+
+if ! git checkout "${DEFAULT_BRANCH}"; then
+	echo "ERROR: Can not check the default branch out!" >&2
+	exit 1
+fi
+
+# Report success
+
+echo "All done!"
