@@ -1,0 +1,104 @@
+#!/bin/sh
+
+#
+# The helper script to work with Debian patch files
+#
+# Copyright: 2024, The NeuroDebian Team <team@neuro.debian.net>
+#            2024, Vasyl Gello <vasek.gello@gmail.com>
+#
+
+# Required tools: sh, cat, mv, patch
+
+REQUIRED_TOOLS="cat mv patch"
+
+for _TEMP in ${REQUIRED_TOOLS}; do
+	if ! command -v "${_TEMP}" 1>/dev/null 2>&1; then
+		echo "ERROR: Required tool ${_TEMP} not found!" >&2
+		return 1
+	fi
+done
+
+unset _TEMP
+
+# ‌Check if patchline starts with alphanumeric
+#
+# Args:
+# ${1} - (required) the patchline
+# Returns:
+#  0 - ok
+#  1 - failure
+
+patchline_is_alphanumeric() (
+	PATCHFILE="${1}"
+
+	case "${PATCHFILE}" in
+	[A-Za-z0-9-_+]*) # ok
+		;;
+	*) # ko
+		return 1
+		;;
+	esac
+
+	return 0
+)
+
+# Check the patchfile with optional strip-index (or '-pX')
+#
+# Checks include:
+# - Patch file referenced by this 'd/patches/series' entry
+#   exists and points inside 'd/patches' directory
+# - Patch file applies cleanly or reversibly
+#
+# Args:
+# ${1} - (required) path to patch file
+# ${2} - (optional) strip index
+#
+# Returns:
+#  0 - patch applies cleanly
+#  1 - patch file does not exist or points outside of
+#      'd/patches' directory and can be dropped
+#  2 - patch applies reversibly and can be dropped
+#  3 - patch does not apply
+#
+
+check_patchfile() (
+	PATCHFILE="${1}"
+	PX="${2:--p1}"
+
+	# Check if patch file (possibly relative) path starts with alphanumeric
+
+	if ! patchline_is_alphanumeric "${PATCHFILE}"; then
+		return 1
+	fi
+
+	# Check patch file exists and is a file (not a symlink)
+
+	if [ ! -f "debian/patches/${PATCHFILE}" ]; then
+		return 1
+	fi
+
+	# Now try to apply one with patch(1)
+
+	if ! patch \
+		"${PX}" \
+		--dry-run \
+		--force \
+		--fuzz 0 \
+		1>/dev/null 2>&1 0<"debian/patches/${PATCHFILE}"; then
+		if patch \
+			"${PX}" \
+			-R \
+			--dry-run \
+			--force \
+			--fuzz 0 1>/dev/null 2>&1 0<"debian/patches/${PATCHFILE}"; then
+			# Patch applies reversibly
+			return 2
+		fi
+
+		# Patch does not apply
+		return 3
+	fi
+
+	# Patch applies cleanly
+	return 0
+)
