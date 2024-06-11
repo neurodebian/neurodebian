@@ -1,0 +1,871 @@
+#!/bin/sh
+
+# Version of this script
+VERSION=1.0
+
+# Start of functions
+
+# Apply NeuroDebian rules for release
+#
+# Args:
+# ${1) - release identifier to apply ('neurodebian-sid')
+# ${2} - disable the 'branch is neurodebian/*' check [true/false, default false]
+#
+# Returns 0 if success or 1 on failure
+
+apply_neurodebian_rules() (
+	RELEASE="${1}"
+	NOCHECK="${2}"
+
+	if [ "${NOCHECK}" = "true" ]; then
+		NOCHECK="NO_CHECK_NEURODEBIAN_BRANCH=1"
+	fi
+
+	if ! make \
+		"${NOCHECK}" \
+		-f "${NEURODEBIAN_TOOLING_PATH}/makefiles/transform-root.mk" \
+		"${RELEASE}"; then
+		return 1
+	fi
+)
+
+# Usage
+
+print_version() {
+	cat <<EOT
+ndbp-rollout $VERSION
+
+Copyright: 2024, The NeuroDebian Team <team@neuro.debian.net>
+           2024, Vasyl Gello <vasek.gello@gmail.com>
+
+
+Licensed under GNU Public License version 3 or later.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+EOT
+}
+
+print_usage() (
+	cat 0<<.a
+Usage:
+    ndbp-rollout [--help | --verbose-help | --version | --dry-run]
+
+Options:
+    --dry-run                    - Test the transformation in the current
+                                   branch but do not deploy to any synthetic
+                                   branches
+    --help                       - Show brief help message
+    --replace                    - Forcibly replace topmost NeuroDebian release
+                                   with new one derived from current commit.
+                                   Useful for maintainers debugging NeuroDebian
+                                   patches.
+    --verbose-help               - Show verbose help message
+    --version                    - Show version and copyright
+
+Deploys the current NeuroDebian packaging to a set of synthetic NeuroDebian
+branches for all supported releases.
+
+.a
+)
+
+print_man() (
+	cat 0<<.a
+DETAILS OF OPERATION
+
+For every NeuroDebian release to be deployed, the script:
+
+  * imports the current branch into NeuroDebian synthetic branch,
+
+  * applies NeuroDebian packaging,
+
+  * refreshes resulting set of Debian patches,
+
+  * creates the NeuroDebian changelog entry.
+
+In the dry-run mode, the script operates on the branch it was called from.
+
+It only tests the applicability of NeuroDebian packaging transformation
+itself and applicability of all remaining Debian and NeuroDebian patches.
+
+The changes are not stored in this case.
+
+If the NeuroDebian packaging commit is already rolled out, the script will
+warn about it and exit.
+
+To replace the topmost NeuroDebian release in all branches with a new iteration,
+specify '--replace' option.
+
+The list of NeuroDebian branches to be deployed is determined by set of
+distribution information files (aka 'distinfo') provided by NeuroDebian tooling.
+
+.a
+)
+
+print_footer() (
+	cat 0<<.a
+This script is part of NeuroDebian tooling available as NeuroDebian package
+'neurodebian-dev' or the upstream repository on Github:
+
+<https://github.com/neurodebian/neurodebian>
+
+To use the newest version of NeuroDebian tooling, please point the environment
+variable 'NEURODEBIAN_TOOLING_PATH' to it and add the tools to PATH:
+
+export NEURODEBIAN_TOOLING_PATH="\${PWD}"
+export PATH="\${NEURODEBIAN_TOOLING_PATH}:\${PATH}"
+
+.a
+)
+
+# Start of script
+
+# Parse command-line options
+
+DRY_RUN=0
+REPLACE=0
+
+case "${1}" in
+-h | --help)
+	print_usage
+	print_footer
+	exit 0
+	;;
+--verbose-help)
+	print_usage
+	print_man
+	print_footer
+	exit 0
+	;;
+-v | --version)
+	print_version
+	exit 0
+	;;
+--dry-run)
+	DRY_RUN=1
+	;;
+--replace)
+	REPLACE=1
+	;;
+esac
+
+# Required tools: sh, cat, git, make, mv, rm
+
+REQUIRED_TOOLS="cat git make mv rm"
+
+for _TEMP in ${REQUIRED_TOOLS}; do
+	if ! command -v "${_TEMP}" 1>/dev/null 2>&1; then
+		echo "ERROR: Required tool ${_TEMP} not found!" >&2
+		return 1
+	fi
+done
+
+unset _TEMP
+
+# Check if NeuroDebian tooling location is overridden via
+# NEURODEBIAN_TOOLING_PATH environment variable.
+
+if [ -z "${NEURODEBIAN_TOOLING_PATH}" ]; then
+	NEURODEBIAN_TOOLING_PATH="/usr/share/neurodebian"
+fi
+
+export NEURODEBIAN_TOOLING_PATH
+
+# Warn if NeuroDebian tooling is not present
+
+if [ ! -d "${NEURODEBIAN_TOOLING_PATH}" ]; then
+	cat >&2 0<<.a
+
+ERROR: Can not find NeuroDebian tooling!
+ERROR: Paths searched:
+ERROR:  - system: /usr/share/neurodebian
+ERROR:  - user: ${NEURODEBIAN_TOOLING_PATH}
+
+.a
+	return 1
+fi
+
+# Include changelog and distinfo helper
+
+if [ ! -f "${NEURODEBIAN_TOOLING_PATH}/helpers/debian-changelog-file-helper" ]; then
+	echo "ERROR: Can not find debian changelog file helper!" >&2
+	return 1
+fi
+
+if [ ! -f "${NEURODEBIAN_TOOLING_PATH}/helpers/distinfo-file-helper" ]; then
+	echo "ERROR: Can not find distinfo file helper!" >&2
+	return 1
+fi
+
+. "${NEURODEBIAN_TOOLING_PATH}/helpers/debian-changelog-file-helper"
+
+. "${NEURODEBIAN_TOOLING_PATH}/helpers/distinfo-file-helper"
+
+# Check if debian-refresh-patches(1) is on PATH or in NeuroDebian tooling
+
+DEBIAN_REFRESH_PATCHES_CMD="debian-refresh-patches"
+if ! command -v "${DEBIAN_REFRESH_PATCHES_CMD}" 1>/dev/null 2>&1; then
+	DEBIAN_REFRESH_PATCHES_CMD="${NEURODEBIAN_TOOLING_PATH}/tools/debian-refresh-patches"
+	if [ ! -x "${DEBIAN_REFRESH_PATCHES_CMD}" ]; then
+		echo "ERROR: Can not find debian-refresh-patches!" >&2
+		exit 1
+	fi
+fi
+
+# Bit of sanity check: exit if no 'EMAIL', 'DEBEMAIL', 'DEBFULLNAME'
+# environment variables are set
+
+if [ -z "${EMAIL}" ] && [ -z "${DEBEMAIL}" ] && [ -z "${DEBFULLNAME}" ]; then
+	echo "ERROR: Environment variables 'EMAIL', 'DEBEMAIL' and 'DEBFULLNAME' are not set!" >&2
+	exit 1
+fi
+
+# Bit of sanity check: exit if branch we are on has no "debian/neurodebian"
+# directory
+
+if [ ! -d "debian/neurodebian" ]; then
+	cat >&2 0<<.a
+
+ERROR: Current branch does not have 'debian/neurodebian' directory!
+ERROR: Are you sure you want to deploy NeuroDebian packaging from this branch?
+
+.a
+	exit 1
+fi
+
+# Bit of sanity check: exit if current commit is already rolled out
+
+# First, read supported NeuroDebian releases to roll changes to
+
+if ! SUPPORTED_DISTS="$(distinfo_find_supported_distributions "neurodebian")"; then
+	echo "ERROR: Can not list release targets!" >&2
+	exit 1
+fi
+
+RELEASETARGETS=""
+while read -r SUPPORTED_DIST; do
+	if [ -z "${RELEASETARGETS}" ]; then
+		RELEASETARGETS="neurodebian-${SUPPORTED_DIST}"
+	else
+		RELEASETARGETS="$(
+			cat 0<<.b
+${RELEASETARGETS}
+neurodebian-${SUPPORTED_DIST}
+.b
+		)"
+	fi
+done 0<<.a
+${SUPPORTED_DISTS}
+.a
+
+# Then, store current branch and its tip to reset or err out
+
+if ! IMPORT_BRANCH="$(git symbolic-ref --short HEAD)"; then
+	echo "ERROR: Can not save the commit at HEAD!" >&2
+	exit 1
+fi
+
+if ! IMPORT_BRANCH_HEAD="$(git rev-parse 'HEAD^{commit}')"; then
+	echo "ERROR: Can not save the commit at HEAD!" >&2
+	exit 1
+fi
+
+# Finally, exit if any roll-out has the current branch tip commit as its parent
+
+while read -r RELEASETARGET; do
+	if ! PKGBRANCH="$(distinfo_get_pkgbranch "${RELEASETARGET}")"; then
+		echo "ERROR: Can not find packaging branch for release '${RELEASETARGET}'!" >&2
+		exit 1
+	fi
+
+	# Exit if no packaging branch found
+
+	if ! git show-ref --quiet --verify -- "refs/heads/${PKGBRANCH}"; then
+		cat >&2 0<<.a
+
+ERROR: No packaging branch '${PKGBRANCH}' found!
+ERROR:
+ERROR: Please run 'ndbp-init' to create missing NeuroDebian branches or
+ERROR: 'ndbp-pull' to synchronize them from remote repository!
+
+.a
+		exit 1
+	fi
+
+	# Find all NeuroDebian roll-out commits and check their second parent
+	# is current branch HEAD.
+
+	# Counter to find which roll-out was made from current HEAD
+
+	_ROLLOUT_COUNTER=0
+
+	# Flag to indicate if found
+
+	_ROLLOUT_FOUND=0
+
+	while read -r _ROLLOUT_COMMIT; do
+		[ -z "${_ROLLOUT_COMMIT}" ] && continue
+
+		_ROLLOUT_COUNTER=$((_ROLLOUT_COUNTER + 1))
+
+		if ! _ROLLOUT_PARENT="$(git rev-parse "${_ROLLOUT_COMMIT}^2" 2>/dev/null)"; then
+			if ! _ROLLOUT_PARENT="$(git rev-parse "${_ROLLOUT_COMMIT}^1")"; then
+				echo "ERROR: Can not find parent of import commit!" >&2
+				exit 1
+			fi
+		fi
+
+		if [ "${_ROLLOUT_PARENT}" = "${IMPORT_BRANCH_HEAD}" ]; then
+			_ROLLOUT_FOUND=1
+			break
+		fi
+	done 0<<.a
+$(git log \
+		--format='%H' \
+		--grep='^ndbp-rollout: Import ' \
+		"refs/heads/${PKGBRANCH}")
+.a
+
+	# Exit if found the roll-out
+
+	if [ "${_ROLLOUT_FOUND}" -eq 1 ]; then
+		# Allow to '--replace' topmost rolled out commit
+		if [ "${REPLACE}" -eq 1 ] && [ "${_ROLLOUT_COUNTER}" -eq 1 ]; then
+			:
+		else
+			cat >&2 0<<.a
+
+ERROR: Current commit is already rolled out as NeuroDebian release
+ERROR: (at position number ${_ROLLOUT_COUNTER} in roll-out list)
+ERROR:
+ERROR: If you want to add more changes to NeuroDebian packaging, add new commits
+ERROR: on top of current one and run roll-out action once more.
+ERROR:
+ERROR: If you want to add more changes to Debian packaging, add new commits
+ERROR: on top of current one, make new changelog entry and run roll-out action
+ERROR: once more.
+ERROR:
+ERROR: You can forcibly replace the topmost NeuroDebian release with new one using
+ERROR: '--replace' option but be sure the release being replaced was not yet uploaded
+ERROR: to Git or NeuroDebian release repository as this will rewrite Git history!
+
+.a
+			exit 1
+		fi
+	fi
+done 0<<.a
+${RELEASETARGETS}
+.a
+
+# Bit of sanity check: exit if no 'debian/changelog' found or its topmost
+# entry is UNRELEASED
+
+if [ ! -f "debian/changelog" ]; then
+	cat >&2 0<<.a
+
+ERROR: Current branch does not have 'debian/changelog' file!
+ERROR:‌ Are you sure you want to deploy NeuroDebian packaging from this branch?
+
+.a
+	exit 1
+fi
+
+IMPORT_DCH_ENTRY="$(changelog_read_entry 1 <debian/changelog)"
+
+IMPORT_DCH_PARSED="$(
+	changelog_parse_header 0<<.a
+${IMPORT_DCH_ENTRY}
+.a
+)"
+
+# shellcheck disable=SC2034
+while read -r IMPORT_DCH_PKGNAME &&
+	read -r IMPORT_DCH_VERSION &&
+	read -r IMPORT_DCH_DIST &&
+	read -r IMPORT_DCH_URGENCY; do
+	:
+done 0<<.a
+${IMPORT_DCH_PARSED}
+.a
+
+if [ "${IMPORT_DCH_DIST}" = "UNRELEASED" ]; then
+	cat >&2 0<<.a
+
+ERROR: Current branch contains un-finalized changelog entry!
+ERROR: Are you sure you want to deploy NeuroDebian packaging from this branch?
+
+.a
+	exit 1
+fi
+
+# Bit of sanity check: allow only 'debian/neurodebian' changes
+# (and 'debian/gbp.conf' if 'import-dsc.restore-gbp-conf' in
+# 'debian/neurodebian/control' file is set to 'true') on top
+# on top of finalized changelog
+
+if ! _LAST_DCH_COMMIT="$(git log -1 --format='%H' -- 'debian/changelog')"; then
+	echo "ERROR: Can not find commit last touching 'debian/changelog'!" >&2
+	exit 1
+fi
+
+if ! GBP_CONF_POLICY="$(
+	rfc822_get_value \
+		'debian/neurodebian/control' \
+		'import-dsc.restore-gbp-conf' \
+		false \
+		true
+)"; then
+	GBP_CONF_POLICY="false"
+fi
+
+_EXCLUDE_GBP_CONF=''
+
+if [ "${GBP_CONF_POLICY}" = "true" ]; then
+	_EXCLUDE_GBP_CONF=':(exclude)debian/gbp.conf'
+fi
+
+# shellcheck disable=SC2086
+if ! _FILES_MODIFIED="$(git diff \
+	--name-only \
+	"${_LAST_DCH_COMMIT}..HEAD" \
+	-- \
+	':(exclude)debian/neurodebian' \
+	${_EXCLUDE_GBP_CONF})"; then
+	echo "ERROR: Can not find files modified after last 'debian/changelog' edit!" >&2
+	exit 1
+fi
+
+if [ -n "${_FILES_MODIFIED}" ]; then
+	cat >&2 0<<.a
+
+ERROR: Current branch contains commits after finalized changelog entry!
+ERROR: Are you sure you want to deploy NeuroDebian packaging from this branch?
+
+.a
+	exit 1
+fi
+
+# First, go 'dry' - try to apply NeuroDebian packaging in the current branch
+# and restore changes for each release-to-be
+#
+
+# NOTE: We can optimize the dry-run phase a bit by finding out
+# which specific releases require additional actions in per-package
+# rulefile ('debian/neurodebian/rules') and checking only them plus
+# one 'generic' NeuroDebian release.
+
+RELEASES_TO_TEST=""
+while read -r _RELEASE_TO_TEST; do
+	case "${_RELEASE_TO_TEST}" in
+	after-neurodebian-*:)
+		_RELEASE_TO_TEST="${_RELEASE_TO_TEST##*after-}"
+		_RELEASE_TO_TEST="${_RELEASE_TO_TEST%%:*}"
+		if [ -z "${RELEASES_TO_TEST}" ]; then
+			RELEASES_TO_TEST="${_RELEASE_TO_TEST}"
+		else
+			RELEASES_TO_TEST="$(
+				cat 0<<.b
+${RELEASES_TO_TEST}
+${_RELEASE_TO_TEST}
+.b
+			)"
+		fi
+		;;
+	esac
+done 0<debian/neurodebian/rules
+
+# Now identify first release from distinfos which
+# is not ridden over in rulefile
+
+while read -r RELEASETARGET; do
+	_EXISTS=0
+	while read -r _RELEASE_TO_TEST; do
+		if [ "${RELEASETARGET}" = "${_RELEASE_TO_TEST}" ]; then
+			_EXISTS=1
+			break
+		fi
+	done 0<<.a
+${RELEASES_TO_TEST}
+.a
+
+	# Continue if the current item exists
+
+	[ ${_EXISTS} -eq 1 ] && continue
+
+	# Add the release to the list of tested ones and break
+
+	if [ -z "${RELEASES_TO_TEST}" ]; then
+		RELEASES_TO_TEST="${_RELEASE_TO_TEST}"
+	else
+		RELEASES_TO_TEST="$(
+			cat 0<<.b
+${RELEASES_TO_TEST}
+${_RELEASE_TO_TEST}
+.b
+		)"
+	fi
+
+	break
+done 0<<.a
+${RELEASETARGETS}
+.a
+
+echo ""
+echo "INFO: Testing changes before actual rollout ..."
+echo ""
+
+# Now we have the list of releases to test:
+
+_ERR=0
+while read -r _RELEASE_TO_TEST; do
+	echo ""
+	echo "INFO: Checking if '${_RELEASE_TO_TEST}' rules apply ..."
+	echo ""
+
+	# Try to apply transformation and check patches
+
+	if ! apply_neurodebian_rules "${_RELEASE_TO_TEST}" true; then
+		_ERR=1
+	fi
+
+	# Commit changes to 'debian' directory
+
+	if [ ${_ERR} -eq 0 ] && ! git add debian 1>/dev/null; then
+		_ERR=1
+	fi
+
+	if [ ${_ERR} -eq 0 ] && ! git commit -F- 0<<.a 1>/dev/null; then
+ndbp-rollout: Apply NeuroDebian packaging for '${_RELEASE_TO_TEST}'
+
+... on top of commit "${IMPORT_BRANCH_HEAD}"
+.a
+		_ERR=1
+	fi
+
+	if [ ${_ERR} -eq 0 ] && [ -f 'debian/patches/series' ]; then
+		echo "INFO: Trying to refresh resulting Debian patches ..."
+		echo ""
+
+		if ! "${DEBIAN_REFRESH_PATCHES_CMD}"; then
+			_ERR=1
+		fi
+	fi
+
+	# Clean up regardless of result since it is a dry run
+
+	echo ""
+	echo "INFO: Restoring changes back since it is a dry-run ..."
+	echo ""
+
+	if ! git reset --hard "${IMPORT_BRANCH_HEAD}" 1>/dev/null 2>&1; then
+		echo "ERROR: Can not restore branch" >&2
+		exit 1
+	fi
+
+	# If one of previous steps erred out, break and exit
+
+	if [ ${_ERR} -ne 0 ]; then
+		echo "ERROR: Exiting after previous failure!" >&2
+		exit 1
+	fi
+done 0<<.a
+${RELEASES_TO_TEST}
+.a
+
+# Now go real if requested
+
+if [ ${DRY_RUN} -eq 0 ]; then
+	echo ""
+	echo "INFO: Performing actual rollout ..."
+	echo ""
+
+	# Iterate through releases
+
+	while read -r RELEASETARGET; do
+		echo ""
+		echo "INFO: Rolling out '${RELEASETARGET}' ..."
+		echo ""
+
+		# Find packaging branch for current release
+
+		if ! PKGBRANCH="$(distinfo_get_pkgbranch "${RELEASETARGET}")"; then
+			echo "ERROR: Can not find packaging branch for release '${RELEASETARGET}'!" >&2
+			exit 1
+		fi
+
+		# Check the packaging branch out
+
+		if ! git checkout "${PKGBRANCH}" 1>/dev/null; then
+			echo "ERROR: Can not check packaging branch '${PKGBRANCH}' out!" >&2
+			exit 1
+		fi
+
+		# If '--replace' is requested, reset the packaging branch
+		# to the first parent of topmost import commit
+
+		if [ "${REPLACE}" -eq 1 ]; then
+			if ! PREV_ROLLOUT="$(git log \
+				-1 \
+				--format='%H' \
+				--grep='^ndbp-rollout: Import ')"; then
+				echo "ERROR: Can not find previous merge commit!" >&2
+				exit 1
+			fi
+
+			# If rollout was found ...
+
+			if [ -n "${PREV_ROLLOUT}" ]; then
+				if ! PREV_ROLLOUT="$(git rev-parse "${PREV_ROLLOUT}^1")"; then
+					echo "ERROR: Can not find first parent of previous merge commit!" >&2
+					exit 1
+				fi
+
+				if ! git reset --hard "${PREV_ROLLOUT}"; then
+					echo "ERROR: Can not reset release!" >&2
+					exit 1
+				fi
+			fi
+		fi
+
+		# Import the source branch to current branch excluding:
+		# - 'debian/neurodebian'
+		# - 'debian/changelog'
+
+		echo ""
+		echo "INFO: Importing the branch ..."
+		echo ""
+
+		# Clean out packaging branch
+
+		if ! git rm -r -q -- ':(exclude)debian/changelog' ':*' \
+			1>/dev/null; then
+			echo "ERROR: Can not clean '${PKGBRANCH}' out!" >&2
+			exit 1
+		fi
+
+		# Import contents from source branch to packaging one
+
+		if ! git checkout \
+			"${IMPORT_BRANCH}" \
+			-- \
+			':(exclude)debian/neurodebian' \
+			':(exclude)debian/changelog' \
+			1>/dev/null; then
+			echo "ERROR: Can not import '${IMPORT_BRANCH}' into '${PKGBRANCH}' out!" >&2
+			exit 1
+		fi
+
+		# Make and commit resulting tree object
+
+		if ! _TREEISH="$(git write-tree)"; then
+			echo "ERROR: Can not make tree-ish!" >&2
+			exit 1
+		fi
+
+		if ! _COMMITISH="$(
+			git commit-tree \
+				"${_TREEISH}" \
+				-p "HEAD^{commit}" \
+				-p "${IMPORT_BRANCH}^{commit}" \
+				-F- 0<<.a
+ndbp-rollout: Import '${IMPORT_BRANCH}' into '${PKGBRANCH}'
+
+... excluding 'debian/neurodebian' directory.
+.a
+		)"; then
+			echo "ERROR: Can not make a merge commit!" >&2
+			exit 1
+		fi
+
+		if ! git update-ref \
+			"refs/heads/${PKGBRANCH}" \
+			"${_COMMITISH}" \
+			1>/dev/null; then
+			echo "ERROR: Can not update packaging branch tip!" >&2
+			exit 1
+		fi
+
+		if ! git reset --hard "${PKGBRANCH}" 1>/dev/null; then
+			echo "ERROR: Can not checkout packaging branch out!" >&2
+			exit 1
+		fi
+
+		if ! git clean -fdx 1>/dev/null; then
+			echo "ERROR: Can not checkout packaging branch out!" >&2
+			exit 1
+		fi
+
+		# Check out NeuroDebian packaging but do not commit it
+
+		echo ""
+		echo "INFO: Temporarily restoring NeuroDebian packaging ..."
+		echo ""
+
+		if ! git checkout \
+			"${IMPORT_BRANCH}" \
+			-- \
+			'debian/neurodebian' \
+			1>/dev/null; then
+			echo "ERROR: Can not restore 'debian/neurodebian'!" >&2
+			exit 1
+		fi
+
+		if ! git reset 1>/dev/null; then
+			echo "ERROR: Can not restore 'debian/neurodebian'!" >&2
+			exit 1
+		fi
+
+		# Apply the transformation
+
+		echo ""
+		echo "INFO: Applying '${RELEASETARGET}' rules ..."
+		echo ""
+
+		if ! apply_neurodebian_rules "${RELEASETARGET}" true; then
+			echo "ERROR: Can not apply transformation!" >&2
+			exit 1
+		fi
+
+		# Remove NeuroDebian packaging
+
+		rm -rf 'debian/neurodebian'
+
+		# Commit changes to 'debian' directory
+
+		if [ ${_ERR} -eq 0 ] && ! git add debian 1>/dev/null; then
+			_ERR=1
+		fi
+
+		if [ ${_ERR} -eq 0 ] && ! git commit -F- 0<<.a 1>/dev/null; then
+ndbp-rollout: Apply NeuroDebian packaging for '${RELEASETARGET}'
+
+... on top of commit "${IMPORT_BRANCH_HEAD}"
+.a
+			_ERR=1
+		fi
+
+		# Refresh resulting Debian patches
+
+		if [ -f 'debian/patches/series' ]; then
+			echo ""
+			echo "INFO: Trying to refresh resulting Debian patches ..."
+			echo ""
+
+			if ! "${DEBIAN_REFRESH_PATCHES_CMD}"; then
+				echo "ERROR: Can not refresh Debian patches!" >&2
+				exit 1
+			fi
+		fi
+
+		# Make changelog entries
+
+		echo ""
+		echo "INFO: Creating entry in 'debian/changelog' ..."
+		echo ""
+
+		# Read release suffix from distinfo
+
+		if ! PKG_REL_SUFFIX="$(distinfo_get_relsuffix "${RELEASETARGET}")"; then
+			echo "ERROR: Can not find release suffix for release '${RELEASETARGET}'!" >&2
+			exit 1
+		fi
+
+		# Read package version from topmost changelog entry in packaging
+		# branch and strip release suffix to get previous version imported
+
+		PKG_DCH_ENTRY="$(changelog_read_entry 1 <debian/changelog)"
+
+		PKG_DCH_PARSED="$(
+			changelog_parse_header 0<<.a
+${PKG_DCH_ENTRY}
+.a
+		)"
+
+		# shellcheck disable=SC2034
+		while read -r PKG_DCH_PKGNAME &&
+			read -r PKG_DCH_VERSION &&
+			read -r PKG_DCH_DIST &&
+			read -r PKG_DCH_URGENCY; do
+			:
+		done 0<<.a
+${PKG_DCH_PARSED}
+.a
+
+		PKG_DCH_VERSION_DEB="${PKG_DCH_VERSION%%"${PKG_REL_SUFFIX}"*}"
+
+		# If Debian versions of previously rolled package and
+		# currently being rolled package match, just increment the
+		# changelog else clone the topmost changelog entry from
+		# import branch to packaging branch changelog file and
+		#
+
+		if [ "${PKG_DCH_VERSION_DEB}" != "${IMPORT_DCH_VERSION}" ]; then
+			if ! cat 1>debian/changelog.new 0<<.a; then
+${IMPORT_DCH_ENTRY}
+
+.a
+				echo "ERROR: Can not create 'debian/changelog.new' file!" >&2
+				exit
+			fi
+
+			if ! cat debian/changelog >>debian/changelog.new; then
+				echo "ERROR: Can not create 'debian/changelog.new' file!" >&2
+				exit
+			fi
+
+			if ! mv debian/changelog.new debian/changelog; then
+				echo "ERROR: Can not replace 'debian/changelog' file!" >&2
+				exit
+			fi
+
+		fi
+
+		if ! gbp dch \
+			--distribution="${RELEASETARGET}" \
+			--force-distribution \
+			--local="${PKG_REL_SUFFIX}"; then
+			echo "ERROR: Can not make changelog entry!" >&2
+			exit 1
+		fi
+
+		# Commit changes to changelog
+
+		if ! git add debian/changelog 1>/dev/null; then
+			echo "ERROR: Can not make changelog entry!" >&2
+			exit 1
+		fi
+
+		if ! git commit -F- 0<<.a 1>/dev/null; then
+ndbp-rollout: Finalize changelog
+
+
+.a
+			echo "ERROR: Can not make changelog entry!" >&2
+			exit 1
+		fi
+
+		# Report completion of branch roll-out
+
+		echo ""
+		echo "INFO: Completed roll-out of '${RELEASETARGET}' branch ..."
+		echo ""
+	done \
+		0<< \
+		\
+		\
+		.a
+${RELEASETARGETS}
+.a
+
+fi
+
+# Check out back to import branch
+
+if ! git checkout "${IMPORT_BRANCH}" 1>/dev/null; then
+	echo "ERROR: Can not switch backto branch!" >&2
+	exit 1
+fi
+
+# Report done
+
+echo "All done!"
