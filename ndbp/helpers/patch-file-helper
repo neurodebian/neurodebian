@@ -102,3 +102,147 @@ check_patchfile() (
 	# Patch applies cleanly
 	return 0
 )
+
+# Drop patch line from series file
+#
+# Args:
+# ${1} - (required) path to patch file
+#
+# Returns:
+# 0 - on success
+# 1 - on failure
+#
+
+drop_patch_from_series() (
+	PATCHFILE="${1}"
+
+	# Exit gracefully if debian/patches{,/series} is not present
+
+	if [ ! -d debian/patches ] || [ ! -f debian/patches/series ]; then
+		return 0
+	fi
+
+	# Check if patch file (possibly relative) path starts with alphanumeric
+
+	if ! patchline_is_alphanumeric "${PATCHFILE}"; then
+		return 1
+	fi
+
+	# Create empty new series file
+
+	cat 1>debian/patches/series.new 0<<.a
+.a
+
+	# Now copy line-by-line from old one to new skipping the requested
+	# patch line
+
+	while read -r _1; do
+		case "${_1}" in
+		"${PATCHFILE}"*)
+			# skip
+			;;
+		*)
+			# Display the string back
+			cat 0<<.a 1>>debian/patches/series.new
+${_1}
+.a
+			;;
+		esac
+	done 0<debian/patches/series
+
+	# Move the new file in place of old one
+
+	mv debian/patches/series.new debian/patches/series
+)
+
+# Add patch line (possibly after another patch) to series file
+#
+# Args:
+# ${1} - (required) path to patch file
+# ${2} - (optional) path to patch file to add after
+#
+# Returns:
+# 0 - on success
+# 1 - on failure
+#
+
+add_patch_to_series() (
+	PATCHFILE="${1}"
+	AFTERPATCHFILE="${2}"
+
+	# Err out if 'debian/neurodebian/patches' directory does not exist
+
+	if [ ! -d debian/neurodebian/patches ]; then
+		return 1
+	fi
+
+	# Check if patch file (possibly relative) path starts with alphanumeric
+
+	if ! patchline_is_alphanumeric "${PATCHFILE}"; then
+		return 1
+	fi
+
+	if [ -n "${AFTERPATCHFILE}" ] &&
+		! patchline_is_alphanumeric "${AFTERPATCHFILE}"; then
+		return 1
+	fi
+
+	# Err out if NeuroDebian patch to add does not exist on disk
+
+	if [ ! -f "debian/neurodebian/patches/${PATCHFILE}" ]; then
+		return 1
+	fi
+
+	# If debian/patches directory is not present, create one
+
+	if [ ! -d debian/patches ]; then
+		mkdir -p debian/patches
+	fi
+
+	# If series file exists and second argument is empty,
+	# append the series and return success ...
+
+	if [ -f debian/patches/series ] && [ -z "${AFTERPATCHFILE}" ]; then
+		if ! cat 1>>debian/patches/series 0<<.a; then
+${PATCHFILE}
+.a
+			return 1
+		fi
+
+		return 0
+	fi
+
+	# Else: create empty new series file ...
+
+	if [ ! -f debian/patches/series ]; then
+		cat 1>debian/patches/series.new 0<<.a
+${PATCHFILE}
+.a
+	else
+		cat 1>debian/patches/series.new 0<<.a
+.a
+
+		# and copy line-by-line from old series file inserting the patchline
+		# after the one denoted by second argument ....
+
+		while read -r _1; do
+			# Display the string back
+
+			cat 0<<.a 1>>debian/patches/series.new
+${_1}
+.a
+			case "${_1}" in
+			"${AFTERPATCHFILE}"*)
+				cat 0<<.a 1>>debian/patches/series.new
+${PATCHFILE}
+.a
+				;;
+			esac
+		done 0<debian/patches/series
+
+	fi
+
+	# ... and move the new file in place of old one
+
+	mv debian/patches/series.new debian/patches/series
+)
