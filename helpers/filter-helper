@@ -1,0 +1,48 @@
+#!/bin/sh
+
+#
+# The helper script to do various filtering (string, map etc)
+#
+# Copyright: 2024, The NeuroDebian Team <team@neuro.debian.net>
+#            2024, Vasyl Gello <vasek.gello@gmail.com>
+#
+
+# Required tools: sh, echo
+
+REQUIRED_TOOLS="echo"
+
+for _TEMP in ${REQUIRED_TOOLS}; do
+	if ! command -v "${_TEMP}" 1>/dev/null 2>&1; then
+		echo "ERROR: Required tool ${_TEMP} not found!" >&2
+		return 1
+	fi
+done
+
+unset _TEMP
+
+# Start of functions
+
+# Make a set from items that are present in both input sets
+#
+# Args:
+# ${1} - (required) set #1
+# ${2} - (required) set #2
+#
+# Returns 0
+
+filter_common() (
+	SET1="${1}"
+	SET2="${2}"
+
+	while read -r _ITEM1; do
+		while read -r _ITEM2; do
+			[ "${_ITEM1}" = "${_ITEM2}" ] && echo "${_ITEM1}"
+		done 0<<.a
+${SET2}
+.a
+	done 0<<.a
+${SET1}
+.a
+
+	return 0
+)

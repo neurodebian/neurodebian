@@ -1,0 +1,44 @@
+# Container file for Ubuntu-based images
+
+ARG DIST=""
+ARG ARCH=""
+ARG TAG=""
+
+FROM localhost/neurodebian-tooling-base-image:ubuntu-${DIST}-${ARCH}-new AS build
+
+ARG DIST=""
+ARG ARCH=""
+ARG TAG=""
+
+COPY --chown=0:0 --chmod=0644 neurodebian-keyring.asc /etc/apt/trusted.gpg.d/
+
+RUN set -eux; \
+	# Remove all other source files
+	rm -f /etc/apt/sources.list /etc/apt/sources.list.d/*; \
+	# Add Ubuntu sources
+	echo "deb http://archive.ubuntu.com/ubuntu ${DIST} main restricted universe multiverse" \
+		1>>/etc/apt/sources.list.d/debian.list; \
+	echo "deb-src http://archive.ubuntu.com/ubuntu ${DIST} main restricted universe multiverse" \
+		1>>/etc/apt/sources.list.d/debian.list; \
+	echo "deb http://archive.ubuntu.com/ubuntu ${DIST}-updates main restricted universe multiverse" \
+		1>>/etc/apt/sources.list.d/debian.list; \
+	echo "deb-src http://archive.ubuntu.com/ubuntu ${DIST}-updates main restricted universe multiverse" \
+		1>>/etc/apt/sources.list.d/debian.list; \
+	echo "deb http://archive.ubuntu.com/ubuntu ${DIST}-security main restricted universe multiverse" \
+		1>>/etc/apt/sources.list.d/debian.list; \
+	echo "deb-src http://archive.ubuntu.com/ubuntu ${DIST}-security main restricted universe multiverse" \
+		1>>/etc/apt/sources.list.d/debian.list; \
+	case "${TAG}" in \
+	neurodebian*) \
+		# Add NeuroDebian sources
+		echo "deb http://neuro.debian.net/debian ${DIST} data main contrib non-free" \
+			1>/etc/apt/sources.list.d/neurodebian.list; \
+		echo "deb-src http://neuro.debian.net/debian ${DIST} data main contrib non-free" \
+			1>>/etc/apt/sources.list.d/neurodebian.list; \
+		;; \
+	esac; \
+	export DEBIAN_FRONTEND=noninteractive; \
+	apt-get update; \
+	apt-get full-upgrade -yq; \
+	useradd user; \
+	rm -rf /var/lib/apt/*

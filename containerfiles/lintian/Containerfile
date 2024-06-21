@@ -1,0 +1,14 @@
+# Builds container with Lintian
+
+ARG ARCH=""
+
+FROM localhost/neurodebian-tooling-base-image:debian-sid-${ARCH}-new
+
+RUN set -eux; \
+	export DEBIAN_FRONTEND=noninteractive; \
+	apt-get update; \
+	apt-get full-upgrade -yq; \
+	apt-get install -yq --no-install-recommends \
+		lintian; \
+	useradd user; \
+	rm -rf /var/lib/apt/*
