@@ -1,0 +1,75 @@
+#!/bin/sh
+
+#
+# The build step script to export source package for build
+#
+# Copyright: 2024, The NeuroDebian Team <team@neuro.debian.net>
+#            2024, Vasyl Gello <vasek.gello@gmail.com>
+#
+
+# Required tools: sh, echo, gbp, git, mkdir
+
+REQUIRED_TOOLS="echo gbp git mkdir"
+
+for _TEMP in ${REQUIRED_TOOLS}; do
+	if ! command -v "${_TEMP}" 1>/dev/null 2>&1; then
+		echo "ERROR: Required tool ${_TEMP} not found!" >&2
+		return 1
+	fi
+done
+
+unset _TEMP
+
+# Start of script
+
+# Parse command-line arguments
+
+GITDIR="${1}"
+PKGBRANCH="${2}"
+EXPORTDIR="${3}"
+
+# Move to Git directory
+
+if ! cd "${GITDIR}"; then
+	echo "ERROR: Can not change directory to '${GITDIR}'!" >&2
+	exit 1
+fi
+
+# If PKGBRANCH is ORIGIN_HEAD:
+#
+# 2. Check if origin/HEAD points to ref
+# 3. If not, use HEAD
+
+if [ "${PKGBRANCH}" = "ORIGIN-HEAD" ]; then
+	if ! ORIGIN_HEAD="$(git symbolic-ref \
+		--short \
+		refs/remotes/origin/HEAD 2>/dev/null)"; then
+		echo "WARNING: 'origin/HEAD' not defined, resorting to 'HEAD' ..."
+		PKGBRANCH="HEAD"
+	fi
+fi
+
+# Make the export directory
+
+mkdir -p "${EXPORTDIR}"
+
+# Perform the export
+
+exec gbp buildpackage \
+	--git-export-dir="${EXPORTDIR}" \
+	--git-export="${PKGBRANCH}^{tree}" \
+	--git-builder=true \
+	--git-ignore-branch \
+	--git-no-purge &
+CMDPID="$!"
+
+while true; do
+	wait "${CMDPID}"
+	RET=$?
+	[ "${RET}" -lt 128 ] && break
+done
+
+if [ "${RET}" -ne 0 ]; then
+	echo "ERROR: Can not export packaging from '${PKGBRANCH}' to '${EXPORTDIR}'!" >&2
+	exit 1
+fi

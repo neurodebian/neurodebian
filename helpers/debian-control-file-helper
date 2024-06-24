@@ -123,7 +123,7 @@ control_assert_binpkg_architecture() (
 # 1 - if not
 # 2 - if debian/control is missing
 
-rules_requires_root() (
+control_rules_requires_root() (
 	# Check if 'debian/control' exists
 
 	if [ ! -f debian/control ]; then

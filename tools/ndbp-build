@@ -1,0 +1,853 @@
+#!/bin/sh
+
+# Version of this script
+VERSION=1.0
+
+# Usage
+
+print_version() {
+	cat <<EOT
+ndbp-build $VERSION
+
+Copyright: 2024, The NeuroDebian Team <team@neuro.debian.net>
+           2024, Vasyl Gello <vasek.gello@gmail.com>
+
+
+Licensed under GNU Public License version 3 or later.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+EOT
+}
+
+print_usage() (
+	cat 0<<.a
+Usage:
+    ndbp-build [--help | --verbose-help | --version] \\
+       [--output-directory <path-to-out-dir>] \\
+       [--clean-build] \\
+       [-j | --jobs <MAX-PARALLEL-JOBS> | --shell-on-failure] \\
+       [--podman <path-to-podman>] \\
+       [--cpu-limit <QUOTA> <PERIOD>] \\
+       [--mem-limit <X[MGT]>] \\
+       [--pasta-opts <pasta-opts> | --slirp-opts <slirp4netns-opts>] \\
+       [target] ...
+
+Options:
+    --help                       - Show brief help message
+    --verbose-help               - Show verbose help message
+    --version                    - Show version and copyright
+
+    --output-directory           - Place build artifacts and logs to specified
+                                   directory rather to default one configured
+                                   (see verbose help or manual page for details)
+
+    --clean-build                - Delete all built artifacts and build fresh
+
+    --shell-on-failure           - Perform builds in serial mode (no parallelism)
+                                   and spawn shell in the first container whose
+                                   exit status is non-zero. Mutually exclusive
+                                   with '-j' / '--jobs'
+
+    -j, --jobs                   - Override parallel build job count
+                                   (see verbose help or manual page for details)
+
+    --podman                     - Override path to podman(1) executable
+                                   (see verbose help or manual page for details)
+
+    --cpu-limit                  - Override CPU limit for image builders
+                                   (see verbose help or manual page for details)
+
+    --mem-limit                  - Override memory limit for image builders
+                                   (see verbose help or manual page for details)
+
+    --pasta-opts                 - Override pasta(1) command-line options
+                                   (see verbose help or manual page for details)
+
+    --slirp-opts                 - Override slirp4netns(1) command-line options
+                                   (see verbose help or manual page for details)
+
+
+Builds source and binary packages for all supported NeuroDebian releases from
+current repository.
+
+.a
+)
+
+print_man() (
+	cat 0<<.a
+DETAILS OF OPERATION
+
+For every NeuroDebian release supported, the script will build source and
+binary packages as requested by user or defined in NeuroDebian packaging
+('build.default-targets' parameter in 'debian/neurodebian/control' file).
+
+Each build target is composed of action, vendor, distribution and architecture
+separated with dash.
+
+The action is mandatory and can be one of: 'build', 'autopkgtest', 'lint',
+'reprotest'.
+
+The vendor is also mandatory and can be one of those defined in NeuroDebian
+distribution info (distinfo) files. Examples are 'debian', 'neurodebian' etc.
+
+The distribution is optional and can be one of those defined in NeuroDebian
+distribution info (distinfo) files. Examples are 'sid', 'jammy' etc.
+If omitted, all supported distributions are included as mentioned in
+distribution info (distinfo) files for respective vendor.
+
+The architecture is optional and can be one of those defined in NeuroDebian
+distribution info (distinfo) files. Examples are: 'source', 'all', 'amd64' etc.
+If omitted, all architectures are included as mentioned in distribution info
+(distinfo) files for respective vendor and distribution.
+
+If parallel job count is greater than one, the script will build everything
+in parallel.
+
+Log files from each build process are stored in directory specified via
+'--log-directory' command-line option or in the 'update-images' sub-directory
+of the directory specified in configuration files ndbp.conf(5) as
+'build.root-directory'.
+
+It is also possible to configure custom path to Podman executable and
+container networking options either via command-line arguments or
+configuration files (see below).
+
+If options like:
+
+  * parallel job count ('-j'),
+
+  * path to Podman executable ('--podman'),
+
+  * pasta(1) or slirp4netns(1) arguments ('--pasta-opts', '--slirp-opts'),
+
+the default values are taken form the configuration files, in order of
+precedence:
+
+  * file pointed by (NEURODEBIAN_BUILDER_CONF) environment variable,
+
+  * (HOME)/ndbp.conf,
+
+  * (NEURODEBIAN_TOOLING_PATH)/ndbp.conf,
+
+  * /etc/neurodebian/ndbp.conf.
+
+The containerfiles for each image built are stored under 'containerfiles'
+sub-directory of NeuroDebian tooling.
+
+The list of NeuroDebian branches to be deployed is determined by set of
+distribution information files (aka 'distinfo') provided by NeuroDebian tooling.
+
+See ndbp.conf(5) manual page for more details on system-wide and per-user
+configuration defaults for builder infrastructure.
+
+.a
+)
+
+print_footer() (
+	cat 0<<.a
+This script is part of NeuroDebian tooling available as NeuroDebian package
+'neurodebian-dev' or the upstream repository on Github:
+
+<https://github.com/neurodebian/neurodebian>
+
+To use the newest version of NeuroDebian tooling, please point the environment
+variable 'NEURODEBIAN_TOOLING_PATH' to it and add the tools to PATH:
+
+export NEURODEBIAN_TOOLING_PATH="\${PWD}"
+export PATH="\${NEURODEBIAN_TOOLING_PATH}:\${PATH}"
+
+.a
+)
+
+#
+# Kill running containers whose names are printed by 'makefiles/build.mk'
+# in '${OUTDIR}/temp/containernames' on trap
+#
+
+kill_running_containers() (
+	echo '' >"${OUTDIR}/temp/interrupted"
+	cd "${OUTDIR}/temp/containernames"
+	for i in *; do
+		"${PODMAN}" kill --signal INT "${i}" 1>/dev/null
+	done
+)
+
+# Start of script
+
+# Required tools: sh, cat, make, mkdir, rm
+
+REQUIRED_TOOLS="cat make mkdir rm"
+
+for _TEMP in ${REQUIRED_TOOLS}; do
+	if ! command -v "${_TEMP}" 1>/dev/null 2>&1; then
+		echo "ERROR: Required tool ${_TEMP} not found!" >&2
+		#		return 1
+	fi
+done
+
+unset _TEMP
+
+# Parse command-line options
+
+CLEAN_BUILD=0
+CPUPERIOD=""
+CPUQUOTA=""
+JOBS=""
+MEMLIMIT=""
+OUTDIR=""
+PASTA_OPTS=""
+SHELL_ON_FAILURE=0
+SLIRP_OPTS=""
+PODMAN=""
+
+set -e
+
+# Add '##END##' marker as last argument to rely on it
+
+set -- "$@" "##END##"
+
+while [ "${1}" != "##END##" ]; do
+	case "${1}" in
+	-h | --help)
+		print_usage
+		print_footer
+		exit 0
+		;;
+	--verbose-help)
+		print_usage
+		print_man
+		print_footer
+		exit 0
+		;;
+	--version | -v)
+		print_version
+		exit 0
+		;;
+	--output-directory)
+		OUTDIR="${2}"
+		shift
+		shift
+		;;
+	--clean-build)
+		CLEAN_BUILD=1
+		shift
+		;;
+	--shell-on-failure)
+		if [ -n "${JOBS}" ]; then
+			cat >&2 0<<.a
+
+ERROR: Mutually-exclusive options found:
+ERROR: '--shell-on-failure' and '-j' / '--jobs'
+
+.a
+			exit 1
+		fi
+
+		SHELL_ON_FAILURE=1
+		shift
+		;;
+	--jobs | -j*)
+		if [ "${SHELL_ON_FAILURE}" -eq 1 ]; then
+			cat >&2 0<<.a
+
+ERROR: Mutually-exclusive options found:
+ERROR: '--shell-on-failure' and '-j' / '--jobs'
+
+.a
+			exit 1
+		fi
+
+		# Check short notation '-jX'
+
+		if [ -z "${1##-j[0-9]*}" ]; then
+			JOBS="${1##-j}"
+			shift
+		else
+			JOBS="${2}"
+			shift
+			shift
+		fi
+		;;
+	--podman)
+		PODMAN="${2}"
+		shift
+		shift
+		;;
+	--cpu-limit)
+		CPUQUOTA="${2}"
+		CPUPERIOD="${3}"
+		shift 3
+		;;
+	--mem-limit)
+		MEMLIMIT="${2}"
+		shift
+		shift
+		;;
+	--pasta-opts)
+		if [ -n "${SLIRP_OPTS}" ]; then
+			cat >&2 0<<.a
+
+ERROR: Mutually-exclusive options found:
+ERROR: '--pasta-opts' and '--slirp-opts'
+
+.a
+			exit 1
+		fi
+
+		PASTA_OPTS="${2}"
+		shift
+		shift
+		;;
+	--slirp-opts)
+		if [ -n "${PASTA_OPTS}" ]; then
+			cat >&2 0<<.a
+
+ERROR: Mutually-exclusive options found:
+ERROR: '--pasta-opts' and '--slirp-opts'
+
+.a
+			exit 1
+		fi
+
+		SLIRP_OPTS="${2}"
+		shift
+		shift
+		;;
+	# Unknown parameter
+	-*)
+		echo "ERROR: Unknown option '${1} !'" >&2
+		exit 1
+		;;
+	# Positonal build target
+	*)
+		set -- "$@" "${1}"
+		shift
+		;;
+	esac
+done
+
+# Shift the end marker away
+
+shift
+
+set +e
+
+# Check if NeuroDebian tooling location is overridden via
+# NEURODEBIAN_TOOLING_PATH environment variable.
+
+if [ -z "${NEURODEBIAN_TOOLING_PATH}" ]; then
+	NEURODEBIAN_TOOLING_PATH="/usr/share/neurodebian"
+fi
+
+export NEURODEBIAN_TOOLING_PATH
+
+# Warn if NeuroDebian tooling is not present
+
+if [ ! -d "${NEURODEBIAN_TOOLING_PATH}" ]; then
+	cat >&2 0<<.a
+
+ERROR: Can not find NeuroDebian tooling!
+ERROR: Paths searched:
+ERROR:  - system: /usr/share/neurodebian
+ERROR:  - user: ${NEURODEBIAN_TOOLING_PATH}
+
+.a
+	return 1
+fi
+
+# Include ndbp.conf(5) helper
+
+if [ ! -f "${NEURODEBIAN_TOOLING_PATH}/helpers/ndbp-conf-file-helper" ]; then
+	echo "ERROR: Can not find ndbp.conf file helper!" >&2
+	return 1
+fi
+
+. "${NEURODEBIAN_TOOLING_PATH}/helpers/ndbp-conf-file-helper"
+
+# Include rfc822 helper
+
+if [ ! -f "${NEURODEBIAN_TOOLING_PATH}/helpers/rfc822-file-helper" ]; then
+	echo "ERROR: Can not find rfc822 file helper!" >&2
+	return 1
+fi
+
+. "${NEURODEBIAN_TOOLING_PATH}/helpers/rfc822-file-helper"
+
+# Include debian/changelog helper
+
+if [ ! -f "${NEURODEBIAN_TOOLING_PATH}/helpers/debian-changelog-file-helper" ]; then
+	echo "ERROR: Can not find debian/changelog file helper!" >&2
+	return 1
+fi
+
+. "${NEURODEBIAN_TOOLING_PATH}/helpers/debian-changelog-file-helper"
+
+# Bit of sanity check: exit if branch we are on has no
+# "debian/neurodebian/control" file
+
+if [ ! -f "debian/neurodebian/control" ]; then
+	cat >&2 0<<.a
+
+ERROR: Current branch does not have 'debian/neurodebian/control' file!
+ERROR: Are you sure you want to build releases from this branch?
+
+.a
+	exit 1
+fi
+
+# Bit of sanity check: exit if no 'debian/changelog' found
+
+if [ ! -f "debian/changelog" ]; then
+	cat >&2 0<<.a
+
+ERROR: Current branch does not have 'debian/changelog' file!
+ERROR: Are you sure you want to build packages from this branch?
+
+.a
+	exit 1
+fi
+
+# Now check if any values need to be retrieved from ndbp.conf(5)
+
+# Output directory
+
+if [ -z "${OUTDIR}" ]; then
+	if ! BUILDROOTDIR="$(ndbp_get_builddir)"; then
+		cat >&2 0<<.a
+
+ERROR: Can not determine NeuroDebian build directory!
+ERROR:
+ERROR: If you want to override the directory build artifacts and logs
+ERROR: will be placed in, use '--output-directory' command-line option!
+
+.a
+		exit 1
+	fi
+
+	# Parse 'debian/changelog' and find source package name, its Debian
+	# version ...
+
+	IMPORT_DCH_ENTRY="$(changelog_read_entry 1 <debian/changelog)"
+
+	IMPORT_DCH_PARSED="$(
+		changelog_parse_header 0<<.a
+${IMPORT_DCH_ENTRY}
+.a
+	)"
+
+	# shellcheck disable=SC2034
+	while read -r IMPORT_DCH_PKGNAME &&
+		read -r IMPORT_DCH_VERSION &&
+		read -r IMPORT_DCH_DIST &&
+		read -r IMPORT_DCH_URGENCY; do
+		break
+	done 0<<.a
+${IMPORT_DCH_PARSED}
+.a
+
+	# ... and hash abbreviation of HEAD commit
+
+	if ! HEAD_HASH="$(git log -1 --format='%h' HEAD)"; then
+		echo "ERROR: Can not get HEAD commit!" >&2
+		exit 1
+	fi
+
+	# Now construct default output directory from build root
+	# directory, source package name, debian version, number
+	# of directory and HEAD sha
+
+	OUTDIR="${BUILDROOTDIR}/build/${IMPORT_DCH_PKGNAME}/${IMPORT_DCH_VERSION}"
+
+	mkdir -p "${OUTDIR}"
+
+	if ! cd "${OUTDIR}"; then
+		echo "ERROR: Can not move to '$OUTDIR'!" >&2
+		exit 1
+	fi
+
+	# Iterate through directories and if there is one with same HEAD sha,
+	# clean it and use it
+
+	_COUNT=0
+	_FOUND=0
+
+	for _1 in *; do
+		case "${_1}" in
+		*-${HEAD_HASH})
+			_FOUND=1
+			break
+			;;
+		*)
+			_COUNT="$((_COUNT + 1))"
+			;;
+		*) ;;
+		esac
+	done
+
+	if [ "${_FOUND}" -eq 1 ]; then
+		OUTDIR="${OUTDIR}/${_1}"
+	else
+		# To avoid printf and other excessive tools :)
+
+		if [ "${_COUNT}" -ge 100 ] && [ "${_COUNT}" -le 999 ]; then
+			:
+		elif [ "${_COUNT}" -ge 10 ] && [ "${_COUNT}" -le 99 ]; then
+			_COUNT="0${_COUNT}"
+		elif [ "${_COUNT}" -ge 0 ] && [ "${_COUNT}" -le 9 ]; then
+			_COUNT="00${_COUNT}"
+		fi
+
+		OUTDIR="${OUTDIR}/${_COUNT}-${HEAD_HASH}"
+	fi
+
+	if ! cd "${OLDPWD}"; then
+		echo "ERROR: Can not move to '$OLDPWD'!" >&2
+		exit 1
+	fi
+fi
+
+echo ""
+echo "INFO: Using output directory '${OUTDIR}' ..."
+echo ""
+
+if ! mkdir -p "${OUTDIR}"; then
+	echo "ERROR: Can not create output directory!" >&2
+	exit 1
+fi
+
+# Delete directory contents if '--clean-build' is requested
+
+if [ "${CLEAN_BUILD}" -eq 1 ]; then
+	rm -rf \
+		"${OUTDIR}/logs" \
+		"${OUTDIR}/packages" \
+		"${OUTDIR}/reprotest" \
+		"${OUTDIR}/temp"
+fi
+
+# Make temporary directory for containernames
+
+mkdir -p "${OUTDIR}/temp/containernames"
+
+# Make directory for logs
+
+mkdir -p "${OUTDIR}/logs"
+
+# Jobs
+
+if [ "${SHELL_ON_FAILURE}" -eq 1 ]; then
+	cat 0<<.a
+
+INFO: Shell-on-failure requested, disabling parallel builds!
+
+.a
+
+	JOBS=1
+
+elif [ -z "${JOBS}" ]; then
+	if ! JOBS="$(ndbp_get_max_parallel_jobs)"; then
+		cat 0<<.a
+
+WARNING: Can not determine parallel job count!
+WARNING:
+WARNING: Resorting to serial execution ('-j1')
+WARNING:
+WARNING: If you want to override the job count, use '-j' command-line
+WARNING: option!
+
+.a
+		JOBS=""
+	fi
+fi
+
+echo ""
+echo "INFO: Using '${JOBS}' parallel jobs ..."
+echo ""
+
+# Path to podman(1)
+
+if [ -z "${PODMAN}" ]; then
+	if ! PODMAN="$(ndbp_get_podman_cmdline)"; then
+		cat 0<<.a
+
+WARNING: Can not determine path to Podman executable!
+WARNING:
+WARNING: Resorting to 'podman'
+WARNING:
+WARNING: If you want to override this path, use '--podman' command-line
+WARNING: option!
+
+.a
+		PODMAN="podman"
+	fi
+fi
+
+echo ""
+echo "INFO: Using podman executable '${PODMAN}' ..."
+echo ""
+
+if ! command -v "${PODMAN}" 1>/dev/null 2>&1; then
+	echo "ERROR: Can not find Podman executable!" >&2
+	exit 1
+fi
+
+# CPU limit
+
+if [ -z "${CPUPERIOD}" ] || [ -z "${CPUQUOTA}" ]; then
+	if ! _CPULIMIT="$(ndbp_get_cpulimit)"; then
+		cat 0<<.a
+
+WARNING: Can not identify CPU limits!
+WARNING:
+WARNING: Resorting to unlimited CPU cap.
+WARNING:
+WARNING: If you want to override this setting, use '--cpu-limit'
+WARNING: command-line option!
+
+.a
+		CPUPERIOD=0
+		CPUQUOTA=0
+	else
+		while read -r CPUQUOTA && read -r CPUPERIOD; do
+			break
+		done 0<<.a
+${_CPULIMIT}
+.a
+	fi
+fi
+
+echo ""
+echo "INFO: Using CPU limits '${CPUQUOTA} / ${CPUPERIOD}' ..."
+echo ""
+
+# Memory limit
+
+if [ -z "${MEMLIMIT}" ]; then
+	if ! MEMLIMIT="$(ndbp_get_memlimit)"; then
+		cat 0<<.a
+
+WARNING: Can not identify memory limits!
+WARNING:
+WARNING: Resorting to unlimited memory cap.
+WARNING:
+WARNING: If you want to override this setting, use '--mem-limit'
+WARNING: command-line option!
+
+.a
+		MEMLIMIT=""
+	fi
+fi
+
+echo ""
+echo "INFO: Using memory limit '${MEMLIMIT}' ..."
+echo ""
+
+# Pasta options
+
+if [ -z "${PASTA_OPTS}" ]; then
+	if ! PASTA_OPTS="$(ndbp_get_pasta_opts)"; then
+		cat 0<<.a
+
+WARNING: Can not identify pasta(1) options!
+WARNING:
+WARNING: If you want to override this setting, use '--pasta-opts'
+WARNING: command-line option!
+
+.a
+		PASTA_OPTS=""
+	fi
+fi
+
+echo ""
+echo "INFO: Using pasta(1) options '${PASTA_OPTS}' ..."
+echo ""
+
+# Slirp options
+
+if [ -z "${SLIRP_OPTS}" ]; then
+	if ! SLIRP_OPTS="$(ndbp_get_slirp_opts)"; then
+		cat 0<<.a
+
+WARNING: Can not identify slirp4netns(1) options!
+WARNING:
+WARNING: If you want to override this setting, use '--slirp-opts'
+WARNING: command-line option!
+
+.a
+		SLIRP_OPTS=""
+	fi
+fi
+
+echo ""
+echo "INFO: Using slirp4netns(1) options '${SLIRP_OPTS}' ..."
+echo ""
+
+# Use default targets from 'debian/neurodebian/control' if no targets
+# are specified on command-line or err out
+
+if [ -z "${1}" ]; then
+	if ! DEFAULT_TARGETS="$(rfc822_get_value \
+		'debian/neurodebian/control' \
+		'build.default-targets' \
+		true \
+		false)"; then
+		cat >&2 0<<.a
+
+ERROR: No default targets are defined in 'debian/neurodebian/control'
+ERROR: and on command-line!
+
+.a
+		exit 1
+	fi
+
+	while read -r TARGET; do
+		set -- "$@" "${TARGET}"
+	done 0<<.a
+${DEFAULT_TARGETS}
+.a
+fi
+
+# Assemble the make arguments
+
+set -- "$@" '-s'
+set -- "$@" '-f' "${NEURODEBIAN_TOOLING_PATH}/makefiles/build.mk"
+
+[ "${SHELL_ON_FAILURE}" -eq 1 ] && set -- "$@" "SHELL_ON_FAILURE=1"
+[ -n "${JOBS}" ] && set -- "$@" "-j${JOBS}"
+[ -n "${OUTDIR}" ] && set -- "$@" "OUTDIR=${OUTDIR}"
+[ -n "${PODMAN}" ] && set -- "$@" "PODMAN=${PODMAN}"
+[ -n "${CPUPERIOD}" ] && set -- "$@" "CPUPERIOD=${CPUPERIOD}"
+[ -n "${CPUQUOTA}" ] && set -- "$@" "CPUQUOTA=${CPUQUOTA}"
+[ -n "${MEMLIMIT}" ] && set -- "$@" "MEMLIMIT=${MEMLIMIT}"
+[ -n "${PASTA_OPTS}" ] && set -- "$@" "PASTA_OPTS=${PASTA_OPTS}"
+[ -n "${SLIRP_OPTS}" ] && set -- "$@" "SLIRP_OPTS=${SLIRP_OPTS}"
+
+# Now run make(1)
+
+echo ""
+echo "INFO: Starting the builds ..."
+echo ""
+
+# We can not send signal to make(1) because it just interrupts
+# Instead, we send the signal named containers belonging to the current run
+# and let make(1) handle the failures gracefully
+
+trap kill_running_containers 1 2 3 15
+
+make "$@" &
+MAKEPID="$!"
+
+# Wait for real exit code of make(1) as
+# trap makes wait(1) to return with exit code "128+N"
+# where N is real one
+
+while true; do
+	wait "${MAKEPID}"
+	RET=$?
+	[ "${RET}" -lt 128 ] && break
+done
+
+if [ "${RET}" -ne 0 ]; then
+	if [ "${SHELL_ON_FAILURE}" -eq 1 ]; then
+		echo ""
+		echo "INFO: Spawning the shell ..." >&2
+		echo ""
+
+		ERR=0
+
+		if ! cd "${OUTDIR}/temp/containernames"; then
+			echo "ERROR: Can not move current directory to containernames" >&2
+			ERR=1
+		fi
+
+		if [ "${ERR}" -eq 0 ]; then
+			for CONTAINER_NAME in *; do
+				if ! "${PODMAN}" start -a "${CONTAINER_NAME}"; then
+					echo "ERROR: Can not start the shell container" >&2
+					ERR=1
+				fi
+				break
+			done
+		fi
+
+		for CONTAINER_NAME in *; do
+			if ! "${PODMAN}" stop "${CONTAINER_NAME}" 1>/dev/null; then
+				echo "WARNING: Can not stop the shell container" >&2
+			fi
+			if ! "${PODMAN}" rm -f "${CONTAINER_NAME}" 1>/dev/null; then
+				echo "WARNING: Can not remove the shell container" >&2
+			fi
+			rm -f "${CONTAINER_NAME}"
+		done
+
+		cd "${OLDPWD}"
+	fi
+
+	FAILS=1
+
+	cat >&2 0<<.a
+
+ERROR: Some builds failed!
+ERROR:
+ERROR: See log files in
+ERROR:
+ERROR: ${OUTDIR}/logs
+ERROR:
+ERROR: for detailed information!
+
+.a
+
+fi
+
+# Clean up temp directory
+
+rm -rf "${OUTDIR}/temp"
+
+# Check build states and output the names
+
+PASSES=0
+FAILS=0
+SKIPS=0
+
+echo ""
+echo "Build statistics:"
+echo "================="
+echo ""
+
+for STATEFILE in "${OUTDIR}/logs/"*.state.*; do
+	case "${STATEFILE}" in
+	*.state.PASS)
+		PASSES=$((PASSES + 1))
+		BUILD_STEP_NAME="${STATEFILE##*/}"
+		BUILD_STEP_NAME="${BUILD_STEP_NAME%%.state.PASS}"
+		echo "${BUILD_STEP_NAME}: PASS"
+		;;
+	*.state.SKIP)
+		SKIPS=$((SKIPS + 1))
+		BUILD_STEP_NAME="${STATEFILE##*/}"
+		BUILD_STEP_NAME="${BUILD_STEP_NAME%%.state.SKIP}"
+		echo "${BUILD_STEP_NAME}: SKIP"
+		;;
+	*.state.FAIL)
+		FAILS=$((FAILS + 1))
+		BUILD_STEP_NAME="${STATEFILE##*/}"
+		BUILD_STEP_NAME="${BUILD_STEP_NAME%%.state.FAIL}"
+		echo "${BUILD_STEP_NAME}: FAIL"
+		;;
+	esac
+done
+
+echo ""
+echo "================="
+echo ""
+
+echo "Result: ${PASSES} steps passed; ${SKIPS} steps skipped; ${FAILS} steps failed"
+
+[ "${FAILS}" -gt 0 ] && exit 1
+
+# Report success
+
+echo ""
+echo "All done!"
+echo ""

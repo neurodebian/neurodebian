@@ -1,0 +1,241 @@
+#!/bin/sh
+
+#
+# The build step script to reprotest(1) the package inside container
+#
+# Copyright: 2024, The NeuroDebian Team <team@neuro.debian.net>
+#            2024, Vasyl Gello <vasek.gello@gmail.com>
+#
+
+# Required tools: sh, apt-get, chown, cp, echo, mv, rm
+
+REQUIRED_TOOLS="apt-get dpkg chown cp echo mv rm"
+
+for _TEMP in ${REQUIRED_TOOLS}; do
+	if ! command -v "${_TEMP}" 1>/dev/null 2>&1; then
+		echo "ERROR: Required tool ${_TEMP} not found!" >&2
+		return 1
+	fi
+done
+
+unset _TEMP
+
+# Start of script
+
+# Parse command-line arguments
+
+SRCPKGDIR="${1}"
+ARCH="${2}"
+DEPCACHEDIR="${3}"
+REPROTESTCACHEDIR="${4}"
+DSTDIR="${5}"
+
+if [ -z "${SRCPKGDIR}" ]; then
+	echo "ERROR: Source package directory can not be empty!" >&2
+	exit 1
+fi
+
+if [ ! -d "${SRCPKGDIR}" ]; then
+	echo "ERROR: Source package directory does not exist!" >&2
+	exit 1
+fi
+
+if [ -z "${ARCH}" ]; then
+	echo "ERROR: Architecture can not be empty!" >&2
+	exit 1
+fi
+
+if [ -z "${DEPCACHEDIR}" ]; then
+	echo "ERROR: Dependency cache directory can not be empty!" >&2
+	exit 1
+fi
+
+if [ ! -d "${DEPCACHEDIR}" ]; then
+	echo "ERROR: Dependency cache directory can not be empty!" >&2
+	exit 1
+fi
+
+if [ -z "${REPROTESTCACHEDIR}" ]; then
+	echo "ERROR: Reprotest package directory can not be empty!" >&2
+	exit 1
+fi
+
+if [ ! -d "${REPROTESTCACHEDIR}" ]; then
+	echo "ERROR: Reprotest package directory can not be empty!" >&2
+	exit 1
+fi
+
+if [ -z "${DSTDIR}" ]; then
+	echo "ERROR: Build artifact directory can not be empty!" >&2
+	exit 1
+fi
+
+if [ ! -d "${DSTDIR}" ]; then
+	echo "ERROR: Build artifact directory can not be empty!" >&2
+	exit 1
+fi
+
+# Move /usr/bin/setarch to /setarch
+
+if ! mv /usr/bin/setarch /setarch; then
+	echo "ERROR: Can not copy '/usr/bin/setarch' to '/usr/bin/setarch.real'!" >&2
+	exit 1
+fi
+
+if ! cp /usr/bin/setarch-helper /usr/bin/setarch; then
+	echo "ERROR: Can not copy '/usr/bin/setarch-helper' to '/usr/bin/setarch'!" >&2
+	exit 1
+fi
+
+
+# Copy the source package directory to /tmp/build
+
+if ! cp -a "${SRCPKGDIR}" /tmp/build; then
+	echo "ERROR: Can not copy '${SRCPKGDIR}' to '/tmp/build'!" >&2
+	exit 1
+fi
+
+# chown /tmp/build to user:user
+
+if ! chown -R user:user /tmp/build; then
+	echo "ERROR: Can not chown '/tmp/build' to 'user:user'!" >&2
+	exit 1
+fi
+
+# Move to source package directory
+
+if ! cd /tmp/build; then
+	echo "ERROR: Can not change directory to '/tmp/build'!" >&2
+	exit 1
+fi
+
+for i in *; do
+	if [ -d "${i}" ]; then
+		if ! cd "${i}"; then
+			echo "ERROR: Can not change directory to '${i}'!" >&2
+			exit 1
+		fi
+	fi
+done
+
+# Add architecture to dpkg
+
+if ! dpkg --add-architecture "${ARCH}"; then
+	echo "ERROR: Can not add '${ARCH}' to dpkg!" >&2
+	exit 1
+fi
+
+# Remove all /etc/apt/sources.list.d/*.list
+
+if ! rm /etc/apt/sources.list.d/*.list; then
+	echo "ERROR: Can not remove apt sources!" >&2
+	exit 1
+fi
+
+# Add the dependency cache as local trusted repository
+
+if ! echo "deb [trusted=yes] file://${DEPCACHEDIR} ./" \
+	1>/etc/apt/sources.list.d/local.list; then
+	echo "ERROR: Can not add local repository!" >&2
+	exit 1
+fi
+
+if ! echo "deb [trusted=yes] file://${REPROTESTCACHEDIR} ./" \
+	1>/etc/apt/sources.list.d/local.list; then
+	echo "ERROR: Can not add local repository!" >&2
+	exit 1
+fi
+
+# Update package indices
+
+export DEBIAN_FRONTEND=noninteractive
+
+exec apt-get update &
+
+CMDPID="$!"
+
+while true; do
+	wait "${CMDPID}"
+	RET=$?
+	[ "${RET}" -lt 128 ] && break
+done
+
+if [ "${RET}" -ne 0 ]; then
+	echo "ERROR: Can not 'apt-get update'!" >&2
+	exit 1
+fi
+
+# Install all cached dependencies
+
+exec apt-get install -yq "${DEPCACHEDIR}"/*.deb "${REPROTESTCACHEDIR}"/*.deb &
+CMDPID="$!"
+
+while true; do
+	wait "${CMDPID}"
+	RET=$?
+	[ "${RET}" -lt 128 ] && break
+done
+
+if [ "${RET}" -ne 0 ]; then
+	echo "ERROR: Can not install dependencies!" >&2
+	exit 1
+fi
+
+# Assemble arguments to 'dpkg-buildpackage'
+
+NATIVE_ARCH="$(dpkg --print-architecture)"
+
+BUILDPACKAGE_MODE=''
+DEB_BUILD_OPTIONS=''
+
+case "${ARCH}" in
+source)
+	echo "ERROR: Source packages do not need to be reprotest-ed!" >&2
+	exit 1
+	;;
+all)
+	BUILDPACKAGE_MODE='-A'
+	HOST_ARCH="${NATIVE_ARCH}"
+	;;
+*)
+	BUILDPACKAGE_MODE='-b'
+	HOST_ARCH="${ARCH}"
+
+	if [ "${ARCH}" != "${NATIVE_ARCH}" ]; then
+		export DEB_BUILD_OPTIONS="nocheck"
+	fi
+
+	;;
+esac
+
+# Now start the build
+
+reprotest \
+	--variations=+all,-fileordering,-domain_host,user_group.available+=user:user \
+	--store-dir "${DSTDIR}/" \
+	-c "dpkg-buildpackage -uc -us '${BUILDPACKAGE_MODE}' --host-arch '${HOST_ARCH}'; rm ../*.buildinfo" \
+	-v . '../*.deb ../*.changes' \
+	-- \
+	null &
+
+CMDPID="$!"
+
+while true; do
+	wait "${CMDPID}"
+	RET=$?
+	[ "${RET}" -lt 128 ] && break
+done
+
+if [ "${RET}" -ne 0 ]; then
+	echo "ERROR: Can not build package!" >&2
+	exit 1
+fi
+
+# Chown artifacts to root:root
+
+if ! chown root:root "${DSTDIR}/"* ; then
+	echo "ERROR: Can not chown artifacts back!" >&2
+	exit 1
+fi
+
+exit 0
