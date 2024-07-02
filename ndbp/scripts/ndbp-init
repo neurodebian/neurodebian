@@ -25,16 +25,30 @@ EOT
 print_usage() (
 	cat 0<<.a
 Usage:
-    ndbp-init [--help | --version | --dry-run]
+    ndbp-init [--help | --version | --dry-run] \
+        [--add-skeleton] [--make-unsupported-branches] \
 
 Options:
     --dry-run                    - Identify which branches to create but
                                    do not create actual branches
     --help                       - Show brief help message
     --version                    - Show version and copyright
+    --add-skeleton               - Add skeleton of NeuroDebian packaging
+                                   if no NeuroDebian packaging is found
+    --make-unsupported-branches  - Create synthetic branches for unsupported
+                                   NeuroDebian releases
 
-Provisions NeuroDebian branches in Git packaging repository for supported
+Provisions the Git repo for NeuroDebian packaging workflow.
+
+First, if no NeuroDebian packaging is found in the calling branch, add skeleton
+of NeuroDebian packaging if '--add-skeleton-packaging' option is set, or
+exit otherwise.
+
+Then, add NeuroDebian branches in Git packaging repository for supported
 NeuroDebian releases according to distinfo files.
+
+If '--make-unsupported-branches' option is set, branches are created for all
+NeuroDebian releases known in distinfos, regardless of their support status.
 
 This script is part of NeuroDebian tooling available as NeuroDebian package
 'neurodebian-dev' or the upstream repository on Github:
@@ -55,6 +69,8 @@ export PATH="\${NEURODEBIAN_TOOLING_PATH}:\${PATH}"
 # Parse command-line options
 
 DRY_RUN=0
+SKELETON=0
+SUPPORTED=true
 
 case "${1}" in
 -h | --help)
@@ -68,6 +84,12 @@ case "${1}" in
 --dry-run)
 	DRY_RUN=1
 	;;
+--add-skeleton)
+	SKELETON=1
+	;;
+--make-unsupported-branches)
+	SUPPORTED=false
+	;;
 esac
 
 if [ ${DRY_RUN} -eq 1 ]; then
@@ -76,9 +98,9 @@ else
 	DRY_RUN="1 0"
 fi
 
-# Required tools: sh, cat, git
+# Required tools: sh, cat, cp, git
 
-REQUIRED_TOOLS="cat git"
+REQUIRED_TOOLS="cat cp git"
 
 for _TEMP in ${REQUIRED_TOOLS}; do
 	if ! command -v "${_TEMP}" 1>/dev/null 2>&1; then
@@ -112,6 +134,15 @@ ERROR:  - user: ${NEURODEBIAN_TOOLING_PATH}
 	return 1
 fi
 
+# Include ndbp.conf(5) helper
+
+if [ ! -f "${NEURODEBIAN_TOOLING_PATH}/ndbp/helpers/ndbp-conf-file-helper" ]; then
+	echo "ERROR: Can not find ndbp.conf file helper!" >&2
+	return 1
+fi
+
+. "${NEURODEBIAN_TOOLING_PATH}/ndbp/helpers/ndbp-conf-file-helper"
+
 # Include distinfo helper
 
 if [ ! -f "${NEURODEBIAN_TOOLING_PATH}/ndbp/helpers/distinfo-file-helper" ]; then
@@ -121,18 +152,12 @@ fi
 
 . "${NEURODEBIAN_TOOLING_PATH}/ndbp/helpers/distinfo-file-helper"
 
-# Bit of sanity check: exit if branch we are on has no "debian/neurodebian"
-# directory, minimal files like 'rules' or 'control' absent inside, or
-# 'README.NeuroDebian' is present
+# Bit of sanity check: report and exit if the branch is synthetic
 
-if [ ! -d "debian/neurodebian" ] || \
-	[ ! -f "debian/neurodebian/control" ] || \
-	[ ! -f "debian/neurodebian/rules" ] || \
-	[ -f "debian/README.NeuroDebian" ]; then
+if [ -f "debian/README.NeuroDebian" ]; then
 	cat >&2 0<<.a
 
-ERROR: Current branch does not have 'debian/neurodebian' directory,
-ERROR: or is a NeuroDebian synthetic branch!
+ERROR: Current branch is a NeuroDebian synthetic branch!
 ERROR:
 ERROR: Are you sure you want to create new branches from this branch?
 
@@ -140,10 +165,95 @@ ERROR: Are you sure you want to create new branches from this branch?
 	exit 1
 fi
 
+# Bit of sanity check: try to et 'EMAIL', 'DEBEMAIL', 'DEBFULLNAME'
+# environment variables from environment, ndbp.conf, git configs and
+# exit if none is set
+
+if [ -z "${DEBEMAIL}" ] && [ -z "${DEBFULLNAME}" ]; then
+	DEBFULLNAME="$(ndbp_get_debfullname)"
+	DEBEMAIL="$(ndbp_get_debemail)"
+fi
+
+if [ -z "${DEBEMAIL}" ] && [ -z "${DEBFULLNAME}" ]; then
+	DEBFULLNAME="$(git config user.name)"
+	DEBEMAIL="$(git config user.email)"
+fi
+
+if [ -z "${DEBEMAIL}" ] && [ -z "${DEBFULLNAME}" ]; then
+	DEBFULLNAME="$(git config --global user.name)"
+	DEBEMAIL="$(git config --global user.email)"
+fi
+
+if [ -z "${DEBEMAIL}" ] && [ -z "${DEBFULLNAME}" ] && [ -n "${EMAIL}" ]; then
+	DEBFULLNAME="${EMAIL}"
+	DEBEMAIL="${EMAIL}"
+	unset EMAIL
+fi
+
+if [ -z "${DEBEMAIL}" ] && [ -z "${DEBFULLNAME}" ]; then
+	echo "ERROR: None of environment variables 'EMAIL', 'DEBEMAIL' and 'DEBFULLNAME' are set!" >&2
+	exit 1
+fi
+
+export DEBFULLNAME DEBEMAIL
+
+# Set git repo user.name and user.email
+
+if [ -z "$(git config user.name)" ]; then
+	git config user.name "${DEBFULLNAME}"
+fi
+
+if [ -z "$(git config user.email)" ]; then
+	git config user.email "${DEBEMAIL}"
+fi
+
+# Bit of sanity check: exit if branch we are on has no "debian/neurodebian"
+# directory, minimal files like 'rules' or 'control' absent inside
+
+if [ ! -d "debian/neurodebian" ] ||
+	[ ! -f "debian/neurodebian/control" ] ||
+	[ ! -f "debian/neurodebian/rules" ]; then
+
+	if [ "${SKELETON}" -eq 1 ]; then
+		# Add NeuroDebian packaging skeleton
+
+		cp \
+			-a \
+			"${NEURODEBIAN_TOOLING_PATH}/ndbp/skeleton/neurodebian" \
+			debian
+
+		# Commit the packaging and ask the maintainer to re-run the tool
+
+		git add debian/neurodebian
+		git commit -m "ndbp-init: Skeleton provisioning of NeuroDebian packaging"
+
+		cat >&2 0<<.a
+
+INFO: Skeleton of NeuroDebian packaging was implanted in the repo!
+INFO:
+INFO: Please adjust the needed information inside 'debian/neurodebian', commit
+INFO: the changes and re-run the 'ndbp-init' script!
+
+.a
+		exit 0
+	else
+		# Report and exit
+
+		cat >&2 0<<.a
+
+ERROR: Current branch does not have proper 'debian/neurodebian' directory
+ERROR:
+ERROR: Are you sure you want to create new branches from this branch?
+
+.a
+		exit 1
+	fi
+fi
+
 # Read supported NeuroDebian releases and their packaging branch names
 # to get list of branches to create or check out
 
-if ! SUPPORTED_DISTS="$(distinfo_find_supported_distributions "neurodebian")"; then
+if ! SUPPORTED_DISTS="$(distinfo_find_supported_distributions "neurodebian" "${SUPPORTED}")"; then
 	echo "ERROR: Can not list release targets!" >&2
 	exit 1
 fi

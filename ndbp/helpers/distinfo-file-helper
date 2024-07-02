@@ -79,11 +79,14 @@ distinfo_find_supported_vendors() (
 #
 # Args:
 # ${1} - (required) vendor to check distinfos for
+# ${2} - (optional) filter only distinfos whose 'supported'
+#        attribute is true
 #
 # Returns 0 on success or 1 on failure
 
 distinfo_find_supported_distributions() (
 	VENDOR="${1}"
+	SUPPORTED="${2}"
 
 	# Check if VENDOR is not empty and starts with alphanumeric
 
@@ -93,8 +96,8 @@ distinfo_find_supported_distributions() (
 	fi
 
 	case "${VENDOR}" in
-	[A-Za-z0-9]*)
-		;;
+	[A-Za-z0-9]*) ;;
+
 	*)
 		echo "ERROR: Vendor is not alphanumeric string!" >&2
 		return 1
@@ -109,9 +112,13 @@ distinfo_find_supported_distributions() (
 	fi
 
 	for _1 in *; do
-		_VAL="$(rfc822_get_value "${_1}" "supported" false true)" &&
-			[ "${_VAL}" = "true" ] &&
+		if [ "${SUPPORTED}" = "true" ]; then
+			_VAL="$(rfc822_get_value "${_1}" "supported" false true)" &&
+				[ "${_VAL}" = "true" ] &&
+				echo "${_1}"
+		else
 			echo "${_1}"
+		fi
 	done
 
 	return 0
@@ -160,8 +167,8 @@ ${FILENAME}
 	fi
 
 	case "${VENDOR}" in
-	[A-Za-z0-9]*)
-		;;
+	[A-Za-z0-9]*) ;;
+
 	*)
 		echo "ERROR: Vendor is not alphanumeric string!" >&2
 		return 1
@@ -169,8 +176,8 @@ ${FILENAME}
 	esac
 
 	case "${DIST}" in
-	[A-Za-z0-9]*)
-		;;
+	[A-Za-z0-9]*) ;;
+
 	*)
 		echo "ERROR: Distribution is not alphanumeric string!" >&2
 		return 1
