@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-#emacs: -*- mode: shell-script; c-basic-offset: 4; tab-width: 4; indent-tabs-mode: nil -*-
+#emacs: -*- mode: perl-mode; c-basic-offset: 4; tab-width: 4; indent-tabs-mode: nil -*-
 #ex: set sts=4 ts=4 sw=4 et:
 #
 require 5.002;
@@ -90,15 +90,28 @@ sub get_www_content {
     $port = 80 if (!$port);
     my $proto = getprotobyname('tcp');
     socket(F, PF_INET, SOCK_STREAM, $proto);
-    my $sin = sockaddr_in($port,inet_aton($dest));
+    my $sin = sockaddr_in($port, inet_aton($dest));
     connect(F, $sin) || return undef;
     my $old_fh = select(F);
     $| = 1;
     select($old_fh);
     print F "GET $file HTTP/1.1\r\nHost: ${dest}\r\n\r\n";
-    $/ = undef;
-    $contents = <F>;
+    $/ = "\r\n\r\n";  # Change the input record separator to read the header
+    my $header = <F>;  # Read the HTTP response header
+    $/ = undef;  # Restore to read the rest of the content
+    my $contents = <F>;
     close(F);
+
+    # Extract the HTTP status code from the header
+    my ($status_code) = $header =~ m{HTTP/1.[01] (\d{3})};
+
+    logg('debug', "Fetched from URL ${url}, status code: ${status_code}, length: " . length($contents));
+
+    # Handle bad URL requests
+    if ($status_code !~ /^(200|301|302)$/) {
+            $contents =~ /^(.+)/;
+            die "Bad URL request with status code ${status_code} to ${url}. Response: ${contents}\n";
+    }
     return $contents;
 }
 
@@ -299,23 +312,25 @@ sub write_snapshot_sources {
         my $label = lc($sources{$key}{Label});
         $label =~ tr/ /-/;
         $contents = get_www_content("http://${domain}/archive/${label}/${user_timestamp}/");
-        # Handle bad URL requests
-        if (!($contents =~ /^HTTP\/\d+\.\d+ 200/) and !($contents =~ /^HTTP\/\d+\.\d+ 30[12]/)) {
-            $contents =~ /^(.+)/;
-            die "Bad URL request http://${domain}/archive/${label}/${user_timestamp}/: ${1}\n";
-        }
         # Handle 301 redirect from snapshot server if we get one.
-        if ($contents =~ /The resource has been moved to http:\/\/[\S\-]+\/archive\/${label}\/(\d{8}T\d{6}Z\/)/) {
+        if ($contents =~ /The resource has been moved to http:\/\/[\S\-]+\/archive\/${label}\/([0-9T]+Z)\/?/) {
             $contents = get_www_content("http://${domain}/archive/${label}/${1}/");
         }
-		# It later became 302 with a different msg and only relative href
-        if ($contents =~ /You should be redirected automatically to target URL: .*\/archive\/${label}\/(\d{8}T\d{6}Z\/)<.*/) {
-            $contents = get_www_content("http://${domain}/archive/${label}/${1}/");
+        # It later became 302 with a different msg and only relative href. Some times with or without "the"
+        if ($contents =~ /You should be redirected automatically to .* URL: .*\/archive\/${label}\/([0-9T]+Z)\/?<.*/) {
+            my $target_url = "http://${domain}/archive/${label}/${1}/";
+            logg("debug", "Following redirect for $label to a relative URL for the date $1, full target is $target_url");
+            $contents = get_www_content($target_url);
         }
         # Scrape next timestamp from HTML returned from snapshot server.
-        $contents =~ /\/archive\/${label}\/([0-9TZ]+)\/">next</;
+        $contents =~ /\/archive\/${label}\/([0-9T]+Z)\/">next</;
         my $next_timestamp = $1;
         $next_timestamp =~ tr/\///d;
+        logg("debug", "User specified time (${user_timestamp}), currently considering ($label) snapshot timestamp is (${next_timestamp}).");
+
+        if (!$next_timestamp) {
+           logg("debug", "Got empty next_timestamp, here is full contents: $contents");
+        }
         if ($user_timestamp gt $next_timestamp) {
             # Notify user that they have requested a date beyond the most recent snapshot.
             $last_available = $next_timestamp ? $next_timestamp : $user_timestamp;
