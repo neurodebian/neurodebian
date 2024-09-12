@@ -1,0 +1,29 @@
+# Distribution name of this release as appears in d/changelog entry
+distribution: neurodebian-bullseye
+
+# Descriptive string for this release
+description: NeuroDebian GNU/Linux 11.0 (bullseye)
+
+# Is it still supported? [true/false]
+supported: true
+
+# Should autopkgtests be run on packages targeting this release? [true/false]
+run-autopkgtest: false
+
+# Should lintian(1) be run on packages targeting this release? [true/false]
+run-lintian: false
+
+# Space-separated list of architectures to build packages for
+architectures: source all amd64 i386
+
+# The branch in package Git repository used for this release
+# Special keyword ORIGIN-HEAD denotes default branch on remote side aka 'origin/HEAD'
+packaging-branch: neurodebian/bullseye
+
+# Release suffix. Can be empty or have string value appended to Debian release version
+release-suffix: ~nd110+
+
+# Vendor and distribution used by 'makefiles/update-images.mk' to
+# assemble build container image for each archotecture of this release
+build.container-image.vendor: debian
+build.container-image.distribution: bullseye

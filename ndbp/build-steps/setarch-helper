@@ -1,0 +1,23 @@
+#!/bin/sh
+
+#
+# The wrapper script over setarch(1) to swallow ASLR-disabling
+# '-R' switch called by reprotest(1) inside container
+#
+# Copyright: 2024, The NeuroDebian Team <team@neuro.debian.net>
+#            2024, Vasyl Gello <vasek.gello@gmail.com>
+#
+
+for arg; do
+	shift
+
+	case "${arg}" in
+	-R)
+		;;
+	*)
+		set -- "$@" "${arg}"
+		;;
+	esac
+done
+
+exec /setarch "$@"

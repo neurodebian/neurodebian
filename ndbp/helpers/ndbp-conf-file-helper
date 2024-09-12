@@ -1,0 +1,258 @@
+#!/bin/sh
+
+#
+# The helper script to parse NeuroDebian configuration files
+#
+# Copyright: 2024, The NeuroDebian Team <team@neuro.debian.net>
+#            2024, Vasyl Gello <vasek.gello@gmail.com>
+#
+
+# Required tools: sh, cat
+
+REQUIRED_TOOLS="cat"
+
+for _TEMP in ${REQUIRED_TOOLS}; do
+	if ! command -v "${_TEMP}" 1>/dev/null 2>&1; then
+		echo "ERROR: Required tool ${_TEMP} not found!" >&2
+		return 1
+	fi
+done
+
+unset _TEMP
+
+# Check if NeuroDebian tooling location is overridden via
+# NEURODEBIAN_TOOLING_PATH environment variable.
+
+if [ -z "${NEURODEBIAN_TOOLING_PATH}" ]; then
+	NEURODEBIAN_TOOLING_PATH="/usr/share/neurodebian"
+fi
+
+export NEURODEBIAN_TOOLING_PATH
+
+# Warn if NeuroDebian tooling is not present
+
+if [ ! -d "${NEURODEBIAN_TOOLING_PATH}" ]; then
+	cat >&2 0<<.a
+
+ERROR: Can not find NeuroDebian tooling!
+ERROR: Paths searched:
+ERROR:  - system: /usr/share/neurodebian
+ERROR:  - user: ${NEURODEBIAN_TOOLING_PATH}
+
+.a
+	return 1
+fi
+
+# Include rfc822 helper
+
+if [ ! -f "${NEURODEBIAN_TOOLING_PATH}/ndbp/helpers/rfc822-file-helper" ]; then
+	echo "ERROR: Can not find rfc822 file helper!" >&2
+	return 1
+fi
+
+. "${NEURODEBIAN_TOOLING_PATH}/ndbp/helpers/rfc822-file-helper"
+
+# Start of functions
+
+# Extract value from system-wide and per-user configuration files
+#
+# Args:
+# ${1} - (required) value name (string)
+# ${2} - (optional) whether to split the retrieved value and print one-per-line (true/false)
+#
+# Returns 0 on success or 1 on failure
+
+ndbp_get_value() (
+	KEYNAME="${1}"
+	SPLIT="${2}"
+
+	VAL=""
+	RET=4
+
+	# Try reading from file pointed by NEURODEBIAN_BUILDER_CONF
+	# environment variable and try further if it is not found
+	# or value is not overridden there but fail on other errors.
+
+	if [ -n "${NEURODEBIAN_BUILDER_CONF}" ]; then
+		VAL="$(rfc822_get_value \
+			"${NEURODEBIAN_BUILDER_CONF}" \
+			"${KEYNAME}" \
+			"${SPLIT}" \
+			"true")"
+		RET=$?
+	fi
+
+	# Try reading from user preference file and try further if it
+	# is not found or value is not overridden there but fail on
+	# other errors.
+
+	if [ ${RET} -ne 0 ]; then
+		VAL="$(rfc822_get_value \
+			"${HOME}/ndbp.conf" \
+			"${KEYNAME}" \
+			"${SPLIT}" \
+			"true")"
+		RET=$?
+	fi
+
+	# Try reading from file pointed by NEURODEBIAN_TOOLING_PATH
+	# environment variable and try further if it is not found
+	# or value is not overridden there but fail on other errors.
+
+	if [ ${RET} -ne 0 ]; then
+		VAL="$(rfc822_get_value \
+			"${NEURODEBIAN_TOOLING_PATH}/ndbp/ndbp.conf" \
+			"${KEYNAME}" \
+			"${SPLIT}" \
+			"true")"
+		RET=$?
+	fi
+
+	# Finally try reading from system-wide config file
+
+	if [ ${RET} -ne 0 ]; then
+		VAL="$(rfc822_get_value \
+			"/etc/neurodebian/ndbp.conf" \
+			"${KEYNAME}" \
+			"${SPLIT}")"
+		RET=$?
+	fi
+
+	if [ ${RET} -ne 0 ]; then
+		echo "ERROR: Can not read setting '${KEYNAME}' from all known configuration files!" >&2
+		return ${RET}
+	fi
+
+	echo "${VAL}"
+)
+
+# Get per-user NeuroDebian directory
+#
+# Returns 0 on success or 1 on failure
+
+ndbp_get_builddir() (
+	if VAL="$(ndbp_get_value "build.root-directory")"; then
+		if [ "${VAL}" != "${VAL#\~}" ]; then
+			VAL="${HOME}/${VAL#\~}"
+		fi
+
+		echo "${VAL}"
+	else
+		return 1
+	fi
+)
+
+# Get podman command-line
+#
+# Returns 0 on success or 1 on failure
+
+ndbp_get_podman_cmdline() (
+	ndbp_get_value "container.podman-path"
+)
+
+# Get maximum parallel jobs
+#
+# Returns 0 on success or 1 on failure
+
+ndbp_get_max_parallel_jobs() (
+	if VAL="$(ndbp_get_value "build.parallel-job-count")"; then
+		_VAL="${VAL}"
+
+		# Filter up to 9999 parallel jobs
+
+		for i in 0 1 2 3; do
+			_VAL="${_VAL##[0-9]}"
+		done
+
+		if [ ! -z "${_VAL}" ] ; then
+			return 1
+		fi
+
+		echo "${VAL}"
+	else
+		echo 1
+	fi
+)
+
+# Get CPU and memory limits for builder containers
+#
+# Returns 0 on success or 1 on failure
+
+ndbp_get_cpulimit() (
+	if VAL="$(ndbp_get_value "build.cpu-limit" 'true')"; then
+		while read -r _1; do
+			# Filter up to 10^16 microseconds
+
+			for i in 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15; do
+				_1="${_1##[0-9]}"
+
+				if [ -z "${_1}" ] ; then
+					break
+				fi
+			done
+
+			# If after 16 iterations there are still non-numeric leftovers
+			# in each row string, exit with error
+
+			if [ -n "${_1}" ]; then
+				return 1
+			fi
+		done 0<<.a
+${VAL}
+.a
+
+		echo "${VAL}"
+	else
+		return 1
+	fi
+)
+
+ndbp_get_memlimit() (
+	if VAL="$(ndbp_get_value "build.mem-limit")"; then
+		# Filter up to 10^16 bytes
+
+		for i in 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15; do
+			_VAL="${_VAL##[0-9]}"
+		done
+
+		# Filter M[egabytes], G[igabytes], T[erabytes]
+
+		_VAL="${_VAL##[MGT]}"
+
+		if [ ! -z "${_VAL}" ] ; then
+			return 1
+		fi
+
+		echo "${VAL}"
+	else
+		echo "0"
+	fi
+)
+
+# Get slirp4netns and pasta options
+#
+# Returns 0 on success or 1 on failure
+
+ndbp_get_slirp_opts() (
+	ndbp_get_value "container.slirp4netns-options"
+	[ $? -eq 4 ] && echo ""
+)
+
+ndbp_get_pasta_opts() (
+	ndbp_get_value "container.pasta-options"
+	[ $? -eq 4 ] && echo ""
+)
+
+# Get NeuroDebian maintainer full name and email
+#
+# Returns 0 on success or 1 on failure
+
+ndbp_get_debfullname() (
+	ndbp_get_value "user.debfullname"
+	[ $? -eq 4 ] && echo ""
+)
+
+ndbp_get_debemail() (
+	ndbp_get_value "user.debemail"
+	[ $? -eq 4 ] && echo ""
+)
