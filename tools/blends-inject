@@ -115,11 +115,7 @@ Remove: python-brian-doc
 
 
 from past.builtins import cmp
-from future import standard_library
 from functools import reduce
-standard_library.install_aliases()
-from builtins import str
-from builtins import object
 import re, os, sys, tempfile, glob
 from os.path import join, exists, expanduser, dirname, basename
 
@@ -389,9 +385,9 @@ def inject_tasks(tasks, config):
             known = False
             # We need to search by name and by source
             # We need to search for every possible type of dependency
-            regexp_str = '^ *(%s) *: *(%s) *$' \
+            regexp_str = r'^ *(%s) *: *(%s) *$' \
                          % ('|'.join(PKG_FIELDS),
-                            '|'.join((pkg.name, pkg.source)).replace('+', '\+'))
+                            '|'.join((pkg.name, pkg.source)).replace('+', r'\+'))
             verbose(4, "Searching for presence in %s using regexp: '%s'"
                     % (taskfile, regexp_str))
             regexp = re.compile(regexp_str, re.I)
@@ -472,7 +468,7 @@ def inject_tasks(tasks, config):
 class DebianMaterials(object):
     """Extract selected information from an existing debian/
     """
-    _WNPP_RE = re.compile('^ *\* *Initial release.*closes:? #(?P<bug>[0-9]*).*', re.I)
+    _WNPP_RE = re.compile(r'^ *\* *Initial release.*closes:? #(?P<bug>[0-9]*).*', re.I)
 
     def __init__(self, topdir):
         #self.topdir = topdir
