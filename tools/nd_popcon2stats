@@ -19,7 +19,7 @@ def info(msg):
     # sys.stderr.write("I: %s\n" % msg)
     pass
 
-file_regex = re.compile('.*popcon-(\d{4}-\d{1,2}-\d{1,2})(|.gz)')
+file_regex = re.compile(r'.*popcon-(\d{4}-\d{1,2}-\d{1,2})(|.gz)')
 
 def read_popcon_stats(filename, read_packages=True):
     info("Reading %s" % filename)
