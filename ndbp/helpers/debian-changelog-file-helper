@@ -1,0 +1,103 @@
+#!/bin/sh
+
+#
+# The helper script to parse Debian changelog files
+#
+# Copyright: 2024, The NeuroDebian Team <team@neuro.debian.net>
+#            2024, Vasyl Gello <vasek.gello@gmail.com>
+#
+
+# Newline
+
+NEWLINE='
+'
+
+# Required tools: sh, echo
+
+REQUIRED_TOOLS="echo"
+
+for _TEMP in ${REQUIRED_TOOLS}; do
+	if ! command -v "${_TEMP}" 1>/dev/null 2>&1; then
+		echo "ERROR: Required tool ${_TEMP} not found!" >&2
+		return 1
+	fi
+done
+
+unset _TEMP
+
+# Start of functions
+
+# Read changelog n-th topmost entry from stdin
+#
+# Args:
+# ${1} - (optional) entry index to read starting 1 [default: 1]
+#
+
+changelog_read_entry() (
+	IDX="${1:-1}"
+
+	# Index of currently read changelog entry
+
+	_IDX=0
+
+	while IFS="${NEWLINE}" read -r _1; do
+		case "${_1}" in
+		# Might not be the most reliable detector of new changelog
+		# entry ...
+		*urgency=critical* | *urgency=high* | *urgency=medium* | *urgency=low*)
+			# Increment real index
+
+			_IDX=$((_IDX + 1))
+
+			# If current changelog is the one requested,
+			# echo line back
+
+			[ "${_IDX}" -eq "${IDX}" ] && echo "${_1}"
+			;;
+		*)
+			# If current changelog is the one requested,
+			# echo line back
+
+			[ "${_IDX}" -eq "${IDX}" ] && echo "${_1}"
+			;;
+		esac
+	done
+)
+
+#
+# Parse changelog header from stdin
+#
+# Returns newline-separated array of values:
+# - source package name
+# - source package Debian version
+# - target distribution
+# - urgency
+#
+
+changelog_parse_header() (
+	while IFS="${NEWLINE}" read -r _1; do
+		case "${_1}" in
+		# Might not be the most reliable detector of new changelog
+		# entry ...
+		*urgency=critical* | *urgency=high* | *urgency=medium* | *urgency=low*)
+			while read -r _PKGNAME _PKGDEBVERSION _DIST _URGENCY; do
+				_PKGDEBVERSION="${_PKGDEBVERSION%\)}"
+				_PKGDEBVERSION="${_PKGDEBVERSION#\(}"
+
+				_DIST="${_DIST%%;*}"
+
+				_URGENCY="${_URGENCY#urgency=}"
+
+				echo "${_PKGNAME}"
+				echo "${_PKGDEBVERSION}"
+				echo "${_DIST}"
+				echo "${_URGENCY}"
+			done 0<<.a
+${_1}
+.a
+
+			break
+			;;
+		esac
+	done
+)

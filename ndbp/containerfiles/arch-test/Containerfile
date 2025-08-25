@@ -1,0 +1,17 @@
+ARG ARCH=""
+
+FROM localhost/neurodebian-tooling-base-image:debian-sid-${ARCH}-new AS build
+
+RUN set -e; \
+	export DEBIAN_FRONTEND=noninteractive; \
+	apt-get update; \
+	apt-get install -yq busybox-static arch-test; \
+	mkdir -p /mnt/usr/bin /mnt/usr/lib; \
+	cp -a /usr/bin/busybox /usr/bin/arch-test /mnt/usr/bin; \
+	cp -a /usr/lib/arch-test /mnt/usr/lib
+
+FROM scratch
+
+COPY --from=build --chown=0:0 --chmod=0755 /mnt /
+
+ENTRYPOINT [ "/usr/bin/busybox", "sh", "/usr/bin/arch-test", "-n" ]
