@@ -163,7 +163,7 @@ apt-get install -y xfce4-terminal thunar-archive-plugin
 apt-get install --no-install-recommends -y gedit yelp
 
 # And let's better install small useful utilities
-apt-get install -y moreutils whohas
+apt-get install -y moreutils whohas zerofree
 
 # Do not even try to deal with alternatives -- it will be the one and would puke
 # update-alternatives --set x-terminal-emulator /usr/bin/xfce4-terminal
@@ -227,3 +227,27 @@ etckeeper commit "Initial VM setup done"
 # Create a link to automatically mounted Shared folder
 # Created by the Welcome Wizard
 #sudo -u brain ln -s /mnt/host /home/brain/
+
+# Ultimate cleanup (used to be in nd_compactvdi)
+find /var/ -wholename '*xapian*.DB' -delete
+# package cache
+apt-get clean
+find /var/cache/apt/archives/ -name '*.deb' -delete
+# anyway were recreated later on -- TODO
+rm -f /var/cache/apt/*.bin
+rm -f /var/cache/debconf/*-old
+# device files -- udev restores them
+rm -rf vbmnt/dev/*
+
+# tmp
+rm -rf /tmp/*
+# log files
+find /var/log -type f -delete
+# apt lists
+find /var/lib/apt -type f -name '*debian*' -o -type f -name '*list*' | xargs -r rm
+# user data
+# cannot clean all root stuff, because it also contains useful thing (e.g. git setup)
+rm -f /root/.*history
+rm -f /home/brain/.*history vbmnt/home/brain/nd*
+
+
