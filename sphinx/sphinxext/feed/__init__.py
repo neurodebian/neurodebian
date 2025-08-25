@@ -90,7 +90,7 @@ def create_feed_item(app, pagename, templatename, ctx, doctree):
     # bring main body of the feed item into shape
     body = ctx.get('body')
     # remove all header links (they make ugly characters in feed readers)
-    body = re.sub('\<a class\="headerlink".*\>.</a\>', '', body)
+    body = re.sub(r'\<a class\="headerlink".*\>.</a\>', '', body)
 
     item = {
       'title': ctx.get('title'),

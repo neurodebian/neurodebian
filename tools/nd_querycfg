@@ -2,7 +2,6 @@
 """
 Dead simple script to query the NeuroDebian dev config (or any other Python config file)
 """
-from __future__ import print_function
 
 import os, sys
 
