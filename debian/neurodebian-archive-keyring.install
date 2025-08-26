@@ -1,1 +1,2 @@
-keys/neurodebian-archive-keyring.gpg etc/apt/trusted.gpg.d/
+keys/neurodebian-archive-keyring.asc etc/apt/trusted.gpg.d/
+keys/neurodebian-archive-keyring.gpg usr/share/keyrings/

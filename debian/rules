@@ -42,6 +42,8 @@ override_dh_auto_build:
 		-n "install (if necessary) and run an application" > build/man/nd-autoinstall.1
 	help2man --no-info tools/nd-configurerepo \
 		-n "configure APT to use NeuroDebian repository" > build/man/nd-configurerepo.1
+	# export keyring as ascii for /etc
+	gpg --no-default-keyring --keyring keys/neurodebian-archive-keyring.gpg --armor --export > keys/neurodebian-archive-keyring.asc
 
 override_dh_auto_install:
 
@@ -56,3 +58,4 @@ override_dh_clean:
 	debconf-updatepo
 	dh_clean
 	$(MAKE) -C artwork clean
+	-rm -f keys/neurodebian-archive-keyring.asc
