@@ -1,3 +1,12 @@
+neurodebian (0.42.3) unstable; urgency=medium
+
+  * neurodebian-archive-keyring:  Provide a new RSA archive key in
+    addition (for compat with elderly systems) to elderly systems.
+    Newer archives are dual-signed. Older one will be deprecated in a bit.
+  * minor other compatibility issues addressed in the website.
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Tue, 26 Aug 2025 13:24:21 -0400
+
 neurodebian (0.42.2) unstable; urgency=medium
 
   * Added nd24.04 (ubuntu noble)
