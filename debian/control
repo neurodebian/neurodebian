@@ -8,8 +8,9 @@ Build-Depends: debhelper (>= 12~),
                help2man,
                inkscape,
                imagemagick,
+               gpg,
                python3-html5lib,
-               po-debconf
+               po-debconf,
 Standards-Version: 4.5.0
 Vcs-Browser: http://github.com/neurodebian/neurodebian
 Vcs-Git: http://github.com/neurodebian/neurodebian
