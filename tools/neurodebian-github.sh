@@ -14,7 +14,7 @@ set -xe
 sudo apt-get update -qq
 
 # To troubleshoot failing connections to neurodebian
-sudo apt-get install net-tools traceroute coreutils
+sudo apt-get install -y net-tools traceroute coreutils
 sudo traceroute -T neuro.debian.net
 echo "Request non-existing uniq file to ease tracking this connection (for troubleshooting)"
 rseed=$RANDOM
@@ -22,7 +22,7 @@ echo "Date: `date`     Seed: $rseed"
 wget -q -O- http://neuro.debian.net/_files/neurodebian-travis.sh-$RANDOM-repo:${GITHUB_REPOSITORY/\//--}-job:$GITHUB_RUN_ID || :
 
 # Figure out what Ubuntu release GitHub environment is based on
-sudo apt-get install lsb-release
+sudo apt-get install -y lsb-release
 cat /etc/lsb-release
 source /etc/lsb-release
 

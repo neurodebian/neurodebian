@@ -15,7 +15,7 @@ set -o pipefail
 sudo apt-get update -qq
 
 # To troubleshoot failing connections to neurodebian
-sudo apt-get install net-tools traceroute coreutils
+sudo apt-get install -y net-tools traceroute coreutils
 sudo traceroute -T neuro.debian.net
 echo "Request non-existing uniq file to ease tracking this connection (for troubleshooting)"
 echo "Date: `date`     Seed: $rseed"
@@ -23,7 +23,7 @@ rseed=$RANDOM
 wget -q -O- http://neuro.debian.net/_files/neurodebian-travis.sh-$RANDOM-repo:$TRAVIS_REPO_SLUG-job:$TRAVIS_JOB_NUMBER || :
 
 # Figure out what Ubuntu release travis environment is based on
-sudo apt-get install lsb-release
+sudo apt-get install -y lsb-release
 cat /etc/lsb-release
 source /etc/lsb-release
 
