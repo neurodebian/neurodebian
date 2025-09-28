@@ -44,13 +44,16 @@ jobs:
           sudo apt-cache policy
 
   test-oneliner:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, ubuntu-22.04]
     steps:
       - name: Check out repository
         uses: actions/checkout@v3
 
       - name: Test the ultimate one-liner setup for NeuroDebian repository
-        run: bash tools/neurodebian-github.sh
+        run: bash tools/neurodebian-ci-setup.sh
 
   test:
     runs-on: ubuntu-latest
