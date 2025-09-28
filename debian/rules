@@ -44,6 +44,8 @@ override_dh_auto_build:
 		-n "configure APT to use NeuroDebian repository" > build/man/nd-configurerepo.1
 	# export keyring as ascii for /etc
 	gpg --no-default-keyring --keyring keys/neurodebian-archive-keyring.gpg --armor --export > keys/neurodebian-archive-keyring.asc
+	# and it should be the same as our static copy!
+	cp keys/neurodebian-archive-keyring.asc sphinx/_static/neuro.debian.net.asc
 
 override_dh_auto_install:
 
