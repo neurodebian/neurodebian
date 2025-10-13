@@ -17,7 +17,7 @@ website-build-depends:
 	: # Python modules
 	sudo apt-get install python-sphinx python-argparse python-xdg python-debian python-html5lib
 	: # JavaScripts
-	sudo apt-get install libjs-jquery-easing libjs-jquery-mousewheel libjs-jquery-fancybox
+	sudo apt-get install libjs-jquery libjs-jquery-easing libjs-jquery-mousewheel libjs-jquery-fancybox
 
 
 pics:
