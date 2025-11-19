@@ -3,9 +3,14 @@ name: Test
 on:
   pull_request:
   push:
+  schedule:
+    # Run weekly on Sundays at 00:00 UTC
+    - cron: '0 0 * * 0'
 
 jobs:
   test-distro:
+    # Only run on scheduled cron jobs
+    if: github.event_name == 'schedule'
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
