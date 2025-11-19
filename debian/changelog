@@ -1,3 +1,27 @@
+neurodebian (0.43.0) unstable; urgency=medium
+
+  * CI improvements:
+    - Refactored and improved GitHub Actions CI workflows with better
+      separation of tests for nd-configurerepo and nd_freeze
+    - Added neurodebian-ci-setup.sh helper script for CI environments
+    - Added support for testing on both ubuntu-latest and ubuntu-22.04
+    - Fixed apt-get install scripts to include -y flag for non-interactive
+      operation
+  * neurodebian-archive-keyring:
+    - Updated neuro.debian.net.asc to contain both archive keys
+    - Fixed key installation procedures to work with modern APT/GPG
+      (Closes: https://github.com/neurodebian/neurodebian/issues/91)
+  * Added support for new Ubuntu release (Plucky Puffin 25.04)
+  * Website improvements:
+    - Fixed jQuery installation and loading in website templates
+    - Installed all neurodebian-*sh helper scripts to website
+  * debian/control:
+    - Bumped Standards-Version to 4.7.0 (no changes required)
+  * debian/rules:
+    - Install helper scripts to website deployment
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Wed, 19 Nov 2025 14:23:43 -0500
+
 neurodebian (0.42.3) unstable; urgency=medium
 
   * neurodebian-archive-keyring:  Provide a new RSA archive key in

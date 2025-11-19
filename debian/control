@@ -11,7 +11,7 @@ Build-Depends: debhelper (>= 12~),
                gpg,
                python3-html5lib,
                po-debconf,
-Standards-Version: 4.5.0
+Standards-Version: 4.7.0
 Vcs-Browser: http://github.com/neurodebian/neurodebian
 Vcs-Git: http://github.com/neurodebian/neurodebian
 Homepage: http://neuro.debian.net
