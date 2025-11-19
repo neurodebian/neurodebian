@@ -34,6 +34,7 @@ jobs:
       - name: Debug on failure
         if: failure()
         run: |
+          # -x leads to printout to stderr and logs do not interleave correctly...
           set -ex
           ls -lR /etc/apt || :
           cat /etc/apt/sources.list.d/neurodebian.sources.list || :
@@ -58,8 +59,11 @@ jobs:
       - name: Test the ultimate one-liner setup for NeuroDebian repository
         run: bash tools/neurodebian-ci-setup.sh
 
-  test:
-    runs-on: ubuntu-latest
+  test-nd-configurerepo:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, ubuntu-22.04]
     steps:
       - name: Check out repository
         uses: actions/checkout@v3
@@ -84,6 +88,19 @@ jobs:
           # TODO: for some reason disables it again :-/  Need to get something going already, disabled for now
           #NEURODEBIAN_ENABLE=1 NEURODEBIAN_VERBOSE=10 sudo apt-get install -y --reinstall neurodebian
           test -f /etc/apt/sources.list.d/neurodebian.sources.list
+  
+  test-nd_freeze:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, ubuntu-22.04]
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+      
+      - name: install neurodebian using our tool (tested above)
+        run: |
+          sudo tools/nd-configurerepo
 
       - name: Test nd_freeze
         run: bash tools/tests/test_nd_freeze
