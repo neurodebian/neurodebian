@@ -42,7 +42,7 @@ wget -O- "http://neuro.debian.net/lists/${DISTRIB_CODENAME}.us-nh.full" | $sudo 
 
 if [ -e "/etc/apt/trusted.gpg.d/" ]; then
     # new way -- just dump keyring there from our site copy
-    $sudo wget -q -O/etc/apt/trusted.gpg.d/neuro.debian.net.asc http://neuro.debian.net/_static/neuro.debian.net.asc 
+    $sudo wget -q -O/etc/apt/trusted.gpg.d/neuro.debian.net.asc https://neuro.debian.net/_static/neuro.debian.net.asc
 else
     # add old key old way
     $sudo apt-key adv --recv-keys --keyserver hkps://keyserver.ubuntu.com 0xA5D32F012649A5A9 \

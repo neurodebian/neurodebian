@@ -112,9 +112,13 @@ Frequently Asked Questions
 
     1. Get the key. Either download the `repository key from here
        <_static/neuro.debian.net.asc>`_
-       or fetch it from http://wwwkeys.pgp.net (0xA5D32F012649A5A9).
+       or fetch it from http://wwwkeys.pgp.net (0x439754ED1F42AA2C).
 
-    2. Now feed the key into APT by invoking::
+    2. On modern Debian and Ubuntu systems with `/etc/apt/trusted.gpg.d/` just install that key under that folder, e.g.::
+
+		 wget -q -O/etc/apt/trusted.gpg.d/neuro.debian.net.asc https://neuro.debian.net/_static/neuro.debian.net.asc
+
+	   On older systems with apt-key feed the key into APT by invoking::
 
          apt-key add #file#
 

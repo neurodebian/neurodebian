@@ -143,7 +143,7 @@ You are ready to go -- enjoy NeuroDebian!
     if(mir in mirrors) {
         var retrepo = "wget -O- http://neuro.debian.net/lists/" + rel + "."
          + mir + "." + comp + " | sudo tee /etc/apt/sources.list.d/neurodebian.sources.list\n"
-         + "sudo apt-key adv --recv-keys --keyserver hkps://keyserver.ubuntu.com 0xA5D32F012649A5A9\n";
+         + "sudo wget -q -O/etc/apt/trusted.gpg.d/neuro.debian.net.asc https://neuro.debian.net/_static/neuro.debian.net.asc\n";
         return retrepo;
     }
 

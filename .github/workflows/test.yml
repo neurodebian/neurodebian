@@ -6,7 +6,10 @@ on:
 
 jobs:
   test-distro:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, ubuntu-22.04]
     steps:
       - name: Verify that we can install neurodebian from APT
         run: |
@@ -64,7 +67,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '^3.5'
+          python-version: '^3.10'
 
       - name: Verify that we can install neurodebian using our tool
         run: |

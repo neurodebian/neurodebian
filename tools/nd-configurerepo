@@ -19,7 +19,9 @@ set -u
 
 nd_aptenable_version=0.1
 
-nd_key_id=0xA5D32F012649A5A9
+nd_key_id=0x439754ED1F42AA2C
+nd_key_url=https://neuro.debian.net/_static/neuro.debian.net.asc
+nd_key_installpath=/etc/apt/trusted.gpg.d/neuro.debian.net.asc
 nd_config_url=https://raw.githubusercontent.com/neurodebian/neurodebian/master/neurodebian.cfg
 nd_config_file=/etc/neurodebian/neurodebian.cfg
 nd_mirror_origin=http://neuro.debian.net/debian
@@ -41,6 +43,7 @@ ae_defun_only=${NEURODEBIAN_DEFUN_ONLY:-} # mode to source this file as a "libra
 
 ae_sudo=
 exe_dir=$(dirname $0)
+nd_key_dir=$(dirname "$nd_key_installpath")
 do_print_release=
 do_print_flavor=
 
@@ -82,7 +85,7 @@ print_version()
     cat << EOT
 nd-configurerepo $nd_aptenable_version
 
-Copyright (C) 2014-2023 Yaroslav Halchenko <debian@onerussian.com>
+Copyright (C) 2014-2025 Yaroslav Halchenko <debian@onerussian.com>
 
 Licensed under GNU Public License version 3 or later.
 This is free software; see the source for copying conditions.  There is NO
@@ -590,9 +593,20 @@ assure_command_from_package gpg gnupg 1
 # so, if we're not running gnupg 1.x, explicitly install dirmngr too
 gpg --version | grep -q '^gpg (GnuPG) 1\.' || assure_command_from_package dirmngr dirmngr 1
 
-if LANG=C eval $ae_sudo apt-key export $nd_key_id 2>&1 1>/dev/null | grep -qe "nothing exported"; then
-    print_verbose 1 "Fetching the key from the server"
-    eval_dry apt-key adv --recv-keys --keyserver hkps://keyserver.ubuntu.com $nd_key_id
+if hash apt-key; then
+    if LANG=C eval $ae_sudo apt-key export $nd_key_id 2>&1 1>/dev/null | grep -qe "nothing exported"; then
+        print_verbose 1 "Fetching the key from the server"
+        eval_dry apt-key adv --recv-keys --keyserver hkps://keyserver.ubuntu.com $nd_key_id
+    fi
+elif [ -d "$nd_key_dir" ]; then
+    if [ ! -e "$nd_key_installpath" ]; then
+        # must be using not within debian package which would depend on the neurodebian-archive-keyring
+        # which would provide that file
+        print_verbose 1 "Fetching the key from the server under /etc/apt/trusted.gpg.d/"
+        eval_dry wget -q -O"$nd_key_installpath" "$nd_key_url"
+    fi
+else
+    error 12 "There is neither apt-key nor $nd_key_dir folder. Don't know how to install on this system"
 fi
 
 
