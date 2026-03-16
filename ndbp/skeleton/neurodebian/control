@@ -1,0 +1,52 @@
+# (Required) Targets to supply to neurodebian-build(1) if user supplies no arguments
+#
+# The space-separated list of targets neurodebian-build(1) expects to work on.
+#
+# The target is composed of action, vendor, distribution and architecture
+# separated with dash.
+#
+# The action is mandatory and can be one of: 'build', 'autopkgtest', 'lintian',
+# 'reprotest'.
+#
+# The vendor is also mandatory and can be one of those defined in NeuroDebian
+# distribution info (distinfo) files. Examples are 'debian', 'neurodebian' etc.
+#
+# The distribution is optional and can be one of those defined in NeuroDebian
+# distribution info (distinfo) files. Examples are 'sid', 'jammy' etc.
+# If omitted, all supported distributions are included as mentioned in
+# distribution info (distinfo) files for respective vendor.
+#
+# The architecture is optional and can be one of those defined in NeuroDebian
+# distribution info (distinfo) files. Examples are: 'source', 'all', 'amd64' etc.
+# If omitted, all architectures are included as mentioned in distribution info
+# (distinfo) files for respective vendor and distribution.
+#
+# For example, for package maintained by NeuroDebian team that gets uploaded to
+# debian/sid and neurodebian/*, the settings can be:
+#
+#build.default-targets: build-neurodebian lintian-neurodebian-sid build-debian-sid lintian-debian-sid
+#
+# For package not maintained by NeuroDebian team that gets uploaded only to
+# neurodebian/*, the settings can be:
+#
+#build.default-targets: build-neurodebian lintian-neurodebian-sid
+#
+build.default-targets: build-neurodebian lintian-neurodebian-sid
+
+# (Optional) Whether to restore 'debian/gbp.conf' from pre-import revision after
+# neurodebian-import-dsc(1).
+#
+# This becomes necessary if the package in Debian is maintained by someone who
+# does not use gbp(1) and does not include gbp.conf(5) in Debian packaging.
+#
+# As gbp.conf(5) configures debian, upstream, pristine-tar branches, tag formats
+# and other options used by gbp-import-orig(1) and gbp-import-dsc(1), the only
+# way to ensure the new package gets imported into correct branches is to add
+# 'debian/gbp.conf' prior to first import and restore it every time
+# neurodebian-import-dsc(1) finishes. Note neurodebian-import-orig(1) preserves
+# the 'debian/' directory so restoration of 'debian/gbp.conf' is not needed there.
+#
+# The setting value can be either 'true' or 'false' and default value is 'false'
+# (gbp.conf is not restored after import of dsc-package)
+#
+#import-dsc.restore-gbp-conf: false

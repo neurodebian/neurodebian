@@ -1,0 +1,372 @@
+#!/bin/sh
+
+# Version of this script
+VERSION=1.0
+
+# Start of functions
+
+# Usage
+
+print_version() {
+	cat <<EOT
+ndbp-init $VERSION
+
+Copyright: 2024, The NeuroDebian Team <team@neuro.debian.net>
+           2024, Vasyl Gello <vasek.gello@gmail.com>
+
+
+Licensed under GNU Public License version 3 or later.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+EOT
+}
+
+print_usage() (
+	cat 0<<.a
+Usage:
+    ndbp-init [--help | --version | --dry-run] \
+        [--add-skeleton] [--make-unsupported-branches] \
+
+Options:
+    --dry-run                    - Identify which branches to create but
+                                   do not create actual branches
+    --help                       - Show brief help message
+    --version                    - Show version and copyright
+    --add-skeleton               - Add skeleton of NeuroDebian packaging
+                                   if no NeuroDebian packaging is found
+    --make-unsupported-branches  - Create synthetic branches for unsupported
+                                   NeuroDebian releases
+
+Provisions the Git repo for NeuroDebian packaging workflow.
+
+First, if no NeuroDebian packaging is found in the calling branch, add skeleton
+of NeuroDebian packaging if '--add-skeleton-packaging' option is set, or
+exit otherwise.
+
+Then, add NeuroDebian branches in Git packaging repository for supported
+NeuroDebian releases according to distinfo files.
+
+If '--make-unsupported-branches' option is set, branches are created for all
+NeuroDebian releases known in distinfos, regardless of their support status.
+
+This script is part of NeuroDebian tooling available as NeuroDebian package
+'neurodebian-dev' or the upstream repository on Github:
+
+<https://github.com/neurodebian/neurodebian>
+
+To use the newest version of NeuroDebian tooling, please point the environment
+variable 'NEURODEBIAN_TOOLING_PATH' to it and add the tools to PATH:
+
+export NEURODEBIAN_TOOLING_PATH="\${PWD}"
+export PATH="\${NEURODEBIAN_TOOLING_PATH}:\${PATH}"
+
+.a
+)
+
+# Start of script
+
+# Parse command-line options
+
+DRY_RUN=0
+SKELETON=0
+SUPPORTED=true
+
+case "${1}" in
+-h | --help)
+	print_usage
+	exit 0
+	;;
+-v | --version)
+	print_version
+	exit 0
+	;;
+--dry-run)
+	DRY_RUN=1
+	;;
+--add-skeleton)
+	SKELETON=1
+	;;
+--make-unsupported-branches)
+	SUPPORTED=false
+	;;
+esac
+
+if [ ${DRY_RUN} -eq 1 ]; then
+	DRY_RUN="1"
+else
+	DRY_RUN="1 0"
+fi
+
+# Required tools: sh, cat, cp, git
+
+REQUIRED_TOOLS="cat cp git"
+
+for _TEMP in ${REQUIRED_TOOLS}; do
+	if ! command -v "${_TEMP}" 1>/dev/null 2>&1; then
+		echo "ERROR: Required tool ${_TEMP} not found!" >&2
+		return 1
+	fi
+done
+
+unset _TEMP
+
+# Check if NeuroDebian tooling location is overridden via
+# NEURODEBIAN_TOOLING_PATH environment variable.
+
+if [ -z "${NEURODEBIAN_TOOLING_PATH}" ]; then
+	NEURODEBIAN_TOOLING_PATH="/usr/share/neurodebian"
+fi
+
+export NEURODEBIAN_TOOLING_PATH
+
+# Warn if NeuroDebian tooling is not present
+
+if [ ! -d "${NEURODEBIAN_TOOLING_PATH}" ]; then
+	cat >&2 0<<.a
+
+ERROR: Can not find NeuroDebian tooling!
+ERROR: Paths searched:
+ERROR:  - system: /usr/share/neurodebian
+ERROR:  - user: ${NEURODEBIAN_TOOLING_PATH}
+
+.a
+	return 1
+fi
+
+# Include ndbp.conf(5) helper
+
+if [ ! -f "${NEURODEBIAN_TOOLING_PATH}/ndbp/helpers/ndbp-conf-file-helper" ]; then
+	echo "ERROR: Can not find ndbp.conf file helper!" >&2
+	return 1
+fi
+
+. "${NEURODEBIAN_TOOLING_PATH}/ndbp/helpers/ndbp-conf-file-helper"
+
+# Include distinfo helper
+
+if [ ! -f "${NEURODEBIAN_TOOLING_PATH}/ndbp/helpers/distinfo-file-helper" ]; then
+	echo "ERROR: Can not find rfc822 file helper!" >&2
+	return 1
+fi
+
+. "${NEURODEBIAN_TOOLING_PATH}/ndbp/helpers/distinfo-file-helper"
+
+# Bit of sanity check: report and exit if the branch is synthetic
+
+if [ -f "debian/README.NeuroDebian" ]; then
+	cat >&2 0<<.a
+
+ERROR: Current branch is a NeuroDebian synthetic branch!
+ERROR:
+ERROR: Are you sure you want to create new branches from this branch?
+
+.a
+	exit 1
+fi
+
+# Bit of sanity check: try to et 'EMAIL', 'DEBEMAIL', 'DEBFULLNAME'
+# environment variables from environment, ndbp.conf, git configs and
+# exit if none is set
+
+if [ -z "${DEBEMAIL}" ] && [ -z "${DEBFULLNAME}" ]; then
+	DEBFULLNAME="$(ndbp_get_debfullname)"
+	DEBEMAIL="$(ndbp_get_debemail)"
+fi
+
+if [ -z "${DEBEMAIL}" ] && [ -z "${DEBFULLNAME}" ]; then
+	DEBFULLNAME="$(git config user.name)"
+	DEBEMAIL="$(git config user.email)"
+fi
+
+if [ -z "${DEBEMAIL}" ] && [ -z "${DEBFULLNAME}" ]; then
+	DEBFULLNAME="$(git config --global user.name)"
+	DEBEMAIL="$(git config --global user.email)"
+fi
+
+if [ -z "${DEBEMAIL}" ] && [ -z "${DEBFULLNAME}" ] && [ -n "${EMAIL}" ]; then
+	DEBFULLNAME="${EMAIL}"
+	DEBEMAIL="${EMAIL}"
+	unset EMAIL
+fi
+
+if [ -z "${DEBEMAIL}" ] && [ -z "${DEBFULLNAME}" ]; then
+	echo "ERROR: None of environment variables 'EMAIL', 'DEBEMAIL' and 'DEBFULLNAME' are set!" >&2
+	exit 1
+fi
+
+export DEBFULLNAME DEBEMAIL
+
+# Set git repo user.name and user.email
+
+if [ -z "$(git config user.name)" ]; then
+	git config user.name "${DEBFULLNAME}"
+fi
+
+if [ -z "$(git config user.email)" ]; then
+	git config user.email "${DEBEMAIL}"
+fi
+
+# Bit of sanity check: exit if branch we are on has no "debian/neurodebian"
+# directory, minimal files like 'rules' or 'control' absent inside
+
+if [ ! -d "debian/neurodebian" ] ||
+	[ ! -f "debian/neurodebian/control" ] ||
+	[ ! -f "debian/neurodebian/rules" ]; then
+
+	if [ "${SKELETON}" -eq 1 ]; then
+		# Add NeuroDebian packaging skeleton
+
+		cp \
+			-a \
+			"${NEURODEBIAN_TOOLING_PATH}/ndbp/skeleton/neurodebian" \
+			debian
+
+		# Commit the packaging and ask the maintainer to re-run the tool
+
+		git add debian/neurodebian
+		git commit -m "ndbp-init: Skeleton provisioning of NeuroDebian packaging"
+
+		cat >&2 0<<.a
+
+INFO: Skeleton of NeuroDebian packaging was implanted in the repo!
+INFO:
+INFO: Please adjust the needed information inside 'debian/neurodebian', commit
+INFO: the changes and re-run the 'ndbp-init' script!
+
+.a
+		exit 0
+	else
+		# Report and exit
+
+		cat >&2 0<<.a
+
+ERROR: Current branch does not have proper 'debian/neurodebian' directory
+ERROR:
+ERROR: Are you sure you want to create new branches from this branch?
+
+.a
+		exit 1
+	fi
+fi
+
+# Read supported NeuroDebian releases and their packaging branch names
+# to get list of branches to create or check out
+
+if ! SUPPORTED_DISTS="$(distinfo_find_supported_distributions "neurodebian" "${SUPPORTED}")"; then
+	echo "ERROR: Can not list release targets!" >&2
+	exit 1
+fi
+
+RELEASETARGETS=""
+while read -r SUPPORTED_DIST; do
+	if [ -z "${RELEASETARGETS}" ]; then
+		RELEASETARGETS="neurodebian-${SUPPORTED_DIST}"
+	else
+		RELEASETARGETS="$(
+			cat 0<<.b
+${RELEASETARGETS}
+neurodebian-${SUPPORTED_DIST}
+.b
+		)"
+	fi
+done 0<<.a
+${SUPPORTED_DISTS}
+.a
+
+PKGBRANCHES=""
+while read -r RELEASETARGET; do
+	if ! PKGBRANCH="$(distinfo_get_pkgbranch "${RELEASETARGET}")"; then
+		echo "ERROR: Can not find packaging branch for release '${RELEASETARGET}'!" >&2
+		exit 1
+	fi
+
+	if [ -z "${PKGBRANCHES}" ]; then
+		PKGBRANCHES="${PKGBRANCH}"
+	else
+		PKGBRANCHES="$(
+			cat 0<<.b
+${PKGBRANCHES}
+${PKGBRANCH}
+.b
+		)"
+	fi
+done 0<<.a
+${RELEASETARGETS}
+.a
+
+# Now check we can make all branches in a dry-run and then
+# actually make the branches if they are not present locally
+
+for _DRY_RUN in ${DRY_RUN}; do
+	while read -r _BRANCH; do
+		if ! git show-ref --quiet --verify -- "refs/heads/${_BRANCH}"; then
+			# We do not to abuse checkout and stash uncommitted / untracked
+			# changes so do the guessing part ourselves here
+
+			# Iterate over remotes and check if the tracking branch exists
+			# in the each remote. If more than one remote hosts branch with
+			# same name, err out following git-branch(1) "guess" logic
+
+			_TRACKING_REMOTE=""
+			while read -r _REMOTE; do
+				_REMOTE_BRANCH="refs/remotes/${_REMOTE}/${_BRANCH}"
+				if git show-ref \
+					--quiet \
+					--verify \
+					-- \
+					"refs/remotes/${_REMOTE}/${_BRANCH}"; then
+					if [ -n "${_TRACKING_REMOTE}" ]; then
+						echo "ERROR: Minimum two remotes have branch '${_BRANCH}': can not guess!" >&2
+						exit 1
+					else
+						_TRACKING_REMOTE="${_REMOTE}"
+					fi
+				fi
+			done 0<<.a
+$(git remote)
+.a
+
+			# If there is remote tracking branch, mark it as upstream for new one
+			# or create a new one from current branch
+
+			if [ "${_DRY_RUN}" -eq 0 ]; then
+				echo "INFO: Creating new branch ${_BRANCH} ..."
+
+				if [ -n "${_TRACKING_REMOTE}" ]; then
+					if ! git update-ref \
+						"refs/heads/${_BRANCH}" \
+						"refs/remotes/${_TRACKING_REMOTE}/${_BRANCH}"; then
+						echo "ERROR: Can not create branch '${_BRANCH} !" >&2
+						exit 1
+					fi
+
+					if ! git config \
+						"branch.${_BRANCH}.remote" \
+						"${_TRACKING_REMOTE}"; then
+						echo "ERROR: Can not set remote for branch '${_BRANCH} !" >&2
+						exit 1
+					fi
+
+					if ! git config \
+						"branch.${_BRANCH}.merge" \
+						"refs/heads/${_BRANCH}"; then
+						echo "ERROR: Can not set merge for branch '${_BRANCH} !" >&2
+						exit 1
+					fi
+				elif ! git update-ref "refs/heads/${_BRANCH}" HEAD; then
+					echo "ERROR: Can not create branch '${_BRANCH} !" >&2
+					exit 1
+				fi
+			elif [ "${DRY_RUN}" = "1" ]; then
+				echo "INFO: Would create new branch ${_BRANCH} ..."
+			fi
+		fi
+	done 0<<.a
+${PKGBRANCHES}
+.a
+done
+
+# Report done
+
+echo "All done!"

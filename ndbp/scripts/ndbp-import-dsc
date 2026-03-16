@@ -1,0 +1,357 @@
+#!/bin/sh
+
+# Version of this script
+VERSION=1.0
+
+# Start of functions
+
+# Usage
+
+print_version() {
+	cat <<EOT
+ndbp-import-dsc $VERSION
+
+Copyright: 2024, The NeuroDebian Team <team@neuro.debian.net>
+           2024, Vasyl Gello <vasek.gello@gmail.com>
+
+
+Licensed under GNU Public License version 3 or later.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+EOT
+}
+
+print_usage() (
+	cat 0<<.a
+Usage:
+    ndbp-import-dsc \\
+       [--help | --verbose-help | --version] \\
+       path-to-dsc | url \\
+       [target]
+
+Options:
+    --help                       - Show brief help message
+    --verbose-help               - Show verbose help message
+    --version                    - Show version and copyright
+
+Target Options:
+    path-to-dsc                  - Path to Debian package (.dsc format) on
+                                   locally-accessible filesystem
+
+    url                          - URL to Debian package (.dsc format) on
+                                   network resource
+
+    target                       - optional name of new Git repository to be
+                                   created if ndbp-import-dsc is invoked
+                                   not from an existing Git repository
+
+Imports Debian package (in .dsc format) into Git packaging branch, preserving
+NeuroDebian packaging.
+
+.a
+)
+
+print_man() (
+	cat 0<<.a
+DETAILS OF OPERATION
+
+First the script checks that the Git packaging branch it is invoked from
+contains NeuroDebian packaging inside "debian/neurodebian" directory.
+
+Then it invokes gbp-import-dsc(1). If the import succeeds, the script
+restores NeuroDebian packaging in 'debian/neurodebian' directory and
+gbp(1) per-package settings in 'debian/gbp.conf' based on setting
+'import-dsc.restore-gbp-conf' in 'debian/neurodebian/control' file.
+
+EXAMPLES
+
+Import Debian package "test" of version "0.1.2-1" from the directory one
+level above the current Git worktree, then refresh Debian patches and add new
+changelog entry for the release:
+
+    ndbp-import-dsc ../test_0.1.2-1.dsc
+
+Import from URL (needs the python3-request package installed):
+
+    ndbp-import-dsc "https://some.host/test_0.1.2-1.dsc"
+
+Please note gbp-import-dsc(1) options are not passed by the script.
+If some option is needed as a part of the package mantenance workflow,
+please define it in 'debian/gbp.conf' or report the bug against NeuroDebian
+tooling.
+
+.a
+)
+
+print_footer() (
+	cat 0<<.a
+This script is part of NeuroDebian tooling available as NeuroDebian package
+'neurodebian-dev' or the upstream repository on Github:
+
+<https://github.com/neurodebian/neurodebian>
+
+To use the newest version of NeuroDebian tooling, please point the environment
+variable 'NEURODEBIAN_TOOLING_PATH' to it and add the tools to PATH:
+
+export NEURODEBIAN_TOOLING_PATH="\${PWD}"
+export PATH="\${NEURODEBIAN_TOOLING_PATH}:\${PATH}"
+
+.a
+)
+
+# Start of script
+
+# Parse command-line options
+
+# Flag to filter out current _ARG if 1
+_FILTER=0
+
+for _ARG; do
+	shift
+
+	if [ ${_FILTER} -eq 1 ]; then
+		_FILTER=0
+		continue
+	fi
+
+	case "${_ARG}" in
+	# Help
+	-h | --help)
+		print_usage
+		print_footer
+		exit 0
+		;;
+	--verbose-help)
+		print_usage
+		print_man
+		print_footer
+		exit 0
+		;;
+	-v | --version)
+		print_version
+		exit 0
+		;;
+	# allow --uscan
+	--uscan) ;;
+	# filter out gbp(1) options
+	# the options below accept two forms: '--opt=val' and '--opt val'
+	# this means that we need to filter out two consecutive args if
+	# the delimiter is space ...
+	--color* | --allow-same-versions | --merge-mode)
+		_FILTER=1
+		continue
+		;;
+	--author-date-is-committer-date | --author-is-committer)
+		_FILTER=1
+		continue
+		;;
+	--debian-branch | --debian-tag | --filter | --keyid | --upstream-branch)
+		_FILTER=1
+		continue
+		;;
+	--upstream-tag | --upstream-vcs-tag | --repo-user | --repo-email)
+		_FILTER=1
+		continue
+		;;
+	# ... but only one arg is delimiter is '=' or just a single option
+	--*)
+		continue
+		;;
+	# Pass all other options
+	*) ;;
+	esac
+
+	set -- "$@" "${_ARG}"
+done
+
+# Required tools: sh, gbp, git
+
+REQUIRED_TOOLS="gbp git"
+
+for _TEMP in ${REQUIRED_TOOLS}; do
+	if ! command -v "${_TEMP}" 1>/dev/null 2>&1; then
+		echo "ERROR: Required tool ${_TEMP} not found!" >&2
+		return 1
+	fi
+done
+
+unset _TEMP
+
+# Check if NeuroDebian tooling location is overridden via
+# NEURODEBIAN_TOOLING_PATH environment variable.
+
+if [ -z "${NEURODEBIAN_TOOLING_PATH}" ]; then
+	NEURODEBIAN_TOOLING_PATH="/usr/share/neurodebian"
+fi
+
+export NEURODEBIAN_TOOLING_PATH
+
+# Warn if NeuroDebian tooling is not present
+
+if [ ! -d "${NEURODEBIAN_TOOLING_PATH}" ]; then
+	cat >&2 0<<.a
+
+ERROR: Can not find NeuroDebian tooling!
+ERROR: Paths searched:
+ERROR:  - system: /usr/share/neurodebian
+ERROR:  - user: ${NEURODEBIAN_TOOLING_PATH}
+
+.a
+	return 1
+fi
+
+# Include rfc822 helper
+
+if [ ! -f "${NEURODEBIAN_TOOLING_PATH}/ndbp/helpers/rfc822-file-helper" ]; then
+	echo "ERROR: Can not find rfc822 file helper!" >&2
+	return 1
+fi
+
+. "${NEURODEBIAN_TOOLING_PATH}/ndbp/helpers/rfc822-file-helper"
+
+# Bit of sanity check: exit if branch we are on has no "debian/neurodebian"
+# directory, minimal files like 'rules' or 'control' absent inside, or
+# 'README.NeuroDebian' is present
+
+if [ ! -d "debian/neurodebian" ] || \
+	[ ! -f "debian/neurodebian/control" ] || \
+	[ ! -f "debian/neurodebian/rules" ] || \
+	[ -f "debian/README.NeuroDebian" ]; then
+	cat >&2 0<<.a
+
+ERROR: Current branch does not have 'debian/neurodebian' directory,
+ERROR: or is a NeuroDebian synthetic branch!
+ERROR:
+ERROR: Are you sure you want to create new branches from this branch?
+
+.a
+	exit 1
+fi
+
+if [ ! -f "debian/gbp.conf" ]; then
+	cat >&2 0<<.a
+
+ERROR: Current branch does not have 'debian/gbp.conf' file!
+ERROR:
+ERROR: This file hosts gbp(1) preferences like 'debian-branch',
+ERROR: 'upstream-branch', 'pristine-tar' etc vital to NeuroDebian packaging workflow.
+
+.a
+	exit 1
+fi
+
+# Save current branch tip to restore NeuroDebian packaging from it
+
+if ! BRANCH_HEAD="$(git rev-parse 'HEAD^{commit}')"; then
+	echo "ERROR: Can not save the commit at HEAD!" >&2
+	exit 1
+fi
+
+# Try import the release tarballs from local files, URL or uscan(1)
+
+echo "INFO: Importing Debian package ..."
+echo ""
+
+if ! gbp import-dsc \
+	"$@"; then
+	echo "ERROR: Import failed!" >&2
+	exit 1
+fi
+
+# Try restoring NeuroDebian packaging
+
+echo ""
+echo "INFO: Restoring 'debian/neurodebian' directory ..."
+echo ""
+
+rm -rf "debian/neurodebian"
+
+if ! git checkout "${BRANCH_HEAD}" -- "debian/neurodebian" 1>/dev/null; then
+	echo "ERROR: Can not restore 'debian/neurodebian' directory!" >&2
+	exit 1
+fi
+
+if ! git add debian/neurodebian 1>/dev/null; then
+	echo "ERROR: Can not add 'debian/neurodebian' directory!" >&2
+
+	if ! git reset --hard 1>/dev/null; then
+		echo "ERROR: Can not restore 'debian' directory!" >&2
+	fi
+
+	rm -rf "debian/neurodebian"
+
+	exit 1
+fi
+
+if ! git commit \
+	-m "ndbp-import-dsc: Restore NeuroDebian packaging" \
+	1>/dev/null; then
+	echo "ERROR: Can not commit 'debian/neurodebian' directory!" >&2
+
+	if ! git reset --hard 1>/dev/null; then
+		echo "ERROR: Can not restore 'debian/neurodebian' directory!" >&2
+	fi
+
+	rm -rf "debian/neurodebian"
+
+	exit 1
+fi
+
+echo ""
+echo "INFO: Restored 'debian/neurodebian' directory ..."
+echo ""
+
+# Now read 'debian/neurodebian/control' and determine what to do with
+# 'debian/gbp.conf': keep the imported one or restore one from this repository
+
+if ! GBP_CONF_POLICY="$(
+	rfc822_get_value \
+		'debian/neurodebian/control' \
+		'import-dsc.restore-gbp-conf' \
+		false \
+		true
+)"; then
+	GBP_CONF_POLICY="false"
+fi
+
+if [ "${GBP_CONF_POLICY}" = "true" ]; then
+	echo ""
+	echo "INFO: Restoring 'debian/gbp.conf' ..."
+	echo ""
+
+	if ! git checkout "${BRANCH_HEAD}" -- "debian/gbp.conf" 1>/dev/null; then
+		echo "ERROR: Can not restore 'debian/gbp.conf' file!" >&2
+		exit 1
+	fi
+
+	if ! git add debian/gbp.conf 1>/dev/null; then
+		echo "ERROR: Can not add 'debian/gbp.conf' file!" >&2
+
+		if ! git checkout debian/gbp.conf 1>/dev/null; then
+			echo "ERROR: Can not restore 'debian/gbp.conf'!" >&2
+		fi
+
+		exit 1
+	fi
+
+	if ! git commit \
+		-m "ndbp-import-dsc: Restore debian/gbp.conf" \
+		1>/dev/null; then
+		echo "ERROR: Can not commit 'debian/gbp.conf' file!" >&2
+
+		if ! git reset --hard 1>/dev/null; then
+			echo "ERROR: Can not restore 'debian/gbp.conf'!" >&2
+		fi
+
+		exit 1
+	fi
+
+	echo ""
+	echo "INFO: Restored 'debian/gbp.conf' ..."
+	echo ""
+fi
+
+# Report done
+
+echo "All done!"
