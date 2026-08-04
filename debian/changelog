@@ -1,3 +1,9 @@
+neurodebian (0.43.1) UNRELEASED; urgency=medium
+
+  * Add Ubuntu resolute
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Tue, 04 Aug 2026 14:54:31 -0400
+
 neurodebian (0.43.0) unstable; urgency=medium
 
   * CI improvements:
