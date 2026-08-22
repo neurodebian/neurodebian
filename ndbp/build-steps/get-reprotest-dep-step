@@ -1,0 +1,136 @@
+#!/bin/sh
+
+#
+# The build step script to download and cache reprotest(1)
+# inside container
+#
+# Copyright: 2024, The NeuroDebian Team <team@neuro.debian.net>
+#            2024, Vasyl Gello <vasek.gello@gmail.com>
+#
+
+# Required tools: sh, apt-get, dpkg, echo, mv
+
+REQUIRED_TOOLS="apt-get dpkg echo mv"
+
+for _TEMP in ${REQUIRED_TOOLS}; do
+	if ! command -v "${_TEMP}" 1>/dev/null 2>&1; then
+		echo "ERROR: Required tool ${_TEMP} not found!" >&2
+		return 1
+	fi
+done
+
+unset _TEMP
+
+# Start of script
+
+# Parse command-line arguments
+
+ARCH="${1}"
+CACHEDIR="${2}"
+
+if [ -z "${ARCH}" ]; then
+	echo "ERROR: Architecture can not be empty!" >&2
+	exit 1
+fi
+
+if [ -z "${CACHEDIR}" ]; then
+	echo "ERROR: Result cache directory can not be empty!" >&2
+	exit 1
+fi
+
+if [ ! -d "${CACHEDIR}" ]; then
+	echo "ERROR: Result cache directory can not be empty!" >&2
+	exit 1
+fi
+
+# Add architecture to dpkg (except 'all')
+
+if [ "${ARCH}" != "all" ]; then
+	if ! dpkg --add-architecture "${ARCH}"; then
+		echo "ERROR: Can not add '${ARCH}' to dpkg!" >&2
+		exit 1
+	fi
+fi
+
+# Update package indices
+
+exec apt-get update &
+
+CMDPID="$!"
+
+while true; do
+	wait "${CMDPID}"
+	RET=$?
+	[ "${RET}" -lt 128 ] && break
+done
+
+if [ "${RET}" -ne 0 ]; then
+	echo "ERROR: Can not 'apt-get update'!" >&2
+	exit 1
+fi
+
+# Download reprotest but do not install them
+
+exec \
+	apt-get install \
+	-yq \
+	--download-only \
+	reprotest &
+
+CMDPID="$!"
+
+while true; do
+	wait "${CMDPID}"
+	RET=$?
+	[ "${RET}" -lt 128 ] && break
+done
+
+if [ "${RET}" -ne 0 ]; then
+	echo "ERROR: Can not 'apt-get build-dep'!" >&2
+	exit 1
+fi
+
+# Move downloaded packages to cache directory
+
+for i in /var/cache/apt/archives/*.deb; do
+	if [ "${i}" != "/var/cache/apt/archives/*.deb" ]; then
+		if ! mv /var/cache/apt/archives/*.deb "${CACHEDIR}"; then
+			echo "ERROR: Can not copy packages to '${CACHEDIR}'!" >&2
+			exit 1
+		fi
+	fi
+	break
+done
+
+# Install apt-utils and make offline apt repository in ${CACHEDIR}
+
+exec apt-get install -yq apt-utils &
+CMDPID="$!"
+
+while true; do
+	wait "${CMDPID}"
+	RET=$?
+	[ "${RET}" -lt 128 ] && break
+done
+
+if [ "${RET}" -ne 0 ]; then
+	echo "ERROR: Can not install apt-utils!" >&2
+	exit 1
+fi
+
+if ! cd "${CACHEDIR}"; then
+	echo "ERROR: Can not move to '${CACHEDIR}'!" >&2
+	exit 1
+fi
+
+if ! apt-ftparchive packages . >Packages; then
+	echo "ERROR: Can not make ftp-archive packages!" >&2
+	exit 1
+fi
+
+if ! apt-ftparchive release . >Release; then
+	echo "ERROR: Can not make ftp-archive release!" >&2
+	exit 1
+fi
+
+exit 0

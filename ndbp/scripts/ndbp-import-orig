@@ -1,0 +1,450 @@
+#!/bin/sh
+
+# Version of this script
+VERSION=1.0
+
+# Start of functions
+
+# Usage
+
+print_version() {
+	cat <<EOT
+ndbp-import-orig $VERSION
+
+Copyright: 2024, The NeuroDebian Team <team@neuro.debian.net>
+           2024, Vasyl Gello <vasek.gello@gmail.com>
+
+
+Licensed under GNU Public License version 3 or later.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+EOT
+}
+
+print_usage() (
+	cat 0<<.a
+Usage:
+    ndbp-import-orig \\
+       [--help | --verbose-help | --version] \\
+       [--no-refresh-patches] \\
+       [--no-changelog] \\
+       [--finalize-changelog] \\
+       path-to-tarball | url | --uscan
+
+Options:
+    --help                       - Show brief help message
+    --verbose-help               - Show verbose help message
+    --version                    - Show version and copyright
+    --no-refresh-patches         - Do not refresh Debian patches
+    --no-changelog               - Do not create new Debian changelog entry
+    --finalize-changelog         - Finalize changelog on successful completion
+                                   (mutually exclusive with '--no-changelog')
+
+Target Options:
+    path-to-tarball              - Path to original upstream tarball (or
+                                   main tarball among multi-component tarballs)
+
+    url                          - URL to the original upstream tarball (or
+                                   main tarball among multi-component tarballs)
+
+    --uscan                      - Invoke uscan(1) to find and download the
+                                   upstream tarballs to be imported
+
+Imports original upstream tarballs into Git packaging branch preserving
+NeuroDebian packaging, optionally refreshes Debian patches and makes
+new changelog entry if patches apply cleanly or were merged upstream.
+
+.a
+)
+
+print_man() (
+	cat 0<<.a
+DETAILS OF OPERATION
+
+First the script checks that the Git packaging branch it is invoked from
+contains NeuroDebian packaging inside "debian/neurodebian" directory.
+
+Then it invokes gbp-import-orig(1) with hooks disabled and command line options
+(like '--debian-branch', '--upstream-branch' etc) filtered out. It is advised
+to define relevant gbp.conf(5) inside 'debian/gbp.conf' if these options are
+needed. The script will exit if that file is not found in the worktree.
+
+If the import succeeds, the script invokes debian-refresh-patches(1) and
+if they all apply, makes the Debian changelog entry targeting the release
+mentioned in the topmost previous changelog entry.
+
+EXAMPLES
+
+Import upstream tarball for package "test" of version "0.1.2" from the
+directory one level above the current Git worktree, then refresh Debian
+patches and add new changelog entry targeting UNRELEASED distribution
+for later manual intervention:
+
+    ndbp-import-orig ../test_0.1.2.orig.tar.gz
+
+Same but finalize the changelog entry in automatic mode:
+
+    ndbp-import-orig --finalize-changelog ../test_0.1.2.orig.tar.gz
+
+Import upstream tarballs and refresh patches but do not attempt to create
+changelog entry:
+
+    ndbp-import-orig --no-changelog ../test_0.1.2.orig.tar.gz
+
+Only import the tarball without additional processing (like
+'gbp import-orig ...'):
+
+    ndbp-import-orig \\
+        --no-refresh-patches \\
+        --no-changelog \\
+        ../test_0.1.2.orig.tar.gz
+
+Find and import upstream tarball with uscan(1):
+
+    ndbp-import-orig --uscan
+
+Import from URL (needs the python3-request package installed):
+
+    ndbp-import-orig "https://some.host/test_0.1.2.orig.tar.gz"
+
+Please note gbp-import-orig(1) options are not passed by the script.
+If some option is needed as a part of the package mantenance workflow,
+please define it in 'debian/gbp.conf' or report the bug against NeuroDebian
+tooling.
+
+.a
+)
+
+print_footer() (
+	cat 0<<.a
+This script is part of NeuroDebian tooling available as NeuroDebian package
+'neurodebian-dev' or the upstream repository on Github:
+
+<https://github.com/neurodebian/neurodebian>
+
+To use the newest version of NeuroDebian tooling, please point the environment
+variable 'NEURODEBIAN_TOOLING_PATH' to it and add the tools to PATH:
+
+export NEURODEBIAN_TOOLING_PATH="\${PWD}"
+export PATH="\${NEURODEBIAN_TOOLING_PATH}:\${PATH}"
+
+.a
+)
+
+# Start of script
+
+# Parse command-line options
+
+NO_PATCHES=0
+NO_CHANGELOG=0
+FINALIZE_DCH=0
+
+# Flag to filter out current _ARG if 1
+_FILTER=0
+
+for _ARG; do
+	shift
+
+	if [ ${_FILTER} -eq 1 ]; then
+		_FILTER=0
+		continue
+	fi
+
+	case "${_ARG}" in
+	# Help
+	-h | --help)
+		print_usage
+		print_footer
+		exit 0
+		;;
+	--verbose-help)
+		print_usage
+		print_man
+		print_footer
+		exit 0
+		;;
+	-v | --version)
+		print_version
+		exit 0
+		;;
+	# Script options
+	--no-refresh-patches)
+		NO_PATCHES=1
+		continue
+		;;
+	--no-changelog)
+		if [ "${FINALIZE_DCH}" -eq 1 ]; then
+			echo "ERROR: Mutually exclusive options: '--finalize-changelog' and '--no-changelog'!" >&2
+			exit 1
+		fi
+		NO_CHANGELOG=1
+		continue
+		;;
+	--finalize-changelog)
+		if [ "${NO_CHANGELOG}" -eq 1 ]; then
+			echo "ERROR: Mutually exclusive options: '--finalize-changelog' and '--no-changelog'!" >&2
+			exit 1
+		fi
+		FINALIZE_DCH=1
+		continue
+		;;
+	# allow --uscan
+	--uscan) ;;
+	# filter out gbp(1) options
+	# the options below accept two forms: '--opt=val' and '--opt val'
+	# this means that we need to filter out two consecutive args if
+	# the delimiter is space ...
+	--color* | --upstream-version | --merge-mode | --upstream-branch)
+		_FILTER=1
+		continue
+		;;
+	--debian-branch | --upstream-vcs-tag | --keyid | --upstream-tag)
+		_FILTER=1
+		continue
+		;;
+	--filter | --component | --postimport | --postunpack)
+		_FILTER=1
+		continue
+		;;
+	--upstream-signatures)
+		_FILTER=1
+		continue
+		;;
+	# ... but only one arg is delimiter is '=' or just a single option
+	--*)
+		continue
+		;;
+	# Pass all other options
+	*) ;;
+	esac
+
+	set -- "$@" "${_ARG}"
+done
+
+# Required tools: sh, gbp, git
+
+REQUIRED_TOOLS="gbp git"
+
+for _TEMP in ${REQUIRED_TOOLS}; do
+	if ! command -v "${_TEMP}" 1>/dev/null 2>&1; then
+		echo "ERROR: Required tool ${_TEMP} not found!" >&2
+		return 1
+	fi
+done
+
+unset _TEMP
+
+# Check if NeuroDebian tooling location is overridden via
+# NEURODEBIAN_TOOLING_PATH environment variable.
+
+if [ -z "${NEURODEBIAN_TOOLING_PATH}" ]; then
+	NEURODEBIAN_TOOLING_PATH="/usr/share/neurodebian"
+fi
+
+export NEURODEBIAN_TOOLING_PATH
+
+# Warn if NeuroDebian tooling is not present
+
+if [ ! -d "${NEURODEBIAN_TOOLING_PATH}" ]; then
+	cat >&2 0<<.a
+
+ERROR: Can not find NeuroDebian tooling!
+ERROR: Paths searched:
+ERROR:  - system: /usr/share/neurodebian
+ERROR:  - user: ${NEURODEBIAN_TOOLING_PATH}
+
+.a
+	return 1
+fi
+
+# Include ndbp.conf(5) helper
+
+if [ ! -f "${NEURODEBIAN_TOOLING_PATH}/ndbp/helpers/ndbp-conf-file-helper" ]; then
+	echo "ERROR: Can not find ndbp.conf file helper!" >&2
+	return 1
+fi
+
+. "${NEURODEBIAN_TOOLING_PATH}/ndbp/helpers/ndbp-conf-file-helper"
+
+# Check if debian-refresh-patches(1) is on PATH or in NeuroDebian tooling
+
+if [ ${NO_PATCHES} -eq 0 ]; then
+	DEBIAN_REFRESH_PATCHES_CMD="debian-refresh-patches"
+	if ! command -v "${DEBIAN_REFRESH_PATCHES_CMD}" 1>/dev/null 2>&1; then
+		DEBIAN_REFRESH_PATCHES_CMD="${NEURODEBIAN_TOOLING_PATH}/ndbp/scripts/debian-refresh-patches"
+		if [ ! -x "${DEBIAN_REFRESH_PATCHES_CMD}" ]; then
+			echo "ERROR: Can not find debian-refresh-patches!" >&2
+			exit 1
+		fi
+	fi
+fi
+
+# Bit of sanity check: try to et 'EMAIL', 'DEBEMAIL', 'DEBFULLNAME'
+# environment variables from environment, ndbp.conf, git configs and
+# exit if none is set
+
+if [ -z "${DEBEMAIL}" ] && [ -z "${DEBFULLNAME}" ]; then
+	DEBFULLNAME="$(ndbp_get_debfullname)"
+	DEBEMAIL="$(ndbp_get_debemail)"
+fi
+
+if [ -z "${DEBEMAIL}" ] && [ -z "${DEBFULLNAME}" ]; then
+	DEBFULLNAME="$(git config user.name)"
+	DEBEMAIL="$(git config user.email)"
+fi
+
+if [ -z "${DEBEMAIL}" ] && [ -z "${DEBFULLNAME}" ]; then
+	DEBFULLNAME="$(git config --global user.name)"
+	DEBEMAIL="$(git config --global user.email)"
+fi
+
+if [ -z "${DEBEMAIL}" ] && [ -z "${DEBFULLNAME}" ] && [ -n "${EMAIL}" ]; then
+	DEBFULLNAME="${EMAIL}"
+	DEBEMAIL="${EMAIL}"
+	unset EMAIL
+fi
+
+if [ -z "${DEBEMAIL}" ] && [ -z "${DEBFULLNAME}" ]; then
+	echo "ERROR: None of environment variables 'EMAIL', 'DEBEMAIL' and 'DEBFULLNAME' are set!" >&2
+	exit 1
+fi
+
+export DEBFULLNAME DEBEMAIL
+
+# Bit of sanity check: exit if branch we are on has no "debian/neurodebian"
+# directory, minimal files like 'rules' or 'control' absent inside, or
+# 'README.NeuroDebian' is present
+
+if [ ! -d "debian/neurodebian" ] ||
+	[ ! -f "debian/neurodebian/control" ] ||
+	[ ! -f "debian/neurodebian/rules" ] ||
+	[ -f "debian/README.NeuroDebian" ]; then
+	cat >&2 0<<.a
+
+ERROR: Current branch does not have 'debian/neurodebian' directory,
+ERROR: or is a NeuroDebian synthetic branch!
+ERROR:
+ERROR: Are you sure you want to create new branches from this branch?
+
+.a
+	exit 1
+fi
+
+if [ ! -f "debian/gbp.conf" ]; then
+	cat >&2 0<<.a
+
+ERROR: Current branch does not have 'debian/gbp.conf' file!
+ERROR:
+ERROR: This file hosts gbp(1) preferences like 'debian-branch',
+ERROR: 'upstream-branch', 'pristine-tar' etc vital to NeuroDebian packaging workflow.
+
+.a
+	exit 1
+fi
+
+# Try import the release tarballs from local files, URL or uscan(1)
+
+echo ""
+echo "INFO: Importing upstream tarballs ..."
+echo ""
+
+if ! gbp import-orig \
+	--postunpack="" \
+	--postimport="" \
+	--no-interactive \
+	"$@"; then
+	echo "ERROR: Import failed!" >&2
+	exit 1
+fi
+
+# Try refreshing patches
+
+if [ -f 'debian/patches/series' ] && [ ${NO_PATCHES} -eq 0 ]; then
+	echo "INFO: Trying to refresh Debian patches ..."
+	echo ""
+
+	if ! "${DEBIAN_REFRESH_PATCHES_CMD}"; then
+		exit 1
+	fi
+
+fi
+
+# Make changelog entry
+
+if [ ${NO_CHANGELOG} -eq 0 ]; then
+	echo "INFO: Creating entry in 'debian/changelog' ..."
+	echo ""
+
+	# If no finalize is requested, go plain gbp-dch(1)
+
+	GBP_DCH_OPTS=""
+	if [ "${FINALIZE_DCH}" -eq 1 ]; then
+
+		# First, get the distribution used by current topmost changelog entry
+		# instead of depending on dpkg-parsechangelog piped to grep :)
+
+		DIST=""
+		while read -r _1 _2 _3 _4 _5; do
+			case "${_4}" in
+			urgency=*)
+				DIST="${_3%%;}"
+				# Find "real" distribution if we encountered "neurodebian*"
+				case "${DIST}" in
+				neurodebian*) ;;
+
+				*)
+					break
+					;;
+				esac
+				;;
+			esac
+		done 0<debian/changelog
+
+		if [ -z "${DIST}" ]; then
+			echo "WARNING: Can not find distribution in 'debian/changelog'!" >&2
+			DIST="unstable"
+		fi
+
+		GBP_DCH_OPTS="--distribution=$DIST --force-distribution"
+	fi
+
+	# Now, make the new entry and commit it
+
+	# shellcheck disable=SC2086
+	if ! gbp dch $GBP_DCH_OPTS; then
+		echo "ERROR: Can not make 'debian/changelog' entry!" >&2
+
+		if ! git checkout debian/changelog; then
+			echo "ERROR: Can not restore 'debian/changelog'!" >&2
+		fi
+
+		exit 1
+	fi
+
+	echo ""
+
+	if ! git add debian/changelog 1>/dev/null; then
+		echo "ERROR: Can not add 'debian/changelog' entry!" >&2
+
+		if ! git checkout debian/changelog 1>/dev/null; then
+			echo "ERROR: Can not restore 'debian/changelog'!" >&2
+		fi
+
+		exit 1
+	fi
+
+	if ! git commit -m "New release" 1>/dev/null; then
+		echo "ERROR: Can not commit 'debian/changelog' entry!" >&2
+
+		if ! git reset --hard 1>/dev/null; then
+			echo "ERROR: Can not restore 'debian/changelog'!" >&2
+		fi
+
+		exit 1
+	fi
+fi
+
+# Report done
+
+echo "All done!"

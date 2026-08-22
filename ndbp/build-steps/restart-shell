@@ -1,0 +1,39 @@
+#!/bin/sh
+
+#
+# The build step script to invoke the user-supplied command inside container,
+# handle signals and exit on the command's failure, starting plain shell on
+# container restart. This is needed to provide the '--shell-on-failure'
+# functionality in ndbp-build(1)
+#
+# Copyright: 2024, The NeuroDebian Team <team@neuro.debian.net>
+#            2024, Vasyl Gello <vasek.gello@gmail.com>
+#
+
+# Pass signal to downstream command assuming it can handle one
+
+trap 'kill -INT "${CMDPID}"' 1 2 3 15
+
+# Check if the container was restarted after failure
+# or just start the command supplied by user
+
+if [ -f /failure.marker ]; then
+	exec /bin/bash -l
+else
+
+	exec "$@" &
+	CMDPID="$!"
+
+	while true; do
+		wait "${CMDPID}"
+		RET=$?
+		[ "${RET}" -lt 128 ] && break
+	done
+
+	if [ "${RET}" -ne 0 ]; then
+		touch /failure.marker
+		exit "${RET}"
+	fi
+
+	exit 0
+fi

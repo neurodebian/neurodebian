@@ -1,0 +1,21 @@
+#!/usr/bin/make -f
+
+# This is rulefile to transform Debian package into NeuroDebian
+# =============================================================
+#
+# It is invoked by neurodebian-rollout(1) in Git packaging
+# repository so package-specific (and release-specific!)
+# alterations can be made in synthetic 'neurodebian/*' branches.
+#
+# The respective after-actions are performed after system action
+# for the same release successfully completes.
+#
+# For the documentation on available functions (like 'add_patch',
+# 'drop_patch') and variables (like 'NEURODEBIAN_BRANCH'), please
+# consult the neurodebian-rules(1) manual page.
+#
+
+# Action to suppress invocation of make without targets
+# It should NOT be removed from the per-package NeuroDebian rules!
+
+all:

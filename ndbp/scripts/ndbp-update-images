@@ -1,0 +1,525 @@
+#!/bin/sh
+
+# Version of this script
+VERSION=1.0
+
+# Usage
+
+print_version() {
+	cat <<EOT
+ndbp-update-images $VERSION
+
+Copyright: 2024, The NeuroDebian Team <team@neuro.debian.net>
+           2024, Vasyl Gello <vasek.gello@gmail.com>
+
+
+Licensed under GNU Public License version 3 or later.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+EOT
+}
+
+print_usage() (
+	cat 0<<.a
+Usage:
+    ndbp-update-images [--help | --verbose-help | --version] \\
+       [--clean-old-images | --restore-old-images] \\
+       [--log-directory <path-to-log-dir>] \\
+       [-j | --jobs <MAX-PARALLEL-JOBS>] \\
+       [--podman <path-to-podman>] \\
+       [--cpu-limit <QUOTA> <PERIOD>] \\
+       [--mem-limit <X[MGT]>] \\
+       [--pasta-opts <pasta-opts> | --slirp-opts <slirp4netns-opts>]
+
+Options:
+    --help                       - Show brief help message
+    --verbose-help               - Show verbose help message
+    --version                    - Show version and copyright
+
+    --clean-old-images           - Clean old images up to save space
+                                   (mutually exclusive with
+                                    '--restore-old-images'!)
+
+    --restore-old-images         - Restore old images if new ones have issues
+                                   (mutually exclusive with
+                                    '--clean-old-images'!)
+
+    --log-directory              - Write image builder logs to specified
+                                   directory rather to default one configured
+                                   (see verbose help or manual page for details)
+
+    -j, --jobs                   - Override parallel build job count
+                                   (see verbose help or manual page for details)
+
+    --podman                     - Override path to podman(1) executable
+                                   (see verbose help or manual page for details)
+
+    --cpu-limit                  - Override CPU limit for image builders
+                                   (see verbose help or manual page for details)
+
+    --mem-limit                  - Override memory limit for image builders
+                                   (see verbose help or manual page for details)
+
+    --pasta-opts                 - Override pasta(1) command-line options
+                                   (see verbose help or manual page for details)
+
+    --slirp-opts                 - Override slirp4netns(1) command-line options
+                                   (see verbose help or manual page for details)
+
+
+Generates Podman container images for all supported NeuroDebian releases.
+
+.a
+)
+
+print_man() (
+	cat 0<<.a
+DETAILS OF OPERATION
+
+For every NeuroDebian release supported, the script will build container
+images required for NeuroDebian package testing (like builders, lintian,
+autopkgtest, reprotest etc) for every architecture executable on the host
+machine.
+
+If parallel job count is greater than one, the script will build everything
+in parallel.
+
+Log files from each build process are stored in directory specified via
+'--log-directory' command-line option or in the 'update-images' sub-directory
+of the directory specified in configuration files ndbp.conf(5) as
+'build.root-directory'.
+
+It is also possible to configure custom path to Podman executable and
+container networking options either via command-line arguments or
+configuration files (see below).
+
+If options like:
+
+  * parallel job count ('-j'),
+
+  * path to Podman executable ('--podman'),
+
+  * pasta(1) or slirp4netns(1) arguments ('--pasta-opts', '--slirp-opts'),
+
+the default values are taken form the configuration files, in order of
+precedence:
+
+  * file pointed by (NEURODEBIAN_BUILDER_CONF) environment variable,
+
+  * (HOME)/ndbp.conf,
+
+  * (NEURODEBIAN_TOOLING_PATH)/ndbp.conf,
+
+  * /etc/neurodebian/ndbp.conf.
+
+The containerfiles for each image built are stored under 'containerfiles'
+sub-directory of NeuroDebian tooling.
+
+The list of NeuroDebian branches to be deployed is determined by set of
+distribution information files (aka 'distinfo') provided by NeuroDebian tooling.
+
+See ndbp.conf(5) manual page for more details on system-wide and per-user
+configuration defaults for builder infrastructure.
+
+.a
+)
+
+print_footer() (
+	cat 0<<.a
+This script is part of NeuroDebian tooling available as NeuroDebian package
+'neurodebian-dev' or the upstream repository on Github:
+
+<https://github.com/neurodebian/neurodebian>
+
+To use the newest version of NeuroDebian tooling, please point the environment
+variable 'NEURODEBIAN_TOOLING_PATH' to it and add the tools to PATH:
+
+export NEURODEBIAN_TOOLING_PATH="\${PWD}"
+export PATH="\${NEURODEBIAN_TOOLING_PATH}:\${PATH}"
+
+.a
+)
+
+# Start of script
+
+# Required tools: sh, cat, make, mkdir
+
+REQUIRED_TOOLS="cat make mkdir"
+
+for _TEMP in ${REQUIRED_TOOLS}; do
+	if ! command -v "${_TEMP}" 1>/dev/null 2>&1; then
+		echo "ERROR: Required tool ${_TEMP} not found!" >&2
+		return 1
+	fi
+done
+
+unset _TEMP
+
+# Parse command-line options
+
+CLEAN_OLD_IMAGES=0
+CPUPERIOD=""
+CPUQUOTA=""
+JOBS=""
+LOGDIR=""
+MEMLIMIT=""
+PASTA_OPTS=""
+SLIRP_OPTS=""
+PODMAN=""
+RESTORE_OLD_IMAGES=0
+
+set -e
+
+while [ -n "${1}" ]; do
+	case "${1}" in
+	-h | --help)
+		print_usage
+		print_footer
+		exit 0
+		;;
+	--verbose-help)
+		print_usage
+		print_man
+		print_footer
+		exit 0
+		;;
+	--version | -v)
+		print_version
+		exit 0
+		;;
+	--clean-old-images)
+		if [ "${RESTORE_OLD_IMAGES}" -eq 1 ]; then
+			cat >&2 0<<.a
+
+ERROR: Mutually-exclusive options found:
+ERROR: '--clean-old-images' and '--restore-old-images'
+
+.a
+			exit 1
+		fi
+
+		CLEAN_OLD_IMAGES=1
+		;;
+	--restore-old-images)
+		if [ "${CLEAN_OLD_IMAGES}" -eq 1 ]; then
+			cat >&2 0<<.a
+
+ERROR: Mutually-exclusive options found:
+ERROR: '--clean-old-images' and '--restore-old-images'
+
+.a
+			exit 1
+		fi
+
+		RESTORE_OLD_IMAGES=1
+		;;
+	--log-directory)
+		LOGDIR="${2}"
+		shift
+		;;
+	--jobs | -j)
+		JOBS="${2}"
+		shift
+		;;
+	--podman)
+		PODMAN="${2}"
+		shift
+		;;
+	--cpu-limit)
+		CPUQUOTA="${2}"
+		CPUPERIOD="${3}"
+		shift 2
+		;;
+	--mem-limit)
+		MEMLIMIT="${2}"
+		shift
+		;;
+	--pasta-opts)
+		if [ -n "${SLIRP_OPTS}" ]; then
+			cat >&2 0<<.a
+
+ERROR: Mutually-exclusive options found:
+ERROR: '--pasta-opts' and '--slirp-opts'
+
+.a
+			exit 1
+		fi
+
+		PASTA_OPTS="${2}"
+		shift
+		;;
+	--slirp-opts)
+		if [ -n "${PASTA_OPTS}" ]; then
+			cat >&2 0<<.a
+
+ERROR: Mutually-exclusive options found:
+ERROR: '--pasta-opts' and '--slirp-opts'
+
+.a
+			exit 1
+		fi
+
+		SLIRP_OPTS="${2}"
+		shift
+		;;
+	*)
+		echo "ERROR: Unknown option '${1} !'" >&2
+		exit 1
+		;;
+	esac
+
+	shift
+done
+
+set +e
+
+# Check if NeuroDebian tooling location is overridden via
+# NEURODEBIAN_TOOLING_PATH environment variable.
+
+if [ -z "${NEURODEBIAN_TOOLING_PATH}" ]; then
+	NEURODEBIAN_TOOLING_PATH="/usr/share/neurodebian"
+fi
+
+export NEURODEBIAN_TOOLING_PATH
+
+# Warn if NeuroDebian tooling is not present
+
+if [ ! -d "${NEURODEBIAN_TOOLING_PATH}" ]; then
+	cat >&2 0<<.a
+
+ERROR: Can not find NeuroDebian tooling!
+ERROR: Paths searched:
+ERROR:  - system: /usr/share/neurodebian
+ERROR:  - user: ${NEURODEBIAN_TOOLING_PATH}
+
+.a
+	return 1
+fi
+
+# Include ndbp.conf(5) helper
+
+if [ ! -f "${NEURODEBIAN_TOOLING_PATH}/ndbp/helpers/ndbp-conf-file-helper" ]; then
+	echo "ERROR: Can not find ndbp.conf file helper!" >&2
+	return 1
+fi
+
+. "${NEURODEBIAN_TOOLING_PATH}/ndbp/helpers/ndbp-conf-file-helper"
+
+# Now check if any values need to be retrieved from ndbp.conf(5)
+
+# Log directory
+
+if [ -z "${LOGDIR}" ]; then
+	if ! BUILDROOTDIR="$(ndbp_get_builddir)"; then
+		cat >&2 0<<.a
+
+ERROR: Can not determine NeuroDebian build directory to store logs!
+ERROR:
+ERROR: If you want to override the log directory, use '--log-directory'
+ERROR: command-line option!
+
+.a
+		exit 1
+	fi
+
+	LOGDIR="${BUILDROOTDIR}/update-images"
+fi
+
+echo ""
+echo "INFO: Using log directory '${LOGDIR}' ..."
+echo ""
+
+if ! mkdir -p "${LOGDIR}"; then
+	echo "ERROR: Can not create log directory!" >&2
+	exit 1
+fi
+
+# Jobs
+
+if [ -z "${JOBS}" ]; then
+	if ! JOBS="$(ndbp_get_max_parallel_jobs)"; then
+		cat 0<<.a
+
+WARNING: Can not determine parallel job count!
+WARNING:
+WARNING: Resorting to serial execution ('-j1')
+WARNING:
+WARNING: If you want to override the job count, use '-j' command-line
+WARNING: option!
+
+.a
+		JOBS=1
+	fi
+fi
+
+echo ""
+echo "INFO: Using '${JOBS}' parallel jobs ..."
+echo ""
+
+# Path to podman(1)
+
+if [ -z "${PODMAN}" ]; then
+	if ! PODMAN="$(ndbp_get_podman_cmdline)"; then
+		cat 0<<.a
+
+WARNING: Can not determine path to Podman executable!
+WARNING:
+WARNING: Resorting to 'podman'
+WARNING:
+WARNING: If you want to override this path, use '--podman' command-line option!
+
+.a
+		PODMAN="podman"
+	fi
+fi
+
+echo ""
+echo "INFO: Using podman executable '${PODMAN}' ..."
+echo ""
+
+if ! command -v "${PODMAN}" 1>/dev/null 2>&1; then
+	echo "ERROR: Can not find Podman executable!" >&2
+	exit 1
+fi
+
+# CPU limit
+
+if [ -z "${CPUPERIOD}" ] || [ -z "${CPUQUOTA}" ]; then
+	if ! _CPULIMIT="$(ndbp_get_cpulimit)"; then
+		cat 0<<.a
+
+WARNING: Can not identify CPU limits!
+WARNING:
+WARNING: Resorting to unlimited CPU cap.
+WARNING:
+WARNING: If you want to override this setting, use '--cpu-limit' command-line
+WARNING: option!
+
+.a
+		CPUQUOTA=0
+		CPUPERIOD=0
+	else
+		while read -r CPUQUOTA && read -r CPUPERIOD; do
+			break
+		done 0<<.a
+${_CPULIMIT}
+.a
+	fi
+fi
+
+echo ""
+echo "INFO: Using CPU limits '${CPUQUOTA} / ${CPUPERIOD}' ..."
+echo ""
+
+# Memory limit
+
+if [ -z "${MEMLIMIT}" ]; then
+	if ! MEMLIMIT="$(ndbp_get_memlimit)"; then
+		cat 0<<.a
+
+WARNING: Can not identify memory limits!
+WARNING:
+WARNING: Resorting to unlimited memory cap.
+WARNING:
+WARNING: If you want to override this setting, use '--mem-limit' command-line
+WARNING: option!
+
+.a
+		MEMLIMIT=""
+	fi
+fi
+
+echo ""
+echo "INFO: Using memory limit '${MEMLIMIT}' ..."
+echo ""
+
+# Pasta options
+
+if [ -z "${PASTA_OPTS}" ]; then
+	if ! PASTA_OPTS="$(ndbp_get_pasta_opts)"; then
+		cat 0<<.a
+
+WARNING: Can not identify pasta(1) options!
+WARNING:
+WARNING: If you want to override this setting, use '--pasta-opts'
+WARNING: command-line option!
+
+.a
+		PASTA_OPTS=""
+	fi
+fi
+
+echo ""
+echo "INFO: Using pasta(1) options '${PASTA_OPTS}' ..."
+echo ""
+
+# Slirp options
+
+if [ -z "${SLIRP_OPTS}" ]; then
+	if ! SLIRP_OPTS="$(ndbp_get_slirp_opts)"; then
+		cat 0<<.a
+
+WARNING: Can not identify slirp4netns(1) options!
+WARNING:
+WARNING: If you want to override this setting, use '--slirp-opts'
+WARNING: command-line option!
+
+.a
+		SLIRP_OPTS=""
+	fi
+fi
+
+echo ""
+echo "INFO: Using slirp4netns(1) options '${SLIRP_OPTS}' ..."
+echo ""
+
+# Assemble the make arguments
+
+set -- '-s'
+set -- "$@" '-f' "${NEURODEBIAN_TOOLING_PATH}/ndbp/makefiles/update-images.mk"
+
+[ -n "${JOBS}" ] && set -- "$@" "-j${JOBS}"
+[ -n "${LOGDIR}" ] && set -- "$@" "LOGDIR=${LOGDIR}"
+[ -n "${PODMAN}" ] && set -- "$@" "PODMAN=${PODMAN}"
+[ -n "${CPUPERIOD}" ] && set -- "$@" "CPUPERIOD=${CPUPERIOD}"
+[ -n "${CPUQUOTA}" ] && set -- "$@" "CPUQUOTA=${CPUQUOTA}"
+[ -n "${MEMLIMIT}" ] && set -- "$@" "MEMLIMIT=${MEMLIMIT}"
+[ -n "${PASTA_OPTS}" ] && set -- "$@" "PASTA_OPTS=${PASTA_OPTS}"
+[ -n "${SLIRP_OPTS}" ] && set -- "$@" "SLIRP_OPTS=${SLIRP_OPTS}"
+
+if [ "${CLEAN_OLD_IMAGES}" -eq 1 ]; then
+	set -- "$@" "clean-old-images"
+elif [ "${RESTORE_OLD_IMAGES}" -eq 1 ]; then
+	set -- "$@" "restore-old-images"
+else
+	set -- "$@" "all"
+fi
+
+# Now run make(1)
+
+echo ""
+echo "INFO: Starting the update routine ..."
+echo ""
+
+if ! make "$@"; then
+	cat >&2 0<<.a
+
+ERROR: Updating images failed!
+ERROR:
+ERROR: See log files in
+ERROR:
+ERROR: ${LOGDIR}
+ERROR:
+ERROR: for detailed information!
+
+.a
+
+	exit 1
+fi
+
+# Report success
+
+echo ""
+echo "All done!"
+echo ""

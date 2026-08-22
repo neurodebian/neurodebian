@@ -1,0 +1,67 @@
+#!/bin/sh
+
+#
+# The build step script to run lintian(1) on package inside container
+#
+# Copyright: 2024, The NeuroDebian Team <team@neuro.debian.net>
+#            2024, Vasyl Gello <vasek.gello@gmail.com>
+#
+
+# Required tools: sh, lintian
+
+REQUIRED_TOOLS="lintian"
+
+for _TEMP in ${REQUIRED_TOOLS}; do
+	if ! command -v "${_TEMP}" 1>/dev/null 2>&1; then
+		echo "ERROR: Required tool ${_TEMP} not found!" >&2
+		return 1
+	fi
+done
+
+unset _TEMP
+
+# Start of script
+
+# Parse command-line arguments
+
+SRCPKGDIR="${1}"
+
+if [ -z "${SRCPKGDIR}" ]; then
+	echo "ERROR: Source package directory can not be empty!" >&2
+	exit 1
+fi
+
+if [ ! -d "${SRCPKGDIR}" ]; then
+	echo "ERROR: Source package directory does not exist!" >&2
+	exit 1
+fi
+
+# Move to source package directory
+
+if ! cd "${SRCPKGDIR}"; then
+	echo "ERROR: Can not change directory to '${SRCPKGDIR}'!" >&2
+	exit 1
+fi
+
+
+# Now start lintian(1)
+
+exec su user -s /usr/bin/lintian \
+	-- \
+	-I -i -E --pedantic \
+	*.changes &
+
+CMDPID="$!"
+
+while true; do
+	wait "${CMDPID}"
+	RET=$?
+	[ "${RET}" -lt 128 ] && break
+done
+
+if [ "${RET}" -ne 0 ]; then
+	echo "ERROR: Lintian run failed!" >&2
+	exit 1
+fi
+
+exit 0
