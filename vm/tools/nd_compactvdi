@@ -22,40 +22,45 @@ fi
 wdir=$(mktemp -d -t compactvdi.XXXXXX)
 
 cd $wdir
-# make mount points
-mkdir -p vbdev vbmnt
-# get access to disks inside the VDIs
-vdfuse -f "$vdifile" vbdev
-# mount partitition (for now only support one)
-mount -o loop vbdev/Partition1 vbmnt
 
-# remove cruft
-#xapian indices
-find vbmnt/var/ -wholename '*xapian*.DB' -delete
-# package cache
-find vbmnt/var/cache/apt/archives/ -name '*.deb' -delete
-rm -f vbmnt/var/cache/apt/*.bin
-rm -f vbmnt/var/cache/debconf/*-old
-# device files -- udev restores them
-rm -rf vbmnt/dev/*
+if `which vdfuse >/dev/null`; then
+	# make mount points
+	mkdir -p vbdev vbmnt
+	# get access to disks inside the VDIs
+	vdfuse -f "$vdifile" vbdev
+	# mount partitition (for now only support one)
+	mount -o loop vbdev/Partition1 vbmnt
 
-# tmp
-rm -rf vbmnt/tmp/*
-# log files
-find vbmnt/var/log -type f -delete
-# apt lists
-find vbmnt/var/lib/apt -type f -name '*debian*' -o -type f -name '*list*' | xargs -r rm
-# user data
-# cannot clean all root stuff, because it also contains useful thing (e.g. git setup)
-rm -f vbmnt/root/.*history
-rm -f vbmnt/home/brain/.*history vbmnt/home/brain/nd*
+	# remove cruft
+	#xapian indices
+	find vbmnt/var/ -wholename '*xapian*.DB' -delete
+	# package cache
+	find vbmnt/var/cache/apt/archives/ -name '*.deb' -delete
+	rm -f vbmnt/var/cache/apt/*.bin
+	rm -f vbmnt/var/cache/debconf/*-old
+	# device files -- udev restores them
+	rm -rf vbmnt/dev/*
 
-# unmount filesystem
-umount vbmnt
-# zero out empty space
-zerofree -v vbdev/Partition1
-# close whole VDI
-umount vbdev
+	# tmp
+	rm -rf vbmnt/tmp/*
+	# log files
+	find vbmnt/var/log -type f -delete
+	# apt lists
+	find vbmnt/var/lib/apt -type f -name '*debian*' -o -type f -name '*list*' | xargs -r rm
+	# user data
+	# cannot clean all root stuff, because it also contains useful thing (e.g. git setup)
+	rm -f vbmnt/root/.*history
+	rm -f vbmnt/home/brain/.*history vbmnt/home/brain/nd*
+
+	# unmount filesystem
+	umount vbmnt
+	# zero out empty space
+	zerofree -v vbdev/Partition1
+	# close whole VDI
+	umount vbdev
+else
+	echo "WARNING: no vdfuse available -- can't mount image to cleanup"
+fi
 
 # compact VDI
 # THIS NEEDS TO BE DONE ON A VDI THAT IS REGISTERED WITH VIRTUALBOX

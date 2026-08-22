@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# play safe
+set -e
+set -u
+
+drive=$(mount | grep 'on /target ' | sed -e 's, .*,,g')
+
+echo "I: zeroing out free space on $drive"
+
+in-target apt-get install zerofree
+
+# Let's try to zero out unused space
+mount -o remount,ro /target
+/target/usr/sbin/zerofree "$drive"
+mount -o remount,rw /target
